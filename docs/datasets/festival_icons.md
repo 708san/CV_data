@@ -24,3 +24,7 @@ print(data.metadata_jsonl)   # file_name,text
 - **制作者からGitHub一般公開の許可はあるものの、改変・商用利用・再配布に関する標準ライセンスは設定されていません。** これらの用途には別途確認が必要です。
 
 画像はこのライブラリやPyPIへ再収録しません。配布元の固定Releaseから取得します。
+
+## 画像とラベルの検査
+
+固定Releaseから取得した168枚を検査するには、開発用の `python -m cvlesson.audit festival_icons --check-images --report report.json` を使います。Pillowが必要です。この検査は改変・商用利用・再配布を許可するものではありません。

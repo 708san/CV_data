@@ -22,3 +22,7 @@
 > `cvlesson.datasets.get("festival_icons")`で取得した`labels.csv`の`image,caption`を読み、最初の5行を表にするコードを書いてください。元データは変更しないでください。
 
 **注意：** このパッケージは取得機能のみを提供します。CNN学習、画像生成、LoRA学習のAPIはまだ実装していません。AIに依頼する場合は、必要な学習処理を別のコードで作るよう指定してください。
+
+## AIにデータの検査結果を説明してもらう
+
+開発者・教員は `python -m cvlesson.audit festival_icons --check-images --report report.json` で検査できます。生成された `report.json` をAIに渡し、「検査に失敗した項目だけ説明して」と依頼できます。画像や配布元の変更、権利上の利用判断はこの操作に含まれません。

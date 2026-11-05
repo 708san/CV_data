@@ -67,3 +67,14 @@ python -m unittest discover -s tests -v
 - 使用するタグ・SHA-256はライブラリ内で固定しています。
 - **コードのライセンスとデータのライセンスは別です。** 本ライブラリが配布元の画像の権利を許諾するものではありません。
 - 元画像の保管場所は配布元が正本です。`CV_data`は取得のみを担当します。
+
+## 配布データの検査
+
+公開済みの固定Releaseから画像を取得し、ラベル・画像ファイルの整合を検査できます。通常のテストではダウンロードしません。
+
+```bash
+python -m pip install -e . Pillow
+python -m cvlesson.audit festival_icons --check-images --report report.json
+```
+
+トマトの葉は `festival_icons` を `tomato_leaves` に変更します。GitHub Actionsの手動ワークフローからも実行できます。[詳しい手順](docs/phase1-release-audit.md)をご覧ください。画像の検査は権利の審査とは別です。
