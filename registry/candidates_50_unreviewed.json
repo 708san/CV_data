@@ -219,13 +219,12 @@
         "notes": "同一個体の回転撮影による評価漏れに注意"
       },
       "audit": {
-      "technical_status": "metadata_checked",
-      "files_examined": 2220,
-      "inspection_status": "completed",
-      "publication_status": "hold",
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
         "last_desk_review": "2026-11-05",
-      "evidence_grade": "independent_primary_check",
-      "notes": "公式公開APIのフォルダ別一覧を確認。分割済み画像966件（train 676 / valid 193 / test 97）と対応するYOLOラベル966件を確認し、別フォルダにaugmented 810件・raw 154件も存在した。APIメタデータの各ファイルにSHA-256はあるが、公開用の単一固定アーカイブSHA-256ではない。画像本体・ラベルの全量取得と再配布許諾は未実施のため保留。"
+        "evidence_grade": "independent_primary_check"
       },
       "preparation": {
         "planned_level": "1",
@@ -266,12 +265,17 @@
         "notes": "拡張画像を分割前に混ぜない"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
+        "technical_status": "metadata_checked",
+        "files_examined": 2220,
+        "sample_files_examined": 6,
+        "sample_sha256_check": "passed",
+        "sample_image_decode": "passed",
+        "sample_yolo_label_check": "passed",
+        "inspection_status": "completed",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-05",
-        "evidence_grade": "independent_primary_check"
+        "evidence_grade": "independent_primary_check",
+        "notes": "公式公開APIのフォルダ別一覧を確認。分割済み画像966件（train 676 / valid 193 / test 97）と対応するYOLOラベル966件を確認し、別フォルダにaugmented 810件・raw 154件も存在した。APIメタデータの各ファイルにSHA-256はあるが、公開用の単一固定アーカイブSHA-256ではない。train/valid/testから画像3枚と対応ラベル3枚を取得し、SHA-256、640x640 JPEGデコード、YOLO 5列・座標範囲を確認した。全量取得・重複検査・再配布許諾は未実施のため保留。"
       },
       "preparation": {
         "planned_level": "to_be_determined",
