@@ -1424,12 +1424,16 @@
         "notes": "画像とマスクの1対1対応を要検査"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
+        "technical_status": "metadata_and_one_class_checked",
+        "files_examined": 144,
+        "sample_files_examined": 2,
+        "sample_sha256_check": "passed",
+        "sample_image_mask_decode": "passed",
+        "inspection_status": "partial",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-05",
-        "evidence_grade": "independent_primary_check"
+        "evidence_grade": "independent_primary_check",
+        "notes": "公式APIの1クラス（Avocado）で画像72件・マスク72件の一覧とファイル単位SHA-256を確認。画像10.jpgと10_mask.pngを取得し、SHA-256一致、512x512 JPEG/PNGデコード、グレースケールマスクを確認した。全30クラスの対応・重複・権利・固定artifact検査は未完了。"
       },
       "preparation": {
         "planned_level": "to_be_determined",
