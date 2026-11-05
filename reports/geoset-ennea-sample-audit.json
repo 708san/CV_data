@@ -1,0 +1,18 @@
+{
+  "dataset_id": "geoset_ennea",
+  "source_url": "https://data.mendeley.com/datasets/fg97mhsdbr/1",
+  "source_version": "1",
+  "license_claim": "CC BY 4.0",
+  "metadata_files_examined": 2220,
+  "split_images_listed": {"train": 676, "valid": 193, "test": 97},
+  "split_labels_listed": {"train": 676, "valid": 193, "test": 97},
+  "sample_files_examined": 6,
+  "sample_sha256_check": "passed",
+  "sample_image_decode": "passed",
+  "sample_yolo_label_check": "passed",
+  "sample_image_format": "JPEG",
+  "sample_image_size": [640, 640],
+  "status": "sample_passed_full_audit_pending",
+  "publication_status": "hold",
+  "notes": "train/valid/testから画像と対応ラベルを各1組確認した。augmented/rawフォルダを含む全量の重複・分割漏洩・権利・固定artifact検査は未完了。"
+}
