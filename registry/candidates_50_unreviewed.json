@@ -314,10 +314,14 @@
       "audit": {
         "technical_status": "metadata_checked",
         "files_examined": 990,
+        "sample_files_examined": 9,
+        "sample_sha256_check": "passed",
+        "sample_image_decode": "passed",
         "inspection_status": "completed",
         "publication_status": "hold",
         "last_desk_review": "2026-11-05",
-        "evidence_grade": "independent_primary_check"
+        "evidence_grade": "independent_primary_check",
+        "notes": "9カテゴリフォルダから代表画像を取得し、公開APIのファイルSHA-256と一致、JPEGデコードも成功。サンプルは全量監査を意味しない。"
       },
       "preparation": {
         "planned_level": "1",

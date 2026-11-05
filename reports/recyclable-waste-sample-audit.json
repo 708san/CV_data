@@ -1,0 +1,18 @@
+{
+  "dataset_id": "recyclable_waste",
+  "source_url": "https://data.mendeley.com/datasets/h5pxbsdz4m/1",
+  "source_version": "1",
+  "license_claim": "CC BY 4.0",
+  "metadata_files_examined": 990,
+  "image_files_listed_by_api": 989,
+  "page_claimed_images": 1000,
+  "sample_files_examined": 9,
+  "sample_sha256_check": "passed",
+  "sample_image_decode": "passed",
+  "sample_format": "JPEG",
+  "sample_dimensions": [[1200, 1600], [3024, 4032], [4284, 5712], [3024, 4032], [1200, 1600], [1200, 1600], [524, 524], [1200, 1600], [3024, 4032]],
+  "exif_observed": true,
+  "status": "sample_passed_full_audit_pending",
+  "publication_status": "hold",
+  "notes": "APIのファイル単位SHA-256と9枚の実画像を照合した。ページ記載件数とAPI画像件数が一致せず、固定アーカイブSHA-256も未確定のため、再配布用artifactは作成していない。"
+}
