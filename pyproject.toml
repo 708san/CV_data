@@ -12,9 +12,15 @@ authors = [{name = "CV Data project contributors"}]
 keywords = ["education", "computer-vision", "dataset", "colab", "japanese"]
 classifiers = ["Programming Language :: Python :: 3", "Natural Language :: Japanese", "Development Status :: 2 - Pre-Alpha"]
 
+[project.optional-dependencies]
+dataframe = ["pandas>=1.5"]
+display = ["Pillow>=9.0", "matplotlib>=3.6"]
+torch = ["numpy>=1.23", "Pillow>=9.0", "torch>=2.0"]
+
 [project.urls]
 Repository = "https://github.com/708san/CV_data"
 Documentation = "https://github.com/708san/CV_data#readme"
+Artifacts = "https://github.com/708san/CV_data_artifacts"
 
 [tool.setuptools.packages.find]
 where = ["src"]

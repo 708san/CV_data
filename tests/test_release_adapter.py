@@ -2,8 +2,11 @@
 from __future__ import annotations
 
 import hashlib
+import gzip
+import importlib.util
 import io
 import json
+import struct
 import tempfile
 import unittest
 import zipfile
@@ -50,6 +53,22 @@ def make_zip(case="festival-icons", *, corrupt=False, unsafe=False, symlink=Fals
     return output.getvalue()
 
 
+def make_idx_gzip_files() -> dict[str, bytes]:
+    image_header = struct.pack(">IIII", 2051, 1, 2, 2)
+    label_header = struct.pack(">II", 2049, 1)
+    def gz(payload):
+        output = io.BytesIO()
+        with gzip.GzipFile(fileobj=output, mode="wb") as stream:
+            stream.write(payload)
+        return output.getvalue()
+    return {
+        "train-images-idx3-ubyte.gz": gz(image_header + b"\x00\x01\x02\x03"),
+        "train-labels-idx1-ubyte.gz": gz(label_header + b"\x00"),
+        "t10k-images-idx3-ubyte.gz": gz(image_header + b"\x04\x05\x06\x07"),
+        "t10k-labels-idx1-ubyte.gz": gz(label_header + b"\x01"),
+    }
+
+
 class ReleaseTests(unittest.TestCase):
     def setUp(self) -> None:
         self.work = tempfile.TemporaryDirectory()
@@ -71,7 +90,37 @@ class ReleaseTests(unittest.TestCase):
         ids = {item["id"] for item in datasets.list_available()}
         self.assertEqual(ids, {"tomato_leaves", "festival_icons"})
         self.assertIn("festival-v1.0.0", str(datasets.info("festival_icons")))
-        self.assertIn("未実施", datasets.info("tomato_leaves")["状態"])
+        self.assertEqual(datasets.info("tomato_leaves")["audit_status"], "full_image_audit")
+        self.assertEqual(datasets.info("festival_icons")["audit_status"], "full_image_audit")
+
+    def test_catalog_can_filter_by_task_and_audience(self):
+        student = datasets.list_available(task="classification", audience="student")
+        self.assertEqual([item["id"] for item in student], ["tomato_leaves"])
+        self.assertEqual(student[0]["publication_status"], "student_enabled")
+        self.assertEqual(datasets.list_available(task="lora", audience="student"), [])
+        teacher = datasets.list_available(task="lora", audience="teacher")
+        self.assertEqual([item["id"] for item in teacher], ["festival_icons"])
+
+    def test_preview_is_only_in_teacher_catalog_when_requested(self):
+        student = datasets.list_available(
+            task="classification", audience="student", include_preview=True,
+        )
+        teacher = datasets.list_available(
+            task="classification", audience="teacher", include_preview=True,
+        )
+        self.assertEqual([item["id"] for item in student], ["tomato_leaves"])
+        self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "fashion_mnist"})
+        fashion = next(item for item in teacher if item["id"] == "fashion_mnist")
+        self.assertEqual(fashion["publication_status"], "teacher_preview_only")
+
+    def test_task_catalog_only_shows_usable_choices(self):
+        tasks = datasets.list_tasks()
+        self.assertEqual([item["task"] for item in tasks], ["classification"])
+        self.assertEqual(tasks[0]["datasets"], ["tomato_leaves"])
+        teacher_tasks = datasets.list_tasks(audience="teacher", include_preview=True)
+        self.assertEqual(
+            [item["task"] for item in teacher_tasks], ["classification", "lora"]
+        )
 
     def test_festival_download_and_offline_cache(self):
         payload = make_zip()
@@ -131,6 +180,54 @@ class ReleaseTests(unittest.TestCase):
     def test_unknown_id(self):
         with self.assertRaises(datasets.DatasetError):
             datasets.get("not_registered", cache_dir=self.cache)
+
+    @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
+    def test_japanese_alias_and_dataframe_schema(self):
+        payload = make_zip(case="tomato-leaves")
+        key, source = self.setup_source(payload, case="tomato-leaves")
+        with patch.dict(datasets._SOURCES, {key: source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            data = datasets.get("トマトの葉", cache_dir=self.cache)
+        frame = data.to_df()
+        self.assertEqual(list(frame.columns), [
+            "image_path", "label", "label_ja", "label_id", "split",
+            "sample_id", "group_id", "source_split",
+        ])
+        self.assertEqual(frame.loc[0, "label"], "healthy")
+        self.assertEqual(frame.loc[0, "label_ja"], "健全")
+        self.assertEqual(data.splits, {"train": 1, "val": 0, "test": 0})
+
+    def test_info_without_id_returns_catalog(self):
+        catalog = datasets.info()
+        self.assertIsInstance(catalog, list)
+        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons"})
+
+    def test_preview_dataset_is_not_in_formal_catalog(self):
+        self.assertNotIn("fashion_mnist", {item["id"] for item in datasets.list_available()})
+        self.assertEqual(datasets.list_preview()[0]["id"], "fashion_mnist")
+        with self.assertRaisesRegex(datasets.DatasetError, "教師向けプレビュー"):
+            datasets.get("fashion_mnist", cache_dir=self.cache)
+
+    def test_idx_preview_materializes_verified_pgm_cache(self):
+        payloads = make_idx_gzip_files()
+        base = datasets._PREVIEW_SOURCES["fashion_mnist"]
+        source = replace(
+            base,
+            tag="github-test-idx",
+            image_count=2,
+            file_sha256={name: hashlib.sha256(payload).hexdigest() for name, payload in payloads.items()},
+            file_sizes={name: len(payload) for name, payload in payloads.items()},
+        )
+        def fake_download(url, destination, *, max_bytes):
+            destination.write_bytes(payloads[destination.name])
+        with patch.dict(datasets._PREVIEW_SOURCES, {"fashion_mnist": source}), patch.object(
+            datasets, "_download", side_effect=fake_download,
+        ):
+            data = datasets.get("fashion_mnist", cache_dir=self.cache, allow_preview=True)
+        self.assertEqual(data.manifest["image_count"], 2)
+        self.assertTrue((data.root / "images/train/0/000001.pgm").is_file())
+        self.assertTrue((data.root / "images/test/1/000001.pgm").is_file())
 
 
 if __name__ == "__main__":

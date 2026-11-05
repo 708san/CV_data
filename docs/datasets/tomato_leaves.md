@@ -1,6 +1,6 @@
 # トマトの葉の画像
 
-5種類の状態のトマトの葉、計7,209枚。葉の状態を画像から分類する学習に使います。学習用5,768枚、テスト用1,441枚に分かれています。
+5種類の状態のトマトの葉、計7,209枚。葉の状態を画像から分類する学習に使います。元のReleaseは学習用5,768枚、テスト用1,441枚です。標準化後は公式testを保持し、trainから検証用577枚を分け、train 5,191枚・val 577枚・test 1,441枚として扱います。
 
 | 元のラベル | 日本語 |
 | --- | --- |
@@ -15,13 +15,16 @@
 ```python
 from cvlesson import datasets
 
-data = datasets.get("tomato_leaves")
-print(data.labels_csv)
-print(data.train_dir)
-print(data.test_dir)
+data = datasets.get("トマトの葉")
+df = data.to_df()  # pip install -e '.[dataframe]'
+print(df.head())
+print(df["label_ja"].value_counts())
+train_data = data.to_torch_dataset(split="train", image_size=(64, 64))  # pip install -e '.[torch]'
 ```
 
 画像は`images/train/<ラベル>/`と`images/test/<ラベル>/`に格納されています。ラベルは`labels.csv`の`image,label,split`で確認できます。元の画像サイズは統一していません。モデルを学習するときは画像サイズなどを揃えます。
+
+元のReleaseに検証用分割がないため、DataFrameとPyTorch Datasetでは公式testをそのまま保持し、trainの各クラスからseed `42`で10%を`val`に分けます。`data.splits`で件数を確認できます。個体や連続撮影のグループ情報は元データにないため、グループ単位の漏洩防止は保証していません。
 
 ## 出典と利用条件
 
@@ -34,4 +37,6 @@ print(data.test_dir)
 
 ## 画像とラベルの検査
 
-固定Releaseから取得した7,209枚を検査するには、開発用の `python -m cvlesson.audit tomato_leaves --check-images --report report.json` を使います。Pillowが必要です。初回のZIP取得は約124 MBです。
+固定Releaseから取得した7,209枚は2026-11-05に全量検査済みです。破損0枚、完全一致重複候補0件、ラベル不一致0件でした。8×8平均ハッシュでは類似候補14,571組が見つかりましたが、これはレビュー用候補であり、自動削除や重複確定はしていません。同一個体・撮影系列の分離と権利審査は未実施です。[監査レポート](../../reports/tomato-leaves-v1.2.0.json)
+
+再検査には開発用の `python -m cvlesson.audit tomato_leaves --check-images --report report.json` を使います。Pillowが必要です。初回のZIP取得は約124 MBです。

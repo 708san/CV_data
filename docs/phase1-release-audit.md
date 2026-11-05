@@ -7,11 +7,11 @@
 初回は公開元からデータを取得します。画像の形式とラベルの対応を確認するには、Pillow（画像を読み込むPythonライブラリ）を追加します。
 
 ```bash
-python -m pip install -e . Pillow
-python -m cvlesson.audit festival_icons --check-images --report report.json
+python -m pip install -e '.[display]'
+python -m cvlesson.audit festival_icons --check-images --check-similar --report report.json
 ```
 
-トマトの葉は `festival_icons` を `tomato_leaves` に変更します（初回のZIPは約124 MB）。保存済みのデータのみを検査する場合は `--no-download` を付けます。
+トマトの葉は `festival_icons` を `tomato_leaves` に変更します（初回のZIPは約124 MB）。保存済みのデータのみを検査する場合は `--no-download` を付けます。`--check-similar`は8×8平均ハッシュでレビュー候補を記録しますが、自動削除や重複確定は行いません。
 
 GitHub Actions の **Fixed Release manual audit** を実行して同じ検査を行うこともできます。これは手動実行専用です。通常の自動テストでは外部データを取得しません。
 

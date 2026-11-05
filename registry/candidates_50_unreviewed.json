@@ -63,35 +63,35 @@
         "landing_page": "https://github.com/zalandoresearch/fashion-mnist",
         "provider": "github",
         "provider_dataset_id": null,
-        "version": null,
+        "version": "github-commit:b2617bb6d3ffa2e429640350f613e3291e10b141",
         "content_origin_claim": "Zalando商品画像",
-        "reference_url": "https://github.com/zalandoresearch/fashion-mnist"
+        "reference_url": "https://github.com/zalandoresearch/fashion-mnist/tree/b2617bb6d3ffa2e429640350f613e3291e10b141"
       },
       "rights": {
         "license_claim": "MIT",
-        "evidence_url": "https://github.com/zalandoresearch/fashion-mnist",
+        "evidence_url": "https://github.com/zalandoresearch/fashion-mnist/blob/b2617bb6d3ffa2e429640350f613e3291e10b141/LICENSE",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "70,000枚、28×28グレースケール",
         "labels": "衣類10クラス",
         "formats": "IDX gzip（画素配列・ラベル別）",
         "structure": "学習60,000／テスト10,000；画像・ラベル別gzip",
-        "notes": "写真の状況が統一された低解像度画像"
+        "notes": "写真の状況が統一された低解像度画像。固定コミットの4ファイルを検査し、正式一覧には未掲載。"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "metadata_checked",
+        "files_examined": 70000,
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-05",
+        "evidence_grade": "files_inspected"
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": [],
-        "adapter": "planned_idx_gzip",
+        "implemented_levels": ["1"],
+        "adapter": "idx_gzip_preview",
         "target_colab": true
       },
       "pedagogy": {
@@ -109,35 +109,35 @@
         "landing_page": "https://github.com/rois-codh/kmnist",
         "provider": "github",
         "provider_dataset_id": null,
-        "version": null,
+        "version": "repository-commit:eb78dc13345cb00a9ced461e9be277f845534dff; data endpoint version not fixed",
         "content_origin_claim": "CODHほかのくずし字資料由来",
-        "reference_url": "https://github.com/rois-codh/kmnist"
+        "reference_url": "https://github.com/rois-codh/kmnist/tree/eb78dc13345cb00a9ced461e9be277f845534dff"
       },
       "rights": {
         "license_claim": "CC BY-SA 4.0",
-        "evidence_url": "https://github.com/rois-codh/kmnist",
+        "evidence_url": "https://github.com/rois-codh/kmnist/blob/eb78dc13345cb00a9ced461e9be277f845534dff/README.md",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "70,000枚、28×28",
         "labels": "くずし字10種類",
         "formats": "NPZ／IDX gzip（公式ダウンロード）",
         "structure": "画像配列・ラベル配列；文字対応表",
-        "notes": "継承ライセンス対応必須"
+        "notes": "継承ライセンス対応必須。公式データエンドポイントの固定版とSHA-256が未確定のため保留。"
       },
       "audit": {
         "technical_status": "not_tested",
         "files_examined": 0,
         "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-05",
+        "evidence_grade": "independent_primary_check"
       },
       "preparation": {
         "planned_level": "1",
         "implemented_levels": [],
-        "adapter": "planned_npz",
+        "adapter": "blocked_unpinned_npz",
         "target_colab": true
       },
       "pedagogy": {
@@ -209,7 +209,7 @@
         "license_claim": "CC BY-SA 4.0",
         "evidence_url": "https://github.com/fruits-360/fruits-360-100x100",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "枚数とクラスは版に依存",
@@ -219,12 +219,13 @@
         "notes": "同一個体の回転撮影による評価漏れに注意"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+      "technical_status": "metadata_checked",
+      "files_examined": 2220,
+      "inspection_status": "completed",
+      "publication_status": "hold",
+        "last_desk_review": "2026-11-05",
+      "evidence_grade": "independent_primary_check",
+      "notes": "公式公開APIのフォルダ別一覧を確認。分割済み画像966件（train 676 / valid 193 / test 97）と対応するYOLOラベル966件を確認し、別フォルダにaugmented 810件・raw 154件も存在した。APIメタデータの各ファイルにSHA-256はあるが、公開用の単一固定アーカイブSHA-256ではない。画像本体・ラベルの全量取得と再配布許諾は未実施のため保留。"
       },
       "preparation": {
         "planned_level": "1",
@@ -255,7 +256,7 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/fg97mhsdbr/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "966枚、8,253個の位置注釈",
@@ -269,8 +270,8 @@
         "files_examined": 0,
         "inspection_status": "not_started",
         "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "last_desk_review": "2026-11-05",
+        "evidence_grade": "independent_primary_check"
       },
       "preparation": {
         "planned_level": "to_be_determined",
@@ -301,22 +302,22 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/h5pxbsdz4m/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "1,000枚",
         "labels": "紙／段ボール／プラ／金属／ガラス（原データの5種）",
         "formats": "画像形式は公式説明に未記載",
         "structure": "公開1,000枚の細かなラベル配分・ファイル構成は要検査",
-        "notes": "公開subsetに全5クラスが含まれるか要確認"
+        "notes": "公式公開APIの一覧ではREADMEを除く画像989枚を確認。ページ記載の1,000枚と不一致のため、固定アーカイブ・件数・配布構造を再確認するまで保留。"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "metadata_checked",
+        "files_examined": 990,
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-05",
+        "evidence_grade": "independent_primary_check"
       },
       "preparation": {
         "planned_level": "1",
@@ -1405,7 +1406,7 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/vkht8pfsp3/3",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "1,969画像＋対応マスク",
@@ -1419,8 +1420,8 @@
         "files_examined": 0,
         "inspection_status": "not_started",
         "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "last_desk_review": "2026-11-05",
+        "evidence_grade": "independent_primary_check"
       },
       "preparation": {
         "planned_level": "to_be_determined",

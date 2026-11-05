@@ -20,12 +20,32 @@ from cvlesson import datasets
 print(datasets.list_available())
 print(datasets.info("tomato_leaves"))
 
+# 課題と対象者から選ぶ（生徒向けには承認済みデータだけ）
+print(datasets.list_tasks(audience="student"))
+print(datasets.list_available(task="classification", audience="student"))
+
 # 初回は約124MBのZIPをダウンロードします。
 data = datasets.get("tomato_leaves")
 print(data.root)          # 保存先
 print(data.labels_csv)    # 正解ラベル
 print(data.train_dir)     # 学習用画像
 print(data.test_dir)      # テスト用画像
+```
+
+日本語名も、登録済みの完全一致なら使えます。
+
+```python
+data = datasets.get("トマトの葉")
+df = data.to_df()         # pip install -e '.[dataframe]'
+print(df[["label_ja", "split"]].head())
+print(data.splits)        # train / val / test
+```
+
+分類データはPyTorchのDatasetにも変換できます。画像は必要なときだけ読み込むため、全画像を最初からメモリへ載せません。
+
+```python
+train_data = data.to_torch_dataset(split="train", image_size=(64, 64))  # pip install -e '.[torch]'
+画像, ラベル番号 = train_data[0]
 ```
 
 文化祭アイコンの画像も同じ方法で取得できます。
@@ -36,7 +56,7 @@ print(icons.images_dir)
 print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 ```
 
-`datasets.get()`は固定Releaseを取得してZIPを検証し、ローカルに展開します。保存先の変更は`cache_dir`で指定できます。画像の学習処理やLoRAの学習処理は、この初期版にはまだ含まれません。
+`datasets.get()`は固定Releaseを取得してZIPを検証し、ローカルに展開します。保存先の変更は`cache_dir`で指定できます。元の公式testは変更せず、DataFrameではtrainから再現可能なvalを作ります。画像表示には `pip install -e '.[display]'` が必要です。LoRA学習そのものやモデル重みの再配布は、このライブラリの対象外です。
 
 ## データの説明
 
@@ -45,13 +65,23 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [トマトの葉](docs/datasets/tomato_leaves.md) | トマトの葉7,209枚、5種類のラベル | `tomato-v1.2.0` | 元データ：CC0 1.0 |
 | [文化祭アイコン](docs/datasets/festival_icons.md) | アイコン168枚、画像と説明文 | `festival-v1.0.0` | 公開許可あり。改変・商用利用・再配布は要確認 |
 
-上記の数値は**元のReleaseの公表情報**です。個々の画像の破損・重複をすべて実測して確認したものではありません。
+トマトの葉と文化祭アイコンは固定Releaseを全量監査済みです。実測値は[トマトの監査レポート](reports/tomato-leaves-v1.2.0.json)と[文化祭アイコンの監査レポート](reports/festival-icons-v1.0.0.json)に保存しています。これは権利の承認を意味しません。
 
 外部の画像データセット50件は引き続き候補を審査中で、まだダウンロード用APIとして公開していません。
+
+許諾済みデータの原本・派生データ・manifestは、コードとは分離した[CV_data_artifacts](https://github.com/708san/CV_data_artifacts)で管理します。PyPIとこのリポジトリには画像・LoRA・学習済み重みを収録しません。データを追加する際は、出典・ライセンス・固定版・SHA-256・変換履歴・監査結果をそろえてから、データ専用リポジトリのRelease assetとして公開します。
+
+Fashion-MNISTは固定コミットとファイル整合性を確認した教師向けプレビューですが、教材公開・再配布の最終確認中です。正式一覧には含めず、開発者が明示した場合だけ`datasets.get("fashion_mnist", allow_preview=True)`で取得できます。Kuzushiji-MNISTは公式データファイルの固定版が確定していないため保留中です。
+
+`datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。現在は正式承認済みの画像分類だけが表示されます。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。検出・領域分割の候補は、実体・ライセンス・固定取得条件の検査が終わるまで一覧に出しません。
+
+LoRA素材は画像・キャプション・トリガーワード・利用条件を管理します。モデル重みは再配布しません。生徒向けに承認された素材がない場合、`loras.list_available()`は空になります。
 
 ## AIにプログラムを改造してもらうとき
 
 [AIに相談してコードを変更する方法](docs/ai-coding-guide.md)をご覧ください。使える関数名、データの形、依頼文の例を記載しています。
+
+CV分類の生徒向けNotebookは、LLM講座の基準Notebookとは分けて[こちら](notebooks/cv/classification_v1.ipynb)に置いています。
 
 ## 開発・テスト
 
@@ -73,8 +103,8 @@ python -m unittest discover -s tests -v
 公開済みの固定Releaseから画像を取得し、ラベル・画像ファイルの整合を検査できます。通常のテストではダウンロードしません。
 
 ```bash
-python -m pip install -e . Pillow
-python -m cvlesson.audit festival_icons --check-images --report report.json
+python -m pip install -e '.[display]'
+python -m cvlesson.audit festival_icons --check-images --check-similar --report report.json
 ```
 
 トマトの葉は `festival_icons` を `tomato_leaves` に変更します。GitHub Actionsの手動ワークフローからも実行できます。[詳しい手順](docs/phase1-release-audit.md)をご覧ください。画像の検査は権利の審査とは別です。

@@ -65,6 +65,20 @@ class AuditTests(unittest.TestCase):
         self.assertEqual(report["image_decode_failed"], 1)
         self.assertEqual(report["rights_review"], "not_performed")
 
+    @unittest.skipUnless(importlib.util.find_spec("PIL"), "Pillowが必要です")
+    def test_similar_check_is_review_only(self):
+        name, source, payload = self.fixture()
+        with patch.dict(datasets._SOURCES, {name: source}), patch.object(
+            datasets, "_download",
+            side_effect=lambda url, dest, *, max_bytes: dest.write_bytes(payload),
+        ):
+            report = audit.inspect_release(
+                name, cache_dir=self.cache, check_images=True, check_similar=True,
+            )
+        self.assertEqual(report["similar_image_check"], "performed")
+        self.assertIn("review_only", report["similar_image_method"])
+        self.assertEqual(report["similar_image_candidate_count"], 0)
+
     def test_offline_error_report(self):
         result_file = self.cache / "report.json"
         with patch("sys.stdout"):

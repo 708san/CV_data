@@ -13,6 +13,8 @@ data = datasets.get("festival_icons")
 print(data.images_dir)
 print(data.labels_csv)       # image,caption
 print(data.metadata_jsonl)   # file_name,text
+captions = data.to_df()      # pip install -e '.[dataframe]'
+print(captions.head())
 ```
 
 学習時のトリガー語（特定の表現を呼び出すための語）は`universal_icon_style`です。元教材では、新たな「ステージアイコン」を作る課題に利用します。
@@ -24,6 +26,10 @@ print(data.metadata_jsonl)   # file_name,text
 - **制作者からGitHub一般公開の許可はあるものの、改変・商用利用・再配布に関する標準ライセンスは設定されていません。** これらの用途には別途確認が必要です。
 
 画像はこのライブラリやPyPIへ再収録しません。配布元の固定Releaseから取得します。
+
+## 固定Releaseの実体監査
+
+`festival-v1.0.0`は2026-11-05に全168枚を検査しました。ZIPのSHA-256、画像の読み込み、`labels.csv`と`metadata.jsonl`の整合性を確認し、破損0枚、完全一致重複候補0件、キャプション欠損0件でした。8×8平均ハッシュでは類似候補417組が見つかりましたが、これはレビュー用候補であり、自動削除や重複確定はしていません。権利審査は未実施です。[監査レポート](../../reports/festival-icons-v1.0.0.json)
 
 ## 画像とラベルの検査
 

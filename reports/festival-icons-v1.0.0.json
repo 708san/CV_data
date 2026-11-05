@@ -1,0 +1,176 @@
+{
+  "dataset_id": "festival_icons",
+  "name_ja": "文化祭案内アイコン（LoRA学習用）",
+  "kind": "lora_training_images",
+  "release_tag": "festival-v1.0.0",
+  "source_url": "https://github.com/708san/CV_sample_data/releases/download/festival-v1.0.0/festival-icons.zip",
+  "archive_sha256": "7ed662a947ba364947fb2b10bec2a7fdc8a1019e12b3ff0f06001b61b55d2ccc",
+  "expected_images": 168,
+  "raw_image_count": 168,
+  "usable_image_count": 168,
+  "observed_images": 168,
+  "metadata_consistency": "passed",
+  "image_decode": "passed",
+  "image_decode_checked": 168,
+  "image_decode_failed": 0,
+  "image_decode_failures": [],
+  "duplicate_candidate_count": 0,
+  "label_mismatch_count": 0,
+  "similar_image_check": "performed",
+  "similar_image_candidate_count": 417,
+  "similar_image_method": "8x8 average hash; hamming_distance <= 4; review_only",
+  "similar_image_pairs": [
+    {
+      "hamming_distance": 3,
+      "images": [
+        "images/home_02.png",
+        "images/minus_02.png"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/home_03.png",
+        "images/minus_03.png"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/home_03.png",
+        "images/car_03.png"
+      ]
+    },
+    {
+      "hamming_distance": 2,
+      "images": [
+        "images/home_03.png",
+        "images/food_03.png"
+      ]
+    },
+    {
+      "hamming_distance": 3,
+      "images": [
+        "images/home_03.png",
+        "images/comment_03.png"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/search_02.png",
+        "images/info_01.png"
+      ]
+    },
+    {
+      "hamming_distance": 1,
+      "images": [
+        "images/search_02.png",
+        "images/mail_01.png"
+      ]
+    },
+    {
+      "hamming_distance": 1,
+      "images": [
+        "images/search_02.png",
+        "images/trash_01.png"
+      ]
+    },
+    {
+      "hamming_distance": 1,
+      "images": [
+        "images/search_02.png",
+        "images/menu_02.png"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/search_02.png",
+        "images/book_03.png"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/search_02.png",
+        "images/key_02.png"
+      ]
+    },
+    {
+      "hamming_distance": 1,
+      "images": [
+        "images/search_02.png",
+        "images/clock_02.png"
+      ]
+    },
+    {
+      "hamming_distance": 3,
+      "images": [
+        "images/search_02.png",
+        "images/car_02.png"
+      ]
+    },
+    {
+      "hamming_distance": 1,
+      "images": [
+        "images/search_02.png",
+        "images/bicycle_02.png"
+      ]
+    },
+    {
+      "hamming_distance": 3,
+      "images": [
+        "images/search_02.png",
+        "images/lightbulb_02.png"
+      ]
+    },
+    {
+      "hamming_distance": 2,
+      "images": [
+        "images/search_02.png",
+        "images/information_desk_02.png"
+      ]
+    },
+    {
+      "hamming_distance": 1,
+      "images": [
+        "images/search_02.png",
+        "images/game_booth_02.png"
+      ]
+    },
+    {
+      "hamming_distance": 2,
+      "images": [
+        "images/user_01.png",
+        "images/warning_01.png"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/user_01.png",
+        "images/download_01.png"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/user_01.png",
+        "images/upload_01.png"
+      ]
+    }
+  ],
+  "excluded_data": [],
+  "split_method": "not_applicable_lora_training_material",
+  "split_seed": null,
+  "leakage_risks": [
+    "LoRA素材のため分類用splitは作成していません。",
+    "類似画像候補を平均ハッシュで抽出しました。候補は目視確認が必要です。"
+  ],
+  "validated_at": "2026-11-05T10:17:13Z",
+  "status": "passed",
+  "rights_note": "GitHubでの公開許可あり。改変・商用利用・再配布の条件は未確定。",
+  "rights_review": "not_performed",
+  "captions_present": 168
+}

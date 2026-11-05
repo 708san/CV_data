@@ -1,0 +1,192 @@
+{
+  "dataset_id": "tomato_leaves",
+  "name_ja": "トマトの葉（5種類の分類）",
+  "kind": "classification",
+  "release_tag": "tomato-v1.2.0",
+  "source_url": "https://github.com/708san/CV_sample_data/releases/download/tomato-v1.2.0/tomato-leaves.zip",
+  "archive_sha256": "506560a5ce57394fd739fa73ac3b997a2646f87ea04257334dacb54497e0e1fa",
+  "expected_images": 7209,
+  "raw_image_count": 7209,
+  "usable_image_count": 7209,
+  "observed_images": 7209,
+  "metadata_consistency": "passed",
+  "image_decode": "passed",
+  "image_decode_checked": 7209,
+  "image_decode_failed": 0,
+  "image_decode_failures": [],
+  "duplicate_candidate_count": 0,
+  "label_mismatch_count": 0,
+  "similar_image_check": "performed",
+  "similar_image_candidate_count": 14571,
+  "similar_image_method": "8x8 average hash; hamming_distance <= 4; review_only",
+  "similar_image_pairs": [
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000001.jpg",
+        "images/test/leaf_mold/000159.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000001.jpg",
+        "images/train/early_blight/000881.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000001.jpg",
+        "images/train/healthy/000373.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 2,
+      "images": [
+        "images/test/early_blight/000001.jpg",
+        "images/train/leaf_mold/000435.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000001.jpg",
+        "images/train/septoria_leaf_spot/001463.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 3,
+      "images": [
+        "images/test/early_blight/000004.jpg",
+        "images/test/leaf_mold/000054.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 3,
+      "images": [
+        "images/test/early_blight/000004.jpg",
+        "images/train/late_blight/000530.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 3,
+      "images": [
+        "images/test/early_blight/000005.jpg",
+        "images/train/septoria_leaf_spot/001173.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000007.jpg",
+        "images/test/early_blight/000057.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 2,
+      "images": [
+        "images/test/early_blight/000007.jpg",
+        "images/test/late_blight/000275.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000007.jpg",
+        "images/test/leaf_mold/000138.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000007.jpg",
+        "images/train/early_blight/000266.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000007.jpg",
+        "images/train/early_blight/000658.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000007.jpg",
+        "images/train/early_blight/000808.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000007.jpg",
+        "images/train/leaf_mold/000478.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 3,
+      "images": [
+        "images/test/early_blight/000007.jpg",
+        "images/train/septoria_leaf_spot/000703.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000007.jpg",
+        "images/train/septoria_leaf_spot/001284.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000012.jpg",
+        "images/train/early_blight/000557.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000013.jpg",
+        "images/test/late_blight/000007.jpg"
+      ]
+    },
+    {
+      "hamming_distance": 4,
+      "images": [
+        "images/test/early_blight/000013.jpg",
+        "images/train/septoria_leaf_spot/001042.jpg"
+      ]
+    }
+  ],
+  "excluded_data": [],
+  "split_method": "official_test_preserved; deterministic_stratified_train_val",
+  "split_seed": 42,
+  "leakage_risks": [
+    "group_idが元データにないため、同一個体・撮影系列の分離は保証していません。",
+    "類似画像候補を平均ハッシュで抽出しました。候補は目視確認が必要です。"
+  ],
+  "validated_at": "2026-11-05T10:17:14Z",
+  "status": "passed",
+  "rights_note": "元データはCC0 1.0。出典と派生処理の説明を確認してください。",
+  "rights_review": "not_performed",
+  "classes": {
+    "early_blight": 1000,
+    "healthy": 1585,
+    "late_blight": 1901,
+    "leaf_mold": 952,
+    "septoria_leaf_spot": 1771
+  },
+  "source_splits": {
+    "test": 1441,
+    "train": 5768
+  },
+  "splits": {
+    "test": 1441,
+    "train": 5191,
+    "val": 577
+  },
+  "duplicate_groups": []
+}
