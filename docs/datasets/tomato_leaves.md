@@ -31,3 +31,7 @@ print(data.test_dir)
 - 利用する固定版：[tomato-v1.2.0](https://github.com/708san/CV_sample_data/releases/tag/tomato-v1.2.0)
 
 葉の撮影条件や背景が違うと結果が変わることがあります。**画像の判定は植物の病気の確定診断ではありません。**
+
+## 画像とラベルの検査
+
+固定Releaseから取得した7,209枚を検査するには、開発用の `python -m cvlesson.audit tomato_leaves --check-images --report report.json` を使います。Pillowが必要です。初回のZIP取得は約124 MBです。
