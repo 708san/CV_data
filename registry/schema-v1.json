@@ -1,0 +1,323 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cvlesson/registry-v1.schema.json",
+  "title": "CV教材データセット候補登録仕様 v1",
+  "description": "候補情報の管理スキーマ。技術・権利・生徒公開可否は別々に記録する。",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "source_inventory",
+    "records"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "source_inventory": {
+      "type": "object",
+      "required": [
+        "filename",
+        "as_of",
+        "original_record_count",
+        "note"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "filename": {
+          "type": "string",
+          "minLength": 1
+        },
+        "as_of": {
+          "type": "string",
+          "format": "date"
+        },
+        "original_record_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/record"
+      }
+    }
+  },
+  "$defs": {
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "api_id",
+        "name",
+        "task",
+        "priority",
+        "source",
+        "rights",
+        "claims",
+        "audit",
+        "preparation",
+        "pedagogy"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^DS-[0-9]{3}$"
+        },
+        "api_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task": {
+          "enum": [
+            "classification",
+            "detection",
+            "segmentation",
+            "asset"
+          ]
+        },
+        "priority": {
+          "enum": [
+            "priority",
+            "conditional",
+            "advanced",
+            "asset"
+          ]
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "landing_page",
+            "provider",
+            "provider_dataset_id",
+            "version",
+            "content_origin_claim",
+            "reference_url"
+          ],
+          "properties": {
+            "landing_page": {
+              "type": "string",
+              "pattern": "^https://"
+            },
+            "provider": {
+              "enum": [
+                "mendeley",
+                "github",
+                "huggingface",
+                "other"
+              ]
+            },
+            "provider_dataset_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "version": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "content_origin_claim": {
+              "type": "string"
+            },
+            "reference_url": {
+              "type": "string",
+              "pattern": "^https://"
+            }
+          }
+        },
+        "rights": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "license_claim",
+            "evidence_url",
+            "redistribution_reviewed",
+            "rights_status"
+          ],
+          "properties": {
+            "license_claim": {
+              "type": "string",
+              "minLength": 1
+            },
+            "evidence_url": {
+              "type": "string",
+              "pattern": "^https://"
+            },
+            "redistribution_reviewed": {
+              "type": "boolean"
+            },
+            "rights_status": {
+              "enum": [
+                "unreviewed",
+                "under_review",
+                "approved_for_classroom",
+                "approved_for_redistribution",
+                "rejected"
+              ]
+            }
+          }
+        },
+        "claims": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "quantity",
+            "labels",
+            "formats",
+            "structure",
+            "notes"
+          ],
+          "properties": {
+            "quantity": {
+              "type": "string"
+            },
+            "labels": {
+              "type": "string"
+            },
+            "formats": {
+              "type": "string"
+            },
+            "structure": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
+        },
+        "audit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "technical_status",
+            "files_examined",
+            "inspection_status",
+            "publication_status",
+            "last_desk_review",
+            "evidence_grade"
+          ],
+          "properties": {
+            "technical_status": {
+              "enum": [
+                "not_tested",
+                "metadata_checked",
+                "sample_pass",
+                "full_pass",
+                "failed"
+              ]
+            },
+            "files_examined": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "inspection_status": {
+              "enum": [
+                "not_started",
+                "in_progress",
+                "completed",
+                "blocked"
+              ]
+            },
+            "publication_status": {
+              "enum": [
+                "candidate",
+                "teacher_preview",
+                "student_enabled",
+                "hold",
+                "rejected"
+              ]
+            },
+            "last_desk_review": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "evidence_grade": {
+              "enum": [
+                "imported_previous_research",
+                "independent_primary_check",
+                "files_inspected"
+              ]
+            }
+          }
+        },
+        "preparation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "planned_level",
+            "implemented_levels",
+            "adapter",
+            "target_colab"
+          ],
+          "properties": {
+            "planned_level": {
+              "enum": [
+                "1",
+                "not_applicable",
+                "to_be_determined"
+              ]
+            },
+            "implemented_levels": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "1",
+                  "2a",
+                  "2b",
+                  "3a",
+                  "3b",
+                  "3c"
+                ]
+              }
+            },
+            "adapter": {
+              "type": "string",
+              "minLength": 1
+            },
+            "target_colab": {
+              "type": "boolean"
+            }
+          }
+        },
+        "pedagogy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "presentation_mode",
+            "publish_student_example"
+          ],
+          "properties": {
+            "presentation_mode": {
+              "enum": [
+                "A",
+                "B",
+                "C"
+              ]
+            },
+            "publish_student_example": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  }
+}

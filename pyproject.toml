@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cv-data-lesson"
+version = "0.0.1"
+description = "日本語の高校生向けCV教材データ取得ライブラリ（開発中）"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "CV Data project contributors"}]
+keywords = ["education", "computer-vision", "dataset", "colab", "japanese"]
+classifiers = ["Programming Language :: Python :: 3", "Natural Language :: Japanese", "Development Status :: 2 - Pre-Alpha"]
+
+[project.urls]
+Repository = "https://github.com/708san/CV_data"
+Documentation = "https://github.com/708san/CV_data#readme"
+
+[tool.setuptools.packages.find]
+where = ["src"]
