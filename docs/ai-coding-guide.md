@@ -7,11 +7,24 @@
 | 書き方 | できること |
 | --- | --- |
 | `datasets.list_available()` | 取得できるデータを一覧表示する |
-| `datasets.info("tomato_leaves")` | データの内容と出典を調べる |
+| `datasets.list_tasks(audience="student")` | 生徒が選べる課題タイプとデータIDを表示する |
+| `datasets.list_available(task="classification", audience="student")` | 課題タイプと対象者でデータを絞り込む |
+| `datasets.list_preview()` | 権利確認中の教師向けプレビューを一覧表示する。正式提供ではない |
+| `datasets.info("tomato_leaves")` | データの内容と出典を調べる。引数なしなら一覧を返す |
 | `datasets.get("tomato_leaves")` | 固定Releaseを取得し、検証して展開する |
+| `datasets.get("トマトの葉")` | 登録済みの日本語名で取得する（曖昧検索はしない） |
+| `data.to_df()` | 画像パス・ラベル・分割をDataFrameにする |
+| `data.to_torch_dataset(split="train", image_size=(64, 64))` | 遅延読み込みのPyTorch Datasetにする |
+| `data.show_examples(9)` | 画像例を表示する |
 | `datasets.get("festival_icons")` | LoRA用画像と説明文を取得する |
 
-`get()`は`DatasetBundle`を返します。`root`、`images_dir`、`labels_csv`、`metadata_jsonl`、`kind`、`manifest`、`version`を参照できます。トマトの葉では`train_dir`と`test_dir`も使えます。
+Fashion-MNISTは教師向けプレビューです。権利確認中なので、生徒向けコードでは使わず、開発者が必要な場合だけ `datasets.get("fashion_mnist", allow_preview=True)` を使います。Kuzushiji-MNISTは固定版未確定のため、まだ取得APIを提供していません。
+
+`list_available()`の`task`は`classification`、`detection`、`segmentation`、`lora`のいずれかです。正式APIに表示されない候補は、台帳上の調査候補であり、取得可能・教材利用可能とは限りません。`include_preview=True`は教師が確認するときだけ指定します。
+
+LoRA素材は`from cvlesson import loras`から管理します。`loras.list_available()`は生徒向けに承認された素材だけを返し、権利確認中の文化祭アイコンは`loras.list_preview()`で確認できます。重みは配布せず、必要な場合は`loras.get("festival_icon_style", allow_preview=True).get_data(allow_preview=True)`で画像・キャプション素材だけを取得します。
+
+`get()`は`DatasetBundle`を返します。`root`、`images_dir`、`labels_csv`、`metadata_jsonl`、`kind`、`task`、`manifest`、`version`、`classes`、`class_names_ja`、`splits`、`license_info`、`source_info`を参照できます。トマトの葉では`train_dir`と`test_dir`も使えます。監査状態とレポートは`datasets.info("tomato_leaves")`で確認します。
 
 ## AIに伝えること
 
@@ -21,8 +34,8 @@
 
 > `cvlesson.datasets.get("festival_icons")`で取得した`labels.csv`の`image,caption`を読み、最初の5行を表にするコードを書いてください。元データは変更しないでください。
 
-**注意：** このパッケージは取得機能のみを提供します。CNN学習、画像生成、LoRA学習のAPIはまだ実装していません。AIに依頼する場合は、必要な学習処理を別のコードで作るよう指定してください。
+**注意：** このパッケージはデータの取得・標準化とPyTorch Dataset変換までを提供します。CNN学習、画像生成、LoRA学習のAPIは実装していません。AIに依頼する場合は、必要な学習処理を別のコードで作るよう指定してください。
 
 ## AIにデータの検査結果を説明してもらう
 
-開発者・教員は `python -m cvlesson.audit festival_icons --check-images --report report.json` で検査できます。生成された `report.json` をAIに渡し、「検査に失敗した項目だけ説明して」と依頼できます。画像や配布元の変更、権利上の利用判断はこの操作に含まれません。
+開発者・教員は `python -m cvlesson.audit festival_icons --check-images --check-similar --report report.json` で検査できます。生成された `report.json` をAIに渡し、「検査に失敗した項目と、類似画像候補を説明して」と依頼できます。類似候補は目視確認用で、自動削除や重複確定は行いません。画像や配布元の変更、権利上の利用判断はこの操作に含まれません。
