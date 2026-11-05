@@ -171,7 +171,16 @@
   "validated_at": "2026-11-05T10:17:14Z",
   "status": "passed",
   "rights_note": "元データはCC0 1.0。出典と派生処理の説明を確認してください。",
-  "rights_review": "not_performed",
+  "rights_review": "source_license_verified; redistribution_and_modification_allowed_under_cc0_with_residual_rights_note",
+  "rights_reviewed_at": "2026-11-05",
+  "rights_evidence": {
+    "source_license_url": "https://data.mendeley.com/datasets/tywbtsjrjv/1",
+    "license_text_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "redistribution": "CC0 permits copying, modification, and distribution to the extent allowed by law.",
+    "attribution": "Attribution is retained in the artifact even though CC0 does not require it.",
+    "residual_rights": "CC0 does not waive other rights such as publicity, privacy, patent, or trademark rights; no personal faces or names were observed in the source audit, but this is not a legal guarantee.",
+    "derivative_notice": "The artifact is a five-class subset with exact-duplicate removal already performed by CV_sample_data, then normalized without changing image pixels."
+  },
   "classes": {
     "early_blight": 1000,
     "healthy": 1585,

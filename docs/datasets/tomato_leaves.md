@@ -33,6 +33,8 @@ train_data = data.to_torch_dataset(split="train", image_size=(64, 64))  # pip in
 - 教材用に5クラスを抽出、完全一致重複を除き分割したもの： [CV_sample_data](https://github.com/708san/CV_sample_data/tree/main/cases/tomato-leaves)
 - 利用する固定版：[tomato-v1.2.0](https://github.com/708san/CV_sample_data/releases/tag/tomato-v1.2.0)
 
+2026-11-05に、公式MendeleyページのCC0 1.0表記とCC0の利用条件を確認しました。CC0は法の許す範囲で複製・改変・再配布を認めますが、肖像・プライバシー・特許・商標など別の権利まで自動的に消すものではありません。そのため、artifactには出典と派生処理を残し、医学的な診断用途や権利の無制限な保証はしません。
+
 葉の撮影条件や背景が違うと結果が変わることがあります。**画像の判定は植物の病気の確定診断ではありません。**
 
 ## 画像とラベルの検査
