@@ -77,5 +77,5 @@
 - `datasets.list_tasks()`を追加し、生徒が選べる課題タイプとデータIDを一覧化した。未承認の検出・分割候補は表示しない。
 - `DatasetBundle`に課題タイプ、対象者、用途、入力・出力、概算取得サイズを追加した。
 - `docs/catalog-review.md`に50候補を分類・検出・分割・素材の課題へ対応付け、全候補をAPIへ追加しない理由と次の実体検査順を記録した。
-- `Fruits-360`、`Recyclable Waste`、`GeoSetEnnea`、`FruitSeg30`は公式ページでライセンス表記と概要を再確認した。GeoSetEnneaは公式APIのフォルダ別メタデータを追加確認し、画像966件・YOLOラベル966件と別置きのaugmented/rawを記録したが、固定アーカイブSHA-256と実体監査が未完了のため、台帳は`under_review`・公開保留のままにした。
+- `Fruits-360`、`Recyclable Waste`、`GeoSetEnnea`、`FruitSeg30`は公式ページでライセンス表記と概要を再確認した。GeoSetEnneaは公式APIのフォルダ別メタデータを追加確認し、画像966件・YOLOラベル966件と別置きのaugmented/rawを記録した。Recyclable Wasteは9枚の代表画像でAPI SHA-256照合とJPEGデコードを実施したが、固定アーカイブSHA-256と全量監査が未完了のため、いずれも台帳は`under_review`・公開保留のままにした。
 - PyPI向けのパッケージビルドを行うが、本番公開・Release作成・mainへのマージは行わない。
