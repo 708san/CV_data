@@ -1,0 +1,2311 @@
+{
+  "schema_version": "1.0.0",
+  "source_inventory": {
+    "filename": "CV教材_データ50件_管理レコード_20261104.json",
+    "as_of": "2026-11-04",
+    "original_record_count": 50,
+    "note": "前回調査の申告情報を取り込んだ未承認レジストリ。画像現物は未検査。生徒への公開不可。"
+  },
+  "records": [
+    {
+      "id": "DS-001",
+      "api_id": "quickdraw",
+      "name": "Quick, Draw! Dataset",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://github.com/googlecreativelab/quickdraw-dataset",
+        "provider": "github",
+        "provider_dataset_id": null,
+        "version": null,
+        "content_origin_claim": "Googleの利用者が描いた線画",
+        "reference_url": "https://github.com/googlecreativelab/quickdraw-dataset"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://github.com/googlecreativelab/quickdraw-dataset",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "約5,000万件",
+        "labels": "word（345カテゴリ）",
+        "formats": "NDJSON（線画座標）／Numpyビットマップ等",
+        "structure": "カテゴリ別ファイル、1行1画像データ",
+        "notes": "回答者が描いた画像にまれに不適切内容"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-002",
+      "api_id": "fashion_mnist",
+      "name": "Fashion-MNIST",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://github.com/zalandoresearch/fashion-mnist",
+        "provider": "github",
+        "provider_dataset_id": null,
+        "version": null,
+        "content_origin_claim": "Zalando商品画像",
+        "reference_url": "https://github.com/zalandoresearch/fashion-mnist"
+      },
+      "rights": {
+        "license_claim": "MIT",
+        "evidence_url": "https://github.com/zalandoresearch/fashion-mnist",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "70,000枚、28×28グレースケール",
+        "labels": "衣類10クラス",
+        "formats": "IDX gzip（画素配列・ラベル別）",
+        "structure": "学習60,000／テスト10,000；画像・ラベル別gzip",
+        "notes": "写真の状況が統一された低解像度画像"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "planned_idx_gzip",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-003",
+      "api_id": "kuzushiji_mnist",
+      "name": "Kuzushiji-MNIST",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://github.com/rois-codh/kmnist",
+        "provider": "github",
+        "provider_dataset_id": null,
+        "version": null,
+        "content_origin_claim": "CODHほかのくずし字資料由来",
+        "reference_url": "https://github.com/rois-codh/kmnist"
+      },
+      "rights": {
+        "license_claim": "CC BY-SA 4.0",
+        "evidence_url": "https://github.com/rois-codh/kmnist",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "70,000枚、28×28",
+        "labels": "くずし字10種類",
+        "formats": "NPZ／IDX gzip（公式ダウンロード）",
+        "structure": "画像配列・ラベル配列；文字対応表",
+        "notes": "継承ライセンス対応必須"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "planned_npz",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-004",
+      "api_id": "kuzushiji_49",
+      "name": "Kuzushiji-49",
+      "task": "classification",
+      "priority": "advanced",
+      "source": {
+        "landing_page": "https://github.com/rois-codh/kmnist",
+        "provider": "github",
+        "provider_dataset_id": null,
+        "version": null,
+        "content_origin_claim": "CODHほかのくずし字資料由来",
+        "reference_url": "https://github.com/rois-codh/kmnist"
+      },
+      "rights": {
+        "license_claim": "CC BY-SA 4.0",
+        "evidence_url": "https://github.com/rois-codh/kmnist",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "約27万枚、28×28",
+        "labels": "くずし字49種類",
+        "formats": "NPZ（公式配布）",
+        "structure": "画像配列・ラベル配列",
+        "notes": "難度が高くクラス数縮小が必要"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-006",
+      "api_id": "fruits_360",
+      "name": "Fruits-360 100×100",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://github.com/fruits-360/fruits-360-100x100",
+        "provider": "github",
+        "provider_dataset_id": null,
+        "version": null,
+        "content_origin_claim": "撮影した食品類の画像",
+        "reference_url": "https://github.com/fruits-360/fruits-360-100x100"
+      },
+      "rights": {
+        "license_claim": "CC BY-SA 4.0",
+        "evidence_url": "https://github.com/fruits-360/fruits-360-100x100",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "枚数とクラスは版に依存",
+        "labels": "果物・野菜・種子等（版で変動）",
+        "formats": "画像（100×100）、クラス別フォルダ",
+        "structure": "Training／Test／クラス名",
+        "notes": "同一個体の回転撮影による評価漏れに注意"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-010",
+      "api_id": "geosetennea",
+      "name": "GeoSetEnnea",
+      "task": "detection",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/fg97mhsdbr/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "fg97mhsdbr",
+        "version": "1",
+        "content_origin_claim": "文具店・図書館で著者がスマホ撮影",
+        "reference_url": "https://data.mendeley.com/datasets/fg97mhsdbr/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/fg97mhsdbr/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "966枚、8,253個の位置注釈",
+        "labels": "作図用具9種類・物体位置",
+        "formats": "640×640画像＋YOLO .txt",
+        "structure": "train/valid/test、images/labels、data.yml、Metadata.csv",
+        "notes": "拡張画像を分割前に混ぜない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "planned_yolo",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-011",
+      "api_id": "recyclable_waste",
+      "name": "Recyclable Waste Image Dataset",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/h5pxbsdz4m/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "h5pxbsdz4m",
+        "version": "1",
+        "content_origin_claim": "公開分は著者が施設・市街・家庭で撮影",
+        "reference_url": "https://data.mendeley.com/datasets/h5pxbsdz4m/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/h5pxbsdz4m/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "1,000枚",
+        "labels": "紙／段ボール／プラ／金属／ガラス（原データの5種）",
+        "formats": "画像形式は公式説明に未記載",
+        "structure": "公開1,000枚の細かなラベル配分・ファイル構成は要検査",
+        "notes": "公開subsetに全5クラスが含まれるか要確認"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-012",
+      "api_id": "indian_origin_flowers",
+      "name": "Indian Origin Flowers",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/ffysgft2ns/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "ffysgft2ns",
+        "version": "1",
+        "content_origin_claim": "苗圃で撮影",
+        "reference_url": "https://data.mendeley.com/datasets/ffysgft2ns/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/ffysgft2ns/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "15,044枚",
+        "labels": "花10種類",
+        "formats": "画像拡張子未記載／階層フォルダ",
+        "structure": "分類名別の階層フォルダ",
+        "notes": "個別の花名リストは実ファイル確認"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-014",
+      "api_id": "pistachio_image_dataset",
+      "name": "Pistachio Image Dataset",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/h7pf57cgg9/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "h7pf57cgg9",
+        "version": "1",
+        "content_origin_claim": "著者が高解像度カメラで撮影",
+        "reference_url": "https://data.mendeley.com/datasets/h7pf57cgg9/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/h7pf57cgg9/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "2,148枚",
+        "labels": "Kirmizi／Siirtの2種",
+        "formats": "高解像度画像／実ファイル形式未確認",
+        "structure": "論文では80/20分割（配布ファイルの分割は未確認）",
+        "notes": "身近な題材でも実際の学校写真へは汎化不明"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-021",
+      "api_id": "food_waste_bangladesh",
+      "name": "Food Waste Bangladesh",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/w68f9w6jmm/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "w68f9w6jmm",
+        "version": "1",
+        "content_origin_claim": "飲食店・イベントで著者撮影",
+        "reference_url": "https://data.mendeley.com/datasets/w68f9w6jmm/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/w68f9w6jmm/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "645枚",
+        "labels": "食品廃棄の5分類（名称未取得）",
+        "formats": "JPG",
+        "structure": "5つのフォルダ",
+        "notes": "人や店舗の写り込みを検査"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-023",
+      "api_id": "bdroadsigns",
+      "name": "BDRoadSigns",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/rnkd74xdtr/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "rnkd74xdtr",
+        "version": "1",
+        "content_origin_claim": "著者がバングラデシュでスマホ撮影",
+        "reference_url": "https://data.mendeley.com/datasets/rnkd74xdtr/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/rnkd74xdtr/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "約5千枚（各クラス内訳記載）",
+        "labels": "道路標識18種",
+        "formats": "JPG、480×640",
+        "structure": "分類ラベルあり・位置枠なし；フォルダ実体未確認",
+        "notes": "日本の道路標識と同一とは限らない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-026",
+      "api_id": "mushroom_disease_dataset",
+      "name": "Mushroom Disease Dataset",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/jrbx34k77g/2",
+        "provider": "mendeley",
+        "provider_dataset_id": "jrbx34k77g",
+        "version": "2",
+        "content_origin_claim": "研究施設で著者が撮影",
+        "reference_url": "https://data.mendeley.com/datasets/jrbx34k77g/2"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/jrbx34k77g/2",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "761枚（299/147/315）",
+        "labels": "健康／単一感染／混合感染",
+        "formats": "JPG（HEICから変換）",
+        "structure": "カテゴリ画像（分割構造未確認）",
+        "notes": "病気の診断利用を推奨しない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-027",
+      "api_id": "fishnet",
+      "name": "FishNet",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/p3xh4fs7cp/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "p3xh4fs7cp",
+        "version": "1",
+        "content_origin_claim": "著者が自然光で魚を撮影",
+        "reference_url": "https://data.mendeley.com/datasets/p3xh4fs7cp/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/p3xh4fs7cp/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "3,013枚",
+        "labels": "魚8種類",
+        "formats": "画像拡張子未記載",
+        "structure": "魚種別8フォルダ",
+        "notes": "クラス枚数が53〜598と不均衡"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-028",
+      "api_id": "smallfishbd",
+      "name": "SmallFishBD",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/8jvxtvz52x/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "8jvxtvz52x",
+        "version": "1",
+        "content_origin_claim": "現地市場で著者がスマホ撮影",
+        "reference_url": "https://data.mendeley.com/datasets/8jvxtvz52x/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/8jvxtvz52x/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "1,700枚・約27.5MB圧縮",
+        "labels": "魚10種類",
+        "formats": "JPEG、240×320",
+        "structure": "魚種別カテゴリの画像",
+        "notes": "撮影地域・背景への依存"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-031",
+      "api_id": "cds_cricket",
+      "name": "CDS-Cricket",
+      "task": "classification",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/45252nby2z",
+        "provider": "mendeley",
+        "provider_dataset_id": null,
+        "version": null,
+        "content_origin_claim": "著者が飼育環境で撮影",
+        "reference_url": "https://data.mendeley.com/datasets/45252nby2z"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/45252nby2z",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "枚数は公式本文未明記",
+        "labels": "コオロギの卵／幼虫／成虫",
+        "formats": "画像形式未記載",
+        "structure": "成長段階に応じて分類",
+        "notes": "卵と成虫で大きさも背景も異なる"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-032",
+      "api_id": "thermal_visible_fruits_and_vegetables",
+      "name": "Thermal & Visible Fruits and Vegetables",
+      "task": "classification",
+      "priority": "advanced",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/pwzk7dj5wf/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "pwzk7dj5wf",
+        "version": "1",
+        "content_origin_claim": "研究者がカメラと赤外線カメラで撮影",
+        "reference_url": "https://data.mendeley.com/datasets/pwzk7dj5wf/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/pwzk7dj5wf/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "可視1,150・熱1,166",
+        "labels": "リンゴ／キュウリ／キノコ等、栽培法区分",
+        "formats": "可視光写真＋熱画像（拡張子未記載）",
+        "structure": "可視光と熱画像のペア対応は要検査",
+        "notes": "撮影条件による分類の容易化を点検"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-033",
+      "api_id": "strawberry_ds",
+      "name": "Strawberry-DS",
+      "task": "detection",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/z6dtfdpzz8/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "z6dtfdpzz8",
+        "version": "1",
+        "content_origin_claim": "著者が農園で撮影",
+        "reference_url": "https://data.mendeley.com/datasets/z6dtfdpzz8/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/z6dtfdpzz8/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "原画像247枚",
+        "labels": "イチゴ熟度／個体位置",
+        "formats": "JPG＋YOLO .txt",
+        "structure": "画像と対応する物体検出ラベル",
+        "notes": "少数画像の過学習に注意"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "unassigned_detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-035",
+      "api_id": "image_dataset_of_indian_coins",
+      "name": "Image Dataset of Indian Coins",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/txn6vz28g9/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "txn6vz28g9",
+        "version": "1",
+        "content_origin_claim": "通貨写真の収録（撮影主体は要追加確認）",
+        "reference_url": "https://data.mendeley.com/datasets/txn6vz28g9/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/txn6vz28g9/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "6,680枚",
+        "labels": "25/50 paisa、1/2/5/10/20 rupee",
+        "formats": "画像拡張子未記載",
+        "structure": "額面別フォルダ、表裏画像",
+        "notes": "通貨の再現・商標・偽造誤用にも注意"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-036",
+      "api_id": "indian_coin_currency_dataset",
+      "name": "Indian Coin Currency Dataset",
+      "task": "detection",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/k49x47v732/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "k49x47v732",
+        "version": "1",
+        "content_origin_claim": "著者がスマートフォンで硬貨撮影",
+        "reference_url": "https://data.mendeley.com/datasets/k49x47v732/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/k49x47v732/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "1,907枚",
+        "labels": "1/2/5/10 rupee",
+        "formats": "256×256画像＋YOLO／Pascal VOC（XML）",
+        "structure": "同一画像の複数注釈形式",
+        "notes": "画像利用に加えて通貨の利用規約確認"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "unassigned_detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-042",
+      "api_id": "rgb_d_button_mushroom_growth",
+      "name": "RGB-D Button Mushroom Growth",
+      "task": "segmentation",
+      "priority": "advanced",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/8n6nr43gk3/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "8n6nr43gk3",
+        "version": "1",
+        "content_origin_claim": "研究施設内のレールカメラで撮影",
+        "reference_url": "https://data.mendeley.com/datasets/8n6nr43gk3/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/8n6nr43gk3/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "129時系列モザイク",
+        "labels": "キノコ個体の領域・時系列",
+        "formats": "RGB画像・深度マップ＋COCO JSON",
+        "structure": "129モザイク画像＋depth＋_annotations.coco.json",
+        "notes": "時系列の近接画像を訓練とテストにまたがらせない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "unassigned_segmentation",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-063",
+      "api_id": "the_met_open_access",
+      "name": "The Met Open Access",
+      "task": "asset",
+      "priority": "asset",
+      "source": {
+        "landing_page": "https://www.metmuseum.org/ja/hubs/open-access",
+        "provider": "other",
+        "provider_dataset_id": null,
+        "version": null,
+        "content_origin_claim": "美術館収蔵品のうちパブリックドメイン作品",
+        "reference_url": "https://www.metmuseum.org/ja/hubs/open-access"
+      },
+      "rights": {
+        "license_claim": "CC0（OA対象）",
+        "evidence_url": "https://www.metmuseum.org/ja/hubs/open-access",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "公開対象は49万画像超（随時変動）",
+        "labels": "作品属性・作者・制作年代など",
+        "formats": "公開作品画像＋メタデータ（API／CSV）",
+        "structure": "作品ごとにCC0対象を絞って取得",
+        "notes": "Open Access対象外画像を混入させない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "not_applicable",
+        "implemented_levels": [],
+        "adapter": "unassigned_asset",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-070",
+      "api_id": "poly_haven",
+      "name": "Poly Haven",
+      "task": "asset",
+      "priority": "asset",
+      "source": {
+        "landing_page": "https://polyhaven.com/license",
+        "provider": "other",
+        "provider_dataset_id": null,
+        "version": null,
+        "content_origin_claim": "スタッフ制作または権利者からの直接提供",
+        "reference_url": "https://polyhaven.com/license"
+      },
+      "rights": {
+        "license_claim": "CC0",
+        "evidence_url": "https://polyhaven.com/license",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "多数の素材（件数未固定）",
+        "labels": "カテゴリ・素材名（分類正解ラベルではない）",
+        "formats": "HDRI／テクスチャ／3D素材、形式は素材ごと",
+        "structure": "作品ごとのダウンロード",
+        "notes": "分類学習用の正解ラベルではない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "not_applicable",
+        "implemented_levels": [],
+        "adapter": "unassigned_asset",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-071",
+      "api_id": "ambientcg",
+      "name": "ambientCG",
+      "task": "asset",
+      "priority": "asset",
+      "source": {
+        "landing_page": "https://ambientcg.com/",
+        "provider": "other",
+        "provider_dataset_id": null,
+        "version": null,
+        "content_origin_claim": "公開サービスが管理する画像・素材",
+        "reference_url": "https://ambientcg.com/"
+      },
+      "rights": {
+        "license_claim": "CC0",
+        "evidence_url": "https://ambientcg.com/",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "多数の素材（件数未固定）",
+        "labels": "素材カテゴリ・名前",
+        "formats": "テクスチャ・HDRI・3D素材、形式は素材ごと",
+        "structure": "作品ごとのダウンロードとAPI",
+        "notes": "分類データではなく生成・編集素材"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "not_applicable",
+        "implemented_levels": [],
+        "adapter": "unassigned_asset",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-073",
+      "api_id": "twemoji_graphics",
+      "name": "Twemoji Graphics",
+      "task": "asset",
+      "priority": "asset",
+      "source": {
+        "landing_page": "https://github.com/twitter/twemoji",
+        "provider": "github",
+        "provider_dataset_id": null,
+        "version": null,
+        "content_origin_claim": "Twemoji作者が公開する絵文字図形",
+        "reference_url": "https://github.com/twitter/twemoji"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0（画像）",
+        "evidence_url": "https://github.com/twitter/twemoji",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "数はリポジトリ版による",
+        "labels": "絵文字のUnicode符号等",
+        "formats": "SVG／PNG等（公式graphics配下）",
+        "structure": "assets/内に画像素材",
+        "notes": "図形CC BYとコードMITを混同しない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "not_applicable",
+        "implemented_levels": [],
+        "adapter": "unassigned_asset",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-075",
+      "api_id": "kenney_game_icons",
+      "name": "Kenney Game Icons",
+      "task": "asset",
+      "priority": "asset",
+      "source": {
+        "landing_page": "https://kenney.nl/assets/game-icons",
+        "provider": "other",
+        "provider_dataset_id": null,
+        "version": null,
+        "content_origin_claim": "Kenney公開の図形素材",
+        "reference_url": "https://kenney.nl/assets/game-icons"
+      },
+      "rights": {
+        "license_claim": "CC0",
+        "evidence_url": "https://kenney.nl/assets/game-icons",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "105点",
+        "labels": "アイコン素材カテゴリ",
+        "formats": "2D素材105点・拡張子はアーカイブ確認",
+        "structure": "配布アーカイブ",
+        "notes": "学習分類用のラベルではない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "not_applicable",
+        "implemented_levels": [],
+        "adapter": "unassigned_asset",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-076",
+      "api_id": "kenney_board_game_icons",
+      "name": "Kenney Board Game Icons",
+      "task": "asset",
+      "priority": "asset",
+      "source": {
+        "landing_page": "https://kenney.nl/assets/board-game-icons",
+        "provider": "other",
+        "provider_dataset_id": null,
+        "version": null,
+        "content_origin_claim": "Kenney公開の図形素材",
+        "reference_url": "https://kenney.nl/assets/board-game-icons"
+      },
+      "rights": {
+        "license_claim": "CC0",
+        "evidence_url": "https://kenney.nl/assets/board-game-icons",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "250点",
+        "labels": "アイコン素材カテゴリ",
+        "formats": "2D素材250点・拡張子はアーカイブ確認",
+        "structure": "配布アーカイブ",
+        "notes": "学習分類用のラベルではない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "not_applicable",
+        "implemented_levels": [],
+        "adapter": "unassigned_asset",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-092",
+      "api_id": "concrete_column_detection",
+      "name": "Concrete Column Detection",
+      "task": "detection",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/rknjxtg2vn/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "rknjxtg2vn",
+        "version": "1",
+        "content_origin_claim": "研究者が建設現場を撮影",
+        "reference_url": "https://data.mendeley.com/datasets/rknjxtg2vn/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/rknjxtg2vn/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "501枚・8,588個",
+        "labels": "コンクリート柱1種・矩形位置",
+        "formats": "JPEG／PNG＋YOLO .txt",
+        "structure": "各画像に矩形の位置注釈",
+        "notes": "1クラス検出で分類用途ではない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "unassigned_detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-093",
+      "api_id": "bangladeshi_e_waste_image",
+      "name": "Bangladeshi E-Waste Image",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/77383kmdnw/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "77383kmdnw",
+        "version": "1",
+        "content_origin_claim": "著者がスマートフォン等で撮影",
+        "reference_url": "https://data.mendeley.com/datasets/77383kmdnw/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/77383kmdnw/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "2,157枚",
+        "labels": "電子廃棄物12種",
+        "formats": "画像拡張子未記載",
+        "structure": "12種のクラス別フォルダ",
+        "notes": "Medical Wasteなど危険物の取扱い例として誘導しない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-097",
+      "api_id": "uav_weed_crop_dataset",
+      "name": "UAV Weed / Crop Dataset",
+      "task": "detection",
+      "priority": "advanced",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/fwg6pt6ckd/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "fwg6pt6ckd",
+        "version": "1",
+        "content_origin_claim": "研究者がドローンで撮影",
+        "reference_url": "https://data.mendeley.com/datasets/fwg6pt6ckd/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/fwg6pt6ckd/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "ZIP約1.18GB",
+        "labels": "雑草／作物など、classes.txtで定義",
+        "formats": "JPG 585×438＋YOLO .txt＋classes.txt",
+        "structure": "画像・テキストラベルを対応",
+        "notes": "無料Colab用に配布済み軽量版が必要"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "unassigned_detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-098",
+      "api_id": "vehicle_make_model_images",
+      "name": "Vehicle Make & Model Images",
+      "task": "classification",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/hj3vvx5946/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "hj3vvx5946",
+        "version": "1",
+        "content_origin_claim": "走行動画から抽出し手動ラベル付け",
+        "reference_url": "https://data.mendeley.com/datasets/hj3vvx5946/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/hj3vvx5946/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "3,847枚",
+        "labels": "車両メーカー・型式48種類",
+        "formats": "切出し動画フレーム画像（拡張子未記載）",
+        "structure": "48のクラス別フォルダ",
+        "notes": "連続フレームを訓練・テストに分けない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-099",
+      "api_id": "fruitseg30",
+      "name": "FruitSeg30",
+      "task": "segmentation",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/vkht8pfsp3/3",
+        "provider": "mendeley",
+        "provider_dataset_id": "vkht8pfsp3",
+        "version": "3",
+        "content_origin_claim": "マレーシア等で撮影した果物画像",
+        "reference_url": "https://data.mendeley.com/datasets/vkht8pfsp3/3"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/vkht8pfsp3/3",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "1,969画像＋対応マスク",
+        "labels": "果物30種＋前景領域",
+        "formats": "JPG画像＋PNGマスク（512×512）",
+        "structure": "各クラスのImages/・Mask/",
+        "notes": "画像とマスクの1対1対応を要検査"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "planned_image_mask",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-100",
+      "api_id": "banana_and_guava_quality",
+      "name": "Banana and Guava Quality",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/56td5w4wz2/2",
+        "provider": "mendeley",
+        "provider_dataset_id": "56td5w4wz2",
+        "version": "2",
+        "content_origin_claim": "著者がスマホで自然光撮影",
+        "reference_url": "https://data.mendeley.com/datasets/56td5w4wz2/2"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/56td5w4wz2/2",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "1,738枚",
+        "labels": "品質Class A／B／Defect（バナナ・グアバ）",
+        "formats": "JPG、サイズ未記載",
+        "structure": "品質別フォルダ",
+        "notes": "同じ果物の別角度が多い可能性"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-101",
+      "api_id": "dry_fruit_image_dataset",
+      "name": "Dry Fruit Image Dataset",
+      "task": "classification",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/yfhgn8py5f/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "yfhgn8py5f",
+        "version": "1",
+        "content_origin_claim": "著者が高解像度スマホで撮影",
+        "reference_url": "https://data.mendeley.com/datasets/yfhgn8py5f/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/yfhgn8py5f/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "11,500枚超",
+        "labels": "4食品×3種別＝12分類",
+        "formats": "画像形式未記載",
+        "structure": "商品種類／亜種のサブフォルダ",
+        "notes": "増強画像が混ざる場合は元画像を優先"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-103",
+      "api_id": "fresh_and_rotten_fruits",
+      "name": "Fresh and Rotten Fruits",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/bdd69gyhv8/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "bdd69gyhv8",
+        "version": "1",
+        "content_origin_claim": "著者が青果店・農地で撮影",
+        "reference_url": "https://data.mendeley.com/datasets/bdd69gyhv8/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/bdd69gyhv8/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "原画像3,200／増強12,335",
+        "labels": "8果物×新鮮／腐敗＝16分類",
+        "formats": "画像形式未記載",
+        "structure": "原画像＋データ拡張画像",
+        "notes": "同じ画像の増強版をテストに混ぜない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-104",
+      "api_id": "indian_medicinal_flower_imfi",
+      "name": "Indian Medicinal Flower (IMFI)",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/kk8h65th9n/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "kk8h65th9n",
+        "version": "1",
+        "content_origin_claim": "スマホで自然環境の花を撮影",
+        "reference_url": "https://data.mendeley.com/datasets/kk8h65th9n/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/kk8h65th9n/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "6,316枚",
+        "labels": "薬用花28種類",
+        "formats": "正方形切抜き画像（拡張子未記載）",
+        "structure": "分類ラベル付画像（実体の階層要確認）",
+        "notes": "薬効の判断や医療用途に誘導しない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-109",
+      "api_id": "fruitnet_indian_fruits",
+      "name": "FruitNet Indian Fruits",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/b6fftwbr2v/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "b6fftwbr2v",
+        "version": "1",
+        "content_origin_claim": "著者がスマホで撮影",
+        "reference_url": "https://data.mendeley.com/datasets/b6fftwbr2v/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/b6fftwbr2v/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "14,700枚超",
+        "labels": "果物6種×良品／不良品／混合",
+        "formats": "写真（形式未記載）",
+        "structure": "品質3フォルダ内に果物ごとのフォルダ",
+        "notes": "加工済み版と原写真の関係を要監査"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-112",
+      "api_id": "signalphaset",
+      "name": "SignAlphaSet",
+      "task": "classification",
+      "priority": "advanced",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/8fmvr9m98w/3",
+        "provider": "mendeley",
+        "provider_dataset_id": "8fmvr9m98w",
+        "version": "3",
+        "content_origin_claim": "収録者が手指を撮影",
+        "reference_url": "https://data.mendeley.com/datasets/8fmvr9m98w/3"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/8fmvr9m98w/3",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "静止画26,000／動画300",
+        "labels": "手指アルファベット26字＋5動的ジェスチャー",
+        "formats": "静止画像＋動画フレームJPG",
+        "structure": "静止画26フォルダ、動画側31フォルダ",
+        "notes": "人物・背景による識別漏洩に注意"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-115",
+      "api_id": "asl_fingerspelling_original_keypoints",
+      "name": "ASL Fingerspelling Original + Keypoints",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/97yd3b5f5h/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "97yd3b5f5h",
+        "version": "1",
+        "content_origin_claim": "著者が収録した手指データ",
+        "reference_url": "https://data.mendeley.com/datasets/97yd3b5f5h/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/97yd3b5f5h/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "枚数は公式本文未記載",
+        "labels": "ASLの静的指文字ラベル",
+        "formats": "192×192画像（拡張子未記載）",
+        "structure": "Original／Keypoints／Black Background／Evaluation",
+        "notes": "同一元画像の加工版を別分割しない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-117",
+      "api_id": "tangerines",
+      "name": "Tangerines_Images",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/9tfbpxpyjz/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "9tfbpxpyjz",
+        "version": "1",
+        "content_origin_claim": "撮影室で一定の黒背景・照明",
+        "reference_url": "https://data.mendeley.com/datasets/9tfbpxpyjz/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/9tfbpxpyjz/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "340枚",
+        "labels": "ミカン外観：良好／不良",
+        "formats": "RGB写真・640×480",
+        "structure": "クラス別の元ファイル構造は未明記",
+        "notes": "照明が揃いすぎて実用場面に弱い"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-118",
+      "api_id": "clearlens",
+      "name": "ClearLens (水滴のある眼鏡レンズ)",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/pytpfbw6w9/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "pytpfbw6w9",
+        "version": "1",
+        "content_origin_claim": "著者が各種場所でスマホ撮影",
+        "reference_url": "https://data.mendeley.com/datasets/pytpfbw6w9/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/pytpfbw6w9/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "240枚",
+        "labels": "眼鏡レンズ：水滴あり／なし",
+        "formats": "スマートフォン写真（拡張子未記載）",
+        "structure": "各120枚（フォルダ構造は未確認）",
+        "notes": "少数で過学習しやすい"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-119",
+      "api_id": "surface_water_floating_waste",
+      "name": "Surface Water Floating Waste",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/7c5gdjbhpt/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "7c5gdjbhpt",
+        "version": "1",
+        "content_origin_claim": "著者が屋外の水辺で撮影",
+        "reference_url": "https://data.mendeley.com/datasets/7c5gdjbhpt/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/7c5gdjbhpt/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "枚数は公式本文未記載",
+        "labels": "水面のごみ・汚れ6分類",
+        "formats": "写真（拡張子未記載）",
+        "structure": "主要な写り込み量に応じた6フォルダ",
+        "notes": "水質の直接測定・安全判定に使わない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-120",
+      "api_id": "trash_detection_dataset_pavel_kan",
+      "name": "Trash Detection Dataset (Pavel Kan)",
+      "task": "detection",
+      "priority": "advanced",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/z732f9pwxt/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "z732f9pwxt",
+        "version": "1",
+        "content_origin_claim": "原画像の撮影元は公式説明未記載",
+        "reference_url": "https://data.mendeley.com/datasets/z732f9pwxt/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/z732f9pwxt/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "枚数は公式本文未記載",
+        "labels": "廃棄物7種（ALLを含む）",
+        "formats": "写真＋YOLO矩形ラベル（拡張子未記載）",
+        "structure": "画像とYOLOボックス注釈",
+        "notes": "ALLクラスの意味と原画像権利を要確認"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "unassigned_detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-125",
+      "api_id": "fabricspotdefect",
+      "name": "FabricSpotDefect",
+      "task": "detection",
+      "priority": "advanced",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/6574nhzm8x/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "6574nhzm8x",
+        "version": "1",
+        "content_origin_claim": "家庭の布を著者がスマホ撮影",
+        "reference_url": "https://data.mendeley.com/datasets/6574nhzm8x/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/6574nhzm8x/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "原1,014→増強2,300",
+        "labels": "布の汚れ・油染み等の位置",
+        "formats": "JPG 416×416＋位置ラベル（実形式未記載）",
+        "structure": "original/augmented＋train/validation/test",
+        "notes": "原本と増強画像の漏洩を防ぐ"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "unassigned_detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-130",
+      "api_id": "ghana_currency_gc3558",
+      "name": "Ghana Currency GC3558",
+      "task": "classification",
+      "priority": "advanced",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/vws5r8mj4w/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "vws5r8mj4w",
+        "version": "1",
+        "content_origin_claim": "著者が紙幣・硬貨を撮影",
+        "reference_url": "https://data.mendeley.com/datasets/vws5r8mj4w/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/vws5r8mj4w/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "3,558枚",
+        "labels": "ガーナ通貨13額面",
+        "formats": "JPG（原画像複数サイズ→128×128）",
+        "structure": "分類ラベル（実体のフォルダ要確認）",
+        "notes": "紙幣画像の公開・再現に関する各国規則"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-132",
+      "api_id": "hgm_4_hand_gestures",
+      "name": "HGM-4 Hand Gestures",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/jzy8zngkbg/2",
+        "provider": "mendeley",
+        "provider_dataset_id": "jzy8zngkbg",
+        "version": "2",
+        "content_origin_claim": "著者が4カメラ位置で撮影",
+        "reference_url": "https://data.mendeley.com/datasets/jzy8zngkbg/2"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/jzy8zngkbg/2",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "4,160枚",
+        "labels": "26種類の手の形",
+        "formats": "カラー画像1280×700",
+        "structure": "訓練・テストを公式が定義",
+        "notes": "撮影者・同一場面の分割漏洩"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-133",
+      "api_id": "kathakali_mudras",
+      "name": "Kathakali Mudras",
+      "task": "classification",
+      "priority": "advanced",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/wdbm9srwn7/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "wdbm9srwn7",
+        "version": "1",
+        "content_origin_claim": "著者が一から作成",
+        "reference_url": "https://data.mendeley.com/datasets/wdbm9srwn7/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/wdbm9srwn7/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "659枚",
+        "labels": "カタカリ舞踊の手の形24分類",
+        "formats": "画像（拡張子未記載）",
+        "structure": "画像分類（実体のフォルダ構造は未記載）",
+        "notes": "文化背景の説明なしに意味を誤認させない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-136",
+      "api_id": "growth_stage_flower",
+      "name": "Growth Stage Flower",
+      "task": "classification",
+      "priority": "advanced",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/m8g2wynwyr/2",
+        "provider": "mendeley",
+        "provider_dataset_id": "m8g2wynwyr",
+        "version": "2",
+        "content_origin_claim": "著者が花を撮影",
+        "reference_url": "https://data.mendeley.com/datasets/m8g2wynwyr/2"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/m8g2wynwyr/2",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "元3,889＋増強19,445",
+        "labels": "花8種類×成長段階3＝24分類",
+        "formats": "JPG 640×640",
+        "structure": "オリジナル／増強画像の判別が必要",
+        "notes": "拡張版をテスト集合へ混入させない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-140",
+      "api_id": "chakmalipi",
+      "name": "ChakmaLipī",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/rzjphbvz9f/6",
+        "provider": "mendeley",
+        "provider_dataset_id": "rzjphbvz9f",
+        "version": "6",
+        "content_origin_claim": "著者が手書き文字を収集",
+        "reference_url": "https://data.mendeley.com/datasets/rzjphbvz9f/6"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/rzjphbvz9f/6",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "37,708枚",
+        "labels": "チャクマ文字48種類（38字・10数字）",
+        "formats": "PNG 40×40・RGB",
+        "structure": "48クラス別ディレクトリ",
+        "notes": "日本語の文字とは別体系"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-142",
+      "api_id": "egg_variety_and_freshness",
+      "name": "Egg Variety and Freshness",
+      "task": "classification",
+      "priority": "advanced",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/49msr3ksxj/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "49msr3ksxj",
+        "version": "1",
+        "content_origin_claim": "著者が市場で卵を撮影",
+        "reference_url": "https://data.mendeley.com/datasets/49msr3ksxj/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/49msr3ksxj/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "硬貨入り画像2,250枚ほか",
+        "labels": "卵5種、保管期間3段階＝15組",
+        "formats": "RGB写真＋基準硬貨入り画像（形式未記載）",
+        "structure": "分類用＋卵・硬貨画像などの構成",
+        "notes": "見た目だけで食用安全性を判定しない"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-145",
+      "api_id": "uav_aquatic_plant_dataset",
+      "name": "UAV Aquatic Plant Dataset",
+      "task": "segmentation",
+      "priority": "advanced",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/sf49d949n3/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "sf49d949n3",
+        "version": "1",
+        "content_origin_claim": "著者がドローンで湿地を撮影",
+        "reference_url": "https://data.mendeley.com/datasets/sf49d949n3/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/sf49d949n3/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "1,468分類＋1,761マスク",
+        "labels": "水草14種、二値領域",
+        "formats": "空撮写真＋2値マスク＋分類切抜き",
+        "structure": "分類1,468枚／分割1,761組",
+        "notes": "分類と分割を別の実習として分ける"
+      },
+      "audit": {
+        "technical_status": "not_tested",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-04",
+        "evidence_grade": "imported_previous_research"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "unassigned_segmentation",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    }
+  ]
+}
