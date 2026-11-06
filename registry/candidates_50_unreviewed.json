@@ -1477,7 +1477,7 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/56td5w4wz2/2",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "1,738枚",
@@ -1487,12 +1487,16 @@
         "notes": "同じ果物の別角度が多い可能性"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "metadata_and_sample_checked",
+        "files_examined": 1,
+        "sample_files_examined": 6,
+        "sample_zip_crc_check": "passed",
+        "sample_image_decode": "passed",
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "independent_primary_check",
+        "notes": "固定ZIPの中央ディレクトリと6グループ代表画像を検査。配布画像1,748枚とページ説明1,738枚の差、全量監査、元画像権利は未解決。"
       },
       "preparation": {
         "planned_level": "1",

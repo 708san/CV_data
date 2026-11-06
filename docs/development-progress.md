@@ -104,3 +104,11 @@
 - Original各クラス1枚、合計16枚を範囲取得し、ZIP CRCとJPEGデコードに成功した。
 - 元画像と拡張画像を混ぜた評価漏洩、全量デコード・重複・元画像権利が未完了のため、正式API・Notebook・PyPIには追加せず公開保留とした。
 - 詳細：[Fresh and Rotten Fruits](datasets/fresh_rotten_fruits.md)、[監査JSON](../reports/fresh-rotten-fruits-sample-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/fresh_rotten_fruits-v1.json`に保存した。
+
+### 2026-11-06：Banana and Guava Qualityの構成・代表監査
+
+- 公式Mendeley Data v2のCC BY 4.0表記と固定ZIPのSHA-256を確認した。
+- ZIP中央ディレクトリからBanana/Guava × Class_A／Class_B／Defectの6グループ、画像1,748枚を確認した。
+- 各グループ1枚、合計6枚を範囲取得し、ZIP CRCとJPEGデコードに成功した。代表画像は1024×1024 RGBだった。
+- ページ説明の1,738枚とZIPの1,748枚が一致しないため、全量監査、ラベル定義、元画像権利、再配布条件が未完了のまま公開保留とした。
+- 詳細：[Banana and Guava Quality](datasets/banana_guava_quality.md)、[監査JSON](../reports/banana-guava-quality-sample-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/banana_guava_quality-v2.json`に保存した。
