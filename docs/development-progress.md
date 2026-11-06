@@ -80,3 +80,11 @@
 - `Fruits-360`、`Recyclable Waste`、`GeoSetEnnea`、`FruitSeg30`は公式ページでライセンス表記と概要を再確認した。GeoSetEnneaは公式APIのフォルダ別メタデータを追加確認し、画像966件・YOLOラベル966件と別置きのaugmented/rawを記録した。Recyclable Wasteは9枚の代表画像でAPI SHA-256照合とJPEGデコードを実施したが、固定アーカイブSHA-256と全量監査が未完了のため、いずれも台帳は`under_review`・公開保留のままにした。
 - `Fruits-360`、`Recyclable Waste`、`GeoSetEnnea`、`FruitSeg30`は公式ページでライセンス表記と概要を再確認した。GeoSetEnneaは全公開2,898ファイルのsource manifestを作成し、分割済み画像966件・YOLOラベル966件とaugmented/rawを記録、内容SHA重複1グループを確認した。Recyclable Wasteは989画像のsource manifestと12重複グループ、9枚の代表画像検査を記録した。FruitSeg30は全30クラスの画像1,969件・マスク1,969件のメタデータ対応とファイルSHA-256重複なしを確認し、代表画像・マスクも検査したが、固定artifactの本体監査と再配布条件が未完了のため、いずれも台帳は`under_review`・公開保留のままにした。
 - PyPI向けのパッケージビルドを行うが、本番公開・Release作成・mainへのマージは行わない。
+
+### 2026-11-06：Indian Origin Flowersの一次監査
+
+- 公式Mendeley Data v1のCC BY 4.0表記と公開APIを確認した。
+- APIの10フォルダ、8,098枚、約1.62GBをファイル単位のsource manifestへ固定した。全ファイルにAPI記載SHA-256がある。
+- 各クラスから1枚ずつ、合計10枚を取得してSHA-256照合とJPEGデコードを実施し、すべて成功した。
+- ページ説明の15,044枚とAPIの8,098枚が一致しないため、再配布用artifact・正式API・Notebookには追加せず、`under_review`・公開保留とした。
+- 詳細：[Indian Origin Flowers](datasets/indian_origin_flowers.md)、[監査JSON](../reports/indian-origin-flowers-sample-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/indian_origin_flowers-v1.json`に保存した。

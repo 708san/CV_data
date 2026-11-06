@@ -358,22 +358,27 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/ffysgft2ns/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
-        "quantity": "15,044枚",
+        "quantity": "公開APIでは8,098枚（ページ説明は15,044枚）",
         "labels": "花10種類",
-        "formats": "画像拡張子未記載／階層フォルダ",
+        "formats": "JPEG／階層フォルダ",
         "structure": "分類名別の階層フォルダ",
-        "notes": "個別の花名リストは実ファイル確認"
+        "notes": "APIの全8,098ファイルにSHA-256。ページ記載件数との差を要確認"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "metadata_checked",
+        "files_examined": 8098,
+        "sample_files_examined": 10,
+        "sample_sha256_check": "passed",
+        "sample_image_decode": "passed",
+        "class_count": 10,
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "independent_primary_check",
+        "notes": "公式APIの全ファイルメタデータを固定し、10クラスから代表画像を検査。APIの8,098枚とページ記載15,044枚の差、全量デコード、元画像権利、固定artifactは未解決。"
       },
       "preparation": {
         "planned_level": "1",
