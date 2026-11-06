@@ -96,3 +96,11 @@
 - Kirmizi 1,232枚、Siirt 916枚をseed 42でtrain/val/testへ分け、共通classification artifactをローカル生成してmanifest照合に成功した。
 - 元画像の第三者権利、クレジット、ZIP内の非画像ファイル、再配布条件が未完了のため、正式API・Notebook・PyPIには追加せず公開保留とした。
 - 詳細：[Pistachio Image Dataset](datasets/pistachio_image_dataset.md)、[監査JSON](../reports/pistachio-image-dataset-full-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/pistachio_image_dataset-v1.json`に保存した。
+
+### 2026-11-06：Fresh and Rotten Fruitsの構成・代表監査
+
+- 公式Mendeley Data v1のCC BY 4.0表記と固定ZIP2本のサイズ・SHA-256を確認した。
+- Original 3,200枚、Augmented 12,335枚、16クラスをZIP中央ディレクトリから確認した。Originalは各クラス200枚だった。
+- Original各クラス1枚、合計16枚を範囲取得し、ZIP CRCとJPEGデコードに成功した。
+- 元画像と拡張画像を混ぜた評価漏洩、全量デコード・重複・元画像権利が未完了のため、正式API・Notebook・PyPIには追加せず公開保留とした。
+- 詳細：[Fresh and Rotten Fruits](datasets/fresh_rotten_fruits.md)、[監査JSON](../reports/fresh-rotten-fruits-sample-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/fresh_rotten_fruits-v1.json`に保存した。

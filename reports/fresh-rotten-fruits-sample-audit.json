@@ -1,0 +1,22 @@
+{
+  "dataset_id": "fresh_rotten_fruits",
+  "source_url": "https://data.mendeley.com/datasets/bdd69gyhv8/1",
+  "source_version": "1",
+  "license_claim": "CC BY 4.0",
+  "archives": [
+    {"filename": "Original Image.zip", "file_id": "de93ba06-6a58-45e3-913d-837b2ae52acb", "size": 2794170228, "sha256": "f89d67d4c4b24810bcd8406db877db6b1ac9834cea0b0cb56d65acebe59e66ff", "image_count": 3200, "role": "original"},
+    {"filename": "Augmented Image.zip", "file_id": "ccd1f142-03b2-473a-8c78-78920e63b8bd", "size": 803272180, "sha256": "5c748b5904932cd8cf631a0b776253d6217d577067d9477c267014d03ac16e10", "image_count": 12335, "role": "augmented"}
+  ],
+  "class_count": 16,
+  "original_class_counts": {"FreshApple": 200, "FreshBanana": 200, "FreshGrape": 200, "FreshGuava": 200, "FreshJujube": 200, "FreshOrange": 200, "FreshPomegranate": 200, "FreshStrawberry": 200, "RottenApple": 200, "RottenBanana": 200, "RottenGrape": 200, "RottenGuava": 200, "RottenJujube": 200, "RottenOrange": 200, "RottenPomegranate": 200, "RottenStrawberry": 200},
+  "augmented_class_counts": {"FreshApple": 734, "FreshBanana": 740, "FreshGrape": 800, "FreshGuava": 797, "FreshJujube": 793, "FreshOrange": 796, "FreshPomegranate": 797, "FreshStrawberry": 737, "RottenApple": 738, "RottenBanana": 736, "RottenGrape": 746, "RottenGuava": 797, "RottenJujube": 793, "RottenOrange": 796, "RottenPomegranate": 798, "RottenStrawberry": 737},
+  "central_directory_check": "passed",
+  "sample_files_examined": 16,
+  "sample_zip_crc_check": "passed",
+  "sample_image_decode": "passed",
+  "sample_format": "JPEG",
+  "sample_dimensions": {"FreshApple": [4160, 3120], "FreshBanana": [965, 1662], "FreshGrape": [702, 655], "FreshGuava": [1109, 1176], "FreshJujube": [3083, 2845], "FreshOrange": [2547, 2361], "FreshPomegranate": [3084, 2509], "FreshStrawberry": [1603, 2078], "RottenApple": [2154, 2083], "RottenBanana": [3641, 2899], "RottenGrape": [670, 652], "RottenGuava": [3548, 3100], "RottenJujube": [3313, 2627], "RottenOrange": [2266, 2089], "RottenPomegranate": [3969, 2902], "RottenStrawberry": [3000, 4000]},
+  "status": "metadata_and_sample_audit_passed_full_audit_pending",
+  "publication_status": "hold",
+  "notes": "中央ディレクトリからOriginal 3,200枚・Augmented 12,335枚・16クラスを確認した。Original各クラス1枚を範囲取得し、CRCとJPEGデコードを確認。全量SHA・全量デコード・元画像権利・拡張画像との重複は未完了。"
+}
