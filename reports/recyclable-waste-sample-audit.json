@@ -5,6 +5,7 @@
   "license_claim": "CC BY 4.0",
   "metadata_files_examined": 990,
   "image_files_listed_by_api": 989,
+  "metadata_duplicate_sha_groups": 12,
   "page_claimed_images": 1000,
   "sample_files_examined": 9,
   "sample_sha256_check": "passed",

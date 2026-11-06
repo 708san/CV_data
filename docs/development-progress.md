@@ -78,5 +78,5 @@
 - `DatasetBundle`に課題タイプ、対象者、用途、入力・出力、概算取得サイズを追加した。
 - `docs/catalog-review.md`に50候補を分類・検出・分割・素材の課題へ対応付け、全候補をAPIへ追加しない理由と次の実体検査順を記録した。
 - `Fruits-360`、`Recyclable Waste`、`GeoSetEnnea`、`FruitSeg30`は公式ページでライセンス表記と概要を再確認した。GeoSetEnneaは公式APIのフォルダ別メタデータを追加確認し、画像966件・YOLOラベル966件と別置きのaugmented/rawを記録した。Recyclable Wasteは9枚の代表画像でAPI SHA-256照合とJPEGデコードを実施したが、固定アーカイブSHA-256と全量監査が未完了のため、いずれも台帳は`under_review`・公開保留のままにした。
-- `Fruits-360`、`Recyclable Waste`、`GeoSetEnnea`、`FruitSeg30`は公式ページでライセンス表記と概要を再確認した。GeoSetEnneaは公式APIのフォルダ別メタデータを追加確認し、画像966件・YOLOラベル966件と別置きのaugmented/rawを記録した。Recyclable Wasteは9枚の代表画像でAPI SHA-256照合とJPEGデコードを実施した。FruitSeg30は全30クラスの画像1,969件・マスク1,969件のメタデータ対応とファイルSHA-256重複なしを確認し、代表画像・マスクも検査したが、固定アーカイブSHA-256と全量画像監査が未完了のため、いずれも台帳は`under_review`・公開保留のままにした。
+- `Fruits-360`、`Recyclable Waste`、`GeoSetEnnea`、`FruitSeg30`は公式ページでライセンス表記と概要を再確認した。GeoSetEnneaは全公開2,898ファイルのsource manifestを作成し、分割済み画像966件・YOLOラベル966件とaugmented/rawを記録、内容SHA重複1グループを確認した。Recyclable Wasteは989画像のsource manifestと12重複グループ、9枚の代表画像検査を記録した。FruitSeg30は全30クラスの画像1,969件・マスク1,969件のメタデータ対応とファイルSHA-256重複なしを確認し、代表画像・マスクも検査したが、固定artifactの本体監査と再配布条件が未完了のため、いずれも台帳は`under_review`・公開保留のままにした。
 - PyPI向けのパッケージビルドを行うが、本番公開・Release作成・mainへのマージは行わない。
