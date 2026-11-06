@@ -266,16 +266,17 @@
       },
       "audit": {
         "technical_status": "metadata_checked",
-        "files_examined": 2220,
+        "files_examined": 2898,
         "sample_files_examined": 6,
         "sample_sha256_check": "passed",
         "sample_image_decode": "passed",
         "sample_yolo_label_check": "passed",
+        "metadata_duplicate_sha_groups": 1,
         "inspection_status": "completed",
         "publication_status": "hold",
         "last_desk_review": "2026-11-05",
         "evidence_grade": "independent_primary_check",
-        "notes": "公式公開APIのフォルダ別一覧を確認。分割済み画像966件（train 676 / valid 193 / test 97）と対応するYOLOラベル966件を確認し、別フォルダにaugmented 810件・raw 154件も存在した。APIメタデータの各ファイルにSHA-256はあるが、公開用の単一固定アーカイブSHA-256ではない。train/valid/testから画像3枚と対応ラベル3枚を取得し、SHA-256、640x640 JPEGデコード、YOLO 5列・座標範囲を確認した。全量取得・重複検査・再配布許諾は未実施のため保留。"
+        "notes": "公式公開APIの全公開フォルダ一覧を確認。分割済み画像966件（train 676 / valid 193 / test 97）と対応するYOLOラベル966件、augmented 810件、raw 154件、補助ファイルを含む計2898ファイルを固定した。APIメタデータの各ファイルにSHA-256があり、内容SHA重複は1グループ（augmented内4ファイル）確認された。train/valid/testから画像3枚と対応ラベル3枚を取得し、SHA-256、640x640 JPEGデコード、YOLO 5列・座標範囲を確認した。全量画像取得・分割漏洩・再配布許諾は未実施のため保留。"
       },
       "preparation": {
         "planned_level": "to_be_determined",
@@ -321,11 +322,12 @@
         "sample_files_examined": 9,
         "sample_sha256_check": "passed",
         "sample_image_decode": "passed",
+        "metadata_duplicate_sha_groups": 12,
         "inspection_status": "completed",
         "publication_status": "hold",
         "last_desk_review": "2026-11-05",
         "evidence_grade": "independent_primary_check",
-        "notes": "9カテゴリフォルダから代表画像を取得し、公開APIのファイルSHA-256と一致、JPEGデコードも成功。サンプルは全量監査を意味しない。"
+        "notes": "公開APIの989画像と補助READMEを固定し、ファイル単位SHA-256を記録。内容SHA重複は12グループ確認された。9カテゴリフォルダから代表画像を取得し、公開APIのファイルSHA-256と一致、JPEGデコードも成功。サンプルは全量画像デコード・権利監査を意味しない。"
       },
       "preparation": {
         "planned_level": "1",
