@@ -934,12 +934,13 @@
         "notes": "時系列の近接画像を訓練とテストにまたがらせない"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "source_listing_incomplete",
+        "files_examined": 1,
+        "inspection_status": "metadata_and_readme_checked_images_unavailable",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "official_page_and_fixed_api_checked",
+        "notes": "公式ページは129件のRGB・深度・COCO注釈を説明するが、固定版v1の公式APIにはreadme.txt 1件のみ。READMEのSHA-256はa39f7231cdc51bc7fb103d3ff319830caa63f4b196f81593124d435b18dd032f。画像・マスク実体を確認できず、公開保留。"
       },
       "preparation": {
         "planned_level": "to_be_determined",

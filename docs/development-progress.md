@@ -128,3 +128,10 @@
 - 7額面から代表画像を1枚ずつ取得し、ZIP CRCとJPEGデコードを確認した。
 - 額面フォルダの下に記念デザイン、表裏があり、同系列画像の分割漏洩対策が必要。全量画像検査、元画像の権利、グループ分割方法が未完了のため、共通artifact・正式API・Notebookへの追加は保留した。
 - 詳細：[Image Dataset of Indian Coins](datasets/indian_coins.md)、[監査JSON](../reports/indian-coins-sample-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/indian_coins-v1.json`に保存した。
+
+### 2026-11-06：RGB-D Mushroom Growthの固定版実体確認
+
+- 公式Mendeley Data v1ページのCC BY 4.0表記と、129件のRGB・深度・COCO注釈という説明を確認した。
+- 固定版v1の公式APIに登録されているのは`readme.txt` 1件（4,712 bytes）のみ。公式ダウンロードURLから取得したファイルのSHA-256は`a39f7231cdc51bc7fb103d3ff319830caa63f4b196f81593124d435b18dd032f`で、API記載値と一致した。
+- READMEはRGB/Depth/Annotationsの構成と時系列撮影を説明するが、実際の画像・深度・注釈ファイルはAPI一覧に存在しない。マスクや対応関係を実体検査できないため、共通形式への変換、正式API、Notebookへの追加を保留した。
+- 詳細：[RGB-D Mushroom Growth](datasets/rgb_d_button_mushroom_growth.md)、[監査JSON](../reports/rgb-d-button-mushroom-growth-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/rgb_d_button_mushroom_growth-v1.json`。
