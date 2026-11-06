@@ -827,7 +827,7 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/txn6vz28g9/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "6,680枚",
@@ -837,12 +837,17 @@
         "notes": "通貨の再現・商標・偽造誤用にも注意"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "metadata_and_sample_checked",
+        "files_examined": 1,
+        "sample_files_examined": 7,
+        "sample_zip_crc_check": "passed",
+        "sample_image_decode": "passed",
+        "denomination_count": 7,
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "independent_primary_check",
+        "notes": "固定ZIPの中央ディレクトリから6,680画像と7額面を確認。7枚の代表画像をCRC・JPEG検査。全量デコード、重複・記念デザイン単位の分割、元画像権利は未完了。"
       },
       "preparation": {
         "planned_level": "1",

@@ -120,3 +120,11 @@
 - 公式ページはgood／poor condition分類を説明するが、アーカイブには画像との対応ラベル表が見つからなかった。連番や見た目からラベルを割り当てず、共通分類変換・正式API・Notebookへの追加は保留した。
 - `mandarina_331.jpg`に手の写り込みがあることも記録した。
 - 詳細：[Tangerines_Images](datasets/tangerines.md)、[監査JSON](../reports/tangerines-full-image-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/tangerines-v1.json`に保存した。
+
+### 2026-11-06：Image Dataset of Indian Coinsの構成・代表監査
+
+- 公式Mendeley Data v1のCC BY 4.0表記と固定ZIPのSHA-256を確認した。
+- ZIP中央ディレクトリにJPEG6,680枚と7額面フォルダがあり、公式ページの総数と一致した。パス逸脱、symlink、非画像ファイルはなかった。
+- 7額面から代表画像を1枚ずつ取得し、ZIP CRCとJPEGデコードを確認した。
+- 額面フォルダの下に記念デザイン、表裏があり、同系列画像の分割漏洩対策が必要。全量画像検査、元画像の権利、グループ分割方法が未完了のため、共通artifact・正式API・Notebookへの追加は保留した。
+- 詳細：[Image Dataset of Indian Coins](datasets/indian_coins.md)、[監査JSON](../reports/indian-coins-sample-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/indian_coins-v1.json`に保存した。
