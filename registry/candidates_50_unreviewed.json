@@ -459,7 +459,7 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/w68f9w6jmm/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "publisher_license_claim_reviewed_content_rights_pending"
       },
       "claims": {
         "quantity": "645枚",
@@ -473,8 +473,9 @@
         "files_examined": 0,
         "inspection_status": "not_started",
         "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "official_landing_page_review_only",
+        "notes": "公式v1ページでCC BY 4.0、645 JPG、5フォルダ、飲食店・ビュッフェ・婚礼等の撮影という説明を確認。食品ロスを減らす工夫を考える題材にはなり得るが、フォルダ名・画像内容・人物や店舗の写り込み・権利表示を実体未確認。公式固定アーカイブURLとSHA-256の取得、全量検査が未完了のため公開・再配布不可。"
       },
       "preparation": {
         "planned_level": "1",
