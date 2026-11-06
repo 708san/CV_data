@@ -88,3 +88,11 @@
 - 各クラスから1枚ずつ、合計10枚を取得してSHA-256照合とJPEGデコードを実施し、すべて成功した。
 - ページ説明の15,044枚とAPIの8,098枚が一致しないため、再配布用artifact・正式API・Notebookには追加せず、`under_review`・公開保留とした。
 - 詳細：[Indian Origin Flowers](datasets/indian_origin_flowers.md)、[監査JSON](../reports/indian-origin-flowers-sample-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/indian_origin_flowers-v1.json`に保存した。
+
+### 2026-11-06：Pistachio Image Datasetの全量画像監査
+
+- 公式Mendeley Data v1のCC BY 4.0表記と固定ZIPのSHA-256を確認した。
+- SHA-256一致後に安全展開し、画像2,148枚を全量デコードした。JPEG・600×600・RGB、破損0、完全一致重複0だった。
+- Kirmizi 1,232枚、Siirt 916枚をseed 42でtrain/val/testへ分け、共通classification artifactをローカル生成してmanifest照合に成功した。
+- 元画像の第三者権利、クレジット、ZIP内の非画像ファイル、再配布条件が未完了のため、正式API・Notebook・PyPIには追加せず公開保留とした。
+- 詳細：[Pistachio Image Dataset](datasets/pistachio_image_dataset.md)、[監査JSON](../reports/pistachio-image-dataset-full-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/pistachio_image_dataset-v1.json`に保存した。

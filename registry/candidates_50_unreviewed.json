@@ -409,22 +409,26 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/h7pf57cgg9/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "2,148枚",
         "labels": "Kirmizi／Siirtの2種",
-        "formats": "高解像度画像／実ファイル形式未確認",
-        "structure": "論文では80/20分割（配布ファイルの分割は未確認）",
-        "notes": "身近な題材でも実際の学校写真へは汎化不明"
+        "formats": "JPEG（600×600、RGB）／ZIP内に特徴量・説明ファイルあり",
+        "structure": "画像2フォルダ（Kirmizi 1,232／Siirt 916）、公式ZIP内に非画像ファイルあり",
+        "notes": "固定ZIPを全量検査済み。教材artifactでは画像だけを使い、seed 42でtrain/val/testを作成"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "full_image_audit",
+        "files_examined": 2148,
+        "archive_sha256": "140760707018b7f53d91a86a1d7be96d92b1a0d26a75690ab9280ed1170df895",
+        "decode_errors": 0,
+        "duplicate_sha_groups": 0,
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "independent_primary_check",
+        "notes": "固定ZIPの安全検査と画像2,148枚の全量デコードに成功。元画像の第三者権利、クレジット、再配布条件は未解決。"
       },
       "preparation": {
         "planned_level": "1",
