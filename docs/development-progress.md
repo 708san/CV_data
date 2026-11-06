@@ -135,3 +135,14 @@
 - 固定版v1の公式APIに登録されているのは`readme.txt` 1件（4,712 bytes）のみ。公式ダウンロードURLから取得したファイルのSHA-256は`a39f7231cdc51bc7fb103d3ff319830caa63f4b196f81593124d435b18dd032f`で、API記載値と一致した。
 - READMEはRGB/Depth/Annotationsの構成と時系列撮影を説明するが、実際の画像・深度・注釈ファイルはAPI一覧に存在しない。マスクや対応関係を実体検査できないため、共通形式への変換、正式API、Notebookへの追加を保留した。
 - 詳細：[RGB-D Mushroom Growth](datasets/rgb_d_button_mushroom_growth.md)、[監査JSON](../reports/rgb-d-button-mushroom-growth-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/rgb_d_button_mushroom_growth-v1.json`。
+
+### 2026-11-06：Bangladeshi E-Wasteの全量画像・ラベル監査
+
+- 公式Mendeley Data v1およびアーカイブ内READMEのCC BY 4.0表記、提供者、固定ダウンロードURLを確認した。
+- 固定ZIP（72,987,704 bytes、SHA-256 `f73b30286225c208e98b34f81eb5ffef7baf79e883039d2087e8db53f6ee284e`）を検証後に安全展開した。パス逸脱・symlinkなし、CRC検査成功。
+- 画像2,157枚すべてがJPEG 640×640でOS画像デコーダーによる読み込みに成功。画像・ラベル2,157組は同名で全件対応し、完全一致画像重複0件だった。
+- 12クラス、注釈2,159個を確認。通常のYOLO矩形752個とpolygon 1,407個が混在し、空ラベルは4件、クラスID・座標・形式エラーは0件だった。検出共通変換`detection_yolo_v1.1.0`を追加し、polygonを外接矩形へ変換、元の形式別件数をmanifestに記録するようにした。
+- train/valid/test分割は画像1,500/330/327枚。testから各クラス1枚ずつ確認した12枚はすべて明るい緑背景だった。公式ページの「背景に変化がある」という説明と見本に差があるため、背景への依存を調べる教材候補とし、実環境の廃棄物分類器としては扱わない。
+- artifact v0.1.0を一時領域へ作成し、画像2,157枚・ファイル4,319件のmanifest照合に成功。polygon由来のbboxは座標精度を維持する17桁で出力。ZIPは71,762,431 bytes、SHA-256 `fe06d5579e3a84010e0e6ccd7d90d8230ca72d5fcd39719d6d6d8731595007fa`。ライブラリの全2,157画像・2,159注釈の構造検査とDataFrame変換にも成功した。データ本体はGit履歴へ追加していない。
+- ライブラリには検出bundle検証とDataFrame表示を実装したが、公開Releaseが未作成のためsourceを未公開状態に固定し、正式一覧から隠し、取得要求も拒否する。
+- 詳細：[Bangladeshi E-Waste](datasets/bangladeshi_ewaste_image.md)、[監査JSON](../reports/bangladeshi-ewaste-full-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/bangladeshi_ewaste-v1.json`。

@@ -53,6 +53,33 @@ def make_zip(case="festival-icons", *, corrupt=False, unsafe=False, symlink=Fals
     return output.getvalue()
 
 
+def make_detection_zip(case="bangladeshi_ewaste_image", *, corrupt_label=False) -> bytes:
+    image = "images/train/one.png"
+    label = "labels/train/one.txt"
+    annotation = {
+        "class_id": 0, "x_center": 0.5, "y_center": 0.5,
+        "width": 0.2, "height": 0.4, "source_annotation_format": "bbox",
+    }
+    detection_label = "0 0.5 0.5 0.2 0.4\n" if not corrupt_label else "0 1.4 0.5 0.2 0.4\n"
+    manifest = {"case_id": case, "version": "v0.1.0", "image_count": 1, "classes": ["battery"]}
+    records = [{"file_name": image, "label_file": label, "split": "train", "annotations": [annotation]}]
+    metadata = [{"file_name": image, "label_file": label, "split": "train", "annotation_count": 1}]
+    files = {
+        f"{case}/manifest.json": json.dumps(manifest),
+        f"{case}/classes.json": json.dumps({"classes": ["battery"]}),
+        f"{case}/annotations.jsonl": json.dumps(records[0]) + "\n",
+        f"{case}/metadata.jsonl": json.dumps(metadata[0]) + "\n",
+        f"{case}/README.md": "test",
+        f"{case}/{image}": b"\x89PNG\r\n\x1a\n",
+        f"{case}/{label}": detection_label,
+    }
+    output = io.BytesIO()
+    with zipfile.ZipFile(output, "w") as archive:
+        for name, content in files.items():
+            archive.writestr(name, content)
+    return output.getvalue()
+
+
 def make_idx_gzip_files() -> dict[str, bytes]:
     image_header = struct.pack(">IIII", 2051, 1, 2, 2)
     label_header = struct.pack(">II", 2049, 1)
@@ -86,12 +113,17 @@ class ReleaseTests(unittest.TestCase):
         )
         return key, source
 
-    def test_catalog_only_two_pinned_datasets(self):
+    def test_pending_detection_artifact_is_not_published_in_catalog(self):
         ids = {item["id"] for item in datasets.list_available()}
         self.assertEqual(ids, {"tomato_leaves", "festival_icons"})
         self.assertIn("festival-v1.0.0", str(datasets.info("festival_icons")))
         self.assertEqual(datasets.info("tomato_leaves")["audit_status"], "full_image_audit")
         self.assertEqual(datasets.info("festival_icons")["audit_status"], "full_image_audit")
+        self.assertEqual(datasets.info("bangladeshi_ewaste_image")["task"], "detection")
+        self.assertEqual(datasets.info("bangladeshi_ewaste_image")["権利上の注意"].split("。")[0], "CC BY 4.0")
+        self.assertEqual(datasets.info("bangladeshi_ewaste_image")["publication_status"], "release_pending")
+        with self.assertRaisesRegex(datasets.DatasetError, "公開Releaseがまだありません"):
+            datasets.get("bangladeshi_ewaste_image", cache_dir=self.cache)
 
     def test_catalog_can_filter_by_task_and_audience(self):
         student = datasets.list_available(task="classification", audience="student")
@@ -147,6 +179,36 @@ class ReleaseTests(unittest.TestCase):
             self.assertEqual(data.kind, "classification")
             self.assertIsNotNone(data.train_dir)
             self.assertIsNone(data.test_dir)
+
+    @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
+    def test_detection_artifact_download_cache_and_dataframe(self):
+        payload = make_detection_zip()
+        key = "bangladeshi_ewaste_image"
+        source = replace(datasets._SOURCES[key], sha256=hashlib.sha256(payload).hexdigest(),
+                         archive_size=len(payload), image_count=1, class_names_ja=("電池ごみ",), published=True)
+        with patch.dict(datasets._SOURCES, {key: source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            data = datasets.get(key, cache_dir=self.cache)
+            frame = data.to_df()
+            self.assertEqual(data.kind, "detection")
+            self.assertEqual(data.splits, {"train": 1, "valid": 0, "test": 0})
+            self.assertEqual(frame.loc[0, "boxes"][0]["class_name"], "battery")
+            self.assertEqual(frame.loc[0, "boxes"][0]["class_name_ja"], "電池ごみ")
+            self.assertEqual(data.quality_summary()["usable_images"], 1)
+            cached = datasets.get(key, cache_dir=self.cache, allow_download=False)
+            self.assertEqual(cached.root, data.root)
+
+    def test_detection_artifact_label_mismatch_is_rejected(self):
+        payload = make_detection_zip(corrupt_label=True)
+        key = "bangladeshi_ewaste_image"
+        source = replace(datasets._SOURCES[key], sha256=hashlib.sha256(payload).hexdigest(),
+                         archive_size=len(payload), image_count=1, published=True)
+        with patch.dict(datasets._SOURCES, {key: source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            with self.assertRaisesRegex(datasets.DatasetError, "範囲外"):
+                datasets.get(key, cache_dir=self.cache)
 
     def test_download_disabled(self):
         with self.assertRaisesRegex(datasets.DatasetError, "キャッシュ"):

@@ -1279,8 +1279,8 @@
       "id": "DS-093",
       "api_id": "bangladeshi_e_waste_image",
       "name": "Bangladeshi E-Waste Image",
-      "task": "classification",
-      "priority": "priority",
+      "task": "detection",
+      "priority": "advanced",
       "source": {
         "landing_page": "https://data.mendeley.com/datasets/77383kmdnw/1",
         "provider": "mendeley",
@@ -1292,28 +1292,29 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/77383kmdnw/1",
-        "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "redistribution_reviewed": true,
+        "rights_status": "license_reviewed_attribution_required"
       },
       "claims": {
         "quantity": "2,157枚",
         "labels": "電子廃棄物12種",
-        "formats": "画像拡張子未記載",
-        "structure": "12種のクラス別フォルダ",
-        "notes": "Medical Wasteなど危険物の取扱い例として誘導しない"
+        "formats": "640x640 JPEG、YOLO形式の矩形またはpolygonラベル",
+        "structure": "train/valid/test、画像とlabelsの同名対応、12クラス",
+        "notes": "polygonを外接矩形へ変換する場合は形状情報が失われる。Medical Wasteなどの分類を実際の廃棄・取扱い判断に使わない"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "full_archive_and_annotation_audit_passed",
+        "files_examined": 4317,
+        "inspection_status": "full_sha_crc_pair_label_and_image_decode_passed",
+        "publication_status": "prepared_artifact_pending_release_asset",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "official_fixed_archive_full_content_check",
+        "notes": "固定ZIP SHA-256一致。画像2157枚とラベル2157件が全件対応し、CRC・全画像デコード成功、同一画像重複0。YOLO bbox 752件とpolygon 1407件（計2159件）、空ラベル4件、形式・座標エラー0。polygonを外接矩形へ変換したartifact v0.1.0をローカル生成し、manifest照合に成功。"
       },
       "preparation": {
         "planned_level": "1",
         "implemented_levels": [],
-        "adapter": "unassigned_classification",
+        "adapter": "yolo_detection_mixed_box_polygon_to_bbox_v1_1",
         "target_colab": true
       },
       "pedagogy": {
