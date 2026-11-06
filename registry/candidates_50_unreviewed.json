@@ -633,33 +633,34 @@
       "task": "classification",
       "priority": "priority",
       "source": {
-        "landing_page": "https://data.mendeley.com/datasets/8jvxtvz52x/1",
+        "landing_page": "https://data.mendeley.com/datasets/8jvxtvz52x/2",
         "provider": "mendeley",
         "provider_dataset_id": "8jvxtvz52x",
-        "version": "1",
+        "version": "2",
         "content_origin_claim": "現地市場で著者がスマホ撮影",
-        "reference_url": "https://data.mendeley.com/datasets/8jvxtvz52x/1"
+        "reference_url": "https://data.mendeley.com/datasets/8jvxtvz52x/2"
       },
       "rights": {
         "license_claim": "CC BY 4.0",
-        "evidence_url": "https://data.mendeley.com/datasets/8jvxtvz52x/1",
+        "evidence_url": "https://data.mendeley.com/datasets/8jvxtvz52x/2",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "publisher_license_claim_reviewed_content_rights_pending"
       },
       "claims": {
-        "quantity": "1,700枚・約27.5MB圧縮",
+        "quantity": "元画像1,700枚（ZIP 28.4MB）、増強画像20,400枚（ZIP 527MB）",
         "labels": "魚10種類",
-        "formats": "JPEG、240×320",
-        "structure": "魚種別カテゴリの画像",
-        "notes": "撮影地域・背景への依存"
+        "formats": "JPEG、320×320（v2）",
+        "structure": "元画像と増強画像を別ZIPで提供、魚種別カテゴリ",
+        "notes": "教材候補は元画像のみを優先し、増強画像は分割漏洩の検査対象として分離。魚種・市場背景・撮影角度の偏りを確認する"
       },
       "audit": {
         "technical_status": "not_tested",
         "files_examined": 0,
         "inspection_status": "not_started",
         "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "official_landing_page_review_only",
+        "notes": "公式v2ページのCC BY 4.0、元画像1,700枚・10クラス・ZIP 28.4MB、増強画像20,400枚・ZIP 527MBを確認。画像と固定アーカイブSHA-256は未取得。権利表示とメタデータの確認のみで、再配布・公開は保留。"
       },
       "preparation": {
         "planned_level": "1",
