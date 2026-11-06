@@ -1807,22 +1807,27 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/9tfbpxpyjz/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "340枚",
         "labels": "ミカン外観：良好／不良",
-        "formats": "RGB写真・640×480",
-        "structure": "クラス別の元ファイル構造は未明記",
-        "notes": "照明が揃いすぎて実用場面に弱い"
+        "formats": "JPEG（640×480 RGB）を含むRAR5",
+        "structure": "連番340ファイル。good／poorと画像を対応させるラベル表はアーカイブ内で未確認",
+        "notes": "20組の完全一致画像を確認。mandarina_331.jpgに手の写り込みあり。条件が揃った撮影環境から実環境への汎化は未検証"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "full_image_audit",
+        "files_examined": 340,
+        "archive_sha256": "0beab31ff2ae3b7e17068f62de3ba8861739f0ab8733454cf4c123a5cca11ada",
+        "decode_errors": 0,
+        "duplicate_sha_groups": 20,
+        "label_mapping_found": false,
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "independent_primary_check",
+        "notes": "固定RARをSHA-256照合後に安全展開し、全340画像をデコード。ラベル対応表がなく、クラスを確定できないため共通分類変換は保留。"
       },
       "preparation": {
         "planned_level": "1",

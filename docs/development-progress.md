@@ -112,3 +112,11 @@
 - 各グループ1枚、合計6枚を範囲取得し、ZIP CRCとJPEGデコードに成功した。代表画像は1024×1024 RGBだった。
 - ページ説明の1,738枚とZIPの1,748枚が一致しないため、全量監査、ラベル定義、元画像権利、再配布条件が未完了のまま公開保留とした。
 - 詳細：[Banana and Guava Quality](datasets/banana_guava_quality.md)、[監査JSON](../reports/banana-guava-quality-sample-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/banana_guava_quality-v2.json`に保存した。
+
+### 2026-11-06：Tangerines_Imagesの全量画像監査
+
+- 公式Mendeley Data v1のCC BY 4.0表記と固定RARのSHA-256を確認した。
+- パスを検査してから340枚を展開し、全画像がJPEG・640×480・RGBとしてデコードできた。破損0、完全一致重複20グループだった。
+- 公式ページはgood／poor condition分類を説明するが、アーカイブには画像との対応ラベル表が見つからなかった。連番や見た目からラベルを割り当てず、共通分類変換・正式API・Notebookへの追加は保留した。
+- `mandarina_331.jpg`に手の写り込みがあることも記録した。
+- 詳細：[Tangerines_Images](datasets/tangerines.md)、[監査JSON](../reports/tangerines-full-image-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/tangerines-v1.json`に保存した。

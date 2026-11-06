@@ -11,8 +11,8 @@
 | 固定Releaseの正式データ | 2 | `tomato_leaves`は生徒向け、`festival_icons`は教師向けLoRA素材 |
 | 教師向けプレビュー | 1 | `fashion_mnist`。固定コミット・4ファイル・件数・IDX形式を検査済み。権利の最終確認中 |
 | 固定取得条件不足で保留 | 1 | `kuzushiji_mnist`。公式データエンドポイントの版とSHA-256が未固定 |
-| 公式ページのライセンス表記を再確認した候補 | 8 | `fruits_360`、`recyclable_waste`、`geosetennea`、`fruitseg30`、`indian_origin_flowers`、`pistachio_image_dataset`、`fresh_rotten_fruits`、`banana_guava_quality`。実体検査と再配布審査が未完了 |
-| その他の未審査候補 | 40 | 取得APIへ追加しない。画像を収録・再配布しない |
+| 公式ページのライセンス表記を再確認した候補 | 9 | `fruits_360`、`recyclable_waste`、`geosetennea`、`fruitseg30`、`indian_origin_flowers`、`pistachio_image_dataset`、`fresh_rotten_fruits`、`banana_guava_quality`、`tangerines`。実体検査と再配布審査が未完了 |
+| その他の未審査候補 | 39 | 取得APIへ追加しない。画像を収録・再配布しない |
 
 上表の正式Release 2件は候補50件とは別の既存配布物です。候補50件の内訳は、プレビュー・保留2件、公式ページを再確認した4件、その他44件です。
 
@@ -64,6 +64,8 @@ Pistachio Image Datasetは固定ZIPをSHA-256検証後に安全展開し、画�
 Fresh and Rotten FruitsはOriginal 3,200枚とAugmented 12,335枚の固定ZIPを確認し、Original各クラス代表16枚のCRC・JPEGデコードに成功しました。拡張画像を混ぜた評価漏洩、全量監査、元画像権利、健康・安全用途を確認できるまで公開保留です（[データ別説明](datasets/fresh_rotten_fruits.md)）。
 
 Banana and Guava Qualityは固定ZIPの1,748画像・6グループを確認し、各グループ代表6枚のCRC・JPEGデコードに成功しました。公式説明の1,738枚との差、ラベル定義、全量監査、元画像権利が未完了のため公開保留です（[データ別説明](datasets/banana_guava_quality.md)）。
+
+Tangerines_Imagesは固定RARのSHA-256を照合後、340枚すべてをデコードしました。20組の完全一致重複があり、アーカイブ内にgood／poorラベルとの対応表は見つかりませんでした。ラベルを推測せず、分類変換と公開を保留しています（[データ別説明](datasets/tangerines.md)）。
 
 Recyclable Wasteの公開API調査で、ページ記載の1,000枚とAPI一覧の989画像が一致しないことが分かりました。詳細は[データ別説明](datasets/recyclable_waste.md)に記録し、公開状態を保留にしています。
 
