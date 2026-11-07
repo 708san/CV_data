@@ -1,0 +1,46 @@
+{
+  "candidate_id": "DS-021",
+  "api_id": "food_waste_bangladesh",
+  "reviewed_on": "2026-11-06",
+  "source": {
+    "landing_page": "https://data.mendeley.com/datasets/w68f9w6jmm/1",
+    "provider_dataset_id": "w68f9w6jmm",
+    "version": 1,
+    "doi": "10.17632/w68f9w6jmm.1",
+    "authors": [
+      "Mohammad Manzurul Islam",
+      "Saifur Rahman",
+      "Fatema Tahsin",
+      "Zarif Syndeed Sikder"
+    ],
+    "publisher_description": {
+      "image_count": 645,
+      "folder_count": 5,
+      "format": "JPG",
+      "collection_context": ["restaurants", "buffets", "weddings"]
+    },
+    "license_claim": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "review_scope": "official landing-page metadata and license terms only",
+  "artifact_downloaded": false,
+  "archive_sha256": null,
+  "archive_size_bytes": null,
+  "archive_structure_verified": false,
+  "image_content_inspected": false,
+  "privacy_review": "pending image inspection",
+  "rights_review": "publisher license claim confirmed; image-level third-party rights not confirmed",
+  "educational_fit": {
+    "status": "potential_only",
+    "proposed_question": "食べ残しの写真を場面ごとに整理し、食品ロスを減らす方法を考える",
+    "basis": "inference from the publisher's collection-context description",
+    "constraints": [
+      "Do not infer class names from the folder count.",
+      "Do not present model predictions as food-safety judgments.",
+      "Review people, venue names, and location metadata before classroom use."
+    ]
+  },
+  "technical_status": "not_tested",
+  "publication_status": "hold_pending_fixed_archive_and_full_inspection",
+  "retrieval_note": "The official Mendeley API archive-metadata endpoint could not be reached from the restricted shell environment during this review; no archive URL or checksum was recorded."
+}

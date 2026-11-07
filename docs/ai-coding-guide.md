@@ -22,6 +22,8 @@ Fashion-MNISTは教師向けプレビューです。権利確認中なので、�
 
 `list_available()`の`task`は`classification`、`detection`、`segmentation`、`lora`のいずれかです。正式APIに表示されない候補は、台帳上の調査候補であり、取得可能・教材利用可能とは限りません。`include_preview=True`は教師が確認するときだけ指定します。
 
+物体検出用の候補データは全量監査と共通形式への変換まで終えましたが、固定Release assetが公開されるまでは正式一覧・取得APIに掲載しません。候補ページには監査結果とpolygonから外接矩形への変換内容を記録しています。
+
 LoRA素材は`from cvlesson import loras`から管理します。`loras.list_available()`は生徒向けに承認された素材だけを返し、権利確認中の文化祭アイコンは`loras.list_preview()`で確認できます。重みは配布せず、必要な場合は`loras.get("festival_icon_style", allow_preview=True).get_data(allow_preview=True)`で画像・キャプション素材だけを取得します。
 
 `get()`は`DatasetBundle`を返します。`root`、`images_dir`、`labels_csv`、`metadata_jsonl`、`kind`、`task`、`manifest`、`version`、`classes`、`class_names_ja`、`splits`、`license_info`、`source_info`を参照できます。トマトの葉では`train_dir`と`test_dir`も使えます。監査状態とレポートは`datasets.info("tomato_leaves")`で確認します。

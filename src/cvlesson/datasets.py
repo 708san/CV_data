@@ -61,6 +61,7 @@ class ReleaseSource:
     license_info: dict[str, Any] | None = None
     source_info: dict[str, Any] | None = None
     preview: bool = False
+    published: bool = True
     file_urls: dict[str, str] = field(default_factory=dict)
     file_sha256: dict[str, str] = field(default_factory=dict)
     file_sizes: dict[str, int] = field(default_factory=dict)
@@ -104,6 +105,8 @@ class DatasetBundle:
         """英語ラベルと同じ順番の日本語ラベル。"""
         source = _source(self.id)
         names = source.label_names_ja or {}
+        if not names and len(source.class_names_ja) == len(self.classes):
+            return source.class_names_ja
         return tuple(names.get(label, label) for label in self.classes)
 
     @property
@@ -125,6 +128,10 @@ class DatasetBundle:
         return self.root / "labels.csv"
 
     @property
+    def annotations_jsonl(self) -> Path:
+        return self.root / "annotations.jsonl"
+
+    @property
     def metadata_jsonl(self) -> Path:
         return self.root / "metadata.jsonl"
 
@@ -139,7 +146,7 @@ class DatasetBundle:
         return path if path.is_dir() else None
 
     def to_df(self, *, val_fraction: float = 0.1, seed: int = 42):
-        """分類データを共通列のDataFrameに変換する。
+        """分類または検出データを共通列のDataFrameに変換する。
 
         元Releaseに検証用分割がない場合、公式testを保持したまま、trainだけを
         クラス比率を保つ決定的な方法でtrain/valへ分ける。元画像やCSVは変更しない。
@@ -148,6 +155,32 @@ class DatasetBundle:
             import pandas as pd
         except ImportError as exc:
             raise DatasetError("DataFrame変換にはpandasが必要です。pip install pandas を実行してください。") from exc
+        if self.kind == "detection":
+            names = self.classes
+            records = []
+            for line in self.annotations_jsonl.read_text(encoding="utf-8").splitlines():
+                if not line.strip():
+                    continue
+                item = json.loads(line)
+                boxes = [
+                    {
+                        **annotation,
+                        "class_name": names[annotation["class_id"]],
+                        "class_name_ja": self.class_names_ja[annotation["class_id"]],
+                    }
+                    for annotation in item["annotations"]
+                ]
+                image = item["file_name"]
+                records.append({
+                    "image_path": str((self.root / image).resolve()),
+                    "label_file": str((self.root / item["label_file"]).resolve()),
+                    "boxes": boxes,
+                    "split": item["split"],
+                    "sample_id": _sample_id(image),
+                })
+            return pd.DataFrame(records, columns=[
+                "image_path", "label_file", "boxes", "split", "sample_id",
+            ])
         rows = _read_rows(self.labels_csv)
         if self.kind != "classification":
             return pd.DataFrame([
@@ -188,6 +221,12 @@ class DatasetBundle:
     @property
     def splits(self) -> dict[str, int]:
         """標準化後のtrain/val/test件数。"""
+        if self.kind == "detection":
+            counts = Counter()
+            for line in self.annotations_jsonl.read_text(encoding="utf-8").splitlines():
+                if line.strip():
+                    counts[json.loads(line)["split"]] += 1
+            return {name: int(counts.get(name, 0)) for name in ("train", "valid", "test")}
         if self.kind != "classification":
             return {}
         rows = _read_rows(self.labels_csv)
@@ -205,9 +244,12 @@ class DatasetBundle:
         except ImportError as exc:
             raise DatasetError("画像表示にはPillowとmatplotlibが必要です。") from exc
         frame = self.to_df(seed=seed)
+        if split == "val" and self.kind == "detection":
+            split = "valid"
         if split is not None:
-            if split not in {"train", "val", "test"}:
-                raise ValueError("splitはtrain、val、testのいずれかです。")
+            valid_splits = {"train", "val", "valid", "test"}
+            if split not in valid_splits:
+                raise ValueError("splitはtrain、valid（またはval）、testのいずれかです。")
             frame = frame[frame["split"] == split]
         if frame.empty:
             raise DatasetError("表示できる画像がありません。")
@@ -218,7 +260,23 @@ class DatasetBundle:
         for axis, (_, record) in zip(axes.flat, selected.iterrows()):
             with Image.open(record["image_path"]) as image:
                 axis.imshow(image.convert("RGB"))
-            axis.set_title(record.get("label_ja", record.get("caption", "")))
+            title = record.get("label_ja", record.get("caption", ""))
+            if self.kind == "detection":
+                from matplotlib.patches import Rectangle
+                boxes = record["boxes"]
+                title = ", ".join(dict.fromkeys(box["class_name"] for box in boxes)) or "対象ラベルなし"
+                with Image.open(record["image_path"]) as image:
+                    width, height = image.size
+                for box in boxes:
+                    left = (box["x_center"] - box["width"] / 2) * width
+                    top = (box["y_center"] - box["height"] / 2) * height
+                    axis.add_patch(Rectangle(
+                        (left, top), box["width"] * width, box["height"] * height,
+                        fill=False, edgecolor="yellow", linewidth=2,
+                    ))
+                    axis.text(left, top, box.get("class_name_ja", box["class_name"]), color="black", fontsize=7,
+                              bbox={"facecolor": "yellow", "alpha": 0.75, "pad": 1})
+            axis.set_title(title)
             axis.axis("off")
         for axis in axes.flat[len(selected):]:
             axis.axis("off")
@@ -255,6 +313,14 @@ class DatasetBundle:
 
     def quality_summary(self, *, seed: int = 42, val_fraction: float = 0.1) -> dict[str, Any]:
         """標準化後の件数と分割方法を機械可読な辞書で返す。"""
+        if self.kind == "detection":
+            frame = self.to_df()
+            object_counts = Counter(box["class_name"] for row in frame["boxes"] for box in row)
+            return {
+                "dataset_id": self.id, "kind": self.kind, "usable_images": int(len(frame)),
+                "objects_by_class": dict(sorted(object_counts.items())), "splits": self.splits,
+                "validated_at": _utc_now(),
+            }
         if self.kind != "classification":
             return {"dataset_id": self.id, "kind": self.kind, "validated_at": _utc_now()}
         frame = self.to_df(seed=seed, val_fraction=val_fraction)
@@ -305,6 +371,111 @@ _SOURCES: dict[str, ReleaseSource] = {
             "release_repository": RELEASE_REPOSITORY,
             "release_tag": "tomato-v1.2.0",
         },
+    ),
+    "bangladeshi_ewaste_image": ReleaseSource(
+        id="bangladeshi_ewaste_image", case_id="bangladeshi_ewaste_image",
+        tag="bangladeshi-ewaste-v0.1.0",
+        sha256="fe06d5579e3a84010e0e6ccd7d90d8230ca72d5fcd39719d6d6d8731595007fa",
+        archive_size=71_762_431, image_count=2157,
+        kind="detection", name_ja="バングラデシュの電子ごみ（位置と種類）",
+        rights_note="CC BY 4.0。作者・出典・変更の表示が必要。画像分類を実際のごみ分別や危険物処理に使わないでください。",
+        aliases_ja=("電子ごみ検出", "バングラデシュ電子ごみ"),
+        task="detection", audiences=("student", "teacher"), difficulty="intermediate",
+        use_cases_ja=("画像の中の物と位置を囲む", "背景が変わったときの予測を比べる"),
+        input_description_ja="640×640の電子ごみ画像",
+        output_description_ja="物体の位置を囲む枠と12種類のラベル",
+        download_size_mb=71.7, audit_status="full_image_and_annotation_audit",
+        audit_report="reports/bangladeshi-ewaste-full-audit.json",
+        class_names_ja=(
+            "電池ごみ", "ガラスごみ", "キーボード", "電球", "医療廃棄物", "金属ごみ",
+            "携帯電話", "マウス", "生ごみ", "基板", "紙ごみ", "プラスチックごみ",
+        ),
+        license_info={
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+            "rights_review": "公式ページとアーカイブ内READMEの表記を確認。帰属表示とpolygon変換の明記が必要。",
+        },
+        source_info={
+            "dataset_name": "Custom Bangladeshi E-Waste Image Dataset for Object Detection and Recognition",
+            "provider": "Tanzila Afrin; Azizul Abedin Azmi",
+            "url": "https://doi.org/10.17632/77383kmdnw.1",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "bangladeshi-ewaste-v0.1.0",
+        },
+        file_urls={
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/bangladeshi-ewaste-v0.1.0/bangladeshi_ewaste-v0.1.0.zip",
+        },
+        published=False,
+    ),
+    "food_waste_bangladesh": ReleaseSource(
+        id="food_waste_bangladesh", case_id="food_waste_bangladesh",
+        tag="food-waste-bangladesh-v0.1.0",
+        sha256="46e981edbbcc6ed8d5d3a2e1cb86ae23f190b2cadbe24f9b509b5f50001d66bb",
+        archive_size=31_428_268, image_count=645,
+        kind="classification", name_ja="バングラデシュの食品廃棄画像（撮影場面）",
+        rights_note="CC BY 4.0。作者・出典・変更の表示が必要。フォルダは撮影カテゴリで、食品廃棄量を表しません。",
+        aliases_ja=("食品廃棄画像", "Food Waste Bangladesh"),
+        task="classification", audiences=("student", "teacher"), difficulty="introductory",
+        use_cases_ja=("画像を撮影場面ごとに分類する", "クラス数の偏りが分類結果に与える影響を調べる"),
+        input_description_ja="食べ残しなどを撮影した画像",
+        output_description_ja="ビュッフェ・一般・レストラン・野菜・婚礼の5カテゴリ",
+        download_size_mb=31.4, audit_status="full_image_audit_artifact_prepared",
+        audit_report="reports/food_waste_bangladesh-v0.1.0.json",
+        class_names_ja=("ビュッフェ", "一般", "レストラン", "野菜", "婚礼"),
+        label_names_ja={
+            "Buffet Food waste": "ビュッフェ",
+            "Food waste (General)": "一般",
+            "Restaurant food waste": "レストラン",
+            "Vegetables waste": "野菜",
+            "Wedding Food waste": "婚礼",
+        },
+        license_info={
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+            "rights_review": "Mendeley公式ページで表示を確認。出典・変更表示が必要。皿のブランド表示は推奨・承認を示さない。",
+        },
+        source_info={
+            "dataset_name": "An image dataset for food waste in Bangladesh",
+            "provider": "Mohammad Manzurul Islam; Saifur Rahman; Fatema Tahsin; Zarif Syndeed Sikder",
+            "url": "https://doi.org/10.17632/w68f9w6jmm.1",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "food-waste-bangladesh-v0.1.0",
+        },
+        file_urls={
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/food-waste-bangladesh-v0.1.0/food_waste_bangladesh-v0.1.0.zip",
+        },
+        published=False,
+    ),
+    "smallfishbd": ReleaseSource(
+        id="smallfishbd", case_id="smallfishbd", tag="smallfishbd-v0.1.0",
+        sha256="7be99791336a150a4d7eb3d75f2314cef8eda184a8abc9ccefb358799bbc49c0",
+        archive_size=29_798_977, image_count=1697,
+        kind="classification", name_ja="バングラデシュの小魚10種",
+        rights_note="CC BY 4.0。作者・出典・変更の表示が必要。青い背景に偏るため、実環境での魚種判定には使いません。",
+        aliases_ja=("小魚10種", "SmallFishBD"),
+        task="classification", audiences=("student", "teacher"), difficulty="introductory",
+        use_cases_ja=("魚の画像を10種類に分類する", "背景や見た目の似た魚種による誤分類を調べる"),
+        input_description_ja="青系の背景で撮影された320×320の魚画像",
+        output_description_ja="バングラデシュの市場で使われる魚名10種類",
+        download_size_mb=29.8, audit_status="full_image_audit_artifact_prepared",
+        audit_report="reports/smallfishbd-v0.1.0.json",
+        class_names_ja=("ベレ", "チェラ", "グチ", "カチキ", "カタ・ファサ", "モラ", "ナマ・チャンダ", "パブダ", "プティ", "テングラ"),
+        license_info={
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+            "rights_review": "Mendeley公式ページで表示を確認。出典・変更表示が必要。増強画像は元画像との分割漏洩を避けるため除外。",
+        },
+        source_info={
+            "dataset_name": "SmallFishBD: A Comprehensive Image Dataset of Common Small Fish Varieties in Bangladesh for Species Identification and Classification",
+            "provider": "Md Hasanul Ferdaus et al. (11 contributors)",
+            "url": "https://doi.org/10.17632/8jvxtvz52x.2",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "smallfishbd-v0.1.0",
+        },
+        file_urls={
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/smallfishbd-v0.1.0/smallfishbd-v0.1.0.zip",
+        },
+        published=False,
     ),
     "festival_icons": ReleaseSource(
         id="festival_icons", case_id="festival-icons", tag="festival-v1.0.0",
@@ -491,13 +662,15 @@ _TASKS: dict[str, dict[str, str]] = {
 
 
 def _catalog_sources(*, include_preview: bool) -> tuple[ReleaseSource, ...]:
-    sources = list(_SOURCES.values())
+    sources = [source for source in _SOURCES.values() if source.published]
     if include_preview:
         sources.extend(_PREVIEW_SOURCES.values())
     return tuple(sources)
 
 
 def _source_status(src: ReleaseSource) -> str:
+    if not src.published:
+        return "release_pending"
     if src.preview:
         return "teacher_preview_only"
     if "student" in src.audiences:
@@ -582,6 +755,8 @@ def info(dataset_id: str | None = None) -> dict[str, Any] | list[dict[str, Any]]
         "license_info": dict(src.license_info or {}),
         "source_info": dict(src.source_info or {}),
         "状態": (
+            "共通artifactは準備済みですが、公開Releaseがまだありません。"
+            if not src.published else
             "教師向けプレビュー。権利確認中のため正式一覧には未掲載。"
             if src.preview else "固定版の取得条件を確認済み。権利状態と実体監査は個別項目を参照。"
         ),
@@ -704,8 +879,113 @@ def _extract_verified(archive_path: Path, destination: Path, src: ReleaseSource)
     return root
 
 
+def _validate_detection_case(root: Path, src: ReleaseSource, manifest: dict[str, Any]) -> dict[str, Any]:
+    required = ("classes.json", "annotations.jsonl", "metadata.jsonl", "README.md")
+    if not all((root / name).is_file() for name in required):
+        raise DatasetError("物体検出artifactの必須ファイルがありません。")
+    classes_data = json.loads((root / "classes.json").read_text(encoding="utf-8"))
+    classes = classes_data.get("classes") if isinstance(classes_data, dict) else classes_data
+    if (not isinstance(classes, list) or not classes or classes != manifest.get("classes")
+            or any(not isinstance(name, str) for name in classes) or len(classes) != len(set(classes))):
+        raise DatasetError("classes.jsonとmanifest.jsonのクラスが一致しません。")
+    records = [json.loads(line) for line in (root / "annotations.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
+    metadata_rows = [json.loads(line) for line in (root / "metadata.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
+    if len(records) != src.image_count or len(metadata_rows) != src.image_count:
+        raise DatasetError("物体検出artifactの注釈件数が画像数と一致しません。")
+    metadata_by_file: dict[str, dict[str, Any]] = {}
+    for item in metadata_rows:
+        name = item.get("file_name")
+        if not isinstance(name, str) or name in metadata_by_file:
+            raise DatasetError("metadata.jsonlの画像パスが不正または重複しています。")
+        metadata_by_file[name] = item
+
+    observed_images: set[str] = set()
+    expected_label_files: set[str] = set()
+    for record in records:
+        image = record.get("file_name")
+        label_file = record.get("label_file")
+        split = record.get("split")
+        parts = PurePosixPath(image).parts if isinstance(image, str) else ()
+        label_parts = PurePosixPath(label_file).parts if isinstance(label_file, str) else ()
+        if (len(parts) != 3 or parts[0] != "images" or any(part in {"", ".", ".."} for part in parts)
+                or "\\" in image or "\x00" in image or split not in {"train", "valid", "test"}
+                or parts[1] != split or PurePosixPath(image).suffix.lower() not in {".jpg", ".jpeg", ".png"}
+                or len(label_parts) != 3 or label_parts[:2] != ("labels", split)
+                or any(part in {"", ".", ".."} for part in label_parts)
+                or "\\" in label_file or "\x00" in label_file
+                or PurePosixPath(label_file).suffix.lower() != ".txt"
+                or PurePosixPath(label_file).stem != PurePosixPath(image).stem
+                or image in observed_images):
+            raise DatasetError(f"物体検出artifactの画像・ラベルパスが不正です: {image}")
+        image_path, label_path = root / image, root / label_file
+        if image_path.is_symlink() or not image_path.is_file() or label_path.is_symlink() or not label_path.is_file():
+            raise DatasetError(f"物体検出artifactの画像またはラベルがありません: {image}")
+        observed_images.add(image)
+        expected_label_files.add(label_file)
+        annotations = record.get("annotations")
+        if not isinstance(annotations, list):
+            raise DatasetError(f"物体検出annotationが配列ではありません: {image}")
+        normalized_rows = []
+        for annotation in annotations:
+            if not isinstance(annotation, dict):
+                raise DatasetError(f"物体検出annotationが不正です: {image}")
+            try:
+                class_id = annotation["class_id"]
+                coords = [float(annotation[key]) for key in ("x_center", "y_center", "width", "height")]
+            except (KeyError, TypeError, ValueError) as exc:
+                raise DatasetError(f"物体検出annotationの値が不正です: {image}") from exc
+            if (type(class_id) is not int or not 0 <= class_id < len(classes)
+                    or any(not 0 <= value <= 1 for value in coords)
+                    or coords[2] <= 0 or coords[3] <= 0
+                    or coords[0] - coords[2] / 2 < 0 or coords[1] - coords[3] / 2 < 0
+                    or coords[0] + coords[2] / 2 > 1 or coords[1] + coords[3] / 2 > 1
+                    or annotation.get("source_annotation_format") not in {"bbox", "polygon"}):
+                raise DatasetError(f"物体検出annotationが範囲外です: {image}")
+            normalized_rows.append([class_id, *coords])
+        label_rows = []
+        for line in label_path.read_text(encoding="utf-8").splitlines():
+            values = line.split()
+            if not values:
+                continue
+            if len(values) != 5:
+                raise DatasetError(f"共通形式の検出ラベルは5列で指定します: {label_file}")
+            try:
+                label_row = [int(values[0]), *map(float, values[1:])]
+            except ValueError as exc:
+                raise DatasetError(f"共通形式の検出ラベルが数値ではありません: {label_file}") from exc
+            class_id, x_center, y_center, width, height = label_row
+            if (not 0 <= class_id < len(classes) or any(not 0 <= value <= 1 for value in label_row[1:])
+                    or width <= 0 or height <= 0 or x_center - width / 2 < 0 or y_center - height / 2 < 0
+                    or x_center + width / 2 > 1 or y_center + height / 2 > 1):
+                raise DatasetError(f"共通形式の検出ラベルが範囲外です: {label_file}")
+            label_rows.append(label_row)
+        if len(normalized_rows) != len(label_rows) or any(
+            expected[0] != actual[0] or any(abs(a - b) > 1e-8 for a, b in zip(expected[1:], actual[1:]))
+            for expected, actual in zip(normalized_rows, label_rows)
+        ):
+            raise DatasetError(f"annotations.jsonlとYOLOラベルが一致しません: {label_file}")
+        meta = metadata_by_file.get(image)
+        if meta != {"file_name": image, "label_file": label_file, "split": split, "annotation_count": len(annotations)}:
+            raise DatasetError(f"metadata.jsonlとannotations.jsonlが一致しません: {image}")
+
+    actual_images = {
+        path.relative_to(root).as_posix() for path in (root / "images").rglob("*")
+        if path.is_file() and not path.is_symlink()
+    }
+    actual_labels = {
+        path.relative_to(root).as_posix() for path in (root / "labels").rglob("*")
+        if path.is_file() and not path.is_symlink()
+    }
+    if observed_images != actual_images or expected_label_files != actual_labels or set(metadata_by_file) != observed_images:
+        raise DatasetError("画像・ラベル・metadataのファイル集合が一致しません。")
+    return manifest
+
+
 def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
-    required = [root / x for x in ("manifest.json", "labels.csv", "metadata.jsonl", "README.md")]
+    if src.kind == "detection":
+        required = [root / x for x in ("manifest.json", "classes.json", "annotations.jsonl", "metadata.jsonl", "README.md")]
+    else:
+        required = [root / x for x in ("manifest.json", "labels.csv", "metadata.jsonl", "README.md")]
     if not all(p.is_file() for p in required):
         raise DatasetError("manifest.jsonなどの必須ファイルがありません。")
     manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
@@ -713,6 +993,8 @@ def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
     if (manifest.get("case_id") != src.case_id or manifest.get("version") != version
             or manifest.get("image_count") != src.image_count):
         raise DatasetError("manifest.jsonの版または画像枚数が固定Releaseの情報と一致しません。")
+    if src.kind == "detection":
+        return _validate_detection_case(root, src, manifest)
     with (root / "labels.csv").open(encoding="utf-8-sig", newline="") as stream:
         reader = csv.DictReader(stream)
         required_cols = {"image", "label", "split"} if src.kind == "classification" else {"image", "caption"}
@@ -892,6 +1174,8 @@ def get(dataset_id: str, *, cache_dir: str | Path | None = None,
         allow_download: bool = True, allow_preview: bool = False) -> DatasetBundle:
     """既存の固定Releaseを取得する。CV_sample_dataへの書込みは一切行わない。"""
     src = _source(dataset_id)
+    if not src.published:
+        raise DatasetError("データartifactは準備済みですが、公開Releaseがまだありません。公開後に再度お試しください。")
     if src.preview:
         if not allow_preview:
             raise DatasetError(

@@ -1,0 +1,35 @@
+{
+  "dataset_id": "pistachio_image_dataset",
+  "source_url": "https://data.mendeley.com/datasets/h7pf57cgg9/1",
+  "source_version": "1",
+  "license_claim": "CC BY 4.0",
+  "source_archive": {
+    "filename": "Pistachio_Image_Dataset.zip",
+    "size": 27859492,
+    "sha256": "140760707018b7f53d91a86a1d7be96d92b1a0d26a75690ab9280ed1170df895",
+    "zip_members": 2164,
+    "zip_crc_check": "passed",
+    "zip_path_check": "passed",
+    "zip_symlink_check": "passed"
+  },
+  "image_files_examined": 2148,
+  "image_bytes": 35036929,
+  "class_counts": {"Kirmizi_Pistachio": 1232, "Siirt_Pistachio": 916},
+  "formats": {"JPEG": 2148},
+  "dimensions": {"600x600": 2148},
+  "modes": {"RGB": 2148},
+  "decode_errors": 0,
+  "duplicate_sha_groups": 0,
+  "duplicate_files": 0,
+  "prepared_artifact": {
+    "status": "local_only_validated",
+    "image_count": 2148,
+    "split_counts": {"train": 1717, "val": 214, "test": 217},
+    "split_seed": 42,
+    "zip_size": 25872756,
+    "zip_sha256": "2c3ee3272a81c62989f4da2495c56caead617cafda3a127ec2deb1bc07ffa249"
+  },
+  "status": "full_image_audit_passed_rights_review_pending",
+  "publication_status": "hold",
+  "notes": "固定ZIPをSHA-256検証後に安全展開し、画像2,148枚を全量デコードした。元画像の第三者権利、クレジット、非画像ファイルの扱い、再配布条件は未完了。"
+}

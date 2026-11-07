@@ -1,0 +1,39 @@
+{
+  "dataset_id": "tangerines",
+  "source_url": "https://data.mendeley.com/datasets/9tfbpxpyjz/1",
+  "source_version": "1",
+  "license_claim": "CC BY 4.0",
+  "source_archive": {
+    "filename": "Tangerines_Images.rar",
+    "file_id": "6393bf4a-6619-4bc3-91f9-ce986a6451bf",
+    "size": 4154193,
+    "sha256": "0beab31ff2ae3b7e17068f62de3ba8861739f0ab8733454cf4c123a5cca11ada",
+    "archive_format": "RAR5",
+    "member_count": 340,
+    "member_path_check": "passed",
+    "symlink_members": 0
+  },
+  "image_files_examined": 340,
+  "decode_errors": 0,
+  "formats": {"JPEG": 340},
+  "dimensions": {"640x480": 340},
+  "modes": {"RGB": 340},
+  "duplicate_sha_groups": 20,
+  "duplicate_groups": [
+    ["mandarina_8.jpg", "mandarina_38.jpg"], ["mandarina_9.jpg", "mandarina_39.jpg"],
+    ["mandarina_36.jpg", "mandarina_43.jpg"], ["mandarina_37.jpg", "mandarina_44.jpg"],
+    ["mandarina_47.jpg", "mandarina_56.jpg"], ["mandarina_48.jpg", "mandarina_57.jpg"],
+    ["mandarina_124.jpg", "mandarina_127.jpg"], ["mandarina_125.jpg", "mandarina_128.jpg"],
+    ["mandarina_153.jpg", "mandarina_156.jpg"], ["mandarina_154.jpg", "mandarina_155.jpg"],
+    ["mandarina_172.jpg", "mandarina_178.jpg"], ["mandarina_175.jpg", "mandarina_179.jpg"],
+    ["mandarina_184.jpg", "mandarina_220.jpg"], ["mandarina_185.jpg", "mandarina_219.jpg"],
+    ["mandarina_186.jpg", "mandarina_229.jpg"], ["mandarina_187.jpg", "mandarina_228.jpg"],
+    ["mandarina_188.jpg", "mandarina_211.jpg"], ["mandarina_189.jpg", "mandarina_210.jpg"],
+    ["mandarina_240.jpg", "mandarina_249.jpg"], ["mandarina_241.jpg", "mandarina_248.jpg"]
+  ],
+  "label_mapping_found": false,
+  "incidental_person_visible": ["mandarina_331.jpg"],
+  "status": "full_image_audit_passed_label_mapping_pending",
+  "publication_status": "hold",
+  "notes": "全340枚をデコードした。公式説明はgood/poor condition分類を主張するが、固定アーカイブ内で画像とクラスを結び付けるラベル表を確認できなかった。indexからラベルを推測せず、共通分類形式・公開教材へは変換していない。"
+}

@@ -1,0 +1,67 @@
+{
+  "candidate_id": "DS-028",
+  "api_id": "smallfishbd",
+  "reviewed_on": "2026-11-06",
+  "source": {
+    "landing_page": "https://data.mendeley.com/datasets/8jvxtvz52x/2",
+    "provider_dataset_id": "8jvxtvz52x",
+    "version": 2,
+    "doi": "10.17632/8jvxtvz52x.2",
+    "authors": [
+      "Md Hasanul Ferdaus",
+      "Rizvee Hassan Prito",
+      "Masud Ahmed",
+      "Syeda Raisha Abedin Ohona",
+      "Khandaker Golam Morshed",
+      "Israt Jahan Jarin",
+      "Sawkat Ali",
+      "Mohammad Rifat Ahmmad Rashid",
+      "Nishat Tasnim Niloy",
+      "Mohammad Manzurul Islam",
+      "Maheen Islam"
+    ],
+    "license_claim": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "publisher_description": {
+      "original_images": 1700,
+      "augmented_images": 20400,
+      "class_count": 10,
+      "original_class_counts": {
+        "Bele": 205,
+        "Nama Chanda": 110,
+        "Chela": 190,
+        "Guchi": 164,
+        "Kachki": 247,
+        "Mola": 179,
+        "Kata Phasa": 129,
+        "Pabda": 125,
+        "Puti": 218,
+        "Tengra": 133
+      },
+      "image_size": "320x320 JPEG",
+      "original_zip_size_reported": "28.4 MB",
+      "augmented_zip_size_reported": "527 MB",
+      "collection_context": "wholesale fish markets in Dhaka"
+    }
+  },
+  "review_scope": "official landing-page metadata and license terms only",
+  "artifact_downloaded": false,
+  "archive_sha256": null,
+  "archive_structure_verified": false,
+  "image_content_inspected": false,
+  "rights_review": "publisher license claim confirmed; image-level third-party rights not confirmed",
+  "educational_fit": {
+    "status": "potential_only",
+    "proposed_question": "魚の写真から種類を予測し、撮影条件による違いを調べる",
+    "basis": "inference from the publisher's species-classification description",
+    "preferred_subset": "original images only",
+    "constraints": [
+      "Keep augmented images separate until overlap and derivation are checked.",
+      "Do not use predictions for food safety or fish pricing.",
+      "Inspect market backgrounds and potential people or venue details."
+    ]
+  },
+  "technical_status": "not_tested",
+  "publication_status": "hold_pending_fixed_archive_and_full_inspection",
+  "retrieval_note": "The official landing page is available, but the official archive-metadata endpoint and binary downloads could not be reached from the restricted shell environment during this review. No download URL or checksum was recorded."
+}

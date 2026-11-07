@@ -1,0 +1,28 @@
+{
+  "dataset_id": "rgb_d_button_mushroom_growth",
+  "source_url": "https://data.mendeley.com/datasets/8n6nr43gk3/1",
+  "source_version": "1",
+  "license_claim": "CC BY 4.0",
+  "official_page_claims": {
+    "mosaics": 129,
+    "modalities": ["RGB", "depth"],
+    "annotation_format": "COCO instance segmentation",
+    "time_interval_minutes": 10
+  },
+  "official_api_file_count": 1,
+  "image_count_listed": 0,
+  "annotation_file_count_listed": 0,
+  "files": [
+    {
+      "filename": "readme.txt",
+      "file_id": "6d5832b5-c7c7-494f-a471-ec31b6709e00",
+      "size": 4712,
+      "sha256": "a39f7231cdc51bc7fb103d3ff319830caa63f4b196f81593124d435b18dd032f",
+      "api_sha256_match": true,
+      "download_url": "https://data.mendeley.com/public-files/datasets/8n6nr43gk3/files/6d5832b5-c7c7-494f-a471-ec31b6709e00/file_downloaded"
+    }
+  ],
+  "status": "source_listing_incomplete_images_and_annotations_unavailable",
+  "publication_status": "hold",
+  "notes": "固定版v1の公式APIにはreadme.txtのみ。ページ記載のRGB、depth、COCO注釈ファイルが一覧に存在しない。READMEの固定SHA-256照合のみ実施し、画像・マスクの実体や対応関係は未検査。"
+}
