@@ -146,3 +146,13 @@
 - artifact v0.1.0を一時領域へ作成し、画像2,157枚・ファイル4,319件のmanifest照合に成功。polygon由来のbboxは座標精度を維持する17桁で出力。ZIPは71,762,431 bytes、SHA-256 `fe06d5579e3a84010e0e6ccd7d90d8230ca72d5fcd39719d6d6d8731595007fa`。ライブラリの全2,157画像・2,159注釈の構造検査とDataFrame変換にも成功した。データ本体はGit履歴へ追加していない。
 - ライブラリには検出bundle検証とDataFrame表示を実装したが、公開Releaseが未作成のためsourceを未公開状態に固定し、正式一覧から隠し、取得要求も拒否する。
 - 詳細：[Bangladeshi E-Waste](datasets/bangladeshi_ewaste_image.md)、[監査JSON](../reports/bangladeshi-ewaste-full-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/bangladeshi_ewaste-v1.json`。
+
+### 2026-11-07：Food Waste Bangladesh・SmallFishBDの全量監査と共通化
+
+- Mendeley公式v1/v2ページのCC BY 4.0表示、固定ファイル情報、SHA-256を照合してから安全展開した。
+- Food Waste Bangladeshは645枚すべてJPEGデコード成功、重複0、危険パス・symlink 0、EXIF/GPS/XMPなし。5ラベルは撮影場面で、クラス数は91/146/72/16/320と偏る。廃棄量を表すデータではない。
+- SmallFishBDは元画像1,700枚すべて320×320 JPEGとしてデコードし、公式クラス数に一致。完全一致重複3枚を除外し、1,697枚を収録。20,400枚の増強画像は取得・収録せず、評価時の分割漏洩を避ける。
+- `CV_data_artifacts`にsource manifest、ライセンス記録、除外記録、共通classification artifact、検査reportを準備した。両artifactのサイズ・SHA-256・ZIP内manifest検証は済み。
+- ライブラリへ両候補を`published=False`で登録。詳細情報は参照できるが、正式一覧と取得APIから隠れ、Release asset作成までは取得できない。
+- サンプル目視ではFood Wasteに人物の顔、SmallFishBDに人物は見つからなかったが、全画像を人手で権利・プライバシー審査した結論ではない。全画像の権利審査とRelease asset作成を保留事項として明記した。
+- 詳細：[Food Waste Bangladesh](datasets/food_waste_bangladesh.md)、[SmallFishBD](datasets/smallfishbd.md)、[候補精査状況](catalog-review.md)。

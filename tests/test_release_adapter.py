@@ -124,6 +124,12 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(datasets.info("bangladeshi_ewaste_image")["publication_status"], "release_pending")
         with self.assertRaisesRegex(datasets.DatasetError, "公開Releaseがまだありません"):
             datasets.get("bangladeshi_ewaste_image", cache_dir=self.cache)
+        for dataset_id in ("food_waste_bangladesh", "smallfishbd"):
+            self.assertEqual(datasets.info(dataset_id)["publication_status"], "release_pending")
+            with self.subTest(dataset=dataset_id), self.assertRaisesRegex(
+                datasets.DatasetError, "公開Releaseがまだありません"
+            ):
+                datasets.get(dataset_id, cache_dir=self.cache)
 
     def test_catalog_can_filter_by_task_and_audience(self):
         student = datasets.list_available(task="classification", audience="student")
