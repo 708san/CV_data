@@ -225,3 +225,10 @@
 - 画像画素を変更せず、共通formatとseed 42のクラス層化splitを追加。train 1,503、val 322、test 323。artifact manifest検証成功。
 - Mendeley v1はCC BY 4.0表示。掲載者の撮影説明、関連2論文の引用条件を記録。2021論文本文のCC BY-NC表示とdataset licenseを分けて記録。画像権利者・第三者権利の確認が残るためRelease/APIは保留。
 - 詳細：[Pistachio](datasets/pistachio_image_dataset.md)、[監査report](../reports/pistachio_image_dataset-v1-full-audit.json)。
+
+## 2026-11-09：整形済み3データの権利・成果物再確認
+
+- FruitSeg30 v0.1.0、Pistachio Image Dataset v0.1.0、Recyclable Waste v0.1.0のZIPを一時領域で再検査。CRCとファイル一覧・全ファイルのSHA-256/サイズがartifact manifestに一致しました。ZIPはGitに追加していません。
+- 各公式配布ページのCC BY 4.0表示と提供者の出典説明を確認し、帰属・改変通知（ピスタチオは指定論文引用）を条件に再配布審査を記録しました。
+- FruitSeg30は29クラス1,914画像・マスク組、ピスタチオは2,148画像、Recyclable Wasteは977画像。教材課題と注意事項をデータ別ページへ記載しました。
+- GitHub Release assetが未作成のため、3件ともライブラリからはまだ取得できません。食品廃棄・E-Wasteは人物／印刷肖像等の権利・プライバシー確認を保留しています。
