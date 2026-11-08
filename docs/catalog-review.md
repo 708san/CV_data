@@ -1,6 +1,6 @@
 # カタログ候補の精査状況
 
-更新日：2026-11-07
+更新日：2026-11-08
 
 このページは`registry/candidates_50_unreviewed.json`を、ライブラリに追加する前の判断材料として整理したものです。台帳に書かれたライセンスは候補者の申告であり、ここで「CC BY 4.0」「CC0」などと書かれていても、画像そのものの権利確認や教材での再配布承認を意味しません。
 
@@ -12,10 +12,11 @@
 | 教師向けプレビュー | 1 | `fashion_mnist`。固定コミット・4ファイル・件数・IDX形式を検査済み。権利の最終確認中 |
 | 固定取得条件不足で保留 | 1 | `kuzushiji_mnist`。公式データエンドポイントの版とSHA-256が未固定 |
 | artifact準備済み・Release asset待ち | 3 | `bangladeshi_e_waste_image`、`food_waste_bangladesh`、`smallfishbd`。共通形式化・manifest検証済み。全画像の権利審査とRelease作成は未完了 |
+| 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
 | 公式ページのライセンス表記を再確認した候補 | 11 | `fruits_360`、`recyclable_waste`、`geosetennea`、`fruitseg30`、`indian_origin_flowers`、`pistachio_image_dataset`、`fresh_rotten_fruits`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
-| その他の未審査候補 | 34 | 取得APIへ追加しない。画像を収録・再配布しない |
+| その他の未審査候補 | 33 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-上表の正式Release 2件は候補50件とは別の既存配布物です。候補50件の内訳は、プレビュー・固定取得条件不足で保留2件、artifact準備済み3件、公式ページのライセンス表記を再確認した11件、その他34件です。準備済み候補もRelease asset公開までは正式一覧・取得APIに表示しません。
+上表の正式Release 2件は候補50件とは別の既存配布物です。候補50件の内訳は、プレビュー・固定取得条件不足で保留2件、artifact準備済み3件、全量技術監査済み・保留1件、公式ページのライセンス表記を再確認した11件、その他33件です。準備済み候補もRelease asset公開までは正式一覧・取得APIに表示しません。
 
 ## 課題別の候補
 
@@ -81,6 +82,8 @@ Recyclable Wasteの公開API調査で、ページ記載の1,000枚とAPI一覧�
 GeoSetEnneaは公式公開APIのフォルダ一覧をメタデータだけ確認しました。分割済みの画像966件と対応するYOLOラベル966件は確認できましたが、augmented/rawの別フォルダもあり、公開用の単一固定アーカイブと全量監査は未確定です。物体検出の教材候補としては有望ですが、現時点では公開保留です（[データ別説明](datasets/geoset_ennea.md)）。
 
 Custom Bangladeshi E-Waste Image Dataset v1は公式ページとアーカイブ内READMEのCC BY 4.0表記を確認しました。固定ZIPのSHA-256照合後、全画像2,157枚のデコード、同名ラベルとの対応、12クラスを確認しました。YOLO矩形752件とpolygon 1,407件が混在するため、共通形式ではpolygonを外接矩形へ変換し、輪郭情報が失われることを記録しています。共通artifact v0.1.0のローカル生成・manifest検証とライブラリ側の読み込み実装は通りました。公開Release assetがまだ作成されていないため、正式一覧と取得APIは未公開のままです（[データ別説明](datasets/bangladeshi_ewaste_image.md)）。
+
+Strawberry-DS v1は固定ZIP（SHA-256照合済み）を安全検査し、247枚のJPEG全量デコード、247件の画像・ラベル対応、1,083個のYOLO矩形を確認しました。6熟度クラスは大きく偏り、2枠が画像上端を約0.005画素越えて現行の厳密検査に通りません。さらにMendeleyのCC BY 4.0表示に対し、同梱Roboflow metadataに`license: Private`とあります。内容権利の確認が済むまで共通artifact化・再配布・API掲載を保留します（[データ別説明](datasets/strawberry_ds.md)）。
 
 ## ライブラリへの反映ルール
 

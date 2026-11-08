@@ -789,27 +789,28 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/z6dtfdpzz8/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "原画像247枚",
-        "labels": "イチゴ熟度／個体位置",
+        "labels": "イチゴ6熟度クラスのYOLO矩形注釈（1,083個）",
         "formats": "JPG＋YOLO .txt",
         "structure": "画像と対応する物体検出ラベル",
-        "notes": "少数画像の過学習に注意"
+        "notes": "Green 450個に対しEarly-Turning 34個と偏る。同梱Roboflow data.yamlはlicense: Privateのため、MendeleyのCC BY 4.0表示との関係を確認する"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "failed",
+        "files_examined": 247,
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-08",
+        "evidence_grade": "files_inspected",
+        "notes": "固定v1 ZIP（293,289,160 bytes、SHA-256 861c50605b3e479398a7b3522c8fd4bd2705cb6562f73b2f210088a739c0da49）を照合。505項目、CRC正常、危険パス・symlinkなし。247画像すべて3840×2160 JPEGとしてデコードし、247ラベルとの対応と完全一致重複0を確認。クラス別注釈数はEarly-Turning 34、Green 450、Late-Turning 56、Red 225、Turning 42、White 276。2注釈が上端を約0.005画素超え、現行の厳密検査に不合格。同梱Roboflow metadataのlicense: PrivateとMendeley CC BY 4.0表示の関係、全画像の権利確認が未解決のため、変換・配布・API追加を保留。"
       },
       "preparation": {
-        "planned_level": "to_be_determined",
+        "planned_level": "1",
         "implemented_levels": [],
-        "adapter": "unassigned_detection",
+        "adapter": "yolo_detection_pending_rights_review",
         "target_colab": true
       },
       "pedagogy": {

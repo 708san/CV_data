@@ -156,3 +156,12 @@
 - ライブラリへ両候補を`published=False`で登録。詳細情報は参照できるが、正式一覧と取得APIから隠れ、Release asset作成までは取得できない。
 - サンプル目視ではFood Wasteに人物の顔、SmallFishBDに人物は見つからなかったが、全画像を人手で権利・プライバシー審査した結論ではない。全画像の権利審査とRelease asset作成を保留事項として明記した。
 - 詳細：[Food Waste Bangladesh](datasets/food_waste_bangladesh.md)、[SmallFishBD](datasets/smallfishbd.md)、[候補精査状況](catalog-review.md)。
+
+### 2026-11-08：Strawberry-DS v1の全量実体・注釈監査
+
+- Mendeley公式v1のCC BY 4.0表示、固定ファイルID・サイズ・SHA-256を確認。SHA-256一致後にZIP検査を行い、505項目・CRC正常・危険パスとsymlinkなしを確認した。
+- 247画像すべて3840×2160 JPEGとしてデコードし、247 YOLOラベルとの対応、完全一致重複0、EXIF/XMP APP1なしを確認した。分割はtrain 172、valid 49、test 26。
+- 1,083注釈のクラス内訳はEarly-Turning 34、Green 450、Late-Turning 56、Red 225、Turning 42、White 276。2枠は正規化座標の丸めで上端を約0.005画素超え、現行の厳密な共通検査では失敗する。
+- 同梱`data.yaml`はRoboflow v4の`license: Private`と記録。一方Mendeleyの掲載ライセンスはCC BY 4.0で、再許諾の権利関係が確認できないため、画像artifact・共通形式変換・APIへの登録を行わず保留した。
+- 監査JSONとsource manifestは`CV_data_artifacts`に記録し、画像本体はartifact repositoryへ追加していない。
+- 詳細：[Strawberry-DS](datasets/strawberry_ds.md)、[監査report](../../CV_data_artifacts/reports/strawberry_ds-v1-audit.json)、[source manifest](../../CV_data_artifacts/manifests/sources/strawberry_ds-v1.json)。
