@@ -1,5 +1,12 @@
 # 開発進捗
 
+## 2026-11-08：Recyclable Waste 全画像の目視確認
+
+- 整形済みの一意画像977枚を10枚の縮小一覧で確認。素材クラスと画像内容に明らかな不一致は見当たらなかった。
+- 縮小一覧では明瞭な人物は確認されず、包装上の肖像写真らしきもの1件と、複数画像のブランド・商品文字を記録。これは法的な肖像・商標審査ではない。
+- dataset説明と候補台帳を更新。第三者権利・肖像・商標の再配布審査は未完了のため、正式API・公開Releaseの保留を継続。
+- 詳細：[目視監査記録](https://github.com/708san/CV_data_artifacts/blob/main/reports/recyclable-waste-visual-review-2026-11-08.json)、[データ説明](datasets/recyclable_waste.md)。
+
 ## 2026-11-08：リモート専用保管・artifact inventory・キャッシュ管理
 
 - データ本体を`CV_data`・`CV_data_artifacts`のGit履歴やPyPIへ入れず、許諾済み整形データは`CV_data_artifacts`の固定Release assetで管理する方針に更新した。大容量LoRA原本は固定した公式配布元から直接取得し、重みは配布しない。
