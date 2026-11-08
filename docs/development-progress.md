@@ -1,5 +1,13 @@
 # 開発進捗
 
+## 2026-11-08：学習済みLoRA重みの固定取得API
+
+- 画像・キャプション素材の`loras`と、学習済み重みの`weights`を分離。
+- TCD SD 1.5、水彩SD 1.5、北斎風SD 1.5の3件を登録。固定revision、ファイルサイズ、SHA-256、基盤モデル、ライセンス、用途を記録。
+- `weights.list_available()`と`weights.info()`は通信せず、明示的な`weights.get()`で元配布元から取得して外部cacheに保存。OpenRAIL-M重みは条件確認の明示を必須にした。
+- ネットワーク不要テスト38件成功、Pillow未導入の2件をskip。Python 3.10/3.12のCI成功。wheelに画像・重みが含まれないことを確認。実際の重み取得・生成推論は未実施。
+- 詳細：[README](../README.md)、[TCD](weights/tcd_sd15.md)、[水彩](weights/watercolor_sd15.md)、[北斎風](weights/hokusai_sd15.md)、[PR #20](https://github.com/708san/CV_data/pull/20)。
+
 ## 2026-11-08：Recyclable Waste 全画像の目視確認
 
 - 整形済みの一意画像977枚を10枚の縮小一覧で確認。素材クラスと画像内容に明らかな不一致は見当たらなかった。

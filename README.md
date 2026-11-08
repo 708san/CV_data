@@ -65,7 +65,35 @@ print(icons.images_dir)
 print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 ```
 
-`datasets.get()`は固定Releaseを取得してZIPを検証し、ローカルに展開します。保存先の変更は`cache_dir`で指定できます。元の公式testは変更せず、DataFrameではtrainから再現可能なvalを作ります。画像表示には `pip install -e '.[display]'` が必要です。LoRA学習そのものやモデル重みの再配布は、このライブラリの対象外です。
+`datasets.get()`は固定Releaseを取得してZIPを検証し、ローカルに展開します。保存先の変更は`cache_dir`で指定できます。元の公式testは変更せず、DataFrameではtrainから再現可能なvalを作ります。画像表示には `pip install -e '.[display]'` が必要です。LoRA学習そのものはこのライブラリの対象外です。
+
+学習済みLoRA重みは`cvlesson.weights`から、固定版・サイズ・SHA-256を確認して元の配布元から直接取得できます。カタログ表示やimportでは通信せず、`weights.get()`を呼んだ場合だけcheckout外のcacheへ保存します。重みはミラー・再配布しません。
+
+```python
+from cvlesson import weights
+
+for item in weights.list_available():
+    print(item["id"], item["name_ja"], item["download_size_mb"], "MB")
+
+print(weights.info("tcd_sd15")["base_model_license"])
+weight_path = weights.get("tcd_sd15")  # 初回のみ約135 MBを元配布元から取得
+
+# 水彩LoRAはOpenRAIL-M。利用条件を読んでから明示確認して取得する
+watercolor_info = weights.info("watercolor_sd15")
+print(watercolor_info["license"], watercolor_info["trigger_words"])
+watercolor_path = weights.get("watercolor_sd15", accept_license=True)  # 約302 MB
+
+# 北斎風LoRAもOpenRAIL-Mの条件確認後に取得する
+hokusai_path = weights.get("hokusai_sd15", accept_license=True)  # 約19 MB
+```
+
+現在はTCD LoRA、水彩LoRA、北斎風LoRAの3件を登録しています。TCD LoRA本体はMIT表記ですが、使用には別途Stable Diffusion 1.5の基盤モデルが必要です。水彩と北斎風のLoRAはCreativeML OpenRAIL-Mで、取得時に`accept_license=True`を明示します。基盤モデルにもCreativeML Open RAIL-Mの条件があるため、取得・利用前に条件を確認してください。
+
+| LoRA重み | 課題例 | 利用条件 |
+| --- | --- | --- |
+| [TCD LoRA（SD 1.5）](docs/weights/tcd_sd15.md) | 少ない生成ステップで時間と画像を比べる | 重みはMIT。基盤モデルはOpen RAIL-M |
+| [水彩LoRA（SD 1.5）](docs/weights/watercolor_sd15.md) | 同じ題材で水彩表現を比べる | OpenRAIL-M。取得時に条件確認が必要 |
+| [北斎風・浮世絵LoRA（SD 1.5）](docs/weights/hokusai_sd15.md) | 水彩と浮世絵の表現を比べる | OpenRAIL-M。取得時に条件確認が必要 |
 
 ## データの説明
 
@@ -86,7 +114,7 @@ Fashion-MNISTは固定コミットとファイル整合性を確認した教師�
 
 `datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。現在の正式一覧には画像分類だけが表示されます。物体検出と領域分割の取得・形式検査は整備済みですが、固定データReleaseが未公開のため課題一覧にはまだ表示しません。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
 
-LoRA素材は画像・キャプション・トリガーワード・利用条件を管理します。モデル重みは再配布しません。生徒向けに承認された素材がない場合、`loras.list_available()`は空になります。
+LoRA素材は画像・キャプションを`loras`で、学習済み重みは`weights`で別々に管理します。重みは元配布元から固定版を直接取得し、再配布しません。現在の重み一覧はTCD LoRA、水彩LoRA、北斎風LoRAの3件です。`festival_icons`は学習素材であり、学習済み重みではありません。
 
 ## AIにプログラムを改造してもらうとき
 
