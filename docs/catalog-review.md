@@ -86,7 +86,7 @@ Recyclable Wasteの公開API調査で、ページ記載の1,000枚とAPI一覧�
 
 GeoSetEnneaは公式公開APIのフォルダ一覧をメタデータだけ確認しました。分割済みの画像966件と対応するYOLOラベル966件は確認できましたが、augmented/rawの別フォルダもあり、公開用の単一固定アーカイブと全量監査は未確定です。物体検出の教材候補としては有望ですが、現時点では公開保留です（[データ別説明](datasets/geoset_ennea.md)）。
 
-Custom Bangladeshi E-Waste Image Dataset v1は公式ページとアーカイブ内READMEのCC BY 4.0表記を確認しました。固定ZIPのSHA-256照合後、全画像2,157枚のデコード、同名ラベルとの対応、12クラスを確認しました。YOLO矩形752件とpolygon 1,407件が混在するため、共通形式ではpolygonを外接矩形へ変換し、輪郭情報が失われることを記録しています。共通artifact v0.1.0のローカル生成・manifest検証とライブラリ側の読み込み実装は通りました。公開Release assetがまだ作成されていないため、正式一覧と取得APIは未公開のままです（[データ別説明](datasets/bangladeshi_ewaste_image.md)）。
+Custom Bangladeshi E-Waste Image Dataset v1は公式ページとアーカイブ内READMEのCC BY 4.0表記を確認しました。固定ZIPのSHA-256照合後、全画像2,157枚のデコード、同名ラベルとの対応、12クラスを確認しました。全画像の目視では各ラベルの物品がおおむね一致しましたが、紙・有機物・医療ごみなども含む廃棄物品全般の画像で、電子ごみだけではありません。画像は主に緑色の布上に物品を置いて撮影されています。YOLO矩形752件とpolygon 1,407件が混在するため、共通形式ではpolygonを外接矩形へ変換し、輪郭情報が失われることを記録しています。共通artifact v0.1.0のローカル生成・manifest検証とライブラリ側の読み込み実装は通りました。公開Release assetがまだ作成されていないため、正式一覧と取得APIは未公開のままです（[データ別説明](datasets/bangladeshi_ewaste_image.md)）。
 
 Strawberry-DS v1は固定ZIP（SHA-256照合済み）を安全検査し、247枚のJPEG全量デコード、247件の画像・ラベル対応、1,083個のYOLO矩形を確認しました。6熟度クラスは大きく偏り、2枠が画像上端を約0.005画素越えて現行の厳密検査に通りません。さらにMendeleyのCC BY 4.0表示に対し、同梱Roboflow metadataに`license: Private`とあります。内容権利の確認が済むまで共通artifact化・再配布・API掲載を保留します（[データ別説明](datasets/strawberry_ds.md)）。
 
