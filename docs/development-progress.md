@@ -1,5 +1,13 @@
 # 開発進捗
 
+## 2026-11-08：artifact inventory統合とキャッシュ容量管理
+
+- `CV_data_artifacts` PR #7を最新`main`へ統合し、15 source manifest、6 artifact manifest、監査report・ライセンス記録・変換ツールをmainに追加した。GitHub Actionsは成功。画像バイナリとRelease assetは追加していない。
+- `datasets.cache_info()`で登録済みデータのキャッシュ容量・版・ファイル数を確認できるようにした。
+- `datasets.clear_cache(dataset_id=None)`で指定データまたは既知IDのキャッシュを削除できるようにした。symlinkや通常ファイル以外を事前に検出し、登録外のディレクトリは削除対象にしない。
+- READMEとAI改造ガイドに、checkout外の既定保存先、容量確認、削除・再取得を追記した。
+- 検証結果：容量・版・ファイル数の計測、指定IDだけの削除、登録外フォルダの保持、登録済みキャッシュの一括削除、symlink拒否をオフラインテストで確認。`PYTHONPATH=src python -m unittest discover -s tests -v`は31件成功、Pillow未導入の2件をスキップ。
+
 ## 2026-11-05：共通APIと分割・監査の土台
 
 ### 変更目的

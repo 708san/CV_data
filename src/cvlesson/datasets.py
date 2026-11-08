@@ -921,6 +921,89 @@ def _cache_dir(cache_dir: str | Path | None) -> Path:
     return base / "cvlesson"
 
 
+def _cache_source_ids(dataset_id: str | None) -> list[str]:
+    if dataset_id is not None:
+        return [_source(dataset_id).id]
+    return sorted({src.id for src in (*_SOURCES.values(), *_PREVIEW_SOURCES.values())})
+
+
+def _cache_tree_bytes(root: Path) -> tuple[int, int]:
+    """登録済みcache treeのregular fileだけを数え、symlink等は拒否する。"""
+    total_bytes = 0
+    file_count = 0
+    def walk_error(exc: OSError) -> None:
+        raise DatasetError(f"キャッシュを確認できません: {root}") from exc
+
+    for current, dirs, files in os.walk(root, followlinks=False, onerror=walk_error):
+        current_path = Path(current)
+        for name in dirs:
+            if (current_path / name).is_symlink():
+                raise DatasetError(f"キャッシュ内にsymlinkがあります。削除前に確認してください: {current_path / name}")
+        for name in files:
+            path = current_path / name
+            if path.is_symlink():
+                raise DatasetError(f"キャッシュ内にsymlinkがあります。削除前に確認してください: {path}")
+            try:
+                file_stat = os.stat(path, follow_symlinks=False)
+            except OSError as exc:
+                raise DatasetError(f"キャッシュのサイズを確認できません: {path}") from exc
+            if not stat.S_ISREG(file_stat.st_mode):
+                raise DatasetError(f"通常ファイルではない項目がキャッシュ内にあります: {path}")
+            total_bytes += file_stat.st_size
+            file_count += 1
+    return total_bytes, file_count
+
+
+def cache_info(dataset_id: str | None = None, *, cache_dir: str | Path | None = None) -> dict[str, Any]:
+    """登録済みデータのcheckout外キャッシュ容量を返す。ネットワークには接続しない。"""
+    root = _cache_dir(cache_dir)
+    sources_root = root / "sources"
+    if sources_root.is_symlink():
+        raise DatasetError(f"キャッシュのsourcesがsymlinkです。確認してください: {sources_root}")
+    if not sources_root.exists():
+        return {"cache_dir": str(root), "total_bytes": 0, "datasets": []}
+    if not sources_root.is_dir():
+        raise DatasetError(f"キャッシュのsourcesがディレクトリではありません: {sources_root}")
+
+    items: list[dict[str, Any]] = []
+    for source_id in _cache_source_ids(dataset_id):
+        target = sources_root / source_id
+        if target.is_symlink():
+            raise DatasetError(f"データキャッシュがsymlinkです。確認してください: {target}")
+        if not target.exists():
+            continue
+        if not target.is_dir():
+            raise DatasetError(f"データキャッシュがディレクトリではありません: {target}")
+        size, count = _cache_tree_bytes(target)
+        versions = sorted(
+            path.name for path in target.iterdir()
+            if path.is_dir() and not path.is_symlink()
+        )
+        items.append({"dataset_id": source_id, "versions": versions, "bytes": size, "files": count})
+    return {
+        "cache_dir": str(root),
+        "total_bytes": sum(item["bytes"] for item in items),
+        "datasets": items,
+    }
+
+
+def clear_cache(dataset_id: str | None = None, *, cache_dir: str | Path | None = None) -> dict[str, Any]:
+    """登録済みデータのキャッシュを削除する。学習・読み込み処理を止めてから実行する。"""
+    root = _cache_dir(cache_dir)
+    sources_root = root / "sources"
+    before = cache_info(dataset_id, cache_dir=root)
+    targets = [sources_root / item["dataset_id"] for item in before["datasets"]]
+    removed_ids = [item["dataset_id"] for item in before["datasets"]]
+    for target in targets:
+        # cache_infoが全対象を事前検査してから削除し、symlinkを辿らない。
+        shutil.rmtree(target)
+    return {
+        "cache_dir": str(root),
+        "removed_bytes": before["total_bytes"],
+        "removed_datasets": removed_ids,
+    }
+
+
 def _sha256(path: Path) -> str:
     h = hashlib.sha256()
     with path.open("rb") as stream:

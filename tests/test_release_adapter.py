@@ -240,6 +240,65 @@ class ReleaseTests(unittest.TestCase):
             self.assertEqual(again.root, data.root)
             self.assertEqual(len(calls), 1)
 
+    def test_cache_info_reports_size_and_version_without_download(self):
+        payload = make_zip()
+        key, source = self.setup_source(payload)
+        with patch.dict(datasets._SOURCES, {key: source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            data = datasets.get(key, cache_dir=self.cache)
+            info = datasets.cache_info(cache_dir=self.cache)
+            self.assertEqual(info["cache_dir"], str(self.cache))
+            self.assertEqual(info["datasets"], [{
+                "dataset_id": key,
+                "versions": [source.tag],
+                "bytes": sum(path.stat().st_size for path in data.root.rglob("*") if path.is_file()),
+                "files": sum(1 for path in data.root.rglob("*") if path.is_file()),
+            }])
+            self.assertGreater(info["total_bytes"], 0)
+
+    def test_clear_cache_removes_selected_dataset_and_preserves_unrelated_files(self):
+        payload = make_zip()
+        key, source = self.setup_source(payload)
+        with patch.dict(datasets._SOURCES, {key: source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            datasets.get(key, cache_dir=self.cache)
+            before = datasets.cache_info(cache_dir=self.cache)
+            unrelated = self.cache / "sources" / "notes.txt"
+            unrelated.write_text("keep", encoding="utf-8")
+            result = datasets.clear_cache("festival_icons", cache_dir=self.cache)
+            self.assertEqual(result["removed_datasets"], [key])
+            self.assertEqual(result["removed_bytes"], before["total_bytes"])
+            self.assertFalse((self.cache / "sources" / key).exists())
+            self.assertEqual(unrelated.read_text(encoding="utf-8"), "keep")
+            self.assertEqual(datasets.cache_info(cache_dir=self.cache)["total_bytes"], 0)
+
+    def test_clear_cache_all_removes_registered_ids_only(self):
+        sources = self.cache / "sources"
+        (sources / "festival_icons" / "v1").mkdir(parents=True)
+        (sources / "festival_icons" / "v1" / "cached.bin").write_bytes(b"cache")
+        (sources / "unknown_dataset").mkdir()
+        (sources / "unknown_dataset" / "keep.bin").write_bytes(b"keep")
+        result = datasets.clear_cache(cache_dir=self.cache)
+        self.assertEqual(result["removed_datasets"], ["festival_icons"])
+        self.assertEqual(result["removed_bytes"], len(b"cache"))
+        self.assertTrue((sources / "unknown_dataset" / "keep.bin").is_file())
+
+    def test_cache_management_rejects_symlinks(self):
+        external = self.cache / "external"
+        external.mkdir()
+        protected = external / "keep.bin"
+        protected.write_bytes(b"keep")
+        sources = self.cache / "sources"
+        sources.mkdir()
+        (sources / "festival_icons").symlink_to(external, target_is_directory=True)
+        with self.assertRaisesRegex(datasets.DatasetError, "symlink"):
+            datasets.cache_info(cache_dir=self.cache)
+        with self.assertRaisesRegex(datasets.DatasetError, "symlink"):
+            datasets.clear_cache(cache_dir=self.cache)
+        self.assertTrue(protected.is_file())
+
     def test_tomato_classification(self):
         payload = make_zip(case="tomato-leaves")
         key, source = self.setup_source(payload, case="tomato-leaves")
