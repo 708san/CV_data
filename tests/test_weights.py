@@ -31,7 +31,8 @@ class LoraWeightTests(unittest.TestCase):
             sha256=hashlib.sha256(content).hexdigest(),
             url="https://example.invalid/fixed-test-weight",
         )
-        with tempfile.TemporaryDirectory(dir="/private/tmp") as temp_dir:
+        temp_root = str(Path(tempfile.gettempdir()).resolve())
+        with tempfile.TemporaryDirectory(dir=temp_root) as temp_dir:
             with patch.dict(weights._WEIGHTS, {"test_weight": test_item}):
                 with patch("cvlesson.weights.urllib.request.urlopen", return_value=io.BytesIO(content)) as urlopen:
                     path = weights.get("test_weight", cache_dir=temp_dir)
@@ -50,7 +51,8 @@ class LoraWeightTests(unittest.TestCase):
             sha256="0" * 64,
             url="https://example.invalid/fixed-test-weight",
         )
-        with tempfile.TemporaryDirectory(dir="/private/tmp") as temp_dir:
+        temp_root = str(Path(tempfile.gettempdir()).resolve())
+        with tempfile.TemporaryDirectory(dir=temp_root) as temp_dir:
             with patch.dict(weights._WEIGHTS, {"bad_weight": test_item}):
                 with patch("cvlesson.weights.urllib.request.urlopen", return_value=io.BytesIO(content)):
                     with self.assertRaisesRegex(weights.WeightError, "SHA-256"):
