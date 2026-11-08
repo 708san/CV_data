@@ -48,6 +48,15 @@ train_data = data.to_torch_dataset(split="train", image_size=(64, 64))  # pip in
 画像, ラベル番号 = train_data[0]
 ```
 
+キャッシュの容量は確認でき、使い終わったデータは削除できます。既定の保存先はリポジトリの外です。削除後は次回の取得時に再ダウンロードします。
+
+```python
+print(datasets.cache_info())  # 登録済みデータの保存量を確認
+result = datasets.clear_cache("tomato_leaves")  # 指定データだけ削除
+print(result["removed_bytes"])
+datasets.clear_cache()  # 登録済みデータのキャッシュをまとめて削除
+```
+
 文化祭アイコンの画像も同じ方法で取得できます。
 
 ```python
@@ -88,7 +97,7 @@ CV分類の生徒向けNotebookは、LLM講座の基準Notebookとは分けて[�
 ## 開発・テスト
 
 ```bash
-python -m unittest discover -s tests -v
+PYTHONPATH=src python -m unittest discover -s tests -v
 ```
 
 開発計画は[こちら](docs/development-plan.md)です。実際のデータ取得はネットワークと容量を必要とするため、通常の自動テストでは行いません。

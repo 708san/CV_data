@@ -13,6 +13,8 @@
 | `datasets.info("tomato_leaves")` | データの内容と出典を調べる。引数なしなら一覧を返す |
 | `datasets.get("tomato_leaves")` | 固定Releaseを取得し、検証して展開する |
 | `datasets.get("トマトの葉")` | 登録済みの日本語名で取得する（曖昧検索はしない） |
+| `datasets.cache_info()` | checkout外にあるデータキャッシュの容量を確認する |
+| `datasets.clear_cache("tomato_leaves")` | 指定データのキャッシュを削除する。引数なしなら登録済みデータをまとめて削除 |
 | `data.to_df()` | 画像パス・ラベル・分割をDataFrameにする |
 | `data.to_torch_dataset(split="train", image_size=(64, 64))` | 遅延読み込みのPyTorch Datasetにする |
 | `data.show_examples(9)` | 画像例を表示する |
@@ -30,6 +32,8 @@ FruitSeg30は領域分割向けの29クラスartifactと取得検証を準備し
 LoRA素材は`from cvlesson import loras`から管理します。`loras.list_available()`は生徒向けに承認された素材だけを返し、権利確認中の文化祭アイコンは`loras.list_preview()`で確認できます。重みは配布せず、必要な場合は`loras.get("festival_icon_style", allow_preview=True).get_data(allow_preview=True)`で画像・キャプション素材だけを取得します。
 
 `get()`は`DatasetBundle`を返します。`root`、`images_dir`、`labels_csv`、`metadata_jsonl`、`kind`、`task`、`manifest`、`version`、`classes`、`class_names_ja`、`splits`、`license_info`、`source_info`を参照できます。トマトの葉では`train_dir`と`test_dir`も使えます。監査状態とレポートは`datasets.info("tomato_leaves")`で確認します。
+
+データは`get()`を呼んだときだけダウンロードし、既定ではリポジトリ外の`XDG_CACHE_HOME/cvlesson`（未設定なら`~/.cache/cvlesson`）に保存します。`cache_info()`は登録済みデータの保存量を返し、`clear_cache()`はそのキャッシュだけを削除します。学習や読み込みが終わってから削除してください。削除後は、再取得時にネットワーク接続が必要です。
 
 ## AIに伝えること
 
