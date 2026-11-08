@@ -317,7 +317,7 @@
         "labels": "紙／段ボール／プラ／金属／ガラス（原データの5種）",
         "formats": "画像形式は公式説明に未記載",
         "structure": "公開1,000枚の細かなラベル配分・ファイル構成は要検査",
-    "notes": "公式公開APIの一覧ではREADMEを除く画像989枚を確認。ページ記載の1,000枚との差11枚は補完していない。固定v1の全画像を技術監査し、一意977枚の縮小一覧目視も完了。ブランド文字と包装上の肖像写真らしきものを確認した。再配布権利・肖像・商標の審査は未完了のため保留。詳細はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。"
+        "notes": "公式公開APIの一覧ではREADMEを除く画像989枚を確認。ページ記載の1,000枚との差11枚は補完していない。固定v1の全画像を技術監査し、一意977枚の縮小一覧目視も完了。ブランド文字と包装上の肖像写真らしきものを確認した。再配布権利・肖像・商標の審査は未完了のため保留。詳細はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。"
       },
       "audit": {
         "technical_status": "full_image_audit",
@@ -326,11 +326,11 @@
         "sample_sha256_check": "passed",
         "sample_image_decode": "passed",
         "metadata_duplicate_sha_groups": 12,
-    "inspection_status": "completed",
+        "inspection_status": "completed",
         "publication_status": "hold",
         "last_desk_review": "2026-11-08",
         "evidence_grade": "independent_primary_check",
-    "notes": "公式固定v1の989画像（1,707,541,468 bytes）すべてを既知サイズ・SHA-256と照合し、ImageIOで全件デコード。カテゴリはcardboard 537 / glass 49 / metal 95 / paper 98 / plastic 210、完全一致重複12ファイル、内容一意977。104枚にGPSを含むEXIFを検出。共通artifact v0.1.0を977画像で作成し、EXIF/GPS等のメタデータ除去、長辺512pxへの縮小、クラス別splitを実施。整形済み一意977枚すべてを縮小一覧で目視し、クラス内容は概ね一致。明瞭な人物は見当たらず、包装上の肖像写真らしきもの1件と複数のブランド・商品文字を確認。全件目視記録はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。第三者の画像権利・肖像・商標を含む再配布審査は未完了のため公開保留。",
+        "notes": "公式固定v1の989画像（1,707,541,468 bytes）すべてを既知サイズ・SHA-256と照合し、ImageIOで全件デコード。カテゴリはcardboard 537 / glass 49 / metal 95 / paper 98 / plastic 210、完全一致重複12ファイル、内容一意977。104枚にGPSを含むEXIFを検出。共通artifact v0.1.0を977画像で作成し、EXIF/GPS等のメタデータ除去、長辺512pxへの縮小、クラス別splitを実施。整形済み一意977枚すべてを縮小一覧で目視し、クラス内容は概ね一致。明瞭な人物は見当たらず、包装上の肖像写真らしきもの1件と複数のブランド・商品文字を確認。全件目視記録はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。第三者の画像権利・肖像・商標を含む再配布審査は未完了のため公開保留。",
         "archive_sha256": null,
         "source_file_set_sha256": "154381f20cb1775f24e39801a3516cc0607d8330502924b9da6c7f2cbcfd8339",
         "decode_errors": 0,
@@ -660,8 +660,8 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/8jvxtvz52x/2",
-        "redistribution_reviewed": false,
-        "rights_status": "publisher_CC_BY_4.0_confirmed_image_rights_and_release_pending"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
       },
       "claims": {
         "quantity": "元画像1,700枚（増強画像20,400枚は除外）",
@@ -675,9 +675,9 @@
         "files_examined": 1700,
         "inspection_status": "full_automated_image_audit_passed_sample_visual_review",
         "publication_status": "prepared_release_pending",
-        "last_desk_review": "2026-11-07",
+        "last_desk_review": "2026-11-09",
         "evidence_grade": "official_metadata_and_full_archive_sha_verified",
-        "notes": "固定v2 SmallFishBD.zip（29,802,305 bytes、SHA-256 2d97368d351f4c5940b7b54f19eec2b771a7d76421dbe5ad66977cf3003eafbb）を照合後に安全展開。1,700枚すべて320×320 JPEGとしてデコード成功。完全一致重複3枚を除外し1,697枚を共通artifact smallfishbd-v0.1.0へ収録。増強画像ZIPは取得・収録せず、分割混在を避ける。Release assetと全画像の人手権利審査待ち。"
+        "notes": "固定v2 SmallFishBD.zip（29,802,305 bytes、SHA-256 2d97368d351f4c5940b7b54f19eec2b771a7d76421dbe5ad66977cf3003eafbb）を再取得・照合後に安全展開し、1,700枚全量を再変換。重複3枚を除外しseed 42でtrain 1,188 / val 254 / test 255。1,697画像のSHA-256、labels.csv、metadata.jsonlはv0.1.0と一致。CC BY 4.0の提供者表示、contributors、撮影説明、および全画像目視報告（顔・ロゴ・文字・埋め込みメタデータ検出なし）を確認し、帰属・変更表示条件付きで再配布可と判定。artifact v0.1.1はLICENSE.md同梱、1,702ファイル、ZIP 29,799,609 bytes、SHA-256 367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547。Release asset未作成のためpublication_statusはprepared_release_pendingのまま。"
       },
       "preparation": {
         "planned_level": "1",
