@@ -3,7 +3,7 @@
 ## 現在の状態
 
 候補ID：`DS-028`（Mendeley Data v2）  
-状態：固定v2の元画像ZIPをSHA-256照合し、1,700枚を全量検査。完全一致重複3枚を除外した共通artifact v0.1.0を生成・検証済み。GitHub Release asset待ちのため、ライブラリ取得APIでは未公開です。
+状態：固定v2の元画像ZIPを再取得してSHA-256を再確認し、1,700枚を再検査。完全一致重複3枚を除いた1,697枚の共通artifact v0.1.1を再生成し、全manifestとZIP CRCの検証に成功。CC BY 4.0再配布審査は帰属表示条件付きで完了しました。GitHub Release asset待ちのため、ライブラリ取得APIでは未公開です。
 
 公式ページの説明は、元画像1,700枚（10魚種、320×320 JPEG）と増強画像20,400枚を別々に記載しています。元画像ZIPは28.4MB、増強画像ZIPは527MBです。画像はダッカの魚市場で撮影したとされ、ライセンス表示はCC BY 4.0です。[公式データページ v2](https://data.mendeley.com/datasets/8jvxtvz52x/2)。元画像`SmallFishBD.zip`は29,802,305 bytes、SHA-256 `2d97368d351f4c5940b7b54f19eec2b771a7d76421dbe5ad66977cf3003eafbb`です。安全検査後、全画像が320×320 JPEGとしてデコードでき、公式のクラス別枚数と一致しました。完全一致重複3組を除外し、1,697枚を収録しました。増強画像アーカイブは取得・収録していません。
 
@@ -19,4 +19,4 @@
 - 教材配布前に画像内の第三者権利を追加確認する。
 - CV_data_artifactsにRelease assetを作成後、固定URLで取得できることを確認する。
 
-共通形式の全ファイルmanifest、除外重複一覧、出典・変更表示は`CV_data_artifacts`に準備済みです。Release asset公開まではAPIから取得できません。
+共通形式v0.1.1のmanifest、除外重複一覧、出典・変更表示、ZIP SHA-256 `367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547`は`CV_data_artifacts`の準備PRに登録しました。ZIP本体は一時領域に保管し、GitHub Release asset公開まではAPIから取得できません。
