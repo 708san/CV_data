@@ -1,5 +1,18 @@
 # 開発進捗
 
+## 2026-11-08：リモート専用データ保管と監査の効率化方針
+
+- データ本体を`CV_data`・`CV_data_artifacts`のGit履歴やPyPIへ入れず、許諾済み整形データは`CV_data_artifacts`の固定Release assetで管理する方針に更新した。大容量LoRA原本は固定した公式配布元から直接取得し、重みは配布しない。
+- `cvlesson`の取得時キャッシュはcheckout外（`XDG_CACHE_HOME`または`~/.cache`配下）に置き、明示的な取得API呼び出しまでダウンロードしない運用を明記した。
+- 50候補の状態を再集計：candidate 32、hold 15、整形artifact準備済み・Release待ち2、artifact/asset待ち1。holdは公開承認を意味せず、技術監査の進み具合も異なる。
+- `CV_data_artifacts`作業ブランチにはsource manifest 15件、整形artifact manifest 6件（既存トマトを含む）がある。PR #7未マージ、Release asset 0件。manifestの登録とデータ本体のリモート保管を区別する。
+- 一次情報の並行確認、権利ゲート後の取得、調査範囲の事前決定、既存manifest・監査結果の再利用、候補単位のPRを標準手順にし、権利審査は省略しない。
+
+### 次の作業
+
+- artifact repositoryのPR #7を最新`main`との差分に合わせて整理する。データReleaseは元画像の権利確認と明示許可が済むまで作らない。
+- Release前に、checkout外キャッシュの取得・SHA検証・再利用・削除を、実画像を使わないテストで検証する。
+
 ## 2026-11-05：共通APIと分割・監査の土台
 
 ### 変更目的
