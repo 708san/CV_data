@@ -2,9 +2,9 @@
   "schema_version": "1.0.0",
   "source_inventory": {
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
-    "as_of": "2026-11-04",
+    "as_of": "2026-11-09",
     "original_record_count": 50,
-    "note": "前回調査の申告情報を取り込んだ未承認レジストリ。画像現物は未検査。生徒への公開不可。"
+    "note": "候補台帳は未承認。技術検査の範囲と権利・公開状態はレコードごとに記録し、候補全体を一括して画像未検査または承認済みと扱わない。生徒への公開不可。"
   },
   "records": [
     {
@@ -68,7 +68,7 @@
         "reference_url": "https://github.com/zalandoresearch/fashion-mnist/tree/b2617bb6d3ffa2e429640350f613e3291e10b141"
       },
       "rights": {
-        "license_claim": "MIT",
+        "license_claim": "MIT (repository software/docs); image dataset license scope unconfirmed",
         "evidence_url": "https://github.com/zalandoresearch/fashion-mnist/blob/b2617bb6d3ffa2e429640350f613e3291e10b141/LICENSE",
         "redistribution_reviewed": false,
         "rights_status": "under_review"
@@ -78,14 +78,14 @@
         "labels": "衣類10クラス",
         "formats": "IDX gzip（画素配列・ラベル別）",
         "structure": "学習60,000／テスト10,000；画像・ラベル別gzip",
-        "notes": "写真の状況が統一された低解像度画像。固定コミットの4ファイルを検査し、正式一覧には未掲載。"
+        "notes": "固定コミットのREADMEはZalando商品画像70,000枚と記載。READMEのMIT条項はsoftware and associated documentation filesが対象で、画像データの個別ライセンス・再配布許可は明記されていない。技術実装とPGMキャッシュ化は済み、画像権利確認までteacher preview only。"
       },
       "audit": {
         "technical_status": "metadata_checked",
         "files_examined": 70000,
         "inspection_status": "completed",
         "publication_status": "hold",
-        "last_desk_review": "2026-11-05",
+        "last_desk_review": "2026-11-09",
         "evidence_grade": "files_inspected"
       },
       "preparation": {
@@ -317,7 +317,7 @@
         "labels": "紙／段ボール／プラ／金属／ガラス（原データの5種）",
         "formats": "画像形式は公式説明に未記載",
         "structure": "公開1,000枚の細かなラベル配分・ファイル構成は要検査",
-    "notes": "公式公開APIの一覧ではREADMEを除く画像989枚を確認。ページ記載の1,000枚との差11枚は補完していない。固定v1の全画像を技術監査し、一意977枚の縮小一覧目視も完了。ブランド文字と包装上の肖像写真らしきものを確認した。再配布権利・肖像・商標の審査は未完了のため保留。詳細はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。"
+        "notes": "公式公開APIの一覧ではREADMEを除く画像989枚を確認。ページ記載の1,000枚との差11枚は補完していない。固定v1の全画像を技術監査し、一意977枚の縮小一覧目視も完了。ブランド文字と包装上の肖像写真らしきものを確認した。再配布権利・肖像・商標の審査は未完了のため保留。詳細はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。"
       },
       "audit": {
         "technical_status": "full_image_audit",
@@ -326,11 +326,11 @@
         "sample_sha256_check": "passed",
         "sample_image_decode": "passed",
         "metadata_duplicate_sha_groups": 12,
-    "inspection_status": "completed",
+        "inspection_status": "completed",
         "publication_status": "hold",
         "last_desk_review": "2026-11-08",
         "evidence_grade": "independent_primary_check",
-    "notes": "公式固定v1の989画像（1,707,541,468 bytes）すべてを既知サイズ・SHA-256と照合し、ImageIOで全件デコード。カテゴリはcardboard 537 / glass 49 / metal 95 / paper 98 / plastic 210、完全一致重複12ファイル、内容一意977。104枚にGPSを含むEXIFを検出。共通artifact v0.1.0を977画像で作成し、EXIF/GPS等のメタデータ除去、長辺512pxへの縮小、クラス別splitを実施。整形済み一意977枚すべてを縮小一覧で目視し、クラス内容は概ね一致。明瞭な人物は見当たらず、包装上の肖像写真らしきもの1件と複数のブランド・商品文字を確認。全件目視記録はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。第三者の画像権利・肖像・商標を含む再配布審査は未完了のため公開保留。",
+        "notes": "公式固定v1の989画像（1,707,541,468 bytes）すべてを既知サイズ・SHA-256と照合し、ImageIOで全件デコード。カテゴリはcardboard 537 / glass 49 / metal 95 / paper 98 / plastic 210、完全一致重複12ファイル、内容一意977。104枚にGPSを含むEXIFを検出。共通artifact v0.1.0を977画像で作成し、EXIF/GPS等のメタデータ除去、長辺512pxへの縮小、クラス別splitを実施。整形済み一意977枚すべてを縮小一覧で目視し、クラス内容は概ね一致。明瞭な人物は見当たらず、包装上の肖像写真らしきもの1件と複数のブランド・商品文字を確認。全件目視記録はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。第三者の画像権利・肖像・商標を含む再配布審査は未完了のため公開保留。",
         "archive_sha256": null,
         "source_file_set_sha256": "154381f20cb1775f24e39801a3516cc0607d8330502924b9da6c7f2cbcfd8339",
         "decode_errors": 0,
