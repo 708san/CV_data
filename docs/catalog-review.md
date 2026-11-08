@@ -19,24 +19,34 @@
 
 上表の正式Release 2件は候補50件とは別の既存配布物です。候補50件の内訳は、固定取得条件または公開条件で保留3件、artifact準備済み6件、全量技術監査済み・保留1件、公式ページのライセンス表記を再確認した7件、固定版メタデータ確認・実体展開保留1件、その他32件です。準備済み候補もRelease asset公開までは正式一覧・取得APIに表示しません。
 
-## 今回対象に絞る10件
+## 今回対象に絞る20件
 
-開発対象として10件を選びました。トマトの葉と文化祭アイコンはこの数に含みません。候補50件を再集計した結果は、`candidate` 32件、`hold` 15件、`prepared_release_pending` 2件、`prepared_artifact_pending_release_asset` 1件（計50件）です。下表は候補の優先順位を定めるもので、権利審査・教材公開承認・取得API登録を意味しません。
+トマトと文化祭アイコンを除く目標20件です。第一段階20件は監査・整形済み候補中心、第二段階10件は高校生の身近な課題につながる追加候補です。候補50件の状態を再集計：`candidate` 32件、`hold` 15件、`prepared_release_pending` 2件、`prepared_artifact_pending_release_asset` 1件（計50件）。この選定は権利審査や公開承認を意味しません。
 
-| ID | 課題 | 監査・準備状況 | 残る確認 |
+| 段階 | ID | 課題 | 現状・次の確認 |
 | --- | --- | --- | --- |
-| `bangladeshi_e_waste_image` | 検出 | 全量監査・共通artifact済み | 帰属表示、固定Release asset |
-| `food_waste_bangladesh` | 分類 | 全量監査・共通artifact済み | 画像権利・プライバシー、Release |
-| `smallfishbd` | 分類 | 全量監査・共通artifact済み | 画像権利、Release |
-| `fruitseg30` | 分割 | 全量画像・マスク監査、29クラスartifact済み | 権利審査、Release、取得API |
-| `recyclable_waste` | 分類 | 989枚を監査、977枚のartifact済み | 全画像のプライバシー・第三者権利 |
-| `pistachio_image_dataset` | 分類 | 2,148画像の全量監査・artifact済み | 画像権利、再配布条件 |
-| `fashion_mnist` | 分類 | 固定コミット、4ファイル、70,000枚を確認。教師向けプレビュー | 画像へのライセンス適用、教材公開 |
-| `fresh_and_rotten_fruits` | 分類 | 固定版・代表画像を確認 | 全量監査、元画像の権利、拡張画像の分割 |
-| `banana_and_guava_quality` | 分類 | 固定版・代表画像を確認 | 件数差、ラベル定義、全量監査、元画像の権利 |
-| `geosetennea` | 検出 | 公開APIの目録を確認 | 固定配布単位、全量画像・ラベル監査、権利・場所情報 |
+| 1 | `bangladeshi_e_waste_image` | 検出 | 全量監査・artifact済み。帰属表示、Release |
+| 1 | `food_waste_bangladesh` | 分類 | 全量監査・artifact済み。権利・プライバシー、Release |
+| 1 | `smallfishbd` | 分類 | 全量監査・artifact済み。権利、Release |
+| 1 | `fruitseg30` | 分割 | 29クラス全量監査・artifact済み。権利、Release、API |
+| 1 | `recyclable_waste` | 分類 | 989枚監査・977枚artifact。全画像のプライバシー・権利 |
+| 1 | `pistachio_image_dataset` | 分類 | 2,148枚全量監査・artifact済み。画像権利・再配布条件 |
+| 1 | `fashion_mnist` | 分類 | 固定コミット・70,000枚確認済み。画像ライセンス、教材公開 |
+| 1 | `fresh_and_rotten_fruits` | 分類 | 固定版・代表画像確認。全量監査、権利、画像分割 |
+| 1 | `banana_and_guava_quality` | 分類 | 固定版・代表画像確認。件数差、ラベル、権利、全量監査 |
+| 1 | `geosetennea` | 検出 | API目録確認。固定版・画像/ラベル全量監査、権利 |
+| 2 | `quickdraw` | 分類 | 利用者投稿の内容・権利、大容量配布、固定版 |
+| 2 | `bdroadsigns` | 分類 | 権利、地域差、固定版、画像検査 |
+| 2 | `indian_origin_flowers` | 分類 | 8,098枚目録・サンプル確認。ページ件数との不一致、権利、全量監査 |
+| 2 | `fishnet` | 分類 | ライセンス、固定版、規模とSmallFishBDとの重複 |
+| 2 | `image_dataset_of_indian_coins` | 分類 | ZIP・代表画像確認。系列分割、全量監査、権利 |
+| 2 | `surface_water_floating_waste` | 分類 | 固定版、場所・プライバシー、ライセンス |
+| 2 | `trash_detection_dataset_pavel_kan` | 検出 | 固定版、注釈、画像権利・プライバシー |
+| 2 | `uav_weed_crop_dataset` | 検出 | 場所情報、撮影権利、注釈、固定版 |
+| 2 | `fabricspotdefect` | 検出 | 固定版、注釈、製造画像の利用条件 |
+| 2 | `uav_aquatic_plant_dataset` | 分割 | 固定配布、画像・マスク対応、撮影権利 |
 
-この対象群は分類7・検出2・領域分割1です。6件はartifact準備段階にありますが、候補台帳上の公開状態は2件が`prepared_release_pending`、1件が`prepared_artifact_pending_release_asset`、残る3件を含む15件が`hold`です。Fashion-MNISTを含め、どれも正式な生徒向け取得一覧へ自動的に追加しません。
+課題構成は分類14・検出4・分割2です。第一段階の6件はartifact準備済みですが、そのうち権利や公開状態がholdの候補もあります。第二段階は候補台帳の未審査候補を含むため、一次情報と課題価値を確認してから取得します。20件に届かない場合は、未審査候補を承認済みと数えず、条件を満たす代替候補を探します。
 
 ## 課題別の候補
 
