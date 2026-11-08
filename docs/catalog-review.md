@@ -1,6 +1,6 @@
 # カタログ候補の精査状況
 
-更新日：2026-11-08
+更新日：2026-11-09
 
 このページは`registry/candidates_50_unreviewed.json`を、ライブラリに追加する前の判断材料として整理したものです。台帳に書かれたライセンスは候補者の申告であり、ここで「CC BY 4.0」「CC0」などと書かれていても、画像そのものの権利確認や教材での再配布承認を意味しません。
 
@@ -18,6 +18,25 @@
 | その他の未審査候補 | 32 | 取得APIへ追加しない。画像を収録・再配布しない |
 
 上表の正式Release 2件は候補50件とは別の既存配布物です。候補50件の内訳は、固定取得条件または公開条件で保留3件、artifact準備済み6件、全量技術監査済み・保留1件、公式ページのライセンス表記を再確認した7件、固定版メタデータ確認・実体展開保留1件、その他32件です。準備済み候補もRelease asset公開までは正式一覧・取得APIに表示しません。
+
+## 今回対象に絞る10件
+
+開発対象として10件を選びました。トマトの葉と文化祭アイコンはこの数に含みません。候補50件を再集計した結果は、`candidate` 32件、`hold` 15件、`prepared_release_pending` 2件、`prepared_artifact_pending_release_asset` 1件（計50件）です。下表は候補の優先順位を定めるもので、権利審査・教材公開承認・取得API登録を意味しません。
+
+| ID | 課題 | 監査・準備状況 | 残る確認 |
+| --- | --- | --- | --- |
+| `bangladeshi_e_waste_image` | 検出 | 全量監査・共通artifact済み | 帰属表示、固定Release asset |
+| `food_waste_bangladesh` | 分類 | 全量監査・共通artifact済み | 画像権利・プライバシー、Release |
+| `smallfishbd` | 分類 | 全量監査・共通artifact済み | 画像権利、Release |
+| `fruitseg30` | 分割 | 全量画像・マスク監査、29クラスartifact済み | 権利審査、Release、取得API |
+| `recyclable_waste` | 分類 | 989枚を監査、977枚のartifact済み | 全画像のプライバシー・第三者権利 |
+| `pistachio_image_dataset` | 分類 | 2,148画像の全量監査・artifact済み | 画像権利、再配布条件 |
+| `fashion_mnist` | 分類 | 固定コミット、4ファイル、70,000枚を確認。教師向けプレビュー | 画像へのライセンス適用、教材公開 |
+| `fresh_and_rotten_fruits` | 分類 | 固定版・代表画像を確認 | 全量監査、元画像の権利、拡張画像の分割 |
+| `banana_and_guava_quality` | 分類 | 固定版・代表画像を確認 | 件数差、ラベル定義、全量監査、元画像の権利 |
+| `geosetennea` | 検出 | 公開APIの目録を確認 | 固定配布単位、全量画像・ラベル監査、権利・場所情報 |
+
+この対象群は分類7・検出2・領域分割1です。6件はartifact準備段階にありますが、候補台帳上の公開状態は2件が`prepared_release_pending`、1件が`prepared_artifact_pending_release_asset`、残る3件を含む15件が`hold`です。Fashion-MNISTを含め、どれも正式な生徒向け取得一覧へ自動的に追加しません。
 
 ## 課題別の候補
 
