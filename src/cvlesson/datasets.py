@@ -957,6 +957,8 @@ def _cache_tree_bytes(root: Path) -> tuple[int, int]:
 def cache_info(dataset_id: str | None = None, *, cache_dir: str | Path | None = None) -> dict[str, Any]:
     """登録済みデータのcheckout外キャッシュ容量を返す。ネットワークには接続しない。"""
     root = _cache_dir(cache_dir)
+    if root.exists() and not root.is_dir():
+        raise DatasetError(f"キャッシュ先がディレクトリではありません: {root}")
     sources_root = root / "sources"
     if sources_root.is_symlink():
         raise DatasetError(f"キャッシュのsourcesがsymlinkです。確認してください: {sources_root}")

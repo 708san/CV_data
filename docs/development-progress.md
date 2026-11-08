@@ -7,7 +7,7 @@
 - 50候補の状態を再集計：candidate 32、hold 15、整形artifact準備済み・Release待ち2、artifact/asset待ち1。holdは公開承認を意味せず、技術監査の進み具合も異なる。
 - `CV_data_artifacts`のPR #7を最新`main`へ合わせてマージし、15 source manifest、6 artifact manifest、監査report・ライセンス記録・変換ツールをmainに追加した。GitHub Actionsは成功。画像バイナリとRelease assetは追加していない。
 - `datasets.cache_info()`で登録済みデータのキャッシュ容量・版・ファイル数を確認でき、`datasets.clear_cache(dataset_id=None)`で指定データまたは登録済みIDのキャッシュを削除できるようにした。symlinkや通常ファイル以外は事前検出し、登録外ディレクトリは削除対象にしない。
-- 容量計測、指定IDだけの削除、登録外フォルダの保持、一括削除、symlink拒否をオフラインテストで確認。`PYTHONPATH=src python -m unittest discover -s tests -v`は31件成功、Pillow未導入の2件をスキップ。
+- 容量計測、指定IDだけの削除、登録外フォルダの保持、一括削除、symlink・不正なcache rootの拒否をオフラインテストで確認。`PYTHONPATH=src python -m unittest discover -s tests -v`は32件成功、Pillow未導入の2件をスキップ。
 - 一次情報の並行確認、権利ゲート後の取得、調査範囲の事前決定、既存manifest・監査結果の再利用、候補単位のPRを標準手順にし、権利審査は省略しない。
 
 ### 次の作業

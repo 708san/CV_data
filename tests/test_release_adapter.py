@@ -299,6 +299,15 @@ class ReleaseTests(unittest.TestCase):
             datasets.clear_cache(cache_dir=self.cache)
         self.assertTrue(protected.is_file())
 
+    def test_cache_management_rejects_non_directory_cache_root(self):
+        cache_file = self.cache / "cache-file"
+        cache_file.write_text("keep", encoding="utf-8")
+        with self.assertRaisesRegex(datasets.DatasetError, "ディレクトリではありません"):
+            datasets.cache_info(cache_dir=cache_file)
+        with self.assertRaisesRegex(datasets.DatasetError, "ディレクトリではありません"):
+            datasets.clear_cache(cache_dir=cache_file)
+        self.assertEqual(cache_file.read_text(encoding="utf-8"), "keep")
+
     def test_tomato_classification(self):
         payload = make_zip(case="tomato-leaves")
         key, source = self.setup_source(payload, case="tomato-leaves")
