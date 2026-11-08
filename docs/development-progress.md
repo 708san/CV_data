@@ -1,12 +1,19 @@
 # 開発進捗
 
-## 2026-11-08：artifact inventory統合とキャッシュ容量管理
+## 2026-11-08：リモート専用保管・artifact inventory・キャッシュ管理
 
-- `CV_data_artifacts` PR #7を最新`main`へ統合し、15 source manifest、6 artifact manifest、監査report・ライセンス記録・変換ツールをmainに追加した。GitHub Actionsは成功。画像バイナリとRelease assetは追加していない。
-- `datasets.cache_info()`で登録済みデータのキャッシュ容量・版・ファイル数を確認できるようにした。
-- `datasets.clear_cache(dataset_id=None)`で指定データまたは既知IDのキャッシュを削除できるようにした。symlinkや通常ファイル以外を事前に検出し、登録外のディレクトリは削除対象にしない。
-- READMEとAI改造ガイドに、checkout外の既定保存先、容量確認、削除・再取得を追記した。
-- 検証結果：容量・版・ファイル数の計測、指定IDだけの削除、登録外フォルダの保持、登録済みキャッシュの一括削除、symlink拒否をオフラインテストで確認。`PYTHONPATH=src python -m unittest discover -s tests -v`は31件成功、Pillow未導入の2件をスキップ。
+- データ本体を`CV_data`・`CV_data_artifacts`のGit履歴やPyPIへ入れず、許諾済み整形データは`CV_data_artifacts`の固定Release assetで管理する方針に更新した。大容量LoRA原本は固定した公式配布元から直接取得し、重みは配布しない。
+- `cvlesson`の取得時キャッシュはcheckout外（`XDG_CACHE_HOME`または`~/.cache`配下）に置き、明示的な取得API呼び出しまでダウンロードしない運用を明記した。
+- 50候補の状態を再集計：candidate 32、hold 15、整形artifact準備済み・Release待ち2、artifact/asset待ち1。holdは公開承認を意味せず、技術監査の進み具合も異なる。
+- `CV_data_artifacts`のPR #7を最新`main`へ合わせてマージし、15 source manifest、6 artifact manifest、監査report・ライセンス記録・変換ツールをmainに追加した。GitHub Actionsは成功。画像バイナリとRelease assetは追加していない。
+- `datasets.cache_info()`で登録済みデータのキャッシュ容量・版・ファイル数を確認でき、`datasets.clear_cache(dataset_id=None)`で指定データまたは登録済みIDのキャッシュを削除できるようにした。symlinkや通常ファイル以外は事前検出し、登録外ディレクトリは削除対象にしない。
+- 容量計測、指定IDだけの削除、登録外フォルダの保持、一括削除、symlink拒否をオフラインテストで確認。`PYTHONPATH=src python -m unittest discover -s tests -v`は31件成功、Pillow未導入の2件をスキップ。
+- 一次情報の並行確認、権利ゲート後の取得、調査範囲の事前決定、既存manifest・監査結果の再利用、候補単位のPRを標準手順にし、権利審査は省略しない。
+
+### 次の作業
+
+- 再配布候補の元画像権利・プライバシー審査を進め、許諾済みの整形データをどの固定Release assetで保持するか決める。Release作成は明示許可が済むまで行わない。
+- 承認済みデータが現れたら、取得APIの固定URL・サイズ・SHA-256・外部キャッシュを実データなしのテストで先に検証する。
 
 ## 2026-11-05：共通APIと分割・監査の土台
 
