@@ -39,6 +39,7 @@ class LoraWeight:
     trigger_words: tuple[str, ...]
     use_case_ja: str
     system_requirement_ja: str
+    requires_license_acceptance: bool = False
 
 
 _WEIGHTS: dict[str, LoraWeight] = {
@@ -74,6 +75,36 @@ _WEIGHTS: dict[str, LoraWeight] = {
             "基盤モデルの利用条件を確認してください。GPUを推奨します。"
         ),
     ),
+    "watercolor_sd15": LoraWeight(
+        id="watercolor_sd15",
+        name_ja="水彩表現LoRA（SD 1.5）",
+        version="cec30d1ee75123fa7662a4f058899fa0dc3adba0",
+        repository="fladdict/watercolor",
+        filename="fladdict-watercolor-sd-1-5.safetensors",
+        url=(
+            "https://huggingface.co/fladdict/watercolor/resolve/"
+            "cec30d1ee75123fa7662a4f058899fa0dc3adba0/"
+            "fladdict-watercolor-sd-1-5.safetensors"
+        ),
+        model_card_url=(
+            "https://huggingface.co/fladdict/watercolor/blob/"
+            "cec30d1ee75123fa7662a4f058899fa0dc3adba0/README.md"
+        ),
+        size_bytes=302_107_990,
+        sha256="7a4575799077438d47435e841d5ad4560e0f83d0ade5ce7e15a6125c7b443d99",
+        license_name="CreativeML OpenRAIL-M",
+        license_url="https://huggingface.co/spaces/CompVis/stable-diffusion-license",
+        base_model="runwayml/stable-diffusion-v1-5",
+        base_model_license="CreativeML Open RAIL-M（基盤モデル側の条件）",
+        base_model_license_url="https://github.com/CompVis/stable-diffusion/blob/main/LICENSE",
+        trigger_words=("watercolor painting", "impressionism, watercolor painting"),
+        use_case_ja="同じ題材で水彩表現の有無を比べる課題",
+        system_requirement_ja=(
+            "画像生成には別途Stable Diffusion 1.5の基盤モデルとDiffusersが必要です。"
+            "重みと基盤モデルのOpenRAIL-M条件を確認してください。GPUを推奨します。"
+        ),
+        requires_license_acceptance=True,
+    ),
 }
 
 
@@ -108,6 +139,7 @@ def _as_dict(item: LoraWeight) -> dict[str, Any]:
         "source_url": item.url,
         "model_card_url": item.model_card_url,
         "publication_status": "student_enabled",
+        "requires_license_acceptance": item.requires_license_acceptance,
     }
 
 
@@ -168,13 +200,18 @@ def _download(item: LoraWeight, destination: Path) -> None:
 
 
 def get(weight_id: str, *, cache_dir: str | Path | None = None,
-        allow_download: bool = True) -> Path:
+        allow_download: bool = True, accept_license: bool = False) -> Path:
     """固定版重みを取得して検証し、cache内のファイルパスを返す。
 
     この関数を呼ぶと最大サイズ分のネットワーク通信が発生する。
     重みはPyPIやGitに含めず、既定ではcheckout外のcacheへ保存する。
     """
     item = _weight(weight_id)
+    if item.requires_license_acceptance and not accept_license:
+        raise WeightError(
+            "このLoRA重みはOpenRAIL-Mです。利用条件を確認した後、"
+            "accept_license=Trueを指定してください。"
+        )
     root = datasets._cache_dir(cache_dir) / "weights" / item.id / item.version
     _mkdir_checked(root)
     destination = root / item.filename

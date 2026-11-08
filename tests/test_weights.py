@@ -18,7 +18,7 @@ class LoraWeightTests(unittest.TestCase):
             catalog = weights.list_available()
             info = weights.info("tcd_sd15")
         urlopen.assert_not_called()
-        self.assertEqual([item["id"] for item in catalog], ["tcd_sd15"])
+        self.assertEqual([item["id"] for item in catalog], ["tcd_sd15", "watercolor_sd15"])
         self.assertEqual(info["version"], "449a99f6bbded2bdbbc66386b2a4fbf8db8d3807")
         self.assertEqual(info["license"]["name"], "MIT（LoRA重み）")
         self.assertIn("Open RAIL-M", info["base_model_license"]["name"])
@@ -63,6 +63,12 @@ class LoraWeightTests(unittest.TestCase):
     def test_unknown_weight_id_is_rejected(self):
         with self.assertRaisesRegex(weights.WeightError, "未対応"):
             weights.info("unknown")
+
+    def test_openrail_weight_requires_explicit_license_acknowledgement(self):
+        with patch("cvlesson.weights.urllib.request.urlopen") as urlopen:
+            with self.assertRaisesRegex(weights.WeightError, "accept_license=True"):
+                weights.get("watercolor_sd15", allow_download=False)
+        urlopen.assert_not_called()
 
 
 if __name__ == "__main__":
