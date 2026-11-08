@@ -37,7 +37,7 @@
 
 - ライブラリ正式一覧は`tomato_leaves`（生徒向け）と`festival_icons`（教師向けLoRA素材）の2件。Fashion-MNISTは教師向けプレビュー1件。承認済みLoRA素材は0件、権利確認中のプレビューが1件。
 - `tomato_leaves`：7,209枚、破損0、完全一致重複0、ラベル不一致0。標準化後はtrain 5,191 / val 577 / test 1,441。
-- `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。学習済み重みは別APIで管理し、固定版・SHA-256付きのTCD LoRAと水彩LoRAの2件を登録済み。目標3〜4件に向けた追加候補の審査中。
+- `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。学習済み重みは別APIで管理し、固定版・SHA-256付きのTCD LoRA、水彩LoRA、北斎風LoRAの3件を登録済み。
 - カタログ候補50件の台帳状態は`candidate` 32件、`hold` 15件、`prepared_release_pending` 2件、`prepared_artifact_pending_release_asset` 1件。`hold`には技術検査済みの候補と、権利・固定版・実体上の問題で未完了の候補が混在する。台帳の証拠段階を承認と読み替えない。
 - `CV_data_artifacts`のPR #7はマージ済みで、mainにsource manifest 15件とartifact manifest 6件（既存トマトを含む）がある。Release assetは未作成。生成済みZIPが一時作業領域にあるものもあり、GitHub上の永続配布先にはまだ配置していない。
 - 候補50件は正式な`list_available()`に混ぜない。リリースと権利確認が終わるまで、候補用の取得設定は非公開状態を保つ。
@@ -232,7 +232,7 @@ LLM講座のNotebookを改修せず、CV用に別ディレクトリと別ファ�
 
 ### M4：学習済みLoRA重み（取得API実装済み、候補追加審査中）
 
-- 元配布元の固定版と権利条件が確認できた重みを3〜4件選ぶ。現在はMIT表記のTCD LoRAとCreativeML OpenRAIL-Mの水彩LoRAを登録し、後者は取得時に明示的な条件確認を求める。
+- 元配布元の固定版と権利条件が確認できた重みを3〜4件選ぶ。現在はMIT表記のTCD LoRA、CreativeML OpenRAIL-Mの水彩LoRAと北斎風LoRAを登録し、OpenRAIL-Mの重みは取得時に明示的な条件確認を求める。
 - 固定URL・SHA-256・基盤モデル互換性を記録し、明示取得と外部キャッシュを実装済み。
 - 重みを無断再配布せず、画像・キャプションのLoRA学習素材APIと分離する。
 

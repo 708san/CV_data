@@ -105,6 +105,35 @@ _WEIGHTS: dict[str, LoraWeight] = {
         ),
         requires_license_acceptance=True,
     ),
+    "hokusai_sd15": LoraWeight(
+        id="hokusai_sd15",
+        name_ja="北斎風・浮世絵LoRA（SD 1.5）",
+        version="eb7ba98923bc91cf978a2175b2fb921b158c72e0",
+        repository="espressosession/latent-studio-hokusai-lora",
+        filename="pytorch_lora_weights.safetensors",
+        url=(
+            "https://huggingface.co/espressosession/latent-studio-hokusai-lora/resolve/"
+            "eb7ba98923bc91cf978a2175b2fb921b158c72e0/pytorch_lora_weights.safetensors"
+        ),
+        model_card_url=(
+            "https://huggingface.co/espressosession/latent-studio-hokusai-lora/blob/"
+            "eb7ba98923bc91cf978a2175b2fb921b158c72e0/README.md"
+        ),
+        size_bytes=19_170_024,
+        sha256="751b069eecc5f5f16f692abf0203a1ecf43c7713d49b90aea52f867f36132293",
+        license_name="CreativeML OpenRAIL-M",
+        license_url="https://huggingface.co/spaces/CompVis/stable-diffusion-license",
+        base_model="stable-diffusion-v1-5/stable-diffusion-v1-5",
+        base_model_license="CreativeML Open RAIL-M（基盤モデル側の条件）",
+        base_model_license_url="https://github.com/CompVis/stable-diffusion/blob/main/LICENSE",
+        trigger_words=("sks",),
+        use_case_ja="同じ題材で水彩と浮世絵の表現を比べる課題",
+        system_requirement_ja=(
+            "画像生成には別途Stable Diffusion 1.5の基盤モデルとDiffusersが必要です。"
+            "重みと基盤モデルのOpenRAIL-M条件を確認してください。GPUを推奨します。"
+        ),
+        requires_license_acceptance=True,
+    ),
 }
 
 

@@ -82,14 +82,18 @@ weight_path = weights.get("tcd_sd15")  # 初回のみ約135 MBを元配布元か
 watercolor_info = weights.info("watercolor_sd15")
 print(watercolor_info["license"], watercolor_info["trigger_words"])
 watercolor_path = weights.get("watercolor_sd15", accept_license=True)  # 約302 MB
+
+# 北斎風LoRAもOpenRAIL-Mの条件確認後に取得する
+hokusai_path = weights.get("hokusai_sd15", accept_license=True)  # 約19 MB
 ```
 
-現在はTCD LoRAと水彩LoRAの2件を登録しています。TCD LoRA本体はMIT表記ですが、使用には別途Stable Diffusion 1.5の基盤モデルが必要です。水彩LoRAはCreativeML OpenRAIL-Mで、取得時に`accept_license=True`を明示します。両方とも基盤モデルにはCreativeML Open RAIL-Mの条件があるため、取得・利用前に条件を確認してください。
+現在はTCD LoRA、水彩LoRA、北斎風LoRAの3件を登録しています。TCD LoRA本体はMIT表記ですが、使用には別途Stable Diffusion 1.5の基盤モデルが必要です。水彩と北斎風のLoRAはCreativeML OpenRAIL-Mで、取得時に`accept_license=True`を明示します。基盤モデルにもCreativeML Open RAIL-Mの条件があるため、取得・利用前に条件を確認してください。
 
 | LoRA重み | 課題例 | 利用条件 |
 | --- | --- | --- |
 | [TCD LoRA（SD 1.5）](docs/weights/tcd_sd15.md) | 少ない生成ステップで時間と画像を比べる | 重みはMIT。基盤モデルはOpen RAIL-M |
 | [水彩LoRA（SD 1.5）](docs/weights/watercolor_sd15.md) | 同じ題材で水彩表現を比べる | OpenRAIL-M。取得時に条件確認が必要 |
+| [北斎風・浮世絵LoRA（SD 1.5）](docs/weights/hokusai_sd15.md) | 水彩と浮世絵の表現を比べる | OpenRAIL-M。取得時に条件確認が必要 |
 
 ## データの説明
 

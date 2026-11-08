@@ -18,7 +18,10 @@ class LoraWeightTests(unittest.TestCase):
             catalog = weights.list_available()
             info = weights.info("tcd_sd15")
         urlopen.assert_not_called()
-        self.assertEqual([item["id"] for item in catalog], ["tcd_sd15", "watercolor_sd15"])
+        self.assertEqual(
+            [item["id"] for item in catalog],
+            ["tcd_sd15", "watercolor_sd15", "hokusai_sd15"],
+        )
         self.assertEqual(info["version"], "449a99f6bbded2bdbbc66386b2a4fbf8db8d3807")
         self.assertEqual(info["license"]["name"], "MIT（LoRA重み）")
         self.assertIn("Open RAIL-M", info["base_model_license"]["name"])
@@ -69,6 +72,16 @@ class LoraWeightTests(unittest.TestCase):
             with self.assertRaisesRegex(weights.WeightError, "accept_license=True"):
                 weights.get("watercolor_sd15", allow_download=False)
         urlopen.assert_not_called()
+
+    def test_hokusai_weight_uses_pinned_revision_and_requires_acknowledgement(self):
+        item = weights.info("hokusai_sd15")
+        self.assertEqual(item["version"], "eb7ba98923bc91cf978a2175b2fb921b158c72e0")
+        self.assertEqual(item["size_bytes"], 19_170_024)
+        self.assertEqual(
+            item["sha256"],
+            "751b069eecc5f5f16f692abf0203a1ecf43c7713d49b90aea52f867f36132293",
+        )
+        self.assertTrue(item["requires_license_acceptance"])
 
 
 if __name__ == "__main__":
