@@ -39,6 +39,16 @@
 
 現在の3件（TCD、水彩、北斎風）を基礎に、追加5件を選ぶ。追加候補はキャラクターや実在人物への依存を避け、同じ題材を複数の表現で比較できる一般的なスタイルを優先する。線画・ピクセルアート・紙工作風などを候補テーマとし、固定revision、ファイルSHA-256、SD 1.5互換性、モデルと学習素材のライセンスを一次情報で確認してから登録する。8件は目標数であり、条件を満たす候補がなければ未達として理由を記録する。
 
+#### 追加候補の一次情報確認（2026-11-09）
+
+| 候補 | 確認できた公表情報 | 判定と残作業 |
+| --- | --- | --- |
+| [Lineart Style LoRA](https://huggingface.co/whitebearhands/lineart-lora) | 配布者のModel CardはMIT、SD 1.5、trigger word `lineart_style`、学習画像3,000枚と記載 | 学習画像の出典・権利・固定weight SHA-256が未確認。候補保留 |
+| [Monet LoRA](https://huggingface.co/J-YOON/lora-monet-sd1.5) | 配布者のModel CardはMIT、SD 1.5、trigger `msl monet`、ファイル名を記載。学習元としてKaggleのMonet-style datasetを参照 | Model Card自身がデータセットの正確な版とcaption corpusを不明点としている。配布ファイルの権利・固定SHA-256も確認してから判断 |
+| [ClayCanvas](https://huggingface.co/satu1234/ClayCanvas) | 配布者のModel CardはCC0、SD 1.5、OpenBrushの12,554作品で学習と記載 | 同じカードに「Training in progress」と公開済み重みの説明が併存。配布状態とOpenBrushの該当版・権利を一次確認するまで保留 |
+
+これらは調査候補であり、利用承認済みではない。Model Cardのライセンス欄は配布者の表示として記録し、元学習素材の権利証明と同一視しない。
+
 - 共通API、課題から選ぶ導線、外部キャッシュ、安全な固定版取得、監査形式は維持する。件数を減らすためにデータ形式別アダプタや出典・利用条件の表示を省かない。
 - 20件のデータセットは分類だけに偏らないよう選び、検出・領域分割を含める。既存監査・manifest・整形artifactを再利用し、新規の実体検査は選定候補に限る。
 - 学習済みLoRA重みは、元配布元の固定版・固定URL・SHA-256・利用条件・基盤モデル互換性・トリガー語を登録し、利用者が明示した時だけcheckout外のキャッシュへ直接取得する。重みをPyPI・Git・CV_data_artifactsへ複製・再配布しない。
