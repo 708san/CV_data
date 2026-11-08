@@ -165,3 +165,12 @@
 - 同梱`data.yaml`はRoboflow v4の`license: Private`と記録。一方Mendeleyの掲載ライセンスはCC BY 4.0で、再許諾の権利関係が確認できないため、画像artifact・共通形式変換・APIへの登録を行わず保留した。
 - 監査JSONとsource manifestは`CV_data_artifacts`に記録し、画像本体はartifact repositoryへ追加していない。
 - 詳細：[Strawberry-DS](datasets/strawberry_ds.md)、[監査report](../../CV_data_artifacts/reports/strawberry_ds-v1-audit.json)、[source manifest](../../CV_data_artifacts/manifests/sources/strawberry_ds-v1.json)。
+
+
+### 2026-11-08：HGM-4 Hand Gesturesの固定版・アーカイブ目録監査
+
+- Mendeley Data v8のCC BY 4.0表示、DOI、固定RARのファイルID・228,825,330 bytes・SHA-256を確認した。SHA照合後にRAR目録を読み取り専用で確認し、4,270項目、相対パスのみ、symlink・パス逸脱なしを確認した。
+- macOS `bsdtar`がアーカイブ内フィルターを処理できず完全展開に失敗した。部分展開物は信頼せず、画像検査・変換・配布に使用していない。画像数・画質・参加者プライバシーの実体確認は未完了。
+- 公式論文は5名、4カメラ視点、26種の手形を説明する。人物または撮影系列単位の評価分割が必要で、一般的な手話翻訳・人物識別用途には適さない。
+- 固定source manifestと監査reportを`CV_data_artifacts`に追加。再配布・教材化・API掲載は保留。
+- 詳細：[HGM-4](datasets/hgm_4_hand_gestures.md)、[監査report](../../CV_data_artifacts/reports/hgm_4_hand_gestures-v8-audit.json)。

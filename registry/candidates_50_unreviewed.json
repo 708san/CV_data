@@ -2093,38 +2093,43 @@
       "task": "classification",
       "priority": "priority",
       "source": {
-        "landing_page": "https://data.mendeley.com/datasets/jzy8zngkbg/2",
+        "landing_page": "https://data.mendeley.com/datasets/jzy8zngkbg/8",
         "provider": "mendeley",
         "provider_dataset_id": "jzy8zngkbg",
-        "version": "2",
+        "version": "8",
         "content_origin_claim": "著者が4カメラ位置で撮影",
-        "reference_url": "https://data.mendeley.com/datasets/jzy8zngkbg/2"
+        "reference_url": "https://data.mendeley.com/datasets/jzy8zngkbg/8",
+        "file_id": "2b300b67-ebb2-46e5-a8d8-72093ffeaa77",
+        "filename": "HGM-4.rar",
+        "archive_size": 228825330,
+        "archive_sha256": "c24da158944463132dcf808ba114fa405cbc4085e0c96f42aa126019b7daea58",
+        "fixed_download_url": "https://data.mendeley.com/public-files/datasets/jzy8zngkbg/files/2b300b67-ebb2-46e5-a8d8-72093ffeaa77/file_downloaded"
       },
       "rights": {
         "license_claim": "CC BY 4.0",
-        "evidence_url": "https://data.mendeley.com/datasets/jzy8zngkbg/2",
+        "evidence_url": "https://data.mendeley.com/datasets/jzy8zngkbg/8",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "4,160枚",
         "labels": "26種類の手の形",
         "formats": "カラー画像1280×700",
         "structure": "訓練・テストを公式が定義",
-        "notes": "撮影者・同一場面の分割漏洩"
+        "notes": "公式論文は5名を4視点で撮影したデータと説明。固定RARの目録は安全だがbsdtarで完全展開できず、画像実体・同意・プライバシーは未検査。人物/撮影条件単位で分割する必要がある。"
       },
       "audit": {
-        "technical_status": "not_tested",
+        "technical_status": "metadata_checked",
         "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "inspection_status": "blocked",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-08",
+        "evidence_grade": "independent_primary_check"
       },
       "preparation": {
         "planned_level": "1",
         "implemented_levels": [],
-        "adapter": "unassigned_classification",
+        "adapter": "classification_pending_archive_extraction",
         "target_colab": true
       },
       "pedagogy": {
