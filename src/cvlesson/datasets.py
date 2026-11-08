@@ -56,6 +56,7 @@ class ReleaseSource:
     download_size_mb: float | None = None
     audit_status: str = "not_run"
     audit_report: str | None = None
+    classes: tuple[str, ...] = ()
     class_names_ja: tuple[str, ...] = ()
     label_names_ja: dict[str, str] | None = None
     license_info: dict[str, Any] | None = None
@@ -124,6 +125,11 @@ class DatasetBundle:
         return self.root / "images"
 
     @property
+    def masks_dir(self) -> Path:
+        """領域分割データのグレースケールマスク保存先。"""
+        return self.root / "masks"
+
+    @property
     def labels_csv(self) -> Path:
         return self.root / "labels.csv"
 
@@ -181,6 +187,11 @@ class DatasetBundle:
             return pd.DataFrame(records, columns=[
                 "image_path", "label_file", "boxes", "split", "sample_id",
             ])
+        if self.kind == "segmentation":
+            records = self._segmentation_records()
+            return pd.DataFrame(records, columns=[
+                "image_path", "mask_path", "label", "label_ja", "label_id", "split", "sample_id",
+            ])
         rows = _read_rows(self.labels_csv)
         if self.kind != "classification":
             return pd.DataFrame([
@@ -218,6 +229,22 @@ class DatasetBundle:
             })
         return records
 
+    def _segmentation_records(self) -> list[dict[str, Any]]:
+        names_ja = dict(zip(self.classes, self.class_names_ja))
+        records = []
+        for row in _read_rows(self.labels_csv):
+            image = row["image"]
+            records.append({
+                "image_path": str((self.root / image).resolve()),
+                "mask_path": str((self.root / row["mask"]).resolve()),
+                "label": row["class_name"],
+                "label_ja": names_ja.get(row["class_name"], row["class_name"]),
+                "label_id": int(row["class_id"]),
+                "split": row["split"],
+                "sample_id": _sample_id(image),
+            })
+        return records
+
     @property
     def splits(self) -> dict[str, int]:
         """標準化後のtrain/val/test件数。"""
@@ -227,6 +254,9 @@ class DatasetBundle:
                 if line.strip():
                     counts[json.loads(line)["split"]] += 1
             return {name: int(counts.get(name, 0)) for name in ("train", "valid", "test")}
+        if self.kind == "segmentation":
+            counts = Counter(row["split"] for row in _read_rows(self.labels_csv))
+            return {name: int(counts.get(name, 0)) for name in ("train", "val", "test")}
         if self.kind != "classification":
             return {}
         rows = _read_rows(self.labels_csv)
@@ -261,6 +291,9 @@ class DatasetBundle:
             with Image.open(record["image_path"]) as image:
                 axis.imshow(image.convert("RGB"))
             title = record.get("label_ja", record.get("caption", ""))
+            if self.kind == "segmentation":
+                with Image.open(record["mask_path"]) as mask:
+                    axis.imshow(mask.convert("L"), cmap="Reds", vmin=0, vmax=255, alpha=0.45)
             if self.kind == "detection":
                 from matplotlib.patches import Rectangle
                 boxes = record["boxes"]
@@ -293,8 +326,8 @@ class DatasetBundle:
         seed: int = 42,
     ):
         """画像を遅延読み込みするPyTorch Datasetへ変換する。"""
-        if self.kind != "classification":
-            raise DatasetError("PyTorch変換は現在、画像分類データだけに対応しています。")
+        if self.kind not in {"classification", "segmentation"}:
+            raise DatasetError("PyTorch変換は画像分類と領域分割データに対応しています。")
         if split not in {"train", "val", "test"}:
             raise ValueError("splitはtrain、val、testのいずれかです。")
         if len(image_size) != 2 or any(not isinstance(x, int) or x <= 0 for x in image_size):
@@ -303,13 +336,13 @@ class DatasetBundle:
             import torch
         except ImportError as exc:
             raise DatasetError("PyTorch変換にはtorchが必要です。") from exc
-        records = [
-            record for record in self._classification_records(val_fraction=val_fraction, seed=seed)
-            if record["split"] == split
-        ]
+        all_records = (self._segmentation_records() if self.kind == "segmentation"
+                       else self._classification_records(val_fraction=val_fraction, seed=seed))
+        records = [record for record in all_records if record["split"] == split]
         if not records:
             raise DatasetError(f"split={split}に画像がありません。")
-        return _TorchClassificationDataset(records, image_size=image_size, torch_module=torch)
+        dataset_type = _TorchSegmentationDataset if self.kind == "segmentation" else _TorchClassificationDataset
+        return dataset_type(records, image_size=image_size, torch_module=torch)
 
     def quality_summary(self, *, seed: int = 42, val_fraction: float = 0.1) -> dict[str, Any]:
         """標準化後の件数と分割方法を機械可読な辞書で返す。"""
@@ -320,6 +353,14 @@ class DatasetBundle:
                 "dataset_id": self.id, "kind": self.kind, "usable_images": int(len(frame)),
                 "objects_by_class": dict(sorted(object_counts.items())), "splits": self.splits,
                 "validated_at": _utc_now(),
+            }
+        if self.kind == "segmentation":
+            frame = self.to_df()
+            return {
+                "dataset_id": self.id, "kind": self.kind,
+                "usable_images": int(len(frame)),
+                "classes": {str(k): int(v) for k, v in frame["label"].value_counts().sort_index().items()},
+                "splits": self.splits, "validated_at": _utc_now(),
             }
         if self.kind != "classification":
             return {"dataset_id": self.id, "kind": self.kind, "validated_at": _utc_now()}
@@ -404,6 +445,54 @@ _SOURCES: dict[str, ReleaseSource] = {
         },
         file_urls={
             "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/bangladeshi-ewaste-v0.1.0/bangladeshi_ewaste-v0.1.0.zip",
+        },
+        published=False,
+    ),
+    "fruitseg30": ReleaseSource(
+        id="fruitseg30", case_id="fruitseg30", tag="fruitseg30-v0.1.0",
+        sha256="129384a6e9599b0b9eb756ec93abda25a90bdd70a514fd04f905a2ff2e8c5ba5",
+        archive_size=68_242_354, image_count=1914,
+        kind="segmentation", name_ja="FruitSeg30（果物の領域分割・29種類）",
+        rights_note="CC BY 4.0の出典表示が必要です。Guava 55組を寸法不一致で除外し、元画像と濃淡マスクは変更していません。鮮度・品質の判断には使いません。",
+        aliases_ja=("FruitSeg30", "果物の領域分割"),
+        task="segmentation", audiences=("student", "teacher"), difficulty="intermediate",
+        use_cases_ja=("果物の領域を画像から分ける", "マスクの境界や撮影背景による違いを調べる"),
+        input_description_ja="512×512の果物画像",
+        output_description_ja="果物の前景を示すグレースケールマスク",
+        download_size_mb=65.3, audit_status="full_image_and_mask_audit",
+        audit_report="reports/fruitseg30-v3-full-audit.json",
+        classes=(
+            "Apple_Gala", "Apple_Golden Delicious", "Avocado", "Banana", "Berry",
+            "Burmese Grape", "Carambola", "Date Palm", "Dragon", "Elephant Apple",
+            "Grape", "Green Coconut", "Hog Plum", "Kiwi", "Lichi", "Malta",
+            "Mango Golden Queen", "Mango_Alphonso", "Mango_Amrapali", "Mango_Bari",
+            "Mango_Himsagar", "Olive", "Orange", "Palm", "Persimmon", "Pineapple",
+            "Pomegranate", "Watermelon", "White Pear",
+        ),
+        class_names_ja=(
+            "ガラりんご", "ゴールデンデリシャス", "アボカド", "バナナ", "ベリー",
+            "ビルマブドウ", "スターフルーツ", "ナツメヤシ", "ドラゴンフルーツ",
+            "エレファントアップル", "ブドウ", "青いココナッツ", "ホグプラム",
+            "キウイ", "ライチ", "マルタオレンジ", "マンゴー（ゴールデンクイーン）",
+            "マンゴー（アルフォンソ）", "マンゴー（アムラパリ）", "マンゴー（バリ）",
+            "マンゴー（ヒムサガル）", "オリーブ", "オレンジ", "パームフルーツ",
+            "柿", "パイナップル", "ザクロ", "スイカ", "白梨",
+        ),
+        license_info={
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+            "rights_review": "Mendeley公式v3ページと関連論文の表記を確認。帰属表示とGuava 55組の除外を明記。",
+        },
+        source_info={
+            "dataset_name": "FruitSeg30_Segmentation Dataset & Mask Annotations",
+            "provider": "F. M. Javed Mehedi Shamrat; Rashiduzzaman Shakil; Mohd Yamani Idna Idris; Bonna Akter; Xujuan Zhou",
+            "url": "https://data.mendeley.com/datasets/vkht8pfsp3/3",
+            "doi": "10.17632/vkht8pfsp3.3",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "fruitseg30-v0.1.0",
+        },
+        file_urls={
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/fruitseg30-v0.1.0/fruitseg30-v0.1.0.zip",
         },
         published=False,
     ),
@@ -639,6 +728,37 @@ class _TorchClassificationDataset:
             array = np.asarray(image, dtype=np.float32) / 255.0
         tensor = self._torch.from_numpy(array).permute(2, 0, 1).contiguous()
         return tensor, int(record["label_id"])
+
+
+class _TorchSegmentationDataset:
+    """画像と濃淡マスクを遅延読み込みするPyTorch Dataset互換クラス。"""
+
+    def __init__(self, records: list[dict[str, Any]], *, image_size: tuple[int, int], torch_module: Any) -> None:
+        self._records = records
+        self._image_size = image_size
+        self._torch = torch_module
+        self.targets = [int(record["label_id"]) for record in records]
+
+    def __len__(self) -> int:
+        return len(self._records)
+
+    def __getitem__(self, index: int):
+        try:
+            from PIL import Image
+        except ImportError as exc:
+            raise DatasetError("画像読み込みにはPillowが必要です。") from exc
+        import numpy as np
+
+        record = self._records[index]
+        with Image.open(record["image_path"]) as image:
+            image = image.convert("RGB").resize(self._image_size[::-1], Image.Resampling.BILINEAR)
+            image_array = np.asarray(image, dtype=np.float32) / 255.0
+        with Image.open(record["mask_path"]) as mask:
+            mask = mask.convert("L").resize(self._image_size[::-1], Image.Resampling.NEAREST)
+            mask_array = np.asarray(mask, dtype=np.float32)[None, :, :] / 255.0
+        image_tensor = self._torch.from_numpy(image_array).permute(2, 0, 1).contiguous()
+        mask_tensor = self._torch.from_numpy(mask_array).contiguous()
+        return image_tensor, mask_tensor
 
 
 _TASKS: dict[str, dict[str, str]] = {
@@ -982,6 +1102,8 @@ def _validate_detection_case(root: Path, src: ReleaseSource, manifest: dict[str,
 
 
 def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
+    if src.kind == "segmentation":
+        return _validate_segmentation_case(root, src)
     if src.kind == "detection":
         required = [root / x for x in ("manifest.json", "classes.json", "annotations.jsonl", "metadata.jsonl", "README.md")]
     else:
@@ -1039,6 +1161,56 @@ def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
                                      if src.kind == "classification" else {"text": item["text"]})
     if actual_metadata != expected_metadata:
         raise DatasetError("metadata.jsonlとlabels.csvが一致しません。")
+    return manifest
+
+
+def _validate_segmentation_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
+    required = ("manifest.json", "labels.csv", "metadata.jsonl", "README.md", "LICENSE.md")
+    if not all((root / name).is_file() for name in required):
+        raise DatasetError("領域分割artifactの必須ファイルがありません。")
+    manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
+    if (manifest.get("dataset_id") != src.case_id
+            or manifest.get("artifact_version") != "0.1.0"
+            or manifest.get("image_count") != src.image_count
+            or manifest.get("classes") != list(src.classes)):
+        raise DatasetError("領域分割manifestの版・画像数・クラスが固定Releaseと一致しません。")
+    rows = _read_rows(root / "labels.csv")
+    if not rows or len(rows) != src.image_count:
+        raise DatasetError("領域分割artifactのlabels.csv件数が画像数と一致しません。")
+    expected_images: set[str] = set()
+    expected_masks: set[str] = set()
+    class_to_id = {name: index for index, name in enumerate(src.classes)}
+    for row in rows:
+        image, mask = row.get("image", ""), row.get("mask", "")
+        image_parts, mask_parts = PurePosixPath(image).parts, PurePosixPath(mask).parts
+        cls, split = row.get("class_name", ""), row.get("split", "")
+        if ("\\" in image or "\\" in mask or image_parts[:2] != ("images", split)
+                or mask_parts[:2] != ("masks", split) or split not in {"train", "val", "test"}
+                or len(image_parts) != 4 or len(mask_parts) != 4
+                or any(part in {"", ".", ".."} for part in (*image_parts, *mask_parts))
+                or cls not in class_to_id or image_parts[2] != cls or mask_parts[2] != cls
+                or mask_parts[-1] != PurePosixPath(image_parts[-1]).stem + "_mask.png"
+                or row.get("class_id") != str(class_to_id[cls])
+                or PurePosixPath(image).suffix.lower() not in {".jpg", ".jpeg"}
+                or PurePosixPath(mask).suffix.lower() != ".png"
+                or image in expected_images or mask in expected_masks):
+            raise DatasetError(f"領域分割artifactの画像・マスク対応が不正です: {image}")
+        image_path, mask_path = root / image, root / mask
+        if any(path.is_symlink() or not path.is_file() for path in (image_path, mask_path)):
+            raise DatasetError(f"領域分割artifactの画像またはマスクがありません: {image}")
+        expected_images.add(image)
+        expected_masks.add(mask)
+    found_images = {path.relative_to(root).as_posix() for path in (root / "images").rglob("*") if path.is_file()}
+    found_masks = {path.relative_to(root).as_posix() for path in (root / "masks").rglob("*") if path.is_file()}
+    if found_images != expected_images or found_masks != expected_masks:
+        raise DatasetError("領域分割artifactの画像・マスクとlabels.csvの集合が一致しません。")
+    metadata_rows = [json.loads(line) for line in (root / "metadata.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
+    expected_metadata = [{
+        "image": row["image"], "mask": row["mask"], "class_name": row["class_name"],
+        "class_id": int(row["class_id"]), "split": row["split"],
+    } for row in rows]
+    if metadata_rows != expected_metadata:
+        raise DatasetError("領域分割artifactのmetadata.jsonlとlabels.csvが一致しません。")
     return manifest
 
 

@@ -78,7 +78,7 @@
 - `DatasetBundle`に課題タイプ、対象者、用途、入力・出力、概算取得サイズを追加した。
 - `docs/catalog-review.md`に50候補を分類・検出・分割・素材の課題へ対応付け、全候補をAPIへ追加しない理由と次の実体検査順を記録した。
 - `Fruits-360`、`Recyclable Waste`、`GeoSetEnnea`、`FruitSeg30`は公式ページでライセンス表記と概要を再確認した。GeoSetEnneaは公式APIのフォルダ別メタデータを追加確認し、画像966件・YOLOラベル966件と別置きのaugmented/rawを記録した。Recyclable Wasteは9枚の代表画像でAPI SHA-256照合とJPEGデコードを実施したが、固定アーカイブSHA-256と全量監査が未完了のため、いずれも台帳は`under_review`・公開保留のままにした。
-- `Fruits-360`、`Recyclable Waste`、`GeoSetEnnea`、`FruitSeg30`は公式ページでライセンス表記と概要を再確認した。GeoSetEnneaは全公開2,898ファイルのsource manifestを作成し、分割済み画像966件・YOLOラベル966件とaugmented/rawを記録、内容SHA重複1グループを確認した。Recyclable Wasteは989画像のsource manifestと12重複グループ、9枚の代表画像検査を記録した。FruitSeg30は全30クラスの画像1,969件・マスク1,969件のメタデータ対応とファイルSHA-256重複なしを確認し、代表画像・マスクも検査したが、固定artifactの本体監査と再配布条件が未完了のため、いずれも台帳は`under_review`・公開保留のままにした。
+- `Fruits-360`、`Recyclable Waste`、`GeoSetEnnea`、`FruitSeg30`は公式ページでライセンス表記と概要を再確認した。GeoSetEnneaは全公開2,898ファイルのsource manifestを作成し、分割済み画像966件・YOLOラベル966件とaugmented/rawを記録、内容SHA重複1グループを確認した。Recyclable Wasteは989画像のsource manifestと12重複グループ、9枚の代表画像検査を記録した。FruitSeg30は当初、全30クラスのメタデータと代表画像のみを検査し、詳細は本ページ後半の2026-11-08監査記録で更新した。
 - PyPI向けのパッケージビルドを行うが、本番公開・Release作成・mainへのマージは行わない。
 
 ### 2026-11-06：Indian Origin Flowersの一次監査
@@ -174,3 +174,13 @@
 - 公式論文は5名、4カメラ視点、26種の手形を説明する。人物または撮影系列単位の評価分割が必要で、一般的な手話翻訳・人物識別用途には適さない。
 - 固定source manifestと監査reportを`CV_data_artifacts`に追加。再配布・教材化・API掲載は保留。
 - 詳細：[HGM-4](datasets/hgm_4_hand_gestures.md)、[監査report](../../CV_data_artifacts/reports/hgm_4_hand_gestures-v8-audit.json)。
+
+
+### 2026-11-08：FruitSeg30 v3の全量監査と29クラスartifact準備
+
+- 公式固定v3の全3,938ファイル（計224,579,761 bytes）を取得し、ファイル単位のサイズ・SHA-256を全件照合した。1,969 JPEGと1,969 PNGを全件デコードし、マスクPNGのCRCエラーと完全一致重複は0件。
+- Guava 55組はすべて非512サイズで、そのうち52組は同名画像とマスクの寸法が不一致。向き・対応を推測せずクラス全体を除外した。残り29クラスの1,914組は512×512で対応し、8-bit grayscaleのマスクを画素変更せず保持。
+- クラス内seed 42でtrain/val/testへ分け、共通artifact v0.1.0（1,914画像・1,914マスク、3,833ファイル）をローカル生成。artifact manifest照合成功。ZIPは68,242,354 bytes、SHA-256 `129384a6e9599b0b9eb756ec93abda25a90bdd70a514fd04f905a2ff2e8c5ba5`。
+- MendeleyページのCC BY 4.0と論文の撮影説明を確認。第三者由来素材の全画像独立審査、領域分割API、公開Releaseは未完了のため、候補・APIは公開保留。
+- 領域分割artifactの固定Release SHA検証、画像・マスク対応検査、DataFrame、遅延読み込みPyTorch Datasetをライブラリに実装。固定Release assetが未作成のため、正式課題一覧からは隠している。
+- 詳細：[FruitSeg30](datasets/fruitseg30.md)、[監査JSON](../reports/fruitseg30-sample-audit.json)、source manifestとartifact manifestは`CV_data_artifacts`に保存。

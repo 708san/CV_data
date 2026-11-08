@@ -11,17 +11,19 @@
 | 固定Releaseの正式データ | 2 | `tomato_leaves`は生徒向け、`festival_icons`は教師向けLoRA素材 |
 | 教師向けプレビュー | 1 | `fashion_mnist`。固定コミット・4ファイル・件数・IDX形式を検査済み。権利の最終確認中 |
 | 固定取得条件不足で保留 | 1 | `kuzushiji_mnist`。公式データエンドポイントの版とSHA-256が未固定 |
-| artifact準備済み・Release asset待ち | 3 | `bangladeshi_e_waste_image`、`food_waste_bangladesh`、`smallfishbd`。共通形式化・manifest検証済み。全画像の権利審査とRelease作成は未完了 |
+| artifact準備済み・Release/API待ち | 4 | `bangladeshi_e_waste_image`、`food_waste_bangladesh`、`smallfishbd`、`fruitseg30`。共通形式化・manifest検証済み。正式公開条件はデータ別説明を参照 |
 | 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
-| 公式ページのライセンス表記を再確認した候補 | 11 | `fruits_360`、`recyclable_waste`、`geosetennea`、`fruitseg30`、`indian_origin_flowers`、`pistachio_image_dataset`、`fresh_rotten_fruits`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
+| 公式ページのライセンス表記を再確認した候補 | 10 | `fruits_360`、`recyclable_waste`、`geosetennea`、`indian_origin_flowers`、`pistachio_image_dataset`、`fresh_rotten_fruits`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 32 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-上表の正式Release 2件は候補50件とは別の既存配布物です。候補50件の内訳は、プレビュー・固定取得条件不足で保留2件、artifact準備済み3件、全量技術監査済み・保留1件、公式ページのライセンス表記を再確認した11件、固定版メタデータ確認・実体展開保留1件、その他32件です。準備済み候補もRelease asset公開までは正式一覧・取得APIに表示しません。
+上表の正式Release 2件は候補50件とは別の既存配布物です。候補50件の内訳は、プレビュー・固定取得条件不足で保留2件、artifact準備済み4件、全量技術監査済み・保留1件、公式ページのライセンス表記を再確認した10件、固定版メタデータ確認・実体展開保留1件、その他32件です。準備済み候補もRelease asset公開までは正式一覧・取得APIに表示しません。
 
 ## 課題別の候補
 
 HGM-4 v8はMendeleyのCC BY 4.0表示、固定RAR（228,825,330 bytes）のSHA-256、および安全なアーカイブ目録を確認しましたが、標準の展開ツールがRAR内フィルターに対応せず、完全展開できませんでした。画像実体・同意・プライバシーを未検査のため、配布・教材化は保留です（[データ別説明](datasets/hgm_4_hand_gestures.md)）。
+
+FruitSeg30 v3は公式固定版の全3,938ファイルを取得し、サイズ・SHA-256を照合しました。1,969画像と1,969マスクを全量デコードし、Guava 55組のうち52組で同名画像とマスクの寸法が不一致と判明したため、同クラス全体を除外した29クラス1,914組の共通artifact v0.1.0をローカル作成・manifest検証しました。画像・マスクは512×512で、マスクは0〜255の8-bit grayscaleです。データ用ReleaseとライブラリAPIは未登録です（[データ別説明](datasets/fruitseg30.md)）。
 
 ### 画像分類
 

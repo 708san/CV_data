@@ -80,6 +80,30 @@ def make_detection_zip(case="bangladeshi_ewaste_image", *, corrupt_label=False) 
     return output.getvalue()
 
 
+def make_segmentation_zip(case="fruitseg30", *, omit_mask=False) -> bytes:
+    image = "images/train/Avocado/1.jpg"
+    mask = "masks/train/Avocado/1_mask.png"
+    row = {"image": image, "mask": mask, "class_name": "Avocado", "class_id": 0, "split": "train"}
+    manifest = {"dataset_id": case, "artifact_version": "0.1.0", "image_count": 1,
+                "classes": ["Avocado"]}
+    files = {
+        f"{case}/manifest.json": json.dumps(manifest),
+        f"{case}/labels.csv": "image,mask,class_name,class_id,split\n" +
+        f"{image},{mask},Avocado,0,train\n",
+        f"{case}/metadata.jsonl": json.dumps(row) + "\n",
+        f"{case}/README.md": "test",
+        f"{case}/LICENSE.md": "CC BY 4.0 attribution",
+        f"{case}/{image}": b"image-bytes",
+    }
+    if not omit_mask:
+        files[f"{case}/{mask}"] = b"mask-bytes"
+    output = io.BytesIO()
+    with zipfile.ZipFile(output, "w") as archive:
+        for name, content in files.items():
+            archive.writestr(name, content)
+    return output.getvalue()
+
+
 def make_idx_gzip_files() -> dict[str, bytes]:
     image_header = struct.pack(">IIII", 2051, 1, 2, 2)
     label_header = struct.pack(">II", 2049, 1)
@@ -130,6 +154,45 @@ class ReleaseTests(unittest.TestCase):
                 datasets.DatasetError, "公開Releaseがまだありません"
             ):
                 datasets.get(dataset_id, cache_dir=self.cache)
+
+    def test_fruitseg30_is_pending_until_fixed_release_exists(self):
+        self.assertEqual(datasets.info("fruitseg30")["publication_status"], "release_pending")
+        with self.assertRaisesRegex(datasets.DatasetError, "公開Releaseがまだありません"):
+            datasets.get("fruitseg30", cache_dir=self.cache)
+
+    @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
+    def test_segmentation_artifact_download_cache_and_dataframe(self):
+        payload = make_segmentation_zip()
+        source = replace(
+            datasets._SOURCES["fruitseg30"], sha256=hashlib.sha256(payload).hexdigest(),
+            archive_size=len(payload), image_count=1, published=True,
+            classes=("Avocado",), class_names_ja=("アボカド",),
+        )
+        with patch.dict(datasets._SOURCES, {"fruitseg30": source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            data = datasets.get("fruitseg30", cache_dir=self.cache)
+            frame = data.to_df()
+            self.assertEqual(data.task, "segmentation")
+            self.assertEqual(frame.loc[0, "label_ja"], "アボカド")
+            self.assertTrue(Path(frame.loc[0, "mask_path"]).is_file())
+            self.assertEqual(data.splits, {"train": 1, "val": 0, "test": 0})
+            self.assertEqual(data.quality_summary()["usable_images"], 1)
+            cached = datasets.get("fruitseg30", cache_dir=self.cache, allow_download=False)
+            self.assertEqual(cached.root, data.root)
+
+    def test_segmentation_missing_mask_is_rejected(self):
+        payload = make_segmentation_zip(omit_mask=True)
+        source = replace(
+            datasets._SOURCES["fruitseg30"], sha256=hashlib.sha256(payload).hexdigest(),
+            archive_size=len(payload), image_count=1, published=True,
+            classes=("Avocado",), class_names_ja=("アボカド",),
+        )
+        with patch.dict(datasets._SOURCES, {"fruitseg30": source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            with self.assertRaisesRegex(datasets.DatasetError, "画像またはマスク"):
+                datasets.get("fruitseg30", cache_dir=self.cache)
 
     def test_catalog_can_filter_by_task_and_audience(self):
         student = datasets.list_available(task="classification", audience="student")
