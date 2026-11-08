@@ -1,21 +1,28 @@
-# Pistachio Image Dataset（公開保留）
+# Pistachio Image Dataset（artifact準備・公開保留）
 
-殻付きピスタチオ2種類を画像分類する課題候補です。「画像の見た目から分類できるか」「撮影条件やクラス数の偏りは精度にどう影響するか」を調べる題材に向きます。分類結果を販売価格・品質・安全性の判定として使わないでください。
+## 出典と権利確認
 
-## 現時点で確認したこと
+[Mendeley Data v1](https://data.mendeley.com/datasets/h7pf57cgg9/1)、DOI `10.17632/h7pf57cgg9.1`。公式ページはCC BY 4.0と表示し、KirmiziとSiirtのピスタチオ試料を高解像度カメラで撮影した2,148枚と説明します。MendeleyのcontributorはMurat Kokluです。
 
-- 公式Mendeley Dataの固定版1を確認しました。
-- 公式ページのライセンス表記はCC BY 4.0です。
-- 公式固定ZIPのサイズは27,859,492 bytes、SHA-256は`140760707018b7f53d91a86a1d7be96d92b1a0d26a75690ab9280ed1170df895`です。
-- SHA-256一致後に安全展開し、画像フォルダから2,148枚を全量検査しました。
-- Kirmizi_Pistachio 1,232枚、Siirt_Pistachio 916枚で、すべてJPEG・600×600・RGB、破損0枚、完全一致重複0グループでした。
-- 画像を変更せず、seed 42でクラス別にtrain 1,717、val 214、test 217へ分ける共通classification artifactを生成し、manifest照合に成功しました。これはローカル監査物であり、公開Releaseにはまだ登録していません。
-- 固定source manifestを`CV_data_artifacts`に保存しました。
+出典が引用を求める論文は、Ozkan・Koklu・Saracoglu (2021, DOI `10.23751/pn.v23i2.9686`) と Singhほか (2022, DOI `10.3390/electronics11070981`) です。2021年論文ページは論文自体をCC BY-NC 4.0と表示し、画像取得方法を説明しています。論文ライセンスとデータセットページのCC BY 4.0表示を同一の許諾として扱わず、論文PDFや図表はartifactに含めません。画像権利者・第三者権利について公開前の追加確認が必要なため、正式配布は保留しています。
 
-## 公開保留の理由
+## 全量技術監査
 
-MendeleyページのCC BY 4.0表記と固定ZIPは確認できましたが、元画像の第三者権利や、データ提供者が記載した「dataset内コンテンツの追加許諾が必要になり得る」という注意を別途確認していません。また、公式ZIPには画像以外の特徴量・説明ファイルも含まれるため、教材artifactへ含める範囲を限定する必要があります。
+- 固定v1のZIPは27,859,492 bytes、SHA-256 `140760707018b7f53d91a86a1d7be96d92b1a0d26a75690ab9280ed1170df895`。照合後に安全展開しました。
+- ZIPは2,164エントリ、2,158ファイルです。画像2,148枚のほか、特徴量表と引用文書など非画像ファイル10件を含みます。artifactへは画像のみを収録しました。
+- 2,148枚すべてJPEG、600×600、RGBとしてデコード成功。完全一致重複0件。
+- クラスはKirmizi_Pistachio 1,232枚、Siirt_Pistachio 916枚です。代表4枚を目視し、黒い背景上にピスタチオ試料を1つずつ写した画像でした。全画像の人手確認ではありません。
 
-そのため正式API・生徒向けNotebook・PyPI配布にはまだ追加していません。元画像権利、クレジット、ZIP内の非画像ファイルの扱い、共通artifactの公開条件を確認後に判断します。
+## 共通artifact v0.1.0
 
-出典：[公式Mendeley Dataページ](https://data.mendeley.com/datasets/h7pf57cgg9/1)
+固定画像の画素は変更せず、`images/<split>/<class>/`に配置し、`labels.csv`・`metadata.jsonl`・クラス別seed 42のtrain/val/test分割を追加しました。train 1,503、val 322、test 323。artifact manifestの検証に成功しています。
+
+ローカルZIPは25,875,554 bytes、SHA-256 `32bc15c4788052207e3dd52d4450cc15fec9efade3df169d59bb94556d715f24`。2,153ファイル（2,148画像とラベル・説明類）です。Gitには画像を収録せず、Releaseも作成していません。
+
+## 高校生向け課題
+
+「似た見た目のピスタチオ2種類を画像から分類できるか」を試し、クラス不均衡、画像数、背景が固定された条件の影響を比較できます。正解率だけでなく、混同行列とクラス別再現率を見ます。品質・鮮度・安全性・販売価格を判断する用途ではありません。
+
+## 記録
+
+source manifest、artifact manifest、監査report、帰属・引用記録は`CV_data_artifacts`に保存しています。第三者権利の追加確認と最終配布承認が済むまでAPI・Releaseへ追加しません。

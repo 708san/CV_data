@@ -418,7 +418,7 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/h7pf57cgg9/1",
         "redistribution_reviewed": false,
-        "rights_status": "under_review"
+        "rights_status": "under_review_dataset_image_rights_confirmation_pending"
       },
       "claims": {
         "quantity": "2,148枚",
@@ -433,15 +433,21 @@
         "archive_sha256": "140760707018b7f53d91a86a1d7be96d92b1a0d26a75690ab9280ed1170df895",
         "decode_errors": 0,
         "duplicate_sha_groups": 0,
-        "inspection_status": "completed",
+        "inspection_status": "full_technical_audit_sample_visual_review",
         "publication_status": "hold",
-        "last_desk_review": "2026-11-06",
+        "last_desk_review": "2026-11-08",
         "evidence_grade": "independent_primary_check",
-        "notes": "固定ZIPの安全検査と画像2,148枚の全量デコードに成功。元画像の第三者権利、クレジット、再配布条件は未解決。"
+        "notes": "公式Mendeley v1のCC BY 4.0表示と固定ZIPを確認。全2,148画像を600x600 RGB JPEGとしてデコード、完全一致重複0。論文は高解像度カメラで試料を撮影したと説明。4画像を目視。画像以外の特徴量表等10ファイルはartifactから除外。2021論文自身のCC BY-NC 4.0表示とMendeleyデータのCC BY 4.0表示を混同せず、dataset image rights holder/third-party rightsを公開前に追加確認するためhold。共通artifact v0.1.0準備済みだがRelease/API未公開.",
+        "sample_files_examined": 4,
+        "archive_size": 27859492,
+        "image_dimensions": "600x600 RGB JPEG"
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": [],
+        "implemented_levels": [
+          "source_audit",
+          "common_artifact_v0.1.0"
+        ],
         "adapter": "unassigned_classification",
         "target_colab": true
       },

@@ -194,3 +194,12 @@
 - 代表5枚を目視しブランド・商品文字を確認。全画像の人手によるプライバシー確認が未完了のため、正式API・Releaseは保留。
 - Fruits-360公式repoのCC BY-SA 4.0表示を確認したが、GitHub Releasesが空で固定タグReleaseがないため、画像取得・実体検査は保留。
 - 詳細：[Recyclable Waste](datasets/recyclable_waste.md)、[Fruits-360](datasets/fruits_360.md)、[監査JSON](../reports/recyclable_waste-v1-full-audit.json)。
+
+
+### 2026-11-08：Pistachio Image Dataset v1監査・artifact準備
+
+- 固定ZIP（27,859,492 bytes、SHA-256 `140760707018b7f53d91a86a1d7be96d92b1a0d26a75690ab9280ed1170df895`）を再取得・照合し、安全なパスとsymlinkなしを確認。
+- 画像以外の特徴量表・引用文書10ファイルを除き、2,148 JPEG（600×600 RGB）全件デコード成功、完全一致重複0。
+- 画像画素を変更せず、共通formatとseed 42のクラス層化splitを追加。train 1,503、val 322、test 323。artifact manifest検証成功。
+- Mendeley v1はCC BY 4.0表示。掲載者の撮影説明、関連2論文の引用条件を記録。2021論文本文のCC BY-NC表示とdataset licenseを分けて記録。画像権利者・第三者権利の確認が残るためRelease/APIは保留。
+- 詳細：[Pistachio](datasets/pistachio_image_dataset.md)、[監査report](../reports/pistachio_image_dataset-v1-full-audit.json)。
