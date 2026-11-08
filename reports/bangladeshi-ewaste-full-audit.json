@@ -1,0 +1,77 @@
+{
+  "dataset_id": "bangladeshi_ewaste_image",
+  "source_url": "https://data.mendeley.com/datasets/77383kmdnw/1",
+  "source_version": "1",
+  "doi": "10.17632/77383kmdnw.1",
+  "license_claim": "CC BY 4.0",
+  "attribution": "Tanzila Afrin; Azizul Abedin Azmi; Custom Bangladeshi E-Waste Image Dataset for Object Detection and Recognition; https://doi.org/10.17632/77383kmdnw.1; CC BY 4.0",
+  "source_archive": {
+    "filename": "E-Waste Dataset (2).zip",
+    "file_id": "ad031b3c-13e5-4913-8cdd-71dccfab980f",
+    "size": 72987704,
+    "sha256": "f73b30286225c208e98b34f81eb5ffef7baf79e883039d2087e8db53f6ee284e",
+    "central_directory_members": 4326,
+    "unpacked_bytes": 72641326,
+    "member_path_check": "passed",
+    "symlink_members": 0,
+    "zip_crc_check": "passed"
+  },
+  "image_count": 2157,
+  "images_by_split": {"train": 1500, "valid": 330, "test": 327},
+  "image_decode": "all_2157_passed",
+  "image_format": "JPEG",
+  "image_dimensions": {"640x640": 2157},
+  "exact_duplicate_image_groups": 0,
+  "image_label_pairs": 2157,
+  "unpaired_images": 0,
+  "orphan_labels": 0,
+  "empty_label_files": 4,
+  "class_names": [
+    "Battery_Waste", "Glass_Waste", "Keyboard", "Light_Bulb", "Medical_Waste", "Metal_Waste", "Mobile", "Mouse", "Organic_Waste", "PCB", "Paper_Waste", "Plastic_Waste"
+  ],
+  "annotations": {
+    "total": 2159,
+    "yolo_bbox_rows": 752,
+    "polygon_rows": 1407,
+    "malformed_rows": 0,
+    "out_of_range_coordinates": 0,
+    "class_instance_counts": {
+      "Battery_Waste": 154,
+      "Glass_Waste": 127,
+      "Keyboard": 126,
+      "Light_Bulb": 43,
+      "Medical_Waste": 282,
+      "Metal_Waste": 293,
+      "Mobile": 151,
+      "Mouse": 80,
+      "Organic_Waste": 100,
+      "PCB": 205,
+      "Paper_Waste": 200,
+      "Plastic_Waste": 398
+    }
+  },
+  "source_processing_claims": [
+    "Roboflow export version 5",
+    "auto orientation and EXIF orientation stripping",
+    "resize to 640x640 by stretch",
+    "auto-contrast"
+  ],
+  "prepared_common_artifact": {
+    "artifact_version": "0.1.0",
+    "transform_version": "detection_yolo_v1.1.0",
+    "image_count": 2157,
+    "file_count": 4319,
+    "package_size": 71762431,
+    "package_sha256": "fe06d5579e3a84010e0e6ccd7d90d8230ca72d5fcd39719d6d6d8731595007fa",
+    "annotation_conversion": {
+      "source_bbox_rows_preserved": 752,
+      "source_polygon_rows_converted_to_bbox": 1407,
+      "polygon_method": "axis_aligned_enclosing_rectangle; polygon boundary shape is discarded"
+    },
+    "manifest_validation": "passed",
+    "publication_status": "local_candidate_not_released"
+  },
+  "status": "full_archive_annotation_audit_and_local_common_artifact_passed",
+  "publication_status": "hold_pending_public_artifact_release",
+  "notes": "Full-image validation used the host sips decoder after SHA-256 verification and safe extraction. Mixed polygon annotations require conversion to axis-aligned boxes for the common detection format; this loses boundary shape. Green-background appearance can create shortcut learning."
+}

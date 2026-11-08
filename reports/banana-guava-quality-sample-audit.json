@@ -1,0 +1,17 @@
+{
+  "dataset_id": "banana_guava_quality",
+  "source_url": "https://data.mendeley.com/datasets/56td5w4wz2/2",
+  "source_version": "2",
+  "license_claim": "CC BY 4.0",
+  "source_archive": {"filename": "Fruits_Data.zip", "file_id": "4f2c1005-9e8d-4f44-9a4c-f99ac7f30dd2", "size": 476073240, "sha256": "0a020e17ba0269151573dc4f695819486ff2a5d71e28d7bbd56eade6233bb2a2", "members": 1756, "image_files": 1748},
+  "page_claimed_images": 1738,
+  "group_counts": {"Banana/Class_A": 510, "Banana/Class_B": 290, "Banana/Defect": 403, "Guava/Class_A": 161, "Guava/Class_B": 179, "Guava/Defect": 205},
+  "sample_files_examined": 6,
+  "sample_zip_crc_check": "passed",
+  "sample_image_decode": "passed",
+  "sample_format": "JPEG",
+  "sample_dimensions": {"Banana/Class_A": [1024, 1024], "Banana/Class_B": [1024, 1024], "Banana/Defect": [1024, 1024], "Guava/Class_A": [1024, 1024], "Guava/Class_B": [1024, 1024], "Guava/Defect": [1024, 1024]},
+  "status": "metadata_and_sample_audit_passed_full_audit_pending",
+  "publication_status": "hold",
+  "notes": "固定ZIP中央ディレクトリから1,748画像・6グループを確認し、各グループ代表画像をCRC・JPEG検査した。公式説明の1,738枚と10枚差がある。全量デコード、重複、元画像権利、再配布条件は未完了。"
+}

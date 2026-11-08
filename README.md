@@ -1,8 +1,8 @@
 # CV_data — 高校生向け画像データの取得
 
-画像分類や画像生成の演習で使うデータを、Google ColabやPythonから取得するためのライブラリです。
+画像分類・物体検出・領域分割・画像生成の演習で使うデータを、Google ColabやPythonから取得するためのライブラリです。
 
-**現在は開発初期版です。PyPIにはまだ公開していません。** まず、既存の[CV_sample_data](https://github.com/708san/CV_sample_data)にある2つの固定Releaseからの取得に対応します。元のリポジトリ・タグ・Releaseは変更しません。
+**現在は開発初期版です。PyPIにはまだ公開していません。** データ本体はコードから分離し、元の出典または許諾済みartifactの固定Releaseから取得します。既存の[CV_sample_data](https://github.com/708san/CV_sample_data)は読み取り専用です。
 
 ## まず使う
 
@@ -67,13 +67,15 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 
 トマトの葉と文化祭アイコンは固定Releaseを全量監査済みです。実測値は[トマトの監査レポート](reports/tomato-leaves-v1.2.0.json)と[文化祭アイコンの監査レポート](reports/festival-icons-v1.0.0.json)に保存しています。これは権利の承認を意味しません。
 
-外部の画像データセット50件は引き続き候補を審査中で、まだダウンロード用APIとして公開していません。
+外部画像データセット候補は引き続き審査中です。バングラデシュの電子ごみ、食品廃棄、小魚データは全量監査と共通形式変換まで終えましたが、全画像の権利審査とデータ専用Release assetが未完了のため正式APIには掲載していません。審査を終え、固定ReleaseとSHA-256が用意できたデータだけを利用可能一覧に追加します。
+
+FruitSeg30は全量監査後、寸法が一致しないGuavaクラスを除いた29クラス1,914組のartifactと領域分割用取得検証を準備しました。ZIPは固定SHA-256で検証します。データ専用Releaseがまだないため、取得APIと課題一覧には掲載していません。公開後の`to_torch_dataset()`は画像と濃淡マスクを返します。
 
 許諾済みデータの原本・派生データ・manifestは、コードとは分離した[CV_data_artifacts](https://github.com/708san/CV_data_artifacts)で管理します。PyPIとこのリポジトリには画像・LoRA・学習済み重みを収録しません。データを追加する際は、出典・ライセンス・固定版・SHA-256・変換履歴・監査結果をそろえてから、データ専用リポジトリのRelease assetとして公開します。
 
 Fashion-MNISTは固定コミットとファイル整合性を確認した教師向けプレビューですが、教材公開・再配布の最終確認中です。正式一覧には含めず、開発者が明示した場合だけ`datasets.get("fashion_mnist", allow_preview=True)`で取得できます。Kuzushiji-MNISTは公式データファイルの固定版が確定していないため保留中です。
 
-`datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。現在は正式承認済みの画像分類だけが表示されます。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。検出・領域分割の候補は、実体・ライセンス・固定取得条件の検査が終わるまで一覧に出しません。
+`datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。現在の正式一覧には画像分類だけが表示されます。物体検出と領域分割の取得・形式検査は整備済みですが、固定データReleaseが未公開のため課題一覧にはまだ表示しません。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
 
 LoRA素材は画像・キャプション・トリガーワード・利用条件を管理します。モデル重みは再配布しません。生徒向けに承認された素材がない場合、`loras.list_available()`は空になります。
 

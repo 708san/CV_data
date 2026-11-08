@@ -90,7 +90,9 @@
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": ["1"],
+        "implemented_levels": [
+          "1"
+        ],
         "adapter": "idx_gzip_preview",
         "target_colab": true
       },
@@ -219,12 +221,13 @@
         "notes": "同一個体の回転撮影による評価漏れに注意"
       },
       "audit": {
-        "technical_status": "not_tested",
+        "technical_status": "blocked_no_fixed_release",
         "files_examined": 0,
         "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-05",
-        "evidence_grade": "independent_primary_check"
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-08",
+        "evidence_grade": "independent_primary_check",
+        "notes": "公式repoは現在更新される100x100ブランチで、READMEの版は2026.10.27.0。GitHub Releasesは空。固定タグ付きRelease assetと既知SHA-256を確認できないため、画像取得・再配布・実体検査は開始しない。"
       },
       "preparation": {
         "planned_level": "1",
@@ -299,7 +302,7 @@
         "landing_page": "https://data.mendeley.com/datasets/h5pxbsdz4m/1",
         "provider": "mendeley",
         "provider_dataset_id": "h5pxbsdz4m",
-        "version": "1",
+        "version": "Mendeley Data v1 / DOI 10.17632/h5pxbsdz4m.1",
         "content_origin_claim": "公開分は著者が施設・市街・家庭で撮影",
         "reference_url": "https://data.mendeley.com/datasets/h5pxbsdz4m/1"
       },
@@ -317,17 +320,23 @@
         "notes": "公式公開APIの一覧ではREADMEを除く画像989枚を確認。ページ記載の1,000枚と不一致のため、固定アーカイブ・件数・配布構造を再確認するまで保留。"
       },
       "audit": {
-        "technical_status": "metadata_checked",
-        "files_examined": 990,
-        "sample_files_examined": 9,
+        "technical_status": "full_image_audit",
+        "files_examined": 989,
+        "sample_files_examined": 5,
         "sample_sha256_check": "passed",
         "sample_image_decode": "passed",
         "metadata_duplicate_sha_groups": 12,
-        "inspection_status": "completed",
+        "inspection_status": "full_technical_audit_sample_visual_review",
         "publication_status": "hold",
-        "last_desk_review": "2026-11-05",
+        "last_desk_review": "2026-11-08",
         "evidence_grade": "independent_primary_check",
-        "notes": "公開APIの989画像と補助READMEを固定し、ファイル単位SHA-256を記録。内容SHA重複は12グループ確認された。9カテゴリフォルダから代表画像を取得し、公開APIのファイルSHA-256と一致、JPEGデコードも成功。サンプルは全量画像デコード・権利監査を意味しない。"
+        "notes": "公式固定v1の989画像（1,707,541,468 bytes）すべてを既知サイズ・SHA-256と照合し、ImageIOで全件デコード。カテゴリはcardboard 537 / glass 49 / metal 95 / paper 98 / plastic 210、完全一致重複12ファイル、内容一意977。104枚にGPSを含むEXIFを検出。共通artifact v0.1.0を977画像で作成し、EXIF/GPS等のメタデータ除去、長辺512pxへの縮小、クラス別splitを実施。代表5枚を目視し、製品ブランド・文字を確認、人物は見当たらず。全画像の人手によるプライバシー確認が残るため公開保留。",
+        "archive_sha256": null,
+        "source_file_set_sha256": "154381f20cb1775f24e39801a3516cc0607d8330502924b9da6c7f2cbcfd8339",
+        "decode_errors": 0,
+        "unique_content_count": 977,
+        "duplicate_sha_groups": 12,
+        "gps_metadata_images": 104
       },
       "preparation": {
         "planned_level": "1",
@@ -358,22 +367,27 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/ffysgft2ns/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
-        "quantity": "15,044枚",
+        "quantity": "公開APIでは8,098枚（ページ説明は15,044枚）",
         "labels": "花10種類",
-        "formats": "画像拡張子未記載／階層フォルダ",
+        "formats": "JPEG／階層フォルダ",
         "structure": "分類名別の階層フォルダ",
-        "notes": "個別の花名リストは実ファイル確認"
+        "notes": "APIの全8,098ファイルにSHA-256。ページ記載件数との差を要確認"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "metadata_checked",
+        "files_examined": 8098,
+        "sample_files_examined": 10,
+        "sample_sha256_check": "passed",
+        "sample_image_decode": "passed",
+        "class_count": 10,
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "independent_primary_check",
+        "notes": "公式APIの全ファイルメタデータを固定し、10クラスから代表画像を検査。APIの8,098枚とページ記載15,044枚の差、全量デコード、元画像権利、固定artifactは未解決。"
       },
       "preparation": {
         "planned_level": "1",
@@ -404,26 +418,36 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/h7pf57cgg9/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review_dataset_image_rights_confirmation_pending"
       },
       "claims": {
         "quantity": "2,148枚",
         "labels": "Kirmizi／Siirtの2種",
-        "formats": "高解像度画像／実ファイル形式未確認",
-        "structure": "論文では80/20分割（配布ファイルの分割は未確認）",
-        "notes": "身近な題材でも実際の学校写真へは汎化不明"
+        "formats": "JPEG（600×600、RGB）／ZIP内に特徴量・説明ファイルあり",
+        "structure": "画像2フォルダ（Kirmizi 1,232／Siirt 916）、公式ZIP内に非画像ファイルあり",
+        "notes": "固定ZIPを全量検査済み。教材artifactでは画像だけを使い、seed 42でtrain/val/testを作成"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "full_image_audit",
+        "files_examined": 2148,
+        "archive_sha256": "140760707018b7f53d91a86a1d7be96d92b1a0d26a75690ab9280ed1170df895",
+        "decode_errors": 0,
+        "duplicate_sha_groups": 0,
+        "inspection_status": "full_technical_audit_sample_visual_review",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-08",
+        "evidence_grade": "independent_primary_check",
+        "notes": "公式Mendeley v1のCC BY 4.0表示と固定ZIPを確認。全2,148画像を600x600 RGB JPEGとしてデコード、完全一致重複0。論文は高解像度カメラで試料を撮影したと説明。4画像を目視。画像以外の特徴量表等10ファイルはartifactから除外。2021論文自身のCC BY-NC 4.0表示とMendeleyデータのCC BY 4.0表示を混同せず、dataset image rights holder/third-party rightsを公開前に追加確認するためhold。共通artifact v0.1.0準備済みだがRelease/API未公開.",
+        "sample_files_examined": 4,
+        "archive_size": 27859492,
+        "image_dimensions": "600x600 RGB JPEG"
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": [],
+        "implemented_levels": [
+          "source_audit",
+          "common_artifact_v0.1.0"
+        ],
         "adapter": "unassigned_classification",
         "target_colab": true
       },
@@ -450,31 +474,34 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/w68f9w6jmm/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "publisher_CC_BY_4.0_confirmed_image_rights_and_release_pending"
       },
       "claims": {
-        "quantity": "645枚",
-        "labels": "食品廃棄の5分類（名称未取得）",
-        "formats": "JPG",
-        "structure": "5つのフォルダ",
-        "notes": "人や店舗の写り込みを検査"
+        "quantity": "645枚（共通artifact収録）",
+        "labels": "撮影場面5分類",
+        "formats": "JPEG、640×480が644枚・678×768が1枚",
+        "structure": "固定v1 ZIP、5フォルダ",
+        "notes": "フォルダ名は撮影場面で、食品廃棄量を表さない。重複0。人物を全画像人手確認したものではない"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "full_archive_audit_passed",
+        "files_examined": 645,
+        "inspection_status": "full_automated_image_audit_passed_sample_visual_review",
+        "publication_status": "prepared_release_pending",
+        "last_desk_review": "2026-11-07",
+        "evidence_grade": "official_metadata_and_full_archive_sha_verified",
+        "notes": "固定v1 Root.zip（31,426,593 bytes、SHA-256 10e7a106a1f4570f404f93f8fa5c523c53f837f5e3f70981c8a06c02b7080e14）を照合後に安全展開。645枚すべてJPEGデコード成功、完全一致重複0、危険パス・symlink 0、EXIF/GPS/XMPなし。共通artifact food_waste_bangladesh-v0.1.0を生成・検証済み。クラス偏りあり、撮影場面ラベルは廃棄量を示さない。Release assetと全画像の人手権利審査待ち。"
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": [],
-        "adapter": "unassigned_classification",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "classification_v1.0.0",
         "target_colab": true
       },
       "pedagogy": {
-        "presentation_mode": "A",
+        "presentation_mode": "B",
         "publish_student_example": false
       }
     },
@@ -623,38 +650,41 @@
       "task": "classification",
       "priority": "priority",
       "source": {
-        "landing_page": "https://data.mendeley.com/datasets/8jvxtvz52x/1",
+        "landing_page": "https://data.mendeley.com/datasets/8jvxtvz52x/2",
         "provider": "mendeley",
         "provider_dataset_id": "8jvxtvz52x",
-        "version": "1",
+        "version": "2",
         "content_origin_claim": "現地市場で著者がスマホ撮影",
-        "reference_url": "https://data.mendeley.com/datasets/8jvxtvz52x/1"
+        "reference_url": "https://data.mendeley.com/datasets/8jvxtvz52x/2"
       },
       "rights": {
         "license_claim": "CC BY 4.0",
-        "evidence_url": "https://data.mendeley.com/datasets/8jvxtvz52x/1",
+        "evidence_url": "https://data.mendeley.com/datasets/8jvxtvz52x/2",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "publisher_CC_BY_4.0_confirmed_image_rights_and_release_pending"
       },
       "claims": {
-        "quantity": "1,700枚・約27.5MB圧縮",
-        "labels": "魚10種類",
-        "formats": "JPEG、240×320",
-        "structure": "魚種別カテゴリの画像",
-        "notes": "撮影地域・背景への依存"
+        "quantity": "元画像1,700枚（増強画像20,400枚は除外）",
+        "labels": "バングラデシュの魚10種類",
+        "formats": "JPEG、320×320",
+        "structure": "固定v2元画像ZIP、魚種別フォルダ",
+        "notes": "完全一致重複3枚を除外。青系背景への偏りを確認。増強画像との全対応検査は未実施"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "full_archive_audit_passed",
+        "files_examined": 1700,
+        "inspection_status": "full_automated_image_audit_passed_sample_visual_review",
+        "publication_status": "prepared_release_pending",
+        "last_desk_review": "2026-11-07",
+        "evidence_grade": "official_metadata_and_full_archive_sha_verified",
+        "notes": "固定v2 SmallFishBD.zip（29,802,305 bytes、SHA-256 2d97368d351f4c5940b7b54f19eec2b771a7d76421dbe5ad66977cf3003eafbb）を照合後に安全展開。1,700枚すべて320×320 JPEGとしてデコード成功。完全一致重複3枚を除外し1,697枚を共通artifact smallfishbd-v0.1.0へ収録。増強画像ZIPは取得・収録せず、分割混在を避ける。Release assetと全画像の人手権利審査待ち。"
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": [],
-        "adapter": "unassigned_classification",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "classification_v1.0.0",
         "target_colab": true
       },
       "pedagogy": {
@@ -772,27 +802,28 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/z6dtfdpzz8/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "原画像247枚",
-        "labels": "イチゴ熟度／個体位置",
+        "labels": "イチゴ6熟度クラスのYOLO矩形注釈（1,083個）",
         "formats": "JPG＋YOLO .txt",
         "structure": "画像と対応する物体検出ラベル",
-        "notes": "少数画像の過学習に注意"
+        "notes": "Green 450個に対しEarly-Turning 34個と偏る。同梱Roboflow data.yamlはlicense: Privateのため、MendeleyのCC BY 4.0表示との関係を確認する"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "failed",
+        "files_examined": 247,
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-08",
+        "evidence_grade": "files_inspected",
+        "notes": "固定v1 ZIP（293,289,160 bytes、SHA-256 861c50605b3e479398a7b3522c8fd4bd2705cb6562f73b2f210088a739c0da49）を照合。505項目、CRC正常、危険パス・symlinkなし。247画像すべて3840×2160 JPEGとしてデコードし、247ラベルとの対応と完全一致重複0を確認。クラス別注釈数はEarly-Turning 34、Green 450、Late-Turning 56、Red 225、Turning 42、White 276。2注釈が上端を約0.005画素超え、現行の厳密検査に不合格。同梱Roboflow metadataのlicense: PrivateとMendeley CC BY 4.0表示の関係、全画像の権利確認が未解決のため、変換・配布・API追加を保留。"
       },
       "preparation": {
-        "planned_level": "to_be_determined",
+        "planned_level": "1",
         "implemented_levels": [],
-        "adapter": "unassigned_detection",
+        "adapter": "yolo_detection_pending_rights_review",
         "target_colab": true
       },
       "pedagogy": {
@@ -818,7 +849,7 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/txn6vz28g9/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "6,680枚",
@@ -828,12 +859,17 @@
         "notes": "通貨の再現・商標・偽造誤用にも注意"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "metadata_and_sample_checked",
+        "files_examined": 1,
+        "sample_files_examined": 7,
+        "sample_zip_crc_check": "passed",
+        "sample_image_decode": "passed",
+        "denomination_count": 7,
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "independent_primary_check",
+        "notes": "固定ZIPの中央ディレクトリから6,680画像と7額面を確認。7枚の代表画像をCRC・JPEG検査。全量デコード、重複・記念デザイン単位の分割、元画像権利は未完了。"
       },
       "preparation": {
         "planned_level": "1",
@@ -920,12 +956,13 @@
         "notes": "時系列の近接画像を訓練とテストにまたがらせない"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "source_listing_incomplete",
+        "files_examined": 1,
+        "inspection_status": "metadata_and_readme_checked_images_unavailable",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "official_page_and_fixed_api_checked",
+        "notes": "公式ページは129件のRGB・深度・COCO注釈を説明するが、固定版v1の公式APIにはreadme.txt 1件のみ。READMEのSHA-256はa39f7231cdc51bc7fb103d3ff319830caa63f4b196f81593124d435b18dd032f。画像・マスク実体を確認できず、公開保留。"
       },
       "preparation": {
         "planned_level": "to_be_determined",
@@ -1264,8 +1301,8 @@
       "id": "DS-093",
       "api_id": "bangladeshi_e_waste_image",
       "name": "Bangladeshi E-Waste Image",
-      "task": "classification",
-      "priority": "priority",
+      "task": "detection",
+      "priority": "advanced",
       "source": {
         "landing_page": "https://data.mendeley.com/datasets/77383kmdnw/1",
         "provider": "mendeley",
@@ -1277,28 +1314,29 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/77383kmdnw/1",
-        "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "redistribution_reviewed": true,
+        "rights_status": "license_reviewed_attribution_required"
       },
       "claims": {
         "quantity": "2,157枚",
         "labels": "電子廃棄物12種",
-        "formats": "画像拡張子未記載",
-        "structure": "12種のクラス別フォルダ",
-        "notes": "Medical Wasteなど危険物の取扱い例として誘導しない"
+        "formats": "640x640 JPEG、YOLO形式の矩形またはpolygonラベル",
+        "structure": "train/valid/test、画像とlabelsの同名対応、12クラス",
+        "notes": "polygonを外接矩形へ変換する場合は形状情報が失われる。Medical Wasteなどの分類を実際の廃棄・取扱い判断に使わない"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "full_archive_and_annotation_audit_passed",
+        "files_examined": 4317,
+        "inspection_status": "full_sha_crc_pair_label_and_image_decode_passed",
+        "publication_status": "prepared_artifact_pending_release_asset",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "official_fixed_archive_full_content_check",
+        "notes": "固定ZIP SHA-256一致。画像2157枚とラベル2157件が全件対応し、CRC・全画像デコード成功、同一画像重複0。YOLO bbox 752件とpolygon 1407件（計2159件）、空ラベル4件、形式・座標エラー0。polygonを外接矩形へ変換したartifact v0.1.0をローカル生成し、manifest照合に成功。"
       },
       "preparation": {
         "planned_level": "1",
         "implemented_levels": [],
-        "adapter": "unassigned_classification",
+        "adapter": "yolo_detection_mixed_box_polygon_to_bbox_v1_1",
         "target_colab": true
       },
       "pedagogy": {
@@ -1409,8 +1447,10 @@
         "provider": "mendeley",
         "provider_dataset_id": "vkht8pfsp3",
         "version": "3",
-        "content_origin_claim": "マレーシア等で撮影した果物画像",
-        "reference_url": "https://data.mendeley.com/datasets/vkht8pfsp3/3"
+        "content_origin_claim": "著者らが複数地域で撮影・収集した果物画像",
+        "reference_url": "https://data.mendeley.com/datasets/vkht8pfsp3/3",
+        "source_file_count": 3938,
+        "source_file_set_sha256": "6409bf4299e6c53ce6208cc0433f11eae88f3f444143957345ecd326b3b74158"
       },
       "rights": {
         "license_claim": "CC BY 4.0",
@@ -1419,30 +1459,30 @@
         "rights_status": "under_review"
       },
       "claims": {
-        "quantity": "1,969画像＋対応マスク",
-        "labels": "果物30種＋前景領域",
-        "formats": "JPG画像＋PNGマスク（512×512）",
+        "quantity": "公式版1,969画像＋1,969マスク。教材artifactはGuava 55組を除外し29クラス1,914組",
+        "labels": "果物29種＋8-bitグレースケール前景マスク",
+        "formats": "採用画像・マスクは512×512。画像JPG、マスクPNG grayscale",
         "structure": "各クラスのImages/・Mask/",
-        "notes": "画像とマスクの1対1対応を要検査"
+        "notes": "Guavaは55組すべて寸法が非標準、52組は同名画像・マスクの寸法が不一致。クラス全体を除外。マスクは0〜255階調でアンチエイリアスを含む。"
       },
       "audit": {
-        "technical_status": "metadata_full_and_one_class_checked",
+        "technical_status": "full_image_mask_audit",
         "files_examined": 3938,
         "sample_files_examined": 2,
-        "sample_sha256_check": "passed",
-        "sample_image_mask_decode": "passed",
-        "metadata_pair_check": "passed",
+        "sample_sha256_check": "all_3938_passed",
+        "sample_image_mask_decode": "all_3938_passed",
+        "metadata_pair_check": "passed_with_52_guava_dimension_mismatches",
         "metadata_duplicate_sha_groups": 0,
-        "inspection_status": "metadata_completed",
+        "inspection_status": "full_audit_complete",
         "publication_status": "hold",
-        "last_desk_review": "2026-11-05",
+        "last_desk_review": "2026-11-08",
         "evidence_grade": "independent_primary_check",
-        "notes": "公式APIの全30クラスで画像1969件・マスク1969件の一覧とファイル単位SHA-256を確認し、画像と対応マスクのファイル名対応不一致0件、SHA重複グループ0件だった。Avocadoの画像10.jpgと10_mask.pngを取得し、SHA-256一致、512x512 JPEG/PNGデコード、グレースケールマスクを確認した。全量画像デコード、マスク値、権利、固定artifact検査は未完了。"
+        "notes": "公式v3の3,938ファイルすべてを固定ID・SHA-256照合し、1,969 JPEGと1,969 PNGを全量デコード。1,914組・29クラスは画像/マスク512x512で対応。Guava 55組は非標準寸法、うち52組は対応寸法不一致のため全クラスをartifactから除外。マスクは8-bit grayscaleで濃淡境界。共通artifact v0.1.0をローカル作成しmanifest検証済み。Release/API登録は未実施。"
       },
       "preparation": {
-        "planned_level": "to_be_determined",
+        "planned_level": "1",
         "implemented_levels": [],
-        "adapter": "planned_image_mask",
+        "adapter": "segmentation_v1_release_pending",
         "target_colab": true
       },
       "pedagogy": {
@@ -1468,7 +1508,7 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/56td5w4wz2/2",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "1,738枚",
@@ -1478,12 +1518,16 @@
         "notes": "同じ果物の別角度が多い可能性"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "metadata_and_sample_checked",
+        "files_examined": 1,
+        "sample_files_examined": 6,
+        "sample_zip_crc_check": "passed",
+        "sample_image_decode": "passed",
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "independent_primary_check",
+        "notes": "固定ZIPの中央ディレクトリと6グループ代表画像を検査。配布画像1,748枚とページ説明1,738枚の差、全量監査、元画像権利は未解決。"
       },
       "preparation": {
         "planned_level": "1",
@@ -1560,7 +1604,7 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/bdd69gyhv8/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "原画像3,200／増強12,335",
@@ -1570,12 +1614,16 @@
         "notes": "同じ画像の増強版をテストに混ぜない"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "metadata_and_sample_checked",
+        "files_examined": 2,
+        "sample_files_examined": 16,
+        "sample_zip_crc_check": "passed",
+        "sample_image_decode": "passed",
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "independent_primary_check",
+        "notes": "Original/Augmentedの固定ZIP2本、中央ディレクトリ、Original各クラス代表16枚を検査。全量デコード・重複・分割漏洩・元画像権利は未解決。"
       },
       "preparation": {
         "planned_level": "1",
@@ -1790,22 +1838,27 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/9tfbpxpyjz/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "340枚",
         "labels": "ミカン外観：良好／不良",
-        "formats": "RGB写真・640×480",
-        "structure": "クラス別の元ファイル構造は未明記",
-        "notes": "照明が揃いすぎて実用場面に弱い"
+        "formats": "JPEG（640×480 RGB）を含むRAR5",
+        "structure": "連番340ファイル。good／poorと画像を対応させるラベル表はアーカイブ内で未確認",
+        "notes": "20組の完全一致画像を確認。mandarina_331.jpgに手の写り込みあり。条件が揃った撮影環境から実環境への汎化は未検証"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "full_image_audit",
+        "files_examined": 340,
+        "archive_sha256": "0beab31ff2ae3b7e17068f62de3ba8861739f0ab8733454cf4c123a5cca11ada",
+        "decode_errors": 0,
+        "duplicate_sha_groups": 20,
+        "label_mapping_found": false,
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-06",
+        "evidence_grade": "independent_primary_check",
+        "notes": "固定RARをSHA-256照合後に安全展開し、全340画像をデコード。ラベル対応表がなく、クラスを確定できないため共通分類変換は保留。"
       },
       "preparation": {
         "planned_level": "1",
@@ -2055,38 +2108,43 @@
       "task": "classification",
       "priority": "priority",
       "source": {
-        "landing_page": "https://data.mendeley.com/datasets/jzy8zngkbg/2",
+        "landing_page": "https://data.mendeley.com/datasets/jzy8zngkbg/8",
         "provider": "mendeley",
         "provider_dataset_id": "jzy8zngkbg",
-        "version": "2",
+        "version": "8",
         "content_origin_claim": "著者が4カメラ位置で撮影",
-        "reference_url": "https://data.mendeley.com/datasets/jzy8zngkbg/2"
+        "reference_url": "https://data.mendeley.com/datasets/jzy8zngkbg/8",
+        "file_id": "2b300b67-ebb2-46e5-a8d8-72093ffeaa77",
+        "filename": "HGM-4.rar",
+        "archive_size": 228825330,
+        "archive_sha256": "c24da158944463132dcf808ba114fa405cbc4085e0c96f42aa126019b7daea58",
+        "fixed_download_url": "https://data.mendeley.com/public-files/datasets/jzy8zngkbg/files/2b300b67-ebb2-46e5-a8d8-72093ffeaa77/file_downloaded"
       },
       "rights": {
         "license_claim": "CC BY 4.0",
-        "evidence_url": "https://data.mendeley.com/datasets/jzy8zngkbg/2",
+        "evidence_url": "https://data.mendeley.com/datasets/jzy8zngkbg/8",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "4,160枚",
         "labels": "26種類の手の形",
         "formats": "カラー画像1280×700",
         "structure": "訓練・テストを公式が定義",
-        "notes": "撮影者・同一場面の分割漏洩"
+        "notes": "公式論文は5名を4視点で撮影したデータと説明。固定RARの目録は安全だがbsdtarで完全展開できず、画像実体・同意・プライバシーは未検査。人物/撮影条件単位で分割する必要がある。"
       },
       "audit": {
-        "technical_status": "not_tested",
+        "technical_status": "metadata_checked",
         "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "inspection_status": "blocked",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-08",
+        "evidence_grade": "independent_primary_check"
       },
       "preparation": {
         "planned_level": "1",
         "implemented_levels": [],
-        "adapter": "unassigned_classification",
+        "adapter": "classification_pending_archive_extraction",
         "target_colab": true
       },
       "pedagogy": {

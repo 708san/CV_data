@@ -78,5 +78,128 @@
 - `DatasetBundle`に課題タイプ、対象者、用途、入力・出力、概算取得サイズを追加した。
 - `docs/catalog-review.md`に50候補を分類・検出・分割・素材の課題へ対応付け、全候補をAPIへ追加しない理由と次の実体検査順を記録した。
 - `Fruits-360`、`Recyclable Waste`、`GeoSetEnnea`、`FruitSeg30`は公式ページでライセンス表記と概要を再確認した。GeoSetEnneaは公式APIのフォルダ別メタデータを追加確認し、画像966件・YOLOラベル966件と別置きのaugmented/rawを記録した。Recyclable Wasteは9枚の代表画像でAPI SHA-256照合とJPEGデコードを実施したが、固定アーカイブSHA-256と全量監査が未完了のため、いずれも台帳は`under_review`・公開保留のままにした。
-- `Fruits-360`、`Recyclable Waste`、`GeoSetEnnea`、`FruitSeg30`は公式ページでライセンス表記と概要を再確認した。GeoSetEnneaは全公開2,898ファイルのsource manifestを作成し、分割済み画像966件・YOLOラベル966件とaugmented/rawを記録、内容SHA重複1グループを確認した。Recyclable Wasteは989画像のsource manifestと12重複グループ、9枚の代表画像検査を記録した。FruitSeg30は全30クラスの画像1,969件・マスク1,969件のメタデータ対応とファイルSHA-256重複なしを確認し、代表画像・マスクも検査したが、固定artifactの本体監査と再配布条件が未完了のため、いずれも台帳は`under_review`・公開保留のままにした。
+- `Fruits-360`、`Recyclable Waste`、`GeoSetEnnea`、`FruitSeg30`は公式ページでライセンス表記と概要を再確認した。GeoSetEnneaは全公開2,898ファイルのsource manifestを作成し、分割済み画像966件・YOLOラベル966件とaugmented/rawを記録、内容SHA重複1グループを確認した。Recyclable Wasteは989画像のsource manifestと12重複グループ、9枚の代表画像検査を記録した。FruitSeg30は当初、全30クラスのメタデータと代表画像のみを検査し、詳細は本ページ後半の2026-11-08監査記録で更新した。
 - PyPI向けのパッケージビルドを行うが、本番公開・Release作成・mainへのマージは行わない。
+
+### 2026-11-06：Indian Origin Flowersの一次監査
+
+- 公式Mendeley Data v1のCC BY 4.0表記と公開APIを確認した。
+- APIの10フォルダ、8,098枚、約1.62GBをファイル単位のsource manifestへ固定した。全ファイルにAPI記載SHA-256がある。
+- 各クラスから1枚ずつ、合計10枚を取得してSHA-256照合とJPEGデコードを実施し、すべて成功した。
+- ページ説明の15,044枚とAPIの8,098枚が一致しないため、再配布用artifact・正式API・Notebookには追加せず、`under_review`・公開保留とした。
+- 詳細：[Indian Origin Flowers](datasets/indian_origin_flowers.md)、[監査JSON](../reports/indian-origin-flowers-sample-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/indian_origin_flowers-v1.json`に保存した。
+
+### 2026-11-06：Pistachio Image Datasetの全量画像監査
+
+- 公式Mendeley Data v1のCC BY 4.0表記と固定ZIPのSHA-256を確認した。
+- SHA-256一致後に安全展開し、画像2,148枚を全量デコードした。JPEG・600×600・RGB、破損0、完全一致重複0だった。
+- Kirmizi 1,232枚、Siirt 916枚をseed 42でtrain/val/testへ分け、共通classification artifactをローカル生成してmanifest照合に成功した。
+- 元画像の第三者権利、クレジット、ZIP内の非画像ファイル、再配布条件が未完了のため、正式API・Notebook・PyPIには追加せず公開保留とした。
+- 詳細：[Pistachio Image Dataset](datasets/pistachio_image_dataset.md)、[監査JSON](../reports/pistachio-image-dataset-full-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/pistachio_image_dataset-v1.json`に保存した。
+
+### 2026-11-06：Fresh and Rotten Fruitsの構成・代表監査
+
+- 公式Mendeley Data v1のCC BY 4.0表記と固定ZIP2本のサイズ・SHA-256を確認した。
+- Original 3,200枚、Augmented 12,335枚、16クラスをZIP中央ディレクトリから確認した。Originalは各クラス200枚だった。
+- Original各クラス1枚、合計16枚を範囲取得し、ZIP CRCとJPEGデコードに成功した。
+- 元画像と拡張画像を混ぜた評価漏洩、全量デコード・重複・元画像権利が未完了のため、正式API・Notebook・PyPIには追加せず公開保留とした。
+- 詳細：[Fresh and Rotten Fruits](datasets/fresh_rotten_fruits.md)、[監査JSON](../reports/fresh-rotten-fruits-sample-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/fresh_rotten_fruits-v1.json`に保存した。
+
+### 2026-11-06：Banana and Guava Qualityの構成・代表監査
+
+- 公式Mendeley Data v2のCC BY 4.0表記と固定ZIPのSHA-256を確認した。
+- ZIP中央ディレクトリからBanana/Guava × Class_A／Class_B／Defectの6グループ、画像1,748枚を確認した。
+- 各グループ1枚、合計6枚を範囲取得し、ZIP CRCとJPEGデコードに成功した。代表画像は1024×1024 RGBだった。
+- ページ説明の1,738枚とZIPの1,748枚が一致しないため、全量監査、ラベル定義、元画像権利、再配布条件が未完了のまま公開保留とした。
+- 詳細：[Banana and Guava Quality](datasets/banana_guava_quality.md)、[監査JSON](../reports/banana-guava-quality-sample-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/banana_guava_quality-v2.json`に保存した。
+
+### 2026-11-06：Tangerines_Imagesの全量画像監査
+
+- 公式Mendeley Data v1のCC BY 4.0表記と固定RARのSHA-256を確認した。
+- パスを検査してから340枚を展開し、全画像がJPEG・640×480・RGBとしてデコードできた。破損0、完全一致重複20グループだった。
+- 公式ページはgood／poor condition分類を説明するが、アーカイブには画像との対応ラベル表が見つからなかった。連番や見た目からラベルを割り当てず、共通分類変換・正式API・Notebookへの追加は保留した。
+- `mandarina_331.jpg`に手の写り込みがあることも記録した。
+- 詳細：[Tangerines_Images](datasets/tangerines.md)、[監査JSON](../reports/tangerines-full-image-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/tangerines-v1.json`に保存した。
+
+### 2026-11-06：Image Dataset of Indian Coinsの構成・代表監査
+
+- 公式Mendeley Data v1のCC BY 4.0表記と固定ZIPのSHA-256を確認した。
+- ZIP中央ディレクトリにJPEG6,680枚と7額面フォルダがあり、公式ページの総数と一致した。パス逸脱、symlink、非画像ファイルはなかった。
+- 7額面から代表画像を1枚ずつ取得し、ZIP CRCとJPEGデコードを確認した。
+- 額面フォルダの下に記念デザイン、表裏があり、同系列画像の分割漏洩対策が必要。全量画像検査、元画像の権利、グループ分割方法が未完了のため、共通artifact・正式API・Notebookへの追加は保留した。
+- 詳細：[Image Dataset of Indian Coins](datasets/indian_coins.md)、[監査JSON](../reports/indian-coins-sample-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/indian_coins-v1.json`に保存した。
+
+### 2026-11-06：RGB-D Mushroom Growthの固定版実体確認
+
+- 公式Mendeley Data v1ページのCC BY 4.0表記と、129件のRGB・深度・COCO注釈という説明を確認した。
+- 固定版v1の公式APIに登録されているのは`readme.txt` 1件（4,712 bytes）のみ。公式ダウンロードURLから取得したファイルのSHA-256は`a39f7231cdc51bc7fb103d3ff319830caa63f4b196f81593124d435b18dd032f`で、API記載値と一致した。
+- READMEはRGB/Depth/Annotationsの構成と時系列撮影を説明するが、実際の画像・深度・注釈ファイルはAPI一覧に存在しない。マスクや対応関係を実体検査できないため、共通形式への変換、正式API、Notebookへの追加を保留した。
+- 詳細：[RGB-D Mushroom Growth](datasets/rgb_d_button_mushroom_growth.md)、[監査JSON](../reports/rgb-d-button-mushroom-growth-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/rgb_d_button_mushroom_growth-v1.json`。
+
+### 2026-11-06：Bangladeshi E-Wasteの全量画像・ラベル監査
+
+- 公式Mendeley Data v1およびアーカイブ内READMEのCC BY 4.0表記、提供者、固定ダウンロードURLを確認した。
+- 固定ZIP（72,987,704 bytes、SHA-256 `f73b30286225c208e98b34f81eb5ffef7baf79e883039d2087e8db53f6ee284e`）を検証後に安全展開した。パス逸脱・symlinkなし、CRC検査成功。
+- 画像2,157枚すべてがJPEG 640×640でOS画像デコーダーによる読み込みに成功。画像・ラベル2,157組は同名で全件対応し、完全一致画像重複0件だった。
+- 12クラス、注釈2,159個を確認。通常のYOLO矩形752個とpolygon 1,407個が混在し、空ラベルは4件、クラスID・座標・形式エラーは0件だった。検出共通変換`detection_yolo_v1.1.0`を追加し、polygonを外接矩形へ変換、元の形式別件数をmanifestに記録するようにした。
+- train/valid/test分割は画像1,500/330/327枚。testから各クラス1枚ずつ確認した12枚はすべて明るい緑背景だった。公式ページの「背景に変化がある」という説明と見本に差があるため、背景への依存を調べる教材候補とし、実環境の廃棄物分類器としては扱わない。
+- artifact v0.1.0を一時領域へ作成し、画像2,157枚・ファイル4,319件のmanifest照合に成功。polygon由来のbboxは座標精度を維持する17桁で出力。ZIPは71,762,431 bytes、SHA-256 `fe06d5579e3a84010e0e6ccd7d90d8230ca72d5fcd39719d6d6d8731595007fa`。ライブラリの全2,157画像・2,159注釈の構造検査とDataFrame変換にも成功した。データ本体はGit履歴へ追加していない。
+- ライブラリには検出bundle検証とDataFrame表示を実装したが、公開Releaseが未作成のためsourceを未公開状態に固定し、正式一覧から隠し、取得要求も拒否する。
+- 詳細：[Bangladeshi E-Waste](datasets/bangladeshi_ewaste_image.md)、[監査JSON](../reports/bangladeshi-ewaste-full-audit.json)。source manifestは`CV_data_artifacts/manifests/sources/bangladeshi_ewaste-v1.json`。
+
+### 2026-11-07：Food Waste Bangladesh・SmallFishBDの全量監査と共通化
+
+- Mendeley公式v1/v2ページのCC BY 4.0表示、固定ファイル情報、SHA-256を照合してから安全展開した。
+- Food Waste Bangladeshは645枚すべてJPEGデコード成功、重複0、危険パス・symlink 0、EXIF/GPS/XMPなし。5ラベルは撮影場面で、クラス数は91/146/72/16/320と偏る。廃棄量を表すデータではない。
+- SmallFishBDは元画像1,700枚すべて320×320 JPEGとしてデコードし、公式クラス数に一致。完全一致重複3枚を除外し、1,697枚を収録。20,400枚の増強画像は取得・収録せず、評価時の分割漏洩を避ける。
+- `CV_data_artifacts`にsource manifest、ライセンス記録、除外記録、共通classification artifact、検査reportを準備した。両artifactのサイズ・SHA-256・ZIP内manifest検証は済み。
+- ライブラリへ両候補を`published=False`で登録。詳細情報は参照できるが、正式一覧と取得APIから隠れ、Release asset作成までは取得できない。
+- サンプル目視ではFood Wasteに人物の顔、SmallFishBDに人物は見つからなかったが、全画像を人手で権利・プライバシー審査した結論ではない。全画像の権利審査とRelease asset作成を保留事項として明記した。
+- 詳細：[Food Waste Bangladesh](datasets/food_waste_bangladesh.md)、[SmallFishBD](datasets/smallfishbd.md)、[候補精査状況](catalog-review.md)。
+
+### 2026-11-08：Strawberry-DS v1の全量実体・注釈監査
+
+- Mendeley公式v1のCC BY 4.0表示、固定ファイルID・サイズ・SHA-256を確認。SHA-256一致後にZIP検査を行い、505項目・CRC正常・危険パスとsymlinkなしを確認した。
+- 247画像すべて3840×2160 JPEGとしてデコードし、247 YOLOラベルとの対応、完全一致重複0、EXIF/XMP APP1なしを確認した。分割はtrain 172、valid 49、test 26。
+- 1,083注釈のクラス内訳はEarly-Turning 34、Green 450、Late-Turning 56、Red 225、Turning 42、White 276。2枠は正規化座標の丸めで上端を約0.005画素超え、現行の厳密な共通検査では失敗する。
+- 同梱`data.yaml`はRoboflow v4の`license: Private`と記録。一方Mendeleyの掲載ライセンスはCC BY 4.0で、再許諾の権利関係が確認できないため、画像artifact・共通形式変換・APIへの登録を行わず保留した。
+- 監査JSONとsource manifestは`CV_data_artifacts`に記録し、画像本体はartifact repositoryへ追加していない。
+- 詳細：[Strawberry-DS](datasets/strawberry_ds.md)、[監査report](../../CV_data_artifacts/reports/strawberry_ds-v1-audit.json)、[source manifest](../../CV_data_artifacts/manifests/sources/strawberry_ds-v1.json)。
+
+
+### 2026-11-08：HGM-4 Hand Gesturesの固定版・アーカイブ目録監査
+
+- Mendeley Data v8のCC BY 4.0表示、DOI、固定RARのファイルID・228,825,330 bytes・SHA-256を確認した。SHA照合後にRAR目録を読み取り専用で確認し、4,270項目、相対パスのみ、symlink・パス逸脱なしを確認した。
+- macOS `bsdtar`がアーカイブ内フィルターを処理できず完全展開に失敗した。部分展開物は信頼せず、画像検査・変換・配布に使用していない。画像数・画質・参加者プライバシーの実体確認は未完了。
+- 公式論文は5名、4カメラ視点、26種の手形を説明する。人物または撮影系列単位の評価分割が必要で、一般的な手話翻訳・人物識別用途には適さない。
+- 固定source manifestと監査reportを`CV_data_artifacts`に追加。再配布・教材化・API掲載は保留。
+- 詳細：[HGM-4](datasets/hgm_4_hand_gestures.md)、[監査report](../../CV_data_artifacts/reports/hgm_4_hand_gestures-v8-audit.json)。
+
+
+### 2026-11-08：FruitSeg30 v3の全量監査と29クラスartifact準備
+
+- 公式固定v3の全3,938ファイル（計224,579,761 bytes）を取得し、ファイル単位のサイズ・SHA-256を全件照合した。1,969 JPEGと1,969 PNGを全件デコードし、マスクPNGのCRCエラーと完全一致重複は0件。
+- Guava 55組はすべて非512サイズで、そのうち52組は同名画像とマスクの寸法が不一致。向き・対応を推測せずクラス全体を除外した。残り29クラスの1,914組は512×512で対応し、8-bit grayscaleのマスクを画素変更せず保持。
+- クラス内seed 42でtrain/val/testへ分け、共通artifact v0.1.0（1,914画像・1,914マスク、3,833ファイル）をローカル生成。artifact manifest照合成功。ZIPは68,242,354 bytes、SHA-256 `129384a6e9599b0b9eb756ec93abda25a90bdd70a514fd04f905a2ff2e8c5ba5`。
+- MendeleyページのCC BY 4.0と論文の撮影説明を確認。第三者由来素材の全画像独立審査、領域分割API、公開Releaseは未完了のため、候補・APIは公開保留。
+- 領域分割artifactの固定Release SHA検証、画像・マスク対応検査、DataFrame、遅延読み込みPyTorch Datasetをライブラリに実装。固定Release assetが未作成のため、正式課題一覧からは隠している。
+- 詳細：[FruitSeg30](datasets/fruitseg30.md)、[監査JSON](../reports/fruitseg30-sample-audit.json)、source manifestとartifact manifestは`CV_data_artifacts`に保存。
+
+
+### 2026-11-08：Recyclable Waste v1全量監査と教材artifact準備
+
+- Mendeley Data v1の公開989画像（1,707,541,468 bytes）すべてを既知サイズ・SHA-256に照合し、ImageIOで全件デコード。掲載件数1,000との差11枚は補完しない。
+- 完全一致重複12ファイルを除いた一意977画像、クラス別件数、画像寸法を記録。104画像にGPSを含むEXIFを検出。
+- 一意画像977枚の共通artifact v0.1.0を作成。EXIF方向を適用、長辺512pxへ縮小、EXIF/GPS等を除去、seed 42でクラス層化split。ZIPは93,671,127 bytes、SHA-256 `99e80d8c0a083b65f7c5550afc87ec2db985b612762d55475a425b8f6db784ed`。
+- 代表5枚を目視しブランド・商品文字を確認。全画像の人手によるプライバシー確認が未完了のため、正式API・Releaseは保留。
+- Fruits-360公式repoのCC BY-SA 4.0表示を確認したが、GitHub Releasesが空で固定タグReleaseがないため、画像取得・実体検査は保留。
+- 詳細：[Recyclable Waste](datasets/recyclable_waste.md)、[Fruits-360](datasets/fruits_360.md)、[監査JSON](../reports/recyclable_waste-v1-full-audit.json)。
+
+
+### 2026-11-08：Pistachio Image Dataset v1監査・artifact準備
+
+- 固定ZIP（27,859,492 bytes、SHA-256 `140760707018b7f53d91a86a1d7be96d92b1a0d26a75690ab9280ed1170df895`）を再取得・照合し、安全なパスとsymlinkなしを確認。
+- 画像以外の特徴量表・引用文書10ファイルを除き、2,148 JPEG（600×600 RGB）全件デコード成功、完全一致重複0。
+- 画像画素を変更せず、共通formatとseed 42のクラス層化splitを追加。train 1,503、val 322、test 323。artifact manifest検証成功。
+- Mendeley v1はCC BY 4.0表示。掲載者の撮影説明、関連2論文の引用条件を記録。2021論文本文のCC BY-NC表示とdataset licenseを分けて記録。画像権利者・第三者権利の確認が残るためRelease/APIは保留。
+- 詳細：[Pistachio](datasets/pistachio_image_dataset.md)、[監査report](../reports/pistachio_image_dataset-v1-full-audit.json)。
