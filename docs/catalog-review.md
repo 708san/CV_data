@@ -11,7 +11,7 @@
 | 固定Releaseの正式データ | 2 | `tomato_leaves`は生徒向け、`festival_icons`は教師向けLoRA素材 |
 | 教師向けプレビュー | 1 | `fashion_mnist`。固定コミット・4ファイル・件数・IDX形式を検査済み。権利の最終確認中 |
 | 固定取得条件または公開条件で保留 | 3 | `fashion_mnist`、`kuzushiji_mnist`、`fruits_360`。Fruits-360には固定タグReleaseがなく、実体取得は未開始 |
-| artifact準備済み・権利/Release/API待ち | 6 | `bangladeshi_e_waste_image`、`food_waste_bangladesh`、`smallfishbd`、`fruitseg30`、`recyclable_waste`、`pistachio_image_dataset`。共通形式化・manifest検証済み。正式公開条件はデータ別説明を参照 |
+| artifact準備済み・権利/Release/API待ち | 6 | `bangladeshi_e_waste_image`、`food_waste_bangladesh`、`smallfishbd`、`fruitseg30`、`recyclable_waste`、`pistachio_image_dataset`。共通形式化・manifest検証済み。SmallFishBDはCC BY 4.0帰属条件付きで再配布審査済み。正式公開条件はデータ別説明を参照 |
 | 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
 | 公式ページのライセンス表記を再確認した候補 | 7 | `geosetennea`、`indian_origin_flowers`、`fresh_rotten_fruits`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
@@ -74,7 +74,7 @@ Banana and Guava Qualityは固定ZIPの1,748画像・6グループを確認し�
 
 Food Waste Bangladeshは固定v1 ZIPをSHA-256照合後に安全展開し、645画像すべてをデコードしました。5フォルダは撮影場面ラベルで、婚礼320枚・野菜16枚と偏りがあります。全量の完全一致重複・危険パス・symlinkは0、EXIF/GPS/XMPも検出されませんでした。共通classification artifactを生成・検証しました。食品廃棄量の推定には使えず、Release assetと全画像の権利審査が残るためAPI未公開です（[データ別説明](datasets/food_waste_bangladesh.md)）。
 
-SmallFishBDは固定v2元画像ZIPをSHA-256照合後に安全展開し、1,700枚すべての320×320 JPEGデコードとクラス枚数を確認しました。完全一致重複3枚を除外し、1,697枚で共通classification artifactを生成・検証しました。増強画像ZIPは取得・収録していません。青系背景への偏りがあるため自然環境での魚種判定には使えません。Release assetと全画像の権利審査が残るためAPI未公開です（[データ別説明](datasets/smallfishbd.md)）。
+SmallFishBD v2は固定元ZIPを再取得・SHA-256照合後に安全展開し、1,700枚を再監査しました。重複3枚を除外した1,697枚のv0.1.1を再生成し、全画像ハッシュとlabels/metadataを前版と照合、LICENSE.md同梱、manifest・ZIP CRC検査を完了しました。Mendeley掲載CC BY 4.0とcontributors、全画像視覚レビューを基に、帰属・変更表示条件付きで再配布可と判断しました。青系背景への偏りがあるため自然環境での魚種判定には使いません。Release asset作成待ちのためAPI未公開です（[データ別説明](datasets/smallfishbd.md)）。
 
 Tangerines_Imagesは固定RARのSHA-256を照合後、340枚すべてをデコードしました。20組の完全一致重複があり、アーカイブ内にgood／poorラベルとの対応表は見つかりませんでした。ラベルを推測せず、分類変換と公開を保留しています（[データ別説明](datasets/tangerines.md)）。
 
