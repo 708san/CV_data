@@ -225,3 +225,11 @@
 - 画像画素を変更せず、共通formatとseed 42のクラス層化splitを追加。train 1,503、val 322、test 323。artifact manifest検証成功。
 - Mendeley v1はCC BY 4.0表示。掲載者の撮影説明、関連2論文の引用条件を記録。2021論文本文のCC BY-NC表示とdataset licenseを分けて記録。画像権利者・第三者権利の確認が残るためRelease/APIは保留。
 - 詳細：[Pistachio](datasets/pistachio_image_dataset.md)、[監査report](../reports/pistachio_image_dataset-v1-full-audit.json)。
+
+### 2026-11-09：SmallFishBD v0.1.1の再現準備と権利審査
+
+- 固定Mendeley v2元ZIPを再取得。サイズ29,802,305 bytesとSHA-256 `2d97368d351f4c5940b7b54f19eec2b771a7d76421dbe5ad66977cf3003eafbb`を展開前に照合し、ZIP CRC、パス、symlink検査を通した。
+- 1,700枚・10クラスを再確認し、完全一致重複3枚を除いた1,697枚をseed 42でtrain 1,188 / val 254 / test 255に分割。画像・ラベル・metadataはv0.1.0のSHA-256と一致した。
+- CC BY 4.0の出典・contributors・撮影方法と全画像視覚レビューを確認。顔・読める文字・ロゴ・透かし・JPEG埋め込みメタデータは検出されず、帰属と変更表示を条件に整形版を再配布可能と判定。制約と確認範囲をデータ別説明・ライセンス記録に記録した。
+- v0.1.1はLICENSE.mdを同梱し、manifest 1,702ファイル。artifact manifest照合とZIP CRCに成功。ZIP 29,799,609 bytes、SHA-256 `367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547`。
+- manifest・ライセンス記録・再現レポートを[CV_data_artifacts PR #14](https://github.com/708san/CV_data_artifacts/pull/14)に提出。ZIP本体は一時領域のみで、GitHub Release assetとライブラリAPIは未公開。
