@@ -41,7 +41,7 @@ LoRA素材は`from cvlesson import loras`から管理します。`loras.list_ava
 
 > Google Colabで、`cvlesson.datasets.get("tomato_leaves")`で取得した画像から5種類を分類するPythonコードを書いてください。`data.train_dir`と`data.test_dir`を使い、CPUでも動く小さな畳み込みニューラルネットワークを使ってください。データの読み込みから評価までをセルごとに分け、画像や正解ラベルは書き換えないでください。
 
-> `cvlesson.datasets.get("festival_icons")`で取得した`labels.csv`の`image,caption`を読み、最初の5行を表にするコードを書いてください。元データは変更しないでください。
+> `cvlesson.datasets.get("festival_icons", allow_preview=True)`で教師向けプレビューとして取得した`labels.csv`の`image,caption`を読み、最初の5行を表にするコードを書いてください。権利確認中の素材なので、画像・説明文は変更・再配布しないでください。
 
 **注意：** このパッケージはデータの取得・標準化とPyTorch Dataset変換までを提供します。CNN学習、画像生成、LoRA学習のAPIは実装していません。AIに依頼する場合は、必要な学習処理を別のコードで作るよう指定してください。
 

@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,6 +7,8 @@ name = "cv-data-lesson"
 version = "0.0.1"
 description = "日本語の高校生向けCV教材データ取得ライブラリ（開発中）"
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.10"
 authors = [{name = "CV Data project contributors"}]
 keywords = ["education", "computer-vision", "dataset", "colab", "japanese"]
