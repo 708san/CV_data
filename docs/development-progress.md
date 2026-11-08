@@ -184,3 +184,13 @@
 - MendeleyページのCC BY 4.0と論文の撮影説明を確認。第三者由来素材の全画像独立審査、領域分割API、公開Releaseは未完了のため、候補・APIは公開保留。
 - 領域分割artifactの固定Release SHA検証、画像・マスク対応検査、DataFrame、遅延読み込みPyTorch Datasetをライブラリに実装。固定Release assetが未作成のため、正式課題一覧からは隠している。
 - 詳細：[FruitSeg30](datasets/fruitseg30.md)、[監査JSON](../reports/fruitseg30-sample-audit.json)、source manifestとartifact manifestは`CV_data_artifacts`に保存。
+
+
+### 2026-11-08：Recyclable Waste v1全量監査と教材artifact準備
+
+- Mendeley Data v1の公開989画像（1,707,541,468 bytes）すべてを既知サイズ・SHA-256に照合し、ImageIOで全件デコード。掲載件数1,000との差11枚は補完しない。
+- 完全一致重複12ファイルを除いた一意977画像、クラス別件数、画像寸法を記録。104画像にGPSを含むEXIFを検出。
+- 一意画像977枚の共通artifact v0.1.0を作成。EXIF方向を適用、長辺512pxへ縮小、EXIF/GPS等を除去、seed 42でクラス層化split。ZIPは93,671,127 bytes、SHA-256 `99e80d8c0a083b65f7c5550afc87ec2db985b612762d55475a425b8f6db784ed`。
+- 代表5枚を目視しブランド・商品文字を確認。全画像の人手によるプライバシー確認が未完了のため、正式API・Releaseは保留。
+- Fruits-360公式repoのCC BY-SA 4.0表示を確認したが、GitHub Releasesが空で固定タグReleaseがないため、画像取得・実体検査は保留。
+- 詳細：[Recyclable Waste](datasets/recyclable_waste.md)、[Fruits-360](datasets/fruits_360.md)、[監査JSON](../reports/recyclable_waste-v1-full-audit.json)。

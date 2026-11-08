@@ -221,12 +221,13 @@
         "notes": "同一個体の回転撮影による評価漏れに注意"
       },
       "audit": {
-        "technical_status": "not_tested",
+        "technical_status": "blocked_no_fixed_release",
         "files_examined": 0,
         "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-05",
-        "evidence_grade": "independent_primary_check"
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-08",
+        "evidence_grade": "independent_primary_check",
+        "notes": "公式repoは現在更新される100x100ブランチで、READMEの版は2026.10.27.0。GitHub Releasesは空。固定タグ付きRelease assetと既知SHA-256を確認できないため、画像取得・再配布・実体検査は開始しない。"
       },
       "preparation": {
         "planned_level": "1",
@@ -301,7 +302,7 @@
         "landing_page": "https://data.mendeley.com/datasets/h5pxbsdz4m/1",
         "provider": "mendeley",
         "provider_dataset_id": "h5pxbsdz4m",
-        "version": "1",
+        "version": "Mendeley Data v1 / DOI 10.17632/h5pxbsdz4m.1",
         "content_origin_claim": "公開分は著者が施設・市街・家庭で撮影",
         "reference_url": "https://data.mendeley.com/datasets/h5pxbsdz4m/1"
       },
@@ -319,17 +320,23 @@
         "notes": "公式公開APIの一覧ではREADMEを除く画像989枚を確認。ページ記載の1,000枚と不一致のため、固定アーカイブ・件数・配布構造を再確認するまで保留。"
       },
       "audit": {
-        "technical_status": "metadata_checked",
-        "files_examined": 990,
-        "sample_files_examined": 9,
+        "technical_status": "full_image_audit",
+        "files_examined": 989,
+        "sample_files_examined": 5,
         "sample_sha256_check": "passed",
         "sample_image_decode": "passed",
         "metadata_duplicate_sha_groups": 12,
-        "inspection_status": "completed",
+        "inspection_status": "full_technical_audit_sample_visual_review",
         "publication_status": "hold",
-        "last_desk_review": "2026-11-05",
+        "last_desk_review": "2026-11-08",
         "evidence_grade": "independent_primary_check",
-        "notes": "公開APIの989画像と補助READMEを固定し、ファイル単位SHA-256を記録。内容SHA重複は12グループ確認された。9カテゴリフォルダから代表画像を取得し、公開APIのファイルSHA-256と一致、JPEGデコードも成功。サンプルは全量画像デコード・権利監査を意味しない。"
+        "notes": "公式固定v1の989画像（1,707,541,468 bytes）すべてを既知サイズ・SHA-256と照合し、ImageIOで全件デコード。カテゴリはcardboard 537 / glass 49 / metal 95 / paper 98 / plastic 210、完全一致重複12ファイル、内容一意977。104枚にGPSを含むEXIFを検出。共通artifact v0.1.0を977画像で作成し、EXIF/GPS等のメタデータ除去、長辺512pxへの縮小、クラス別splitを実施。代表5枚を目視し、製品ブランド・文字を確認、人物は見当たらず。全画像の人手によるプライバシー確認が残るため公開保留。",
+        "archive_sha256": null,
+        "source_file_set_sha256": "154381f20cb1775f24e39801a3516cc0607d8330502924b9da6c7f2cbcfd8339",
+        "decode_errors": 0,
+        "unique_content_count": 977,
+        "duplicate_sha_groups": 12,
+        "gps_metadata_images": 104
       },
       "preparation": {
         "planned_level": "1",

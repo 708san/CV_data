@@ -10,14 +10,14 @@
 | --- | ---: | --- |
 | 固定Releaseの正式データ | 2 | `tomato_leaves`は生徒向け、`festival_icons`は教師向けLoRA素材 |
 | 教師向けプレビュー | 1 | `fashion_mnist`。固定コミット・4ファイル・件数・IDX形式を検査済み。権利の最終確認中 |
-| 固定取得条件不足で保留 | 1 | `kuzushiji_mnist`。公式データエンドポイントの版とSHA-256が未固定 |
-| artifact準備済み・Release/API待ち | 4 | `bangladeshi_e_waste_image`、`food_waste_bangladesh`、`smallfishbd`、`fruitseg30`。共通形式化・manifest検証済み。正式公開条件はデータ別説明を参照 |
+| 固定取得条件または公開条件で保留 | 3 | `fashion_mnist`、`kuzushiji_mnist`、`fruits_360`。Fruits-360には固定タグReleaseがなく、実体取得は未開始 |
+| artifact準備済み・Release/API待ち | 5 | `bangladeshi_e_waste_image`、`food_waste_bangladesh`、`smallfishbd`、`fruitseg30`、`recyclable_waste`。共通形式化・manifest検証済み。正式公開条件はデータ別説明を参照 |
 | 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
-| 公式ページのライセンス表記を再確認した候補 | 10 | `fruits_360`、`recyclable_waste`、`geosetennea`、`indian_origin_flowers`、`pistachio_image_dataset`、`fresh_rotten_fruits`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
+| 公式ページのライセンス表記を再確認した候補 | 8 | `geosetennea`、`indian_origin_flowers`、`pistachio_image_dataset`、`fresh_rotten_fruits`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 32 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-上表の正式Release 2件は候補50件とは別の既存配布物です。候補50件の内訳は、プレビュー・固定取得条件不足で保留2件、artifact準備済み4件、全量技術監査済み・保留1件、公式ページのライセンス表記を再確認した10件、固定版メタデータ確認・実体展開保留1件、その他32件です。準備済み候補もRelease asset公開までは正式一覧・取得APIに表示しません。
+上表の正式Release 2件は候補50件とは別の既存配布物です。候補50件の内訳は、固定取得条件または公開条件で保留3件、artifact準備済み5件、全量技術監査済み・保留1件、公式ページのライセンス表記を再確認した8件、固定版メタデータ確認・実体展開保留1件、その他32件です。準備済み候補もRelease asset公開までは正式一覧・取得APIに表示しません。
 
 ## 課題別の候補
 
@@ -104,3 +104,7 @@ datasets.list_tasks(audience="teacher", include_preview=True)
 ```
 
 未審査候補は台帳に残しますが、`list_available()`、`list_tasks()`、Notebookの取得例には出しません。候補を追加するときは、固定URL・SHA-256・画像検査・ライセンス証拠・高校生向けの注意書き・共通アダプタ・ネットワーク不要テストを一つの変更としてそろえます。
+
+Recyclable Wasteは公式v1の公開989画像を全件取得・SHA-256照合・デコードし、完全一致重複12枚を除いた977画像の共通artifactを準備しました。GPS情報を持つ104枚のEXIF等を出力から除き、長辺512px以下へ縮小しました。著者自身の撮影というページ説明とCC BY 4.0を確認しましたが、全画像の人手によるプライバシー確認を終えていないためAPI・Releaseは保留です（[データ別説明](datasets/recyclable_waste.md)）。
+
+Fruits-360公式repoはCC BY-SA 4.0を表示しますが、更新中ブランチ以外に固定タグReleaseを確認できません。source pinningの条件を満たすまで取得しません（[データ別説明](datasets/fruits_360.md)）。
