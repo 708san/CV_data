@@ -57,10 +57,10 @@ print(result["removed_bytes"])
 datasets.clear_cache()  # 登録済みデータのキャッシュをまとめて削除
 ```
 
-文化祭アイコンの画像も同じ方法で取得できます。
+文化祭アイコンは教師向けの権利確認中プレビューです。通常の一覧には出ず、明示指定した場合だけ取得できます。改変・商用利用・再配布の許可は確認できていません。
 
 ```python
-icons = datasets.get("festival_icons")
+icons = datasets.get("festival_icons", allow_preview=True)
 print(icons.images_dir)
 print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 ```
