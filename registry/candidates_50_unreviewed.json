@@ -309,15 +309,15 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/h5pxbsdz4m/1",
-        "redistribution_reviewed": false,
-        "rights_status": "under_review"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
       },
       "claims": {
         "quantity": "1,000枚",
         "labels": "紙／段ボール／プラ／金属／ガラス（原データの5種）",
         "formats": "画像形式は公式説明に未記載",
         "structure": "公開1,000枚の細かなラベル配分・ファイル構成は要検査",
-    "notes": "公式公開APIの一覧ではREADMEを除く画像989枚を確認。ページ記載の1,000枚との差11枚は補完していない。固定v1の全画像を技術監査し、一意977枚の縮小一覧目視も完了。ブランド文字と包装上の肖像写真らしきものを確認した。再配布権利・肖像・商標の審査は未完了のため保留。詳細はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。"
+        "notes": "公式公開APIの一覧ではREADMEを除く画像989枚を確認。ページ記載の1,000枚との差11枚は補完していない。固定v1の全画像を技術監査し、一意977枚の縮小一覧目視も完了。ブランド文字と包装上の肖像写真らしきものを確認した。再配布権利・肖像・商標の審査は未完了のため保留。詳細はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。"
       },
       "audit": {
         "technical_status": "full_image_audit",
@@ -326,11 +326,11 @@
         "sample_sha256_check": "passed",
         "sample_image_decode": "passed",
         "metadata_duplicate_sha_groups": 12,
-    "inspection_status": "completed",
+        "inspection_status": "completed",
         "publication_status": "hold",
-        "last_desk_review": "2026-11-08",
+        "last_desk_review": "2026-11-09",
         "evidence_grade": "independent_primary_check",
-    "notes": "公式固定v1の989画像（1,707,541,468 bytes）すべてを既知サイズ・SHA-256と照合し、ImageIOで全件デコード。カテゴリはcardboard 537 / glass 49 / metal 95 / paper 98 / plastic 210、完全一致重複12ファイル、内容一意977。104枚にGPSを含むEXIFを検出。共通artifact v0.1.0を977画像で作成し、EXIF/GPS等のメタデータ除去、長辺512pxへの縮小、クラス別splitを実施。整形済み一意977枚すべてを縮小一覧で目視し、クラス内容は概ね一致。明瞭な人物は見当たらず、包装上の肖像写真らしきもの1件と複数のブランド・商品文字を確認。全件目視記録はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。第三者の画像権利・肖像・商標を含む再配布審査は未完了のため公開保留。",
+        "notes": "公式固定v1の989画像（1,707,541,468 bytes）すべてを既知サイズ・SHA-256と照合し、ImageIOで全件デコード。カテゴリはcardboard 537 / glass 49 / metal 95 / paper 98 / plastic 210、完全一致重複12ファイル、内容一意977。104枚にGPSを含むEXIFを検出。共通artifact v0.1.0を977画像で作成し、EXIF/GPS等のメタデータ除去、長辺512pxへの縮小、クラス別splitを実施。整形済み一意977枚すべてを縮小一覧で目視し、クラス内容は概ね一致。明瞭な人物は見当たらず、包装上の肖像写真らしきもの1件と複数のブランド・商品文字を確認。全件目視記録はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。第三者の画像権利・肖像・商標を含む再配布審査は未完了のため公開保留。",
         "archive_sha256": null,
         "source_file_set_sha256": "154381f20cb1775f24e39801a3516cc0607d8330502924b9da6c7f2cbcfd8339",
         "decode_errors": 0,
@@ -417,8 +417,8 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/h7pf57cgg9/1",
-        "redistribution_reviewed": false,
-        "rights_status": "under_review_dataset_image_rights_confirmation_pending"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
       },
       "claims": {
         "quantity": "2,148枚",
@@ -435,7 +435,7 @@
         "duplicate_sha_groups": 0,
         "inspection_status": "full_technical_audit_sample_visual_review",
         "publication_status": "hold",
-        "last_desk_review": "2026-11-08",
+        "last_desk_review": "2026-11-09",
         "evidence_grade": "independent_primary_check",
         "notes": "公式Mendeley v1のCC BY 4.0表示と固定ZIPを確認。全2,148画像を600x600 RGB JPEGとしてデコード、完全一致重複0。論文は高解像度カメラで試料を撮影したと説明。4画像を目視。画像以外の特徴量表等10ファイルはartifactから除外。2021論文自身のCC BY-NC 4.0表示とMendeleyデータのCC BY 4.0表示を混同せず、dataset image rights holder/third-party rightsを公開前に追加確認するためhold。共通artifact v0.1.0準備済みだがRelease/API未公開.",
         "sample_files_examined": 4,
@@ -1455,8 +1455,8 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/vkht8pfsp3/3",
-        "redistribution_reviewed": false,
-        "rights_status": "under_review"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
       },
       "claims": {
         "quantity": "公式版1,969画像＋1,969マスク。教材artifactはGuava 55組を除外し29クラス1,914組",
@@ -1475,7 +1475,7 @@
         "metadata_duplicate_sha_groups": 0,
         "inspection_status": "full_audit_complete",
         "publication_status": "hold",
-        "last_desk_review": "2026-11-08",
+        "last_desk_review": "2026-11-09",
         "evidence_grade": "independent_primary_check",
         "notes": "公式v3の3,938ファイルすべてを固定ID・SHA-256照合し、1,969 JPEGと1,969 PNGを全量デコード。1,914組・29クラスは画像/マスク512x512で対応。Guava 55組は非標準寸法、うち52組は対応寸法不一致のため全クラスをartifactから除外。マスクは8-bit grayscaleで濃淡境界。共通artifact v0.1.0をローカル作成しmanifest検証済み。Release/API登録は未実施。"
       },
