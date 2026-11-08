@@ -4,12 +4,14 @@
 
 このデータは、画像を種類別に分類する教材ではなく、LoRA（Low-Rank Adaptation：少ない追加パラメータでモデルを調整する技術）で画像の表現を学習するための素材です。
 
-## 取得して調べる
+## 教師向けプレビューで取得して調べる
+
+この素材は権利確認中です。通常の生徒向け一覧には含まれず、教師が内容を確認する場合に限り、次のように明示して取得できます。改変・商用利用・再配布の許可は確認できていません。
 
 ```python
 from cvlesson import datasets
 
-data = datasets.get("festival_icons")
+data = datasets.get("festival_icons", allow_preview=True)
 print(data.images_dir)
 print(data.labels_csv)       # image,caption
 print(data.metadata_jsonl)   # file_name,text
