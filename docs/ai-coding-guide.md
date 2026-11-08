@@ -29,7 +29,9 @@ Fashion-MNISTは教師向けプレビューです。権利確認中なので、�
 
 FruitSeg30は領域分割向けの29クラスartifactと取得検証を準備しています。固定Releaseが公開された後は、`data.to_df()`で画像とマスクの組を確認し、`data.to_torch_dataset()`から画像テンソルと濃淡マスクを読み込めます。現在はRelease待ちのため`datasets.get("fruitseg30")`では取得できません。マスクは元の0〜255階調を保ち、PyTorch変換時も閾値で二値化しません。
 
-LoRA素材は`from cvlesson import loras`から管理します。`loras.list_available()`は生徒向けに承認された素材だけを返し、権利確認中の文化祭アイコンは`loras.list_preview()`で確認できます。重みは配布せず、必要な場合は`loras.get("festival_icon_style", allow_preview=True).get_data(allow_preview=True)`で画像・キャプション素材だけを取得します。
+LoRA学習素材は`from cvlesson import loras`、学習済み重みは`from cvlesson import weights`から管理します。`loras`は画像・キャプション素材を扱い、`weights`は固定版の重みファイルを元配布元から取得します。`weights.list_available()`と`weights.info("tcd_sd15")`は通信しません。実際のダウンロードは明示的に`weights.get("tcd_sd15")`を呼んだ時だけ行い、ファイルはcheckout外のcacheに置きます。
+
+TCD LoRA本体のライセンス表記はMITですが、使用には別途Stable Diffusion 1.5の基盤モデルが必要です。基盤モデルのCreativeML Open RAIL-M条件を確認し、その条件に従ってください。重みファイル自体はPyPIやGitに収録せず、再配布もしません。文化祭アイコンの画像・キャプションは権利確認中の教師向けプレビューで、学習済み重みとは別です。
 
 `get()`は`DatasetBundle`を返します。`root`、`images_dir`、`labels_csv`、`metadata_jsonl`、`kind`、`task`、`manifest`、`version`、`classes`、`class_names_ja`、`splits`、`license_info`、`source_info`を参照できます。トマトの葉では`train_dir`と`test_dir`も使えます。監査状態とレポートは`datasets.info("tomato_leaves")`で確認します。
 
