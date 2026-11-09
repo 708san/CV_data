@@ -12,7 +12,7 @@ Fashion-MNISTは、衣類画像を10種類に分類するための28×28画素�
 | val | 6,000 |
 | test | 10,000 |
 
-権利条件は公式リポジトリのMIT表記を確認済みですが、教材での公開・再配布について最終確認中です。そのため、正式な`list_available()`には掲載していません。
+固定コミットのREADMEは、データをZalandoの商品画像からなる70,000枚の画像と説明しています。一方、同じREADMEのMIT条項は「software and associated documentation files」を対象としており、画像データの個別ライセンスや再配布許可は明記していません。リポジトリのMIT表記だけでは画像の権利を確定できないため、画像の教材公開・再配布は保留し、正式な`list_available()`には掲載していません。
 
 ## 開発者・教員向けの取得
 
@@ -34,7 +34,7 @@ print(df[["label", "label_ja", "split"]].head())
 
 - 公式リポジトリ：[zalandoresearch/fashion-mnist](https://github.com/zalandoresearch/fashion-mnist/tree/b2617bb6d3ffa2e429640350f613e3291e10b141)
 - 固定コミット：`b2617bb6d3ffa2e429640350f613e3291e10b141`
-- ライセンス表記：[MIT License](https://github.com/zalandoresearch/fashion-mnist/blob/b2617bb6d3ffa2e429640350f613e3291e10b141/LICENSE)
+- リポジトリのライセンス：[MIT License](https://github.com/zalandoresearch/fashion-mnist/blob/b2617bb6d3ffa2e429640350f613e3291e10b141/LICENSE)。READMEではMITの対象をソフトウェアと付属文書と記載。画像データへの適用範囲・再配布許可は未確認。
 - 実測レポート：[fashion-mnist-github-b2617bb6.json](../../reports/fashion-mnist-github-b2617bb6.json)
 
 このページのプレビュー状態は、教材公開の承認を意味しません。

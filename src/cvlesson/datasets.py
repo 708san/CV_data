@@ -629,9 +629,9 @@ _PREVIEW_SOURCES: dict[str, ReleaseSource] = {
             "8": "バッグ", "9": "アンクルブーツ",
         },
         license_info={
-            "name": "MIT License（公式リポジトリの表記）",
+            "name": "MIT License（リポジトリのソフトウェア・文書）",
             "url": "https://github.com/zalandoresearch/fashion-mnist/blob/b2617bb6d3ffa2e429640350f613e3291e10b141/LICENSE",
-            "rights_review": "公式表記は確認済み。元画像の教材公開・再配布について人による最終確認が必要。",
+            "rights_review": "README上のMIT条項はソフトウェア・付属文書が対象。画像データの個別ライセンス・再配布許可は未確認。",
         },
         source_info={
             "dataset_name": "Fashion-MNIST",

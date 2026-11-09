@@ -2,9 +2,9 @@
   "schema_version": "1.0.0",
   "source_inventory": {
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
-    "as_of": "2026-11-04",
+    "as_of": "2026-11-09",
     "original_record_count": 50,
-    "note": "前回調査の申告情報を取り込んだ未承認レジストリ。画像現物は未検査。生徒への公開不可。"
+    "note": "候補台帳は未承認。技術検査の範囲と権利・公開状態はレコードごとに記録し、候補全体を一括して画像未検査または承認済みと扱わない。生徒への公開不可。"
   },
   "records": [
     {
@@ -68,7 +68,7 @@
         "reference_url": "https://github.com/zalandoresearch/fashion-mnist/tree/b2617bb6d3ffa2e429640350f613e3291e10b141"
       },
       "rights": {
-        "license_claim": "MIT",
+        "license_claim": "MIT (repository software/docs); image dataset license scope unconfirmed",
         "evidence_url": "https://github.com/zalandoresearch/fashion-mnist/blob/b2617bb6d3ffa2e429640350f613e3291e10b141/LICENSE",
         "redistribution_reviewed": false,
         "rights_status": "under_review"
@@ -78,14 +78,14 @@
         "labels": "衣類10クラス",
         "formats": "IDX gzip（画素配列・ラベル別）",
         "structure": "学習60,000／テスト10,000；画像・ラベル別gzip",
-        "notes": "写真の状況が統一された低解像度画像。固定コミットの4ファイルを検査し、正式一覧には未掲載。"
+        "notes": "固定コミットのREADMEはZalando商品画像70,000枚と記載。READMEのMIT条項はsoftware and associated documentation filesが対象で、画像データの個別ライセンス・再配布許可は明記されていない。技術実装とPGMキャッシュ化は済み、画像権利確認までteacher preview only。"
       },
       "audit": {
         "technical_status": "metadata_checked",
         "files_examined": 70000,
         "inspection_status": "completed",
         "publication_status": "hold",
-        "last_desk_review": "2026-11-05",
+        "last_desk_review": "2026-11-09",
         "evidence_grade": "files_inspected"
       },
       "preparation": {
