@@ -21,6 +21,10 @@
 
 | ConMetal-6 subset | [Mendeley v1](https://data.mendeley.com/datasets/ch34f38kz5/1)、CC BY 4.0表示。公開版は全体のtest split 232枚、6種類の金属合金、4,620個のYOLO矩形注釈。著者説明ではメルボルンで撮影し、ラベルは磁石・scratch test・専門家確認で作成 | 公開ファイルの一覧・サイズ・SHA-256、画像・YOLO注釈の実物、第三者権利は未確認。公開版はtest splitのみでtrain/validationは含まれないと説明されているため、訓練用データとしては扱えない | 条件付き候補。学習済みモデルの評価用に限る可能性 |
 
+## 追加確認候補
+
+| Indoor Plant Varieties | [Mendeley v1](https://data.mendeley.com/datasets/ct79299k27/1)、CC BY 4.0表示。元画像1,172枚と拡張版7,000枚を説明。7種類の観葉植物を苗圃等で収集・スマートフォン撮影し、農学者がクラス名を確認したと記載 | 公開ファイル一覧、固定ファイルSHA、実画像、元画像と増強画像の対応、第三者権利は未確認。元画像と拡張版を別管理する | 条件付き候補。家庭の植物観察と分類に向く |
+
 ## 進行ルール
 
 1. まずFood Waste、E-Waste、Pistachioの既存source manifest・artifact manifest・report・ライセンス記録を照合し、再生成できる資料を再利用する。

@@ -4,7 +4,7 @@
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
     "as_of": "2026-11-09",
     "original_record_count": 50,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。"
   },
   "records": [
     {
@@ -2422,6 +2422,53 @@
         "planned_level": "to_be_determined",
         "implemented_levels": [],
         "adapter": "yolo_detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-152",
+      "api_id": "indoor_plant_varieties",
+      "name": "Indoor Plant Varieties for Computer Vision Applications",
+      "task": "classification",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/ct79299k27/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "ct79299k27",
+        "version": "1",
+        "content_origin_claim": "著者説明ではバングラデシュの農業機関・近隣苗圃で収集しスマートフォン撮影",
+        "reference_url": "https://data.mendeley.com/datasets/ct79299k27/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0 (Mendeley v1 page)",
+        "evidence_url": "https://data.mendeley.com/datasets/ct79299k27/1",
+        "redistribution_reviewed": false,
+        "rights_status": "under_review"
+      },
+      "claims": {
+        "quantity": "元画像1,172枚。拡張版は7,000枚と説明",
+        "labels": "観葉植物7クラス",
+        "formats": "JPEG、元画像は3000x3000と説明",
+        "structure": "元画像と拡張画像の関係・ファイル構成は未検査",
+        "notes": "家庭の観葉植物を題材にできる。最初は元画像だけを候補とし、拡張版を別分割へ混ぜない。植物名の予測を有毒性・食用・飼育安全判断に使わない。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-09",
+        "evidence_grade": "independent_primary_check",
+        "notes": "公式Mendeley v1ページのCC BY 4.0表示、著者の撮影・収集説明、7クラスと元画像・拡張版の件数を確認。固定ファイル一覧、サイズ、SHA-256、画像の内容、拡張画像の対応関係、第三者権利は未確認。"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "classification_v1",
         "target_colab": true
       },
       "pedagogy": {
