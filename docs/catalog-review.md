@@ -1,8 +1,13 @@
 # カタログ候補の精査状況
 
-更新日：2026-11-08
+更新日：2026-11-09
 
 このページは`registry/candidates_50_unreviewed.json`を、ライブラリに追加する前の判断材料として整理したものです。台帳に書かれたライセンスは候補者の申告であり、ここで「CC BY 4.0」「CC0」などと書かれていても、画像そのものの権利確認や教材での再配布承認を意味しません。
+
+
+### 2026-11-09 再確認
+
+FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのCC BY 4.0表示と提供者の説明に基づき、帰属表示・変更通知・（Pistachioは）指定論文の引用を条件に再配布条件を確認しました。既存artifact ZIPはファイル単位manifestの全件照合とCRC検査に成功しています。3件ともGitHub Release asset未作成のため、正式一覧と取得APIでは引き続き利用できません。食品廃棄データとBangladeshi E-Wasteは、それぞれ人物の写り込み・印刷肖像等の確認を続けるため保留です。
 
 ## 現在の扱い
 
@@ -11,7 +16,7 @@
 | 固定Releaseの正式データ | 2 | `tomato_leaves`は生徒向け、`festival_icons`は教師向けLoRA素材 |
 | 教師向けプレビュー | 1 | `fashion_mnist`。固定コミット・4ファイル・件数・IDX形式を検査済み。権利の最終確認中 |
 | 固定取得条件または公開条件で保留 | 3 | `fashion_mnist`、`kuzushiji_mnist`、`fruits_360`。Fruits-360には固定タグReleaseがなく、実体取得は未開始 |
-| artifact準備済み・権利/Release/API待ち | 6 | `bangladeshi_e_waste_image`、`food_waste_bangladesh`、`smallfishbd`、`fruitseg30`、`recyclable_waste`、`pistachio_image_dataset`。共通形式化・manifest検証済み。正式公開条件はデータ別説明を参照 |
+| artifact準備済み・Release asset/API待ち | 6 | `bangladeshi_e_waste_image`、`food_waste_bangladesh`、`smallfishbd`、`fruitseg30`、`recyclable_waste`、`pistachio_image_dataset`。共通形式化・manifest検証済み。正式公開条件はデータ別説明を参照 |
 | 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
 | 公式ページのライセンス表記を再確認した候補 | 7 | `geosetennea`、`indian_origin_flowers`、`fresh_rotten_fruits`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |

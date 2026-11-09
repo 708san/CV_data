@@ -1,0 +1,57 @@
+{
+  "report_version": "1.0.0",
+  "date": "2026-11-09",
+  "purpose": "Reassessment of existing prepared image artifacts; binaries remain outside Git.",
+  "artifacts": [
+    {
+      "dataset_id": "fruitseg30",
+      "artifact_version": "0.1.0",
+      "zip_size": 68242354,
+      "zip_sha256": "129384a6e9599b0b9eb756ec93abda25a90bdd70a514fd04f905a2ff2e8c5ba5",
+      "files": 3833,
+      "crc": "passed",
+      "manifest_file_hashes": "all matched",
+      "rights_status": "approved_for_redistribution",
+      "conditions": [
+        "CC BY 4.0 attribution",
+        "state exclusions and split transformation"
+      ],
+      "publication_status": "hold_release_asset_pending"
+    },
+    {
+      "dataset_id": "pistachio_image_dataset",
+      "artifact_version": "0.1.0",
+      "zip_size": 25875554,
+      "zip_sha256": "32bc15c4788052207e3dd52d4450cc15fec9efade3df169d59bb94556d715f24",
+      "files": 2153,
+      "crc": "passed",
+      "manifest_file_hashes": "all matched",
+      "rights_status": "approved_for_redistribution",
+      "conditions": [
+        "CC BY 4.0 attribution",
+        "cite two dataset-requested papers; do not bundle paper PDFs or figures"
+      ],
+      "publication_status": "hold_release_asset_pending"
+    },
+    {
+      "dataset_id": "recyclable_waste",
+      "artifact_version": "0.1.0",
+      "zip_size": 93666718,
+      "zip_sha256": "39c52710ddaeb4e662dbbf3ba7cd95725a8b11cf2b22434d04bc52626b721299",
+      "files": 982,
+      "crc": "passed",
+      "manifest_file_hashes": "all matched",
+      "rights_status": "approved_for_redistribution",
+      "conditions": [
+        "CC BY 4.0 attribution and change notice",
+        "do not frame as brand or person recognition"
+      ],
+      "publication_status": "hold_release_asset_pending"
+    }
+  ],
+  "limitations": [
+    "CC BY review relies on dataset publisher/contributor declarations; it is not a warranty of third-party rights.",
+    "No GitHub Release asset was created; library access remains unavailable until a pinned release is published.",
+    "Food Waste Bangladesh and Bangladeshi E-Waste remain on hold pending resolution of their separate privacy/third-party-content notes."
+  ]
+}

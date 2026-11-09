@@ -26,3 +26,9 @@
 ## 記録
 
 source manifest、artifact manifest、監査report、帰属・引用記録は`CV_data_artifacts`に保存しています。第三者権利の追加確認と最終配布承認が済むまでAPI・Releaseへ追加しません。
+
+## 2026-11-09 権利・成果物再確認
+
+Mendeley Data v1はCC BY 4.0を表示し、投稿者Murat Kokluと高解像度カメラで撮影した試料画像であることを示しています。帰属表示に加え、元ページが求める2論文を引用する条件で再配布を確認済みにしました。論文PDFや図表はartifactに含めず、論文自体に表示されたCC BY-NC条件を画像のライセンスと混同しません。
+
+ZIPを再照合し、2,153ファイルすべてのmanifestサイズ・SHA-256一致、CRC成功を確認しました。ZIP SHA-256は `32bc15c4788052207e3dd52d4450cc15fec9efade3df169d59bb94556d715f24`。Release assetがないため、ライブラリからはまだ取得できません。
