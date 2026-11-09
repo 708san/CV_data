@@ -3,20 +3,27 @@
 ## 現在の状態
 
 候補ID：`DS-028`（Mendeley Data v2）  
-状態：固定v2の元画像ZIPをSHA-256照合し、1,700枚を全量検査。完全一致重複3枚を除外した共通artifact v0.1.0を生成・検証済み。GitHub Release asset待ちのため、ライブラリ取得APIでは未公開です。
+状態：教材用artifact v0.1.1を固定Releaseで公開しました。10魚種、1,697枚を収録し、CC BY 4.0の帰属・変更表示条件を記録しています。ライブラリAPIへの登録もこの変更で反映します。
 
-公式ページの説明は、元画像1,700枚（10魚種、320×320 JPEG）と増強画像20,400枚を別々に記載しています。元画像ZIPは28.4MB、増強画像ZIPは527MBです。画像はダッカの魚市場で撮影したとされ、ライセンス表示はCC BY 4.0です。[公式データページ v2](https://data.mendeley.com/datasets/8jvxtvz52x/2)。元画像`SmallFishBD.zip`は29,802,305 bytes、SHA-256 `2d97368d351f4c5940b7b54f19eec2b771a7d76421dbe5ad66977cf3003eafbb`です。安全検査後、全画像が320×320 JPEGとしてデコードでき、公式のクラス別枚数と一致しました。完全一致重複3組を除外し、1,697枚を収録しました。増強画像アーカイブは取得・収録していません。
+- Release：https://github.com/708san/CV_data_artifacts/releases/tag/smallfishbd-v0.1.1
+- ZIP：29,799,609 bytes
+- SHA-256：`367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547`
+- 固定ダウンロードURL：https://github.com/708san/CV_data_artifacts/releases/download/smallfishbd-v0.1.1/smallfishbd-v0.1.1.zip
+
+## データと整形内容
+
+公式ページは元画像1,700枚（10魚種、320×320 JPEG）と増強画像20,400枚を別々に記載しています。元画像ZIPは29,802,305 bytes、SHA-256 `2d97368d351f4c5940b7b54f19eec2b771a7d76421dbe5ad66977cf3003eafbb`です。[公式データページ v2](https://data.mendeley.com/datasets/8jvxtvz52x/2)。
+
+元画像を固定SHA-256照合後に安全展開し、1,700枚すべてのデコードとクラス枚数を確認しました。完全一致重複3枚を除いた1,697枚を、seed 42でtrain 1,188 / validation 254 / test 255に分割しました。画像の画素は変更していません。増強画像は収録していません。artifactにはCC BY 4.0の出典・変更内容を記した`LICENSE.md`を同梱しています。
 
 ## 教材として考えられる使い方
 
-魚の画像を10クラスに分類し、似た魚種による誤分類を調べる課題に使えます。確認した各クラスの代表画像は青系の背景上に魚が置かれており、背景への依存を学ぶ材料にもなります。一方、背景の偏りや市場名の表記差があるため、自然環境の魚種判定、生物多様性の推定、食品安全性、価格判断には使えません。
+魚の画像を10クラスに分類し、似た魚種による誤分類を調べる課題に使えます。代表画像は青系の背景上に魚が置かれており、背景への依存を学ぶ材料にもなります。一方、背景の偏りや市場名の表記差があるため、自然環境の魚種判定、生物多様性の推定、食品安全性、価格判断には使えません。
 
-増強画像は元画像から作られた画像を含む可能性があるため、元画像と混ぜたランダム分割では評価結果が過大になるおそれがあります。最初の教材候補には元画像だけを使い、増強画像は元画像との重複・派生関係を調べるまで分離します。
+増強画像と元画像の対応は全量照合していません。評価にはこのartifactの元画像だけを使い、増強画像を混ぜないでください。
 
-## 追加前に必要な確認
+## ライセンスと確認範囲
 
-- 増強画像との対応を全量では照合していないため、教材評価では元画像のみを使い、増強画像を混ぜない。
-- 教材配布前に画像内の第三者権利を追加確認する。
-- CV_data_artifactsにRelease assetを作成後、固定URLで取得できることを確認する。
+Mendeley Data v2はCC BY 4.0を表示しています。全画像の視覚レビューを含む再配布審査を行い、帰属・変更表示条件付きで公開しました。具体的な出典と変更表示はZIP内の`LICENSE.md`を参照してください。
 
-共通形式の全ファイルmanifest、除外重複一覧、出典・変更表示は`CV_data_artifacts`に準備済みです。Release asset公開まではAPIから取得できません。
+確認の詳細：[SmallFishBD v0.1.1 preparation report](https://github.com/708san/CV_data_artifacts/blob/main/reports/smallfishbd-v0.1.1-preparation-2026-11-09.json)、[全画像視覚レビュー](https://github.com/708san/CV_data_artifacts/blob/main/reports/smallfishbd-visual-review-2026-11-08.json)
