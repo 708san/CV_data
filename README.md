@@ -74,11 +74,12 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [トマトの葉](docs/datasets/tomato_leaves.md) | トマトの葉7,209枚、5種類のラベル | `tomato-v1.2.0` | 元データ：CC0 1.0 |
 | [FruitSeg30](docs/datasets/fruitseg30.md) | 果物29クラス、画像・マスク1,914組 | `fruitseg30-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [SmallFishBD](docs/datasets/smallfishbd.md) | 魚10種類、画像1,697枚 | `smallfishbd-v0.1.1` | CC BY 4.0、出典・変更表示が必要 |
+| [ピスタチオ2品種](docs/datasets/pistachio_image_dataset.md) | Kirmizi種・Siirt種、画像2,148枚 | `pistachio_image_dataset-v0.1.0` | CC BY 4.0、出典・変更・指定論文の表示が必要 |
 | [文化祭アイコン](docs/datasets/festival_icons.md) | アイコン168枚、画像と説明文 | `festival-v1.0.0` | 公開許可あり。改変・商用利用・再配布は要確認 |
 
 トマトの葉と文化祭アイコンは固定Releaseを全量監査済みです。実測値は[トマトの監査レポート](reports/tomato-leaves-v1.2.0.json)と[文化祭アイコンの監査レポート](reports/festival-icons-v1.0.0.json)に保存しています。これは権利の承認を意味しません。
 
-外部画像候補のうちSmallFishBDは、CC BY 4.0の帰属・変更表示条件と全画像視覚レビューを確認し、固定Release v0.1.1を公開しました。このPRで取得APIへ登録します。電子ごみ・食品廃棄などの候補は権利・プライバシー確認中のため、正式APIには掲載していません。
+SmallFishBDは全画像レビューと帰属・変更表示条件を確認し、固定Release v0.1.1を公開済みです。ピスタチオ画像はMendeleyのCC BY 4.0表示と、研究者自身が画像を作成したという論文記載を照合し、指定論文2件の引用条件付きで固定Release v0.1.0を公開しています。電子ごみ・食品廃棄など未解決の候補は正式APIに掲載していません。
 
 FruitSeg30は全量監査後、寸法が一致しないGuavaクラスを除いた29クラス1,914組を整備し、固定Releaseを公開しました。GitHub mainブランチでは取得APIを利用できます。PyPI配布版への反映はパッケージ更新時に行います。`to_torch_dataset()`は画像と濃淡マスクを返します。
 
