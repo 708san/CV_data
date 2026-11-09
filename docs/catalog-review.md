@@ -7,16 +7,16 @@
 
 ### 2026-11-09 再確認
 
-FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのCC BY 4.0表示と提供者の説明に基づき、帰属表示・変更通知・（Pistachioは）指定論文の引用を条件に再配布条件を確認しました。既存artifact ZIPはファイル単位manifestの全件照合とCRC検査に成功しています。PistachioとRecyclable WasteはRelease asset未作成のため、正式一覧と取得APIでは利用できません。FruitSeg30のRelease assetと取得API設定はmainに反映済みです。PyPI配布版への反映はパッケージ更新時です。食品廃棄データとBangladeshi E-Wasteは、それぞれ人物の写り込み・印刷肖像等の確認を続けるため保留です。
+FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのCC BY 4.0表示に基づき再配布条件を確認しました。Pistachioは画像が研究者自身により作成されたという関連論文の記載も確認し、出典・変更通知・指定論文2件の引用を条件に承認しました。Pistachio artifactはmanifest全件照合とCRC検査に成功し、固定Release v0.1.0を公開、取得APIをmainに反映済みです。Recyclable Wasteは第三者の商標・肖像審査が未完了のため保留です。PyPI配布版への反映はパッケージ更新時です。食品廃棄データとBangladeshi E-Wasteは、それぞれ人物の写り込み・印刷肖像等の確認を続けるため保留です。
 
 ## 現在の扱い
 
 | 区分 | 件数 | ライブラリでの扱い |
 | --- | ---: | --- |
-| 固定Releaseの正式データ | 4 | `tomato_leaves`、`smallfishbd`、`fruitseg30`は生徒向け、`festival_icons`は教師向けLoRA素材 |
+| 固定Releaseの正式データ | 5 | `tomato_leaves`、`smallfishbd`、`fruitseg30`、`pistachio_image_dataset`は生徒向け、`festival_icons`は教師向けLoRA素材 |
 | 教師向けプレビュー | 1 | `fashion_mnist`。固定コミット・4ファイル・件数・IDX形式を検査済み。権利の最終確認中 |
 | 固定取得条件または公開条件で保留 | 3 | `fashion_mnist`、`kuzushiji_mnist`、`fruits_360`。Fruits-360には固定タグReleaseがなく、実体取得は未開始 |
-| artifact準備済み・Release asset/API待ち | 4 | `bangladeshi_e_waste_image`、`food_waste_bangladesh`、`recyclable_waste`、`pistachio_image_dataset`。共通形式化・manifest検証済み。正式公開条件はデータ別説明を参照 |
+| artifact準備済み・Release asset/API待ち | 3 | `bangladeshi_e_waste_image`、`food_waste_bangladesh`、`recyclable_waste`。共通形式化済み。正式公開条件はデータ別説明を参照 |
 | 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
 | 公式ページのライセンス表記を再確認した候補 | 7 | `geosetennea`、`indian_origin_flowers`、`fresh_rotten_fruits`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
