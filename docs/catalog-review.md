@@ -7,7 +7,7 @@
 
 ### 2026-11-09 再確認
 
-FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのCC BY 4.0表示と提供者の説明に基づき、帰属表示・変更通知・（Pistachioは）指定論文の引用を条件に再配布条件を確認しました。既存artifact ZIPはファイル単位manifestの全件照合とCRC検査に成功しています。PistachioとRecyclable WasteはRelease asset未作成のため、正式一覧と取得APIでは利用できません。FruitSeg30のRelease assetは公開済みで、取得APIへ追加するPRを準備中です。食品廃棄データとBangladeshi E-Wasteは、それぞれ人物の写り込み・印刷肖像等の確認を続けるため保留です。
+FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのCC BY 4.0表示と提供者の説明に基づき、帰属表示・変更通知・（Pistachioは）指定論文の引用を条件に再配布条件を確認しました。既存artifact ZIPはファイル単位manifestの全件照合とCRC検査に成功しています。PistachioとRecyclable WasteはRelease asset未作成のため、正式一覧と取得APIでは利用できません。FruitSeg30のRelease assetと取得API設定はmainに反映済みです。PyPI配布版への反映はパッケージ更新時です。食品廃棄データとBangladeshi E-Wasteは、それぞれ人物の写り込み・印刷肖像等の確認を続けるため保留です。
 
 ## 現在の扱い
 
@@ -22,13 +22,13 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 32 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-候補50件の現状は、student_enabled 1件（FruitSeg30）、candidate 32件、hold 14件、Release待ちの準備済み候補3件です。Releaseが公開済みでも、取得API変更PRがマージされるまでは利用できません。
+候補50件の現状は、student_enabled 1件（FruitSeg30）、candidate 32件、hold 14件、Release待ちの準備済み候補3件です。FruitSeg30はRelease assetとmainブランチの取得APIが利用可能です。PyPI配布版は別途更新が必要です。
 
 ## 課題別の候補
 
 HGM-4 v8はMendeleyのCC BY 4.0表示、固定RAR（228,825,330 bytes）のSHA-256、および安全なアーカイブ目録を確認しましたが、標準の展開ツールがRAR内フィルターに対応せず、完全展開できませんでした。画像実体・同意・プライバシーを未検査のため、配布・教材化は保留です（[データ別説明](datasets/hgm_4_hand_gestures.md)）。
 
-FruitSeg30 v3は公式固定版の全3,938ファイルを取得し、サイズ・SHA-256を照合しました。固定artifact `fruitseg30-v0.1.0` のReleaseを公開し、取得API設定を反映するPRを準備中です。1,969画像と1,969マスクを全量デコードし、Guava 55組のうち52組で同名画像とマスクの寸法が不一致と判明したため、同クラス全体を除外した29クラス1,914組の共通artifact v0.1.0をローカル作成・manifest検証しました。画像・マスクは512×512で、マスクは0〜255の8-bit grayscaleです。データ用ReleaseとライブラリAPIは未登録です（[データ別説明](datasets/fruitseg30.md)）。
+FruitSeg30 v3は公式固定版の全3,938ファイルを取得し、サイズ・SHA-256を照合しました。固定artifact `fruitseg30-v0.1.0` のReleaseを公開し、取得API設定もmainへ反映済みです。PyPI配布版は別途更新が必要です。1,969画像と1,969マスクを全量デコードし、Guava 55組のうち52組で同名画像とマスクの寸法が不一致と判明したため、同クラス全体を除外した29クラス1,914組の共通artifact v0.1.0をローカル作成・manifest検証しました。画像・マスクは512×512で、マスクは0〜255の8-bit grayscaleです。Release asset公開済み。mainブランチのライブラリAPIで利用可能です（[データ別説明](datasets/fruitseg30.md)）。
 
 ### 画像分類
 
