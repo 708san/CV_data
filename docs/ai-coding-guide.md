@@ -27,7 +27,7 @@ Fashion-MNISTは教師向けプレビューです。権利確認中なので、�
 
 物体検出用の候補データは全量監査と共通形式への変換まで終えましたが、固定Release assetが公開されるまでは正式一覧・取得APIに掲載しません。候補ページには監査結果とpolygonから外接矩形への変換内容を記録しています。
 
-FruitSeg30は領域分割向けの29クラスartifactを固定Releaseで公開済みです。取得API追加PRのマージ後に`datasets.get("fruitseg30")`で取得できます。`data.to_df()`で画像とマスクの組を確認し、`data.to_torch_dataset()`から画像テンソルと濃淡マスクを読み込めます。マスクは元の0〜255階調を保ち、PyTorch変換時も閾値で二値化しません。
+FruitSeg30は領域分割向けの29クラスartifactを固定Releaseで公開済みです。GitHub mainブランチのコードでは`datasets.get("fruitseg30")`で取得できます。PyPI配布版への反映はパッケージ更新時です。`data.to_df()`で画像とマスクの組を確認し、`data.to_torch_dataset()`から画像テンソルと濃淡マスクを読み込めます。マスクは元の0〜255階調を保ち、PyTorch変換時も閾値で二値化しません。
 
 LoRA素材は`from cvlesson import loras`から管理します。`loras.list_available()`は生徒向けに承認された素材だけを返し、権利確認中の文化祭アイコンは`loras.list_preview()`で確認できます。重みは配布せず、必要な場合は`loras.get("festival_icon_style", allow_preview=True).get_data(allow_preview=True)`で画像・キャプション素材だけを取得します。
 
