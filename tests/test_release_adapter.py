@@ -139,7 +139,7 @@ class ReleaseTests(unittest.TestCase):
 
     def test_pending_detection_artifact_is_not_published_in_catalog(self):
         ids = {item["id"] for item in datasets.list_available()}
-        self.assertEqual(ids, {"tomato_leaves", "festival_icons"})
+        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30"})
         self.assertIn("festival-v1.0.0", str(datasets.info("festival_icons")))
         self.assertEqual(datasets.info("tomato_leaves")["audit_status"], "full_image_audit")
         self.assertEqual(datasets.info("festival_icons")["audit_status"], "full_image_audit")
@@ -155,10 +155,10 @@ class ReleaseTests(unittest.TestCase):
             ):
                 datasets.get(dataset_id, cache_dir=self.cache)
 
-    def test_fruitseg30_is_pending_until_fixed_release_exists(self):
-        self.assertEqual(datasets.info("fruitseg30")["publication_status"], "release_pending")
-        with self.assertRaisesRegex(datasets.DatasetError, "公開Releaseがまだありません"):
-            datasets.get("fruitseg30", cache_dir=self.cache)
+    def test_fruitseg30_is_available_after_fixed_release_is_published(self):
+        self.assertEqual(datasets.info("fruitseg30")["publication_status"], "student_enabled")
+        ids = {item["id"] for item in datasets.list_available(task="segmentation", audience="student")}
+        self.assertEqual(ids, {"fruitseg30"})
 
     @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
     def test_segmentation_artifact_download_cache_and_dataframe(self):
