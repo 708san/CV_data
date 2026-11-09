@@ -240,3 +240,10 @@
 - ライブラリ一覧をstudent-enabledへ切り替える設定と説明の更新をPRに準備中。
 
 - FruitSeg30取得APIを含むPR #25をmainへマージ。固定Release assetとmainブランチのAPI設定が揃いました。PyPI配布版への反映はパッケージ更新時です。
+
+
+## 2026-11-09：SmallFishBD v0.1.1 Release公開
+
+- artifact準備PR #14をCV_data_artifacts mainへマージ後、固定タグReleaseを作成しました。
+- ZIPは29,799,609 bytes。GitHub APIのSHA-256 `367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547`がローカル成果物と一致し、固定URLはHTTP 200を返しました。
+- CC BY 4.0の帰属・変更表示、全画像視覚レビューを踏まえた再配布審査を記録。ライブラリの固定URL・ハッシュ・公開状態、データ説明、候補台帳を更新するPRを作成します。
