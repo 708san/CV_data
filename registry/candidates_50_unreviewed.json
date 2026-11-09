@@ -4,7 +4,7 @@
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
     "as_of": "2026-11-09",
     "original_record_count": 50,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。"
   },
   "records": [
     {
@@ -2379,6 +2379,53 @@
       },
       "pedagogy": {
         "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-151",
+      "api_id": "conmetal6",
+      "name": "ConMetal-6 subset",
+      "task": "detection",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/ch34f38kz5/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "ch34f38kz5",
+        "version": "1",
+        "content_origin_claim": "著者説明ではメルボルンでモバイルRGBセンサーを用いて撮影",
+        "reference_url": "https://data.mendeley.com/datasets/ch34f38kz5/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0 (Mendeley v1 page)",
+        "evidence_url": "https://data.mendeley.com/datasets/ch34f38kz5/1",
+        "redistribution_reviewed": false,
+        "rights_status": "under_review"
+      },
+      "claims": {
+        "quantity": "公開test split 232枚。全データ2,304枚は研究目的で申請提供と説明",
+        "labels": "Aluminium, Brass, Copper, Ferrous Metal, Galvanized Steel, Stainless Steel; 4,620 boxes",
+        "formats": "RGB画像とYOLO形式の矩形注釈",
+        "structure": "公開版は全データの10%に相当するtest splitのみ",
+        "notes": "学習用train/validationが含まれるとは確認できていない。学生自身が訓練画像を集めたモデルの評価用候補。金属合金識別・建設廃材選別の実運用判断には使わない。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-09",
+        "evidence_grade": "independent_primary_check",
+        "notes": "公式Mendeley v1ページの説明とCC BY 4.0表示を確認。画像ファイル一覧・実アーカイブ、SHA-256、YOLO注釈、個別権利は未確認。公開ページはtest splitだけと説明するため、訓練データとしては扱わない。"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "yolo_detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
         "publish_student_example": false
       }
     }
