@@ -1,34 +1,40 @@
-# Pistachio Image Dataset（artifact準備・公開保留）
+# Pistachio Image Dataset（公開済み）
 
-## 出典と権利確認
+## 出典と権利
 
-[Mendeley Data v1](https://data.mendeley.com/datasets/h7pf57cgg9/1)、DOI `10.17632/h7pf57cgg9.1`。公式ページはCC BY 4.0と表示し、KirmiziとSiirtのピスタチオ試料を高解像度カメラで撮影した2,148枚と説明します。MendeleyのcontributorはMurat Kokluです。
+[Mendeley Data v1](https://data.mendeley.com/datasets/h7pf57cgg9/1)、DOI `10.17632/h7pf57cgg9.1`。投稿者はMurat Koklu氏で、公式ページはCC BY 4.0を表示しています。
 
-出典が引用を求める論文は、Ozkan・Koklu・Saracoglu (2021, DOI `10.23751/pn.v23i2.9686`) と Singhほか (2022, DOI `10.3390/electronics11070981`) です。2021年論文ページは論文自体をCC BY-NC 4.0と表示し、画像取得方法を説明しています。論文ライセンスとデータセットページのCC BY 4.0表示を同一の許諾として扱わず、論文PDFや図表はartifactに含めません。画像権利者・第三者権利について公開前の追加確認が必要なため、正式配布は保留しています。
+関連する2022年論文は、Kirmizi種とSiirt種の試料を研究のために集め、著者らが専用のコンピュータビジョンシステムで画像を作成したと説明しています。Murat Koklu氏は論文の著者・データ管理者にも含まれています。この記載と投稿者の明示的なCC BY 4.0選択に基づき、帰属と出典が必要な2論文の引用を条件として再配布を承認しました。論文PDFや図表はデータに含めていません。権利移転の独立した書面は確認していない点を監査記録に残しています。
 
-## 全量技術監査
+表示する帰属：
+> Murat Koklu, “Pistachio Image Dataset,” Mendeley Data v1, DOI: 10.17632/h7pf57cgg9.1, CC BY 4.0.
 
-- 固定v1のZIPは27,859,492 bytes、SHA-256 `140760707018b7f53d91a86a1d7be96d92b1a0d26a75690ab9280ed1170df895`。照合後に安全展開しました。
-- ZIPは2,164エントリ、2,158ファイルです。画像2,148枚のほか、特徴量表と引用文書など非画像ファイル10件を含みます。artifactへは画像のみを収録しました。
-- 2,148枚すべてJPEG、600×600、RGBとしてデコード成功。完全一致重複0件。
-- クラスはKirmizi_Pistachio 1,232枚、Siirt_Pistachio 916枚です。代表4枚を目視し、黒い背景上にピスタチオ試料を1つずつ写した画像でした。全画像の人手確認ではありません。
+出典が求める引用：
+- Ozkan, Koklu & Saracoglu (2021), DOI [10.23751/pn.v23i2.9686](https://doi.org/10.23751/pn.v23i2.9686)
+- Singh et al. (2022), DOI [10.3390/electronics11070981](https://doi.org/10.3390/electronics11070981)
 
-## 共通artifact v0.1.0
+## 整形・検査結果
 
-固定画像の画素は変更せず、`images/<split>/<class>/`に配置し、`labels.csv`・`metadata.jsonl`・クラス別seed 42のtrain/val/test分割を追加しました。train 1,503、val 322、test 323。artifact manifestの検証に成功しています。
+- 固定v1元ZIP：27,859,492 bytes、SHA-256 `140760707018b7f53d91a86a1d7be96d92b1a0d26a75690ab9280ed1170df895`。
+- 画像2,148枚すべてJPEG・600×600 RGBとしてデコード成功。完全一致重複はありません。
+- Kirmizi_Pistachio 1,232枚、Siirt_Pistachio 916枚。クラス別seed 42でtrain 1,503 / val 322 / test 323に分割しました。
+- 画素は変更していません。画像ではない10ファイル（特徴量表、引用文書等）は除外しました。
+- 代表4枚を目視しました。全画像を人手確認したわけではありません。
 
-ローカルZIPは25,875,554 bytes、SHA-256 `32bc15c4788052207e3dd52d4450cc15fec9efade3df169d59bb94556d715f24`。2,153ファイル（2,148画像とラベル・説明類）です。Gitには画像を収録せず、Releaseも作成していません。
+## 取得
 
-## 高校生向け課題
+固定Release：[`pistachio_image_dataset-v0.1.0`](https://github.com/708san/CV_data_artifacts/releases/tag/pistachio_image_dataset-v0.1.0)
 
-「似た見た目のピスタチオ2種類を画像から分類できるか」を試し、クラス不均衡、画像数、背景が固定された条件の影響を比較できます。正解率だけでなく、混同行列とクラス別再現率を見ます。品質・鮮度・安全性・販売価格を判断する用途ではありません。
+ZIPは25,875,554 bytes、SHA-256 `32bc15c4788052207e3dd52d4450cc15fec9efade3df169d59bb94556d715f24`です。GitHub mainのライブラリでは次のように取得します。
 
-## 記録
+```python
+from cvlesson import datasets
 
-source manifest、artifact manifest、監査report、帰属・引用記録は`CV_data_artifacts`に保存しています。第三者権利の追加確認と最終配布承認が済むまでAPI・Releaseへ追加しません。
+data = datasets.get("pistachio_image_dataset")
+frame = data.to_df()
+print(data.splits)
+```
 
-## 2026-11-09 権利・成果物再確認
+## 高校生向け課題と注意
 
-Mendeley Data v1はCC BY 4.0を表示し、投稿者Murat Kokluと高解像度カメラで撮影した試料画像であることを示しています。帰属表示に加え、元ページが求める2論文を引用する条件で再配布を確認済みにしました。論文PDFや図表はartifactに含めず、論文自体に表示されたCC BY-NC条件を画像のライセンスと混同しません。
-
-ZIPを再照合し、2,153ファイルすべてのmanifestサイズ・SHA-256一致、CRC成功を確認しました。ZIP SHA-256は `32bc15c4788052207e3dd52d4450cc15fec9efade3df169d59bb94556d715f24`。Release assetがないため、ライブラリからはまだ取得できません。
+「撮影条件がそろった画像から、似たピスタチオ2品種を分類できるか」を調べます。黒背景・固定照明で撮影したデータなので、普通の食品写真や農場での識別性能は示しません。品質・鮮度・食品安全・販売価値の判断に使わないでください。
