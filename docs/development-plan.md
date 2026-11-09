@@ -1,6 +1,6 @@
 # CV_data 開発計画
 
-更新日：2026-11-08
+更新日：2026-11-09
 
 ## 圧縮スコープと完了見込み
 
@@ -33,14 +33,14 @@
 
 技術的に取得できることだけでは、教材で使えるとは判定しない。
 
-## 2. 現在地（2026-11-08）
+## 2. 現在地（2026-11-09）
 
-- ライブラリ正式一覧は`tomato_leaves`（生徒向け）と`festival_icons`（教師向けLoRA素材）の2件。Fashion-MNISTは教師向けプレビュー1件。承認済みLoRA素材は0件、権利確認中のプレビューが1件。
+- ライブラリ正式一覧は`tomato_leaves`、`fruitseg30`、`smallfishbd`の生徒向け3件と、`festival_icons`の教師向けLoRA素材1件。Fashion-MNISTは教師向けプレビュー1件。承認済みLoRA素材は0件、権利確認中のプレビューが1件。
 - `tomato_leaves`：7,209枚、破損0、完全一致重複0、ラベル不一致0。標準化後はtrain 5,191 / val 577 / test 1,441。
 - `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。学習済みLoRA重み3〜4件を選ぶための候補調査・取得APIは未着手。
-- カタログ候補50件の台帳状態は`candidate` 32件、`hold` 15件、`prepared_release_pending` 2件、`prepared_artifact_pending_release_asset` 1件。`hold`には技術検査済みの候補と、権利・固定版・実体上の問題で未完了の候補が混在する。台帳の証拠段階を承認と読み替えない。
-- `CV_data_artifacts`のPR #7はマージ済みで、mainにsource manifest 15件とartifact manifest 6件（既存トマトを含む）がある。Release assetは未作成。生成済みZIPが一時作業領域にあるものもあり、GitHub上の永続配布先にはまだ配置していない。
-- 候補50件は正式な`list_available()`に混ぜない。リリースと権利確認が終わるまで、候補用の取得設定は非公開状態を保つ。
+- 候補台帳50件の状態は`candidate` 32件、`hold` 14件、`prepared_release_pending` 1件、`prepared_artifact_pending_release_asset` 1件、`student_enabled` 2件。`hold`には技術検査済みの候補と、権利・固定版・実体上の問題で未完了の候補が混在します。技術監査と権利承認を混同しません。
+- `CV_data_artifacts` mainにはsource manifest 15件、artifact manifest 7件があり、FruitSeg30 v0.1.0とSmallFishBD v0.1.1の固定Release assetを公開済みです。
+- 候補台帳の全項目を一括で`list_available()`へ加えません。選定・権利確認・固定Releaseが済んだデータだけを個別に公開します。
 - 既存Notebook、`CV_sample_data`、そのRelease、タグ、配布ファイルは変更しない。
 - データ本体は`CV_data`、`CV_data_artifacts`のGit履歴、PyPIへ収録しない。GitHub Release assetまたは、権利上ミラーしない大容量原本の固定された公式配布元を利用する。実際のRelease公開は許諾と明示承認後に限る。
 
