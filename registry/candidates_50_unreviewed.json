@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "source_inventory": {
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
-    "as_of": "2026-11-04",
+    "as_of": "2026-11-09",
     "original_record_count": 50,
     "note": "前回調査の申告情報を取り込んだ未承認レジストリ。画像現物は未検査。生徒への公開不可。"
   },
@@ -660,8 +660,8 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/8jvxtvz52x/2",
-        "redistribution_reviewed": false,
-        "rights_status": "publisher_CC_BY_4.0_confirmed_image_rights_and_release_pending"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
       },
       "claims": {
         "quantity": "元画像1,700枚（増強画像20,400枚は除外）",
@@ -674,10 +674,10 @@
         "technical_status": "full_archive_audit_passed",
         "files_examined": 1700,
         "inspection_status": "full_automated_image_audit_passed_sample_visual_review",
-        "publication_status": "prepared_release_pending",
-        "last_desk_review": "2026-11-07",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-09",
         "evidence_grade": "official_metadata_and_full_archive_sha_verified",
-        "notes": "固定v2 SmallFishBD.zip（29,802,305 bytes、SHA-256 2d97368d351f4c5940b7b54f19eec2b771a7d76421dbe5ad66977cf3003eafbb）を照合後に安全展開。1,700枚すべて320×320 JPEGとしてデコード成功。完全一致重複3枚を除外し1,697枚を共通artifact smallfishbd-v0.1.0へ収録。増強画像ZIPは取得・収録せず、分割混在を避ける。Release assetと全画像の人手権利審査待ち。"
+        "notes": "固定v2 SmallFishBD.zip（29,802,305 bytes、SHA-256 2d97368d351f4c5940b7b54f19eec2b771a7d76421dbe5ad66977cf3003eafbb）を照合後に安全展開し、1,700枚全量を監査。完全一致重複3枚を除き1,697枚を共通artifact v0.1.1へ収録。CC BY 4.0の出典・contributorsと全画像視覚レビューを確認し、帰属・変更表示条件付きで再配布可と判断。Release smallfishbd-v0.1.1は29,799,609 bytes、SHA-256 367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547。増強画像は含めない。"
       },
       "preparation": {
         "planned_level": "1",
