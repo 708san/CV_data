@@ -8,7 +8,7 @@
 |---|---|---|---|---|
 | Food Waste Bangladesh | [Mendeley v1](https://data.mendeley.com/datasets/w68f9w6jmm/1)、CC BY 4.0、645枚。元ZIP 31,426,593 bytes | 全画像のデコード・重複・メタデータ検査と共通artifact v0.1.0は既存記録にあり。全画像の顔・第三者権利を人手で確認した記録ではない | 撮影場面ラベルを「食品廃棄量」と誤読させない説明を維持し、人物・撮影者の写り込みとブランド表示のレビュー範囲を明記して権利判断を完了する | 高優先。再処理より残件整理から |
 | Bangladeshi E-Waste Image | [Mendeley v1](https://data.mendeley.com/datasets/77383kmdnw/1)、CC BY 4.0、2,157枚。公式ページのZIPは69.6 MB | 固定ZIP SHA-256、全画像のデコードとコンタクトシート確認、注釈監査、共通artifact v0.1.0の記録あり。polygon注釈は外接矩形へ変換済み | 全体は電子廃棄物だけでなく一般廃棄物も含むため名称・課題説明を調整。画像のブランド名・製品文字の第三者権利を含むため、帰属記録だけで公開承認とせず処理方針を確定する | 技術準備度は高いが、第三者権利 sign-off 待ち |
-| Pistachio Image Dataset | [Mendeley v1](https://data.mendeley.com/datasets/h7pf57cgg9/1)、CC BY 4.0、2,148枚 | 600×600 JPEG全件デコード、重複0、共通artifact v0.1.0のSHA-256・manifest・ZIP CRC一致の記録あり | 候補台帳と全量監査は「画像権利者確認待ち」、後日の権利再確認reportはCC BY帰属と指定論文引用付きで承認としており不一致。判断根拠・更新責任者・状態を両repoで揃える。関連論文自体のCC BY-NC 4.0条件とdatasetのCC BY 4.0を混同しない | 記録の矛盾が解消するまで公開保留 |
+| Pistachio Image Dataset | [Mendeley v1](https://data.mendeley.com/datasets/h7pf57cgg9/1)、CC BY 4.0、2,148枚 | 画像作成者を述べる関連論文を照合。artifact全2,153ファイルのmanifest・SHA・サイズとCRC検証済み。Release v0.1.0を公開し取得APIへ登録 | 出典・変更・指定論文2件を表示。代表4枚の目視確認で全画像レビューではない点を明記 | 完了：生徒向け固定取得で利用可能 |
 
 ## 次の調査候補
 
