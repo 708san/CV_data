@@ -238,3 +238,5 @@
 - FruitSeg30 v0.1.0をGitHub Release `fruitseg30-v0.1.0` に公開。assetは68,242,354 bytes、GitHub APIのSHA-256はmanifest一致（`129384a6e9599b0b9eb756ec93abda25a90bdd70a514fd04f905a2ff2e8c5ba5`）。
 - 画像・マスクのバイナリはGit履歴に含めず、Release assetだけで配布。固定タグURLのHTTP応答を確認。
 - ライブラリ一覧をstudent-enabledへ切り替える設定と説明の更新をPRに準備中。
+
+- FruitSeg30取得APIを含むPR #25をmainへマージ。固定Release assetとmainブランチのAPI設定が揃いました。PyPI配布版への反映はパッケージ更新時です。
