@@ -434,10 +434,10 @@
         "decode_errors": 0,
         "duplicate_sha_groups": 0,
         "inspection_status": "full_technical_audit_sample_visual_review",
-        "publication_status": "hold",
+        "publication_status": "student_enabled",
         "last_desk_review": "2026-11-09",
         "evidence_grade": "independent_primary_check",
-        "notes": "公式Mendeley v1のCC BY 4.0表示と固定ZIPを確認。全2,148画像を600x600 RGB JPEGとしてデコード、完全一致重複0。論文は高解像度カメラで試料を撮影したと説明。4画像を目視。画像以外の特徴量表等10ファイルはartifactから除外。2021論文自身のCC BY-NC 4.0表示とMendeleyデータのCC BY 4.0表示を混同せず、dataset image rights holder/third-party rightsを公開前に追加確認するためhold。共通artifact v0.1.0準備済みだがRelease/API未公開.",
+        "notes": "公式Mendeley v1のCC BY 4.0表示と固定ZIPを確認。全2,148画像を600x600 RGB JPEGとしてデコード、完全一致重複0。論文は高解像度カメラで試料を撮影したと説明。4画像を目視。画像以外の特徴量表等10ファイルはartifactから除外。2021論文自身のCC BY-NC 4.0表示とMendeleyデータのCC BY 4.0表示を混同せず、dataset image rights holder/third-party rightsを公開前に追加確認するためhold。共通artifact v0.1.0準備済みだがRelease/API未公開. Mendeley CC BY 4.0と研究者作成画像の論文記載を照合し、指定論文引用付きで再配布承認。固定Releaseと取得APIを2026-11-09に公開。",
         "sample_files_examined": 4,
         "archive_size": 27859492,
         "image_dimensions": "600x600 RGB JPEG"
