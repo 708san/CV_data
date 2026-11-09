@@ -232,3 +232,9 @@
 - 各公式配布ページのCC BY 4.0表示と提供者の出典説明を確認し、帰属・改変通知（ピスタチオは指定論文引用）を条件に再配布審査を記録しました。
 - FruitSeg30は29クラス1,914画像・マスク組、ピスタチオは2,148画像、Recyclable Wasteは977画像。教材課題と注意事項をデータ別ページへ記載しました。
 - GitHub Release assetが未作成のため、3件ともライブラリからはまだ取得できません。食品廃棄・E-Wasteは人物／印刷肖像等の権利・プライバシー確認を保留しています。
+
+## 2026-11-09：FruitSeg30 固定Release公開
+
+- FruitSeg30 v0.1.0をGitHub Release `fruitseg30-v0.1.0` に公開。assetは68,242,354 bytes、GitHub APIのSHA-256はmanifest一致（`129384a6e9599b0b9eb756ec93abda25a90bdd70a514fd04f905a2ff2e8c5ba5`）。
+- 画像・マスクのバイナリはGit履歴に含めず、Release assetだけで配布。固定タグURLのHTTP応答を確認。
+- ライブラリ一覧をstudent-enabledへ切り替える設定と説明の更新をPRに準備中。
