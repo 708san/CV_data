@@ -210,17 +210,17 @@ class ReleaseTests(unittest.TestCase):
             task="classification", audience="teacher", include_preview=True,
         )
         self.assertEqual([item["id"] for item in student], ["tomato_leaves", "smallfishbd"])
-        self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "fashion_mnist"})
+        self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "smallfishbd", "fashion_mnist"})
         fashion = next(item for item in teacher if item["id"] == "fashion_mnist")
         self.assertEqual(fashion["publication_status"], "teacher_preview_only")
 
     def test_task_catalog_only_shows_usable_choices(self):
         tasks = datasets.list_tasks()
-        self.assertEqual([item["task"] for item in tasks], ["classification"])
+        self.assertEqual([item["task"] for item in tasks], ["classification", "segmentation"])
         self.assertEqual(tasks[0]["datasets"], ["tomato_leaves", "smallfishbd"])
         teacher_tasks = datasets.list_tasks(audience="teacher", include_preview=True)
         self.assertEqual(
-            [item["task"] for item in teacher_tasks], ["classification", "lora"]
+            [item["task"] for item in teacher_tasks], ["classification", "segmentation", "lora"]
         )
 
     def test_festival_download_and_offline_cache(self):
@@ -400,7 +400,7 @@ class ReleaseTests(unittest.TestCase):
     def test_info_without_id_returns_catalog(self):
         catalog = datasets.info()
         self.assertIsInstance(catalog, list)
-        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons"})
+        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "smallfishbd"})
 
     def test_preview_dataset_is_not_in_formal_catalog(self):
         self.assertNotIn("fashion_mnist", {item["id"] for item in datasets.list_available()})
