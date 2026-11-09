@@ -210,7 +210,7 @@ class ReleaseTests(unittest.TestCase):
             task="classification", audience="teacher", include_preview=True,
         )
         self.assertEqual([item["id"] for item in student], ["tomato_leaves", "smallfishbd", "pistachio_image_dataset"])
-        self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "smallfishbd", "fashion_mnist"})
+        self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "smallfishbd", "pistachio_image_dataset", "fashion_mnist"})
         fashion = next(item for item in teacher if item["id"] == "fashion_mnist")
         self.assertEqual(fashion["publication_status"], "teacher_preview_only")
 
