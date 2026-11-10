@@ -2,9 +2,9 @@
   "schema_version": "1.0.0",
   "source_inventory": {
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
-    "as_of": "2026-11-09",
+    "as_of": "2026-11-10",
     "original_record_count": 50,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Indoor Plant Varieties v1 was fully decoded, visually reviewed in class contact sheets, and prepared as a CC BY 4.0 common artifact on 2026-11-10; the release asset remains pending."
   },
   "records": [
     {
@@ -2446,34 +2446,51 @@
       "rights": {
         "license_claim": "CC BY 4.0 (Mendeley v1 page)",
         "evidence_url": "https://data.mendeley.com/datasets/ct79299k27/1",
-        "redistribution_reviewed": false,
-        "rights_status": "under_review"
+        "redistribution_reviewed": true,
+        "rights_status": "reviewed_CC_BY_4.0_attribution_and_changes_required",
+        "notes": "Mendeley公式v1ページのCC BY 4.0表示を確認。帰属表示と変更の明記を派生artifactへ含めた。全画像をコンタクトシートで確認したが、個々の第三者物品の権利や植物同定を独立検証したものではない。"
       },
       "claims": {
-        "quantity": "元画像1,172枚。拡張版は7,000枚と説明",
+        "quantity": "元1,172枚、完全一致重複10枚を除いた配布1,162枚",
         "labels": "観葉植物7クラス",
-        "formats": "JPEG、元画像は3000x3000と説明",
-        "structure": "元画像と拡張画像の関係・ファイル構成は未検査",
-        "notes": "家庭の観葉植物を題材にできる。最初は元画像だけを候補とし、拡張版を別分割へ混ぜない。植物名の予測を有毒性・食用・飼育安全判断に使わない。"
+        "formats": "JPEG、元画像3000×3000、配布版512×512",
+        "structure": "Aglaonema 187 / Cryptanthus 150 / Devil’s Ivy 172 / Heartleaf Philodendron 158 / N-Joy Pothos 162 / Rhaphidophora 166 / ZZ Plant 167",
+        "notes": "植物分類そのものの実習には使えるが、地域・学校の具体的な困りごとを解く用途はまだ裏付けられていない。学校の植物管理へ結び付く実データや追加の課題設計ができるまで採用しない。毒性・病気・健康・育て方の判断にも使わない。"
       },
       "audit": {
-        "technical_status": "metadata_checked",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-09",
-        "evidence_grade": "independent_primary_check",
-        "notes": "公式Mendeley v1ページのCC BY 4.0表示、著者の撮影・収集説明、7クラスと元画像・拡張版の件数を確認。固定ファイル一覧、サイズ、SHA-256、画像の内容、拡張画像の対応関係、第三者権利は未確認。"
+        "technical_status": "full_source_decode_visual_contact_sheet_review_and_common_artifact_validation_passed",
+        "files_examined": 1172,
+        "inspection_status": "all_images_in_contact_sheets_reviewed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "fixed_official_archive_full_decode_contact_sheet_review",
+        "notes": "固定Mendeley v1 `Orginal Data.zip`（765,167,460 bytes、file ID be73f0a3-d478-4df1-b9d5-513e5879a8ef）をSHA-256照合後、安全展開・CRC確認。1,172枚を全件デコード。完全一致重複10組（いずれもN-Joy Pothos）を確認し10枚除外。7クラスの全1,172枚を14枚のコンタクトシートで目視し、明瞭なクラス違い・人物・個人情報・目立つ第三者表示は見当たらず。元画像1,159枚にGPS EXIFあり。派生版はEXIFおよびPhotoshop/IPTCメタデータを削除、最大512pxへ再エンコード。artifact 1,162枚。全量の個別フル解像度権利審査ではない。固定形式・安全展開・artifact manifest検証に合格。Release asset未アップロードのためAPI未公開。 教材価値のゲートを追加評価し、画像分類の実習だけでは身近な課題解決への結び付きが弱いと判断。学校の植物管理課題で実際に必要となる種類・管理情報との対応が示せるまで公開保留。",
+        "archive_sha256": "c6e3839666e344ca4bb72fa9b09f36605fe8f972c088f0bba72c5dbe06bde2df",
+        "decode_errors": 0,
+        "duplicate_sha_groups": 10,
+        "archive_size": 765167460,
+        "unique_content_count": 1162,
+        "gps_metadata_images": 1159,
+        "artifact_size": 124438327,
+        "artifact_sha256": "4f3a83c5eab2e82da95bab64b6de703e31912d03142131285f9fdc3eef73d6e9"
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": [],
-        "adapter": "classification_v1",
+        "implemented_levels": [
+          "source_manifest",
+          "full_source_decode",
+          "contact_sheet_visual_review",
+          "privacy_metadata_removal",
+          "classification_v1.0.0_artifact",
+          "library_format_validation"
+        ],
+        "adapter": "classification_v1.0.0",
         "target_colab": true
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "notes": "高校生が実際に解決する課題と直接結び付く必要がある。現時点では植物識別の練習を越える具体的な便益が確認できないためhold。"
       }
     }
   ]
