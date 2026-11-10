@@ -292,8 +292,8 @@
           "test": 97
         },
         "artifact_validation": "passed",
-        "artifact_zip_bytes": 55649466,
-        "artifact_zip_sha256": "fd34d6361b1b904cbf3980d829891e8501dd05a55f01233a46a410b935d1def8",
+        "artifact_zip_bytes": 55650689,
+        "artifact_zip_sha256": "84d8b42f88eb5c6582657b33014689d7d8342a261302486c517558609ec9033b",
         "visual_review_status": "all_contact_sheets_reviewed",
         "exif_gps_metadata": "none_detected; JPEG JFIF marker only",
         "metadata_duplicate_sha_groups": 1,
@@ -301,7 +301,8 @@
         "publication_status": "hold",
         "last_desk_review": "2026-11-10",
         "evidence_grade": "full_image_label_audit",
-        "notes": "Mendeley v1 API記載SHA-256を画像966件・YOLOラベル966件すべて照合。画像は全件640x640 JPEGとしてデコードし、全8,253注釈を提供者Metadata.csvとクラス・座標まで照合。元train/valid/testはファイル名で識別できた199撮影系列のうち81系列が複数splitにまたがる。共通artifactでは系列を一つのsplitにまとめ、元split比と件数676/193/97を維持。ZIPは共通detection validatorに合格。接触シートで全画像をレビューし、商品パッケージ等のブランド表記を確認。個別の第三者商標・画像権利の結論は未確定。ダッカの文具店・図書館画像は、学校の共有作図用具を授業前後に見つけ返却・補充項目を整理する試作に結び付けられるが、日本の学校での実用性は未検証。CC BY 4.0と画像の再配布条件を分けて審査するため、正式公開は保留。"
+        "notes": "Mendeley v1 API記載SHA-256を画像966件・YOLOラベル966件すべて照合。画像は全件640x640 JPEGとしてデコードし、全8,253注釈を提供者Metadata.csvとクラス・座標まで照合。元train/valid/testはファイル名で識別できた199撮影系列のうち81系列が複数splitにまたがる。共通artifactでは系列を一つのsplitにまとめ、元split比と件数676/193/97を維持。ZIPは共通detection validatorに合格。接触シートで全画像をレビューし、商品パッケージ等のブランド表記を確認。個別の第三者商標・画像権利の結論は未確定。ダッカの文具店・図書館画像は、学校の共有作図用具を授業前後に見つけ返却・補充項目を整理する試作に結び付けられるが、日本の学校での実用性は未検証。CC BY 4.0と画像の再配布条件を分けて審査するため、正式公開は保留。 LICENSE.mdに出典・帰属・変更内容・第三者表示の留保を追加。",
+        "artifact_entry_count": 1938
       },
       "preparation": {
         "planned_level": "1",
