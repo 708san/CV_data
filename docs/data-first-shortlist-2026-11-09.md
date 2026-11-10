@@ -23,7 +23,7 @@
 
 ## 追加確認候補
 
-| Indoor Plant Varieties | [Mendeley v1](https://data.mendeley.com/datasets/ct79299k27/1)、CC BY 4.0表示。1,172枚、7クラス。 | 固定元SHAを照合し全量をデコード。全画像を14枚のクラス別コンタクトシートで確認、完全一致重複10枚を除外。1,159枚のGPS含有メタデータを削除し、512pxへ整形。共通artifact 1,162枚・manifest検証済み。 | 課題と整形完了。Release assetアップロード後にAPI登録 |
+| Indoor Plant Varieties | [Mendeley v1](https://data.mendeley.com/datasets/ct79299k27/1)、CC BY 4.0表示。1,172枚、7クラス。 | 固定元SHA、全画像デコード・コンタクトシート確認、重複除外、GPS等のメタデータ削除、512px共通artifactを作成済み。 | 身近な課題を解く用途が具体化できないため保留。学校の実課題との適合が確認できた場合のみ再評価 |
 
 ## 進行ルール
 
