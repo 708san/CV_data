@@ -4,7 +4,7 @@
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
     "as_of": "2026-11-10",
     "original_record_count": 50,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 2026-11-10に公式ページの固定Version 2を確認したCLICK Trash Dataset候補を追加。画像実体・ファイルSHA・ライセンス表示の内部整合性は未検査。 2026-11-10に給食の食前・食後画像と実測食べ残し重量を含むLeFood-Set候補を追加。 2026-11-10に日本を含む固定Version 2のRDD2020道路損傷データを確認し、非商用ライセンスを記録。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 2026-11-10に公式ページの固定Version 2を確認したCLICK Trash Dataset候補を追加。画像実体・ファイルSHA・ライセンス表示の内部整合性は未検査。 2026-11-10に給食の食前・食後画像と実測食べ残し重量を含むLeFood-Set候補を追加。 2026-11-10に日本を含む固定Version 2のRDD2020道路損傷データを確認し、非商用ライセンスを記録。 2026-11-10に歩行者アクセシビリティ関連のFPVCrosswalk2025とFootpathVisionを一次確認し候補に追加。"
   },
   "records": [
     {
@@ -2619,6 +2619,100 @@
         "presentation_mode": "A",
         "publish_student_example": false,
         "student_task_fit": "strong_candidate_japanese_road_observation"
+      }
+    },
+    {
+      "id": "DS-157",
+      "api_id": "fpvcrosswalk2025",
+      "name": "FPVCrosswalk2025",
+      "task": "segmentation",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/mcr2jwk5bp/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "mcr2jwk5bp",
+        "version": "1",
+        "content_origin_claim": "3000枚の合成FPV画像と歩行者動画から切り出した300枚の実写を含むと説明"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0 (Mendeley Version 1 page)",
+        "evidence_url": "https://data.mendeley.com/datasets/mcr2jwk5bp/1",
+        "redistribution_reviewed": false,
+        "rights_status": "under_review"
+      },
+      "claims": {
+        "quantity": "合成3000枚＋実写300枚、各画像にマスク1枚と説明",
+        "labels": "横断歩道の二値領域マスク",
+        "formats": "画像とbinary segmentation mask。実ファイル形式は未確認",
+        "structure": "合成/実写、天候・照明条件別に整理と説明",
+        "notes": "見えにくい横断歩道や歩行者アクセシビリティを題材に、昼夜・天候による視認性の違いを調べる候補。合成画像と実写300枚を分けて評価する。画像モデルの結果を歩行者の安全な移動判断やナビゲーションに使わず、街の改善案を考える補助資料として扱う。日本の交差点状況を表すとは限らない。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "independent_primary_check",
+        "notes": "Mendeley固定Version 1ページで3000 synthetic＋300 real FPV画像、binary mask、天候・照明条件、CC BY 4.0表示を確認。ファイル一覧・アーカイブサイズ・SHA-256、mask整合、合成の生成条件、元動画の権利・プライバシー、実画像の撮影地は未確認。"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "binary_segmentation_pending_audit",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false,
+        "student_task_fit": "conditional_candidate_pedestrian_accessibility"
+      }
+    },
+    {
+      "id": "DS-158",
+      "api_id": "footpathvision",
+      "name": "FootpathVision",
+      "task": "classification",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/szkhrh8dc8/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "szkhrh8dc8",
+        "version": "1",
+        "content_origin_claim": "ダッカ市内で撮影した写真と、Creative Commonsライセンス付きYouTube映像のフレーム"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0 (Mendeley Version 1 page)",
+        "evidence_url": "https://data.mendeley.com/datasets/szkhrh8dc8/1",
+        "redistribution_reviewed": false,
+        "rights_status": "under_review"
+      },
+      "claims": {
+        "quantity": "1,238枚。公式ページに2.41GBと1.9GBのZIPファイルを表示",
+        "labels": "clear footpath／encroached footpathの2分類",
+        "formats": "ZIP内の分類用フォルダと説明。内部構造未確認",
+        "structure": "撮影者撮影とYouTube由来フレームを別フォルダに格納と説明",
+        "notes": "歩道の通行しにくさや車両・屋台によるふさがりを考える歩行者アクセシビリティ課題の候補。画像はダッカ市であり日本の歩道規則や地域実態を表さない。YouTube由来フレームの元動画ごとのライセンス・帰属条件を確認するまで再配布しない。合計約4.31GBのため、取得容量と無料Colabで扱う範囲を先に検討する。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "independent_primary_check",
+        "notes": "Mendeley固定Version 1ページで1,238画像、2分類、ダッカでの撮影、YouTubeフレームの混在、Encroached.zip 2.41GBとUnencroached.zip 1.9GB、CC BY 4.0表示を確認。個別ファイルの固定SHA、サイズの整合、元YouTube動画の識別・個別ライセンス、人物・顔・ナンバープレート・プライバシー、ラベル品質は未確認。"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "classification_v1",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false,
+        "student_task_fit": "conditional_candidate_pedestrian_accessibility"
       }
     }
   ]
