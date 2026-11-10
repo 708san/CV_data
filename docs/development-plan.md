@@ -41,13 +41,13 @@
 
 技術的に取得できることだけでは、教材で使えるとは判定しない。
 
-## 2. 現在地（2026-11-09）
+## 2. 現在地（2026-11-10）
 
 - ライブラリ正式一覧は`tomato_leaves`、`fruitseg30`、`smallfishbd`、`pistachio_image_dataset`の生徒向け4件と、`festival_icons`の教師向けLoRA素材1件。Fashion-MNISTは教師向けプレビュー1件。承認済みLoRA素材は0件、権利確認中のプレビューが1件。
 - `tomato_leaves`：7,209枚、破損0、完全一致重複0、ラベル不一致0。標準化後はtrain 5,191 / val 577 / test 1,441。
 - `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。学習済みLoRA重み3〜4件を選ぶための候補調査・取得APIは未着手。
-- 候補台帳は当初50件にConMetal-6とIndoor Plant Varietiesを加えた52件。状態は`candidate` 34件、`hold` 13件、`prepared_artifact_pending_release_asset` 1件、`student_enabled` 4件。`hold`には技術検査済みの候補と、権利・固定版・実体上の問題で未完了の候補が混在します。技術監査と権利承認を混同しません。
-- `CV_data_artifacts` mainにはsource manifest 15件、artifact manifest 7件があり、FruitSeg30 v0.1.0とSmallFishBD v0.1.1の固定Release assetを公開済みです。
+- 候補台帳は当初50件にConMetal-6とIndoor Plant Varietiesを加えた52件。状態は`candidate` 33件、`hold` 13件、`prepared_artifact_pending_release_asset` 2件、`student_enabled` 4件。`hold`には技術検査済みの候補と、権利・固定版・実体上の問題で未完了の候補が混在します。技術監査と権利承認を混同しません。
+- `CV_data_artifacts` mainにはsource manifest 15件、artifact manifest 7件があります。FruitSeg30、SmallFishBD、Food Waste BangladeshのRelease assetを公開済み。Indoor Plant Varietiesは準備PR #21でmanifestと監査記録を提出し、Release asset未公開です。
 - 候補台帳の全項目を一括で`list_available()`へ加えません。選定・権利確認・固定Releaseが済んだデータだけを個別に公開します。
 - 既存Notebook、`CV_sample_data`、そのRelease、タグ、配布ファイルは変更しない。
 - データ本体は`CV_data`、`CV_data_artifacts`のGit履歴、PyPIへ収録しない。GitHub Release assetまたは、権利上ミラーしない大容量原本の固定された公式配布元を利用する。実際のRelease公開は許諾と明示承認後に限る。
