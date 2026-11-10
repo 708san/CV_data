@@ -5,7 +5,7 @@
 - 公式データ：[Mendeley Data v1](https://data.mendeley.com/datasets/cchsk79jkt/1)、DOI `10.17632/cchsk79jkt.1`
 - 論文：[Sari, Nakazawa & Wani (2025), PLOS ONE](https://doi.org/10.1371/journal.pone.0320426)
 - Mendeley v1と論文はCC BY 4.0を表示。必要な帰属と変更表示をartifactに含める。
-- 教材用artifact v0.1.0を準備済み。Release asset公開前のため、まだ`cvlesson`の利用可能データではない。
+- 教材用artifact v0.1.0は[CV_data_artifacts Release](https://github.com/708san/CV_data_artifacts/releases/tag/lefood-set-v0.1.0)で公開済み。回帰用APIは未実装のため、まだ`cvlesson`から取得できない。
 
 ## 内容
 

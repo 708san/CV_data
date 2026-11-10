@@ -1,4 +1,4 @@
-# RDD2020: Japan road damage subset（artifact準備済み・Release待ち）
+# RDD2020: Japan road damage subset（artifact公開済み・API未登録）
 
 - **固定版**：[Mendeley Data Version 2](https://data.mendeley.com/datasets/5ty2wb6gvg/2)（DOI: 10.17632/5ty2wb6gvg.2）
 - **公式challenge説明**：[GRDDC 2020 dataset and privacy](https://github.com/556-wangbiao/rddc)
@@ -6,7 +6,7 @@
 - **データライセンス**：CC BY-NC 3.0。非商用教育用途に限定。商用利用不可。
 - **元ZIP**：1,848,075,315 bytes、SHA-256 `678fb0cd72baa214accf54d44611fffbc348055b0d65fbc0e9744b02d5fa084a`
 - **整形artifact**：7,900画像・16,469 bbox、641,514,873 bytes、SHA-256 `f787feead7fd3b0d63f42c7cfb8e3db6f114e57c83b3b928d5f7c58bcb411955`
-- **状態**：共通検出形式とmanifestを準備・照合済み。GitHub Release asset未登録、公開API未登録。
+- **状態**：[CV_data_artifacts Release](https://github.com/708san/CV_data_artifacts/releases/tag/rdd2020-japan-v0.1.0)で公開済み。検出API未登録のため、まだ`cvlesson`から取得できません。
 
 ## 高校生が取り組める課題
 
@@ -39,4 +39,4 @@ Mendeley Version 2の表示に従い、**CC BY-NC 3.0**の帰属・非商用条�
 
 ## 配布状況
 
-Release assetとAPI登録はまだ行っていません。Release asset作成後にURL・SHAを固定し、検出APIで明示取得できる状態を確認してから生徒向け一覧へ加えます。
+固定タグ`rdd2020-japan-v0.1.0`のRelease assetとして公開済みです。アセットURLは[こちら](https://github.com/708san/CV_data_artifacts/releases/download/rdd2020-japan-v0.1.0/rdd2020-japan-v0.1.0.zip)。ライブラリの検出データ取得APIへの登録は未実装です。CC BY-NC 3.0に従い非商用の教育目的に限って利用し、出典・変更内容を維持してください。

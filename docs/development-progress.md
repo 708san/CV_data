@@ -295,6 +295,13 @@
 
 - Humans in the Loop Recycling Datasetは、公式ページで3200枚のlitter検出・材質/物体/ブランド情報とCC0 1.0を確認した。学校のごみ分別には合うが、ダウンロードにはフォーム入力が必要で、固定ファイルURL・SHA・画像実体も未確認。生徒がすぐ使えるセルフサービス教材にできないため、ライブラリ候補への追加を見送った。利用条件やファイルの直接配布方法が明確になった場合のみ再検討する。
 
+## 2026-11-10：LeFood-Set・RDD2020 JapanのRelease公開
+
+- LeFood-Set v0.1.0を[CV_data_artifacts Release](https://github.com/708san/CV_data_artifacts/releases/tag/lefood-set-v0.1.0)で公開。524組の食前・食後画像と実測重量を含むCC BY 4.0 artifact（53,035,809 bytes）。paired-image回帰APIは未実装のため、ライブラリからは取得できない。
+- RDD2020 Japan v0.1.0を[CV_data_artifacts Release](https://github.com/708san/CV_data_artifacts/releases/tag/rdd2020-japan-v0.1.0)で公開。道路損傷4クラス、7,900画像・16,469 bboxのCC BY-NC 3.0 artifact（641,514,873 bytes）。非商用教育利用に限定。検出APIは未登録。
+- 両Release assetのGitHub上のサイズ・SHA-256をローカル作成物と照合した。正式な生徒向けライブラリ利用可能数には加えず、API連携後に更新する。
+- 台帳58件：candidate 37、hold 14、prepared_artifact_pending_release_asset 1、artifact_released_api_pending 2、student_enabled 4。
+
 ## 2026-11-10：歩行者アクセシビリティ候補を追加
 
 - 横断歩道の視認性と歩道の通行しやすさは、高校生が通学・街歩きや家族・地域の移動を通して身近に考えられる課題として候補を追加した。

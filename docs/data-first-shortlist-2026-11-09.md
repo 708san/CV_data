@@ -58,7 +58,7 @@
 
 | 候補 | 公式情報で確認した内容 | 身近な課題との接続 | 未完了項目と判断 |
 |---|---|---|---|
-| LeFood-Set: Leftovers Food Dataset | [Mendeley v1](https://data.mendeley.com/datasets/cchsk79jkt/1)、CC BY 4.0。全1,049ファイルの個別SHA-256を確認。画像が揃う524組・34料理カテゴリ。 | 食べる前後の画像、実測重量、観察者評価を比較し、家庭・学校の食べ残しを調べる題材。 | 全画像のデコード・目視を完了。154件の画像欠落行を除外し、重量逆転10件はフラグ化。人物・顔・個人情報・GPS/EXIFなし。画素変更なしのartifact v0.1.0（53,035,809 bytes、SHA-256 `ca1846273d0636ea59f387a586c6f004cfc02d58a639ad5a3c7c844b66cb863a`）を準備。再配布条件を確認。回帰API未実装のため利用可能一覧への追加は待つ。料理・撮影条件はインドネシアの病院食研究に由来し、日本の学校給食へ一般化しない。**課題・権利・実体監査合格、Release assetとAPI連携待ち。** |
+| LeFood-Set: Leftovers Food Dataset | [Mendeley v1](https://data.mendeley.com/datasets/cchsk79jkt/1)、CC BY 4.0。全1,049ファイルの個別SHA-256を確認。画像が揃う524組・34料理カテゴリ。 | 食べる前後の画像、実測重量、観察者評価を比較し、家庭・学校の食べ残しを調べる題材。 | 全画像のデコード・目視を完了。154件の画像欠落行を除外し、重量逆転10件はフラグ化。人物・顔・個人情報・GPS/EXIFなし。画素変更なしのartifact v0.1.0（53,035,809 bytes、SHA-256 `ca1846273d0636ea59f387a586c6f004cfc02d58a639ad5a3c7c844b66cb863a`）を準備し、[固定Release](https://github.com/708san/CV_data_artifacts/releases/tag/lefood-set-v0.1.0)で公開。回帰API未実装のためライブラリからは未取得。料理・撮影条件はインドネシアの病院食研究に由来し、日本の学校給食へ一般化しない。**課題・権利・実体監査・Release合格、API連携待ち。** |
 
 
 
@@ -66,7 +66,7 @@
 
 | 候補 | 公式情報で確認した内容 | 身近な課題との接続 | 未完了項目と判断 |
 |---|---|---|---|
-| RDD2020: Japan subset | [Mendeley v2](https://data.mendeley.com/datasets/5ty2wb6gvg/2)、CC BY-NC 3.0。固定ZIPのサイズ・SHAを全件照合。 | 通学路のひび・穴を画像から探し、道路管理者へ相談する課題に適合。4公式損傷クラス、7,900画像・16,469 bbox。 | 元train 10,506画像を全件decode、XML寸法一致、重複/GPS/破損0。VOC→共通bbox変換、幅0 bboxと対象外2,606画像を除外。artifact 641,514,873 bytes、SHA-256 `f787feead7fd3b0d63f42c7cfb8e3db6f114e57c83b3b928d5f7c58bcb411955`。非商用教育のみ。**artifact準備済み・Release asset/API未登録。** |
+| RDD2020: Japan subset | [Mendeley v2](https://data.mendeley.com/datasets/5ty2wb6gvg/2)、CC BY-NC 3.0。固定ZIPのサイズ・SHAを全件照合。 | 通学路のひび・穴を画像から探し、道路管理者へ相談する課題に適合。4公式損傷クラス、7,900画像・16,469 bbox。 | 元train 10,506画像を全件decode、XML寸法一致、重複/GPS/破損0。VOC→共通bbox変換、幅0 bboxと対象外2,606画像を除外。artifact 641,514,873 bytes、SHA-256 `f787feead7fd3b0d63f42c7cfb8e3db6f114e57c83b3b928d5f7c58bcb411955`。[固定Release](https://github.com/708san/CV_data_artifacts/releases/tag/rdd2020-japan-v0.1.0)で公開。**artifact公開済み・検出API未登録。非商用教育のみ。** |
 
 
 
