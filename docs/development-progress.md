@@ -247,3 +247,14 @@
 - artifact準備PR #14をCV_data_artifacts mainへマージ後、固定タグReleaseを作成しました。
 - ZIPは29,799,609 bytes。GitHub APIのSHA-256 `367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547`がローカル成果物と一致し、固定URLはHTTP 200を返しました。
 - CC BY 4.0の帰属・変更表示、全画像視覚レビューを踏まえた再配布審査を記録。ライブラリの固定URL・ハッシュ・公開状態、データ説明、候補台帳を更新する内容をCV_data PR #27に提出しました。
+
+
+## 2026-11-10：GeoSetEnnea v1の全量監査・共通artifact準備
+
+- Mendeley公式ページのv1・CC BY 4.0表示、著者、撮影場所（ダッカの文具店・図書館）、9クラス・966画像・8,253注釈を確認した。高校生向けの用途を、共有作図用具の返却・補充を授業前後に点検する検出試作に絞った。
+- 公開APIの2,898ファイル目録を確認し、学習用966画像と966ラベルを取得。全1,932ファイルのAPI記載SHA-256が一致した。画像966件は640×640 JPEGとして全件デコードできた。
+- 全8,253注釈を提供者Metadata.csvのクラス・座標と照合し、不一致0。ファイル名から199撮影系列を識別し、元train/valid/testでは81系列がsplitをまたぐことを確認した。
+- 系列を分けず、train 676 / valid 193 / test 97の共通形式artifact v0.1.0を作成。既存detection validatorに合格。ZIP 55,649,466 bytes、SHA-256 `fd34d6361b1b904cbf3980d829891e8501dd05a55f01233a46a410b935d1def8`。画像内のブランド表示の権利審査が残るため、artifactは一時領域に置き、Release/APIには出していない。
+- 全画像の接触シートを確認し、JPEGにGPS/EXIF撮影情報は見つからなかった。教材課題に適合する具体的な用途を確認できた一方、日本の学校での実用性と第三者商標等の権利は未検証として明記。
+- 候補台帳のpublication_statusを再集計：candidate 34、hold 13、prepared_artifact_pending_release_asset 1、student_enabled 4（計52）。技術監査の完了は権利審査・公開承認を意味しない。
+- 詳細：[GeoSetEnnea](datasets/geoset_ennea.md)、[候補精査状況](catalog-review.md)。
