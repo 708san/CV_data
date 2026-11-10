@@ -2455,16 +2455,16 @@
         "labels": "観葉植物7クラス",
         "formats": "JPEG、元画像3000×3000、配布版512×512",
         "structure": "Aglaonema 187 / Cryptanthus 150 / Devil’s Ivy 172 / Heartleaf Philodendron 158 / N-Joy Pothos 162 / Rhaphidophora 166 / ZZ Plant 167",
-        "notes": "出典の拡張版7,000枚は含めない。GPS等のEXIF/IPTCメタデータを削除。クラス別・撮影時刻順にtrain/val/test分割。毒性・病気・健康・育て方の判断には使わない。"
+        "notes": "植物分類そのものの実習には使えるが、地域・学校の具体的な困りごとを解く用途はまだ裏付けられていない。学校の植物管理へ結び付く実データや追加の課題設計ができるまで採用しない。毒性・病気・健康・育て方の判断にも使わない。"
       },
       "audit": {
         "technical_status": "full_source_decode_visual_contact_sheet_review_and_common_artifact_validation_passed",
         "files_examined": 1172,
         "inspection_status": "all_images_in_contact_sheets_reviewed",
-        "publication_status": "prepared_artifact_pending_release_asset",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-10",
         "evidence_grade": "fixed_official_archive_full_decode_contact_sheet_review",
-        "notes": "固定Mendeley v1 `Orginal Data.zip`（765,167,460 bytes、file ID be73f0a3-d478-4df1-b9d5-513e5879a8ef）をSHA-256照合後、安全展開・CRC確認。1,172枚を全件デコード。完全一致重複10組（いずれもN-Joy Pothos）を確認し10枚除外。7クラスの全1,172枚を14枚のコンタクトシートで目視し、明瞭なクラス違い・人物・個人情報・目立つ第三者表示は見当たらず。元画像1,159枚にGPS EXIFあり。派生版はEXIFおよびPhotoshop/IPTCメタデータを削除、最大512pxへ再エンコード。artifact 1,162枚。全量の個別フル解像度権利審査ではない。固定形式・安全展開・artifact manifest検証に合格。Release asset未アップロードのためAPI未公開。",
+        "notes": "固定Mendeley v1 `Orginal Data.zip`（765,167,460 bytes、file ID be73f0a3-d478-4df1-b9d5-513e5879a8ef）をSHA-256照合後、安全展開・CRC確認。1,172枚を全件デコード。完全一致重複10組（いずれもN-Joy Pothos）を確認し10枚除外。7クラスの全1,172枚を14枚のコンタクトシートで目視し、明瞭なクラス違い・人物・個人情報・目立つ第三者表示は見当たらず。元画像1,159枚にGPS EXIFあり。派生版はEXIFおよびPhotoshop/IPTCメタデータを削除、最大512pxへ再エンコード。artifact 1,162枚。全量の個別フル解像度権利審査ではない。固定形式・安全展開・artifact manifest検証に合格。Release asset未アップロードのためAPI未公開。 教材価値のゲートを追加評価し、画像分類の実習だけでは身近な課題解決への結び付きが弱いと判断。学校の植物管理課題で実際に必要となる種類・管理情報との対応が示せるまで公開保留。",
         "archive_sha256": "c6e3839666e344ca4bb72fa9b09f36605fe8f972c088f0bba72c5dbe06bde2df",
         "decode_errors": 0,
         "duplicate_sha_groups": 10,
@@ -2490,7 +2490,7 @@
       "pedagogy": {
         "presentation_mode": "B",
         "publish_student_example": false,
-        "notes": "公開は固定Release assetと取得API検証後。連続撮影の近接画像によるsplit間の類似に注意し、家庭や異なる個体への汎化を保証しない。"
+        "notes": "高校生が実際に解決する課題と直接結び付く必要がある。現時点では植物識別の練習を越える具体的な便益が確認できないためhold。"
       }
     }
   ]
