@@ -4,7 +4,7 @@
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
     "as_of": "2026-11-10",
     "original_record_count": 50,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 2026-11-10に公式ページの固定Version 2を確認したCLICK Trash Dataset候補を追加。画像実体・ファイルSHA・ライセンス表示の内部整合性は未検査。 2026-11-10に給食の食前・食後画像と実測食べ残し重量を含むLeFood-Set候補を追加。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 2026-11-10に公式ページの固定Version 2を確認したCLICK Trash Dataset候補を追加。画像実体・ファイルSHA・ライセンス表示の内部整合性は未検査。 2026-11-10に給食の食前・食後画像と実測食べ残し重量を含むLeFood-Set候補を追加。 2026-11-10に日本を含む固定Version 2のRDD2020道路損傷データを確認し、非商用ライセンスを記録。"
   },
   "records": [
     {
@@ -2568,6 +2568,54 @@
         "presentation_mode": "A",
         "publish_student_example": false,
         "student_task_fit": "strong_candidate_food_waste_measurement"
+      }
+    },
+    {
+      "id": "DS-155",
+      "api_id": "rdd2020_japan",
+      "name": "RDD2020: Japan subset",
+      "task": "detection",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/5ty2wb6gvg/2",
+        "provider": "mendeley",
+        "provider_dataset_id": "5ty2wb6gvg",
+        "version": "2",
+        "reference_url": "https://rdd2020.sekilab.global/data/",
+        "content_origin_claim": "日本を含む各国の道路画像。運転車両に取り付けたスマートフォンで撮影"
+      },
+      "rights": {
+        "license_claim": "CC BY-NC 3.0 (Mendeley Version 2 page)",
+        "evidence_url": "https://data.mendeley.com/datasets/5ty2wb6gvg/2",
+        "redistribution_reviewed": false,
+        "rights_status": "under_review"
+      },
+      "claims": {
+        "quantity": "全体26,336枚。公式論文では日本のtrain画像10,506枚と説明",
+        "labels": "縦ひびD00、横ひびD10、亀甲ひびD20、ポットホールD40の4クラス",
+        "formats": "JPEG画像とPASCAL VOC形式XML注釈と説明",
+        "structure": "train、test1、test2。日本train subsetと画像のみのtest setを含むと説明",
+        "notes": "日本の道路画像が含まれ、通学路や地域道路の損傷を見つけて管理者へ相談する題材に使える可能性が高い。公開データだけで自分の通学路の損傷頻度や危険度を評価せず、現地の同条件画像や自治体の点検情報と照合する。画像モデルは道路の安全性・修繕優先度を決めない。Mendeley Version 2のライセンス表示はCC BY-NC 3.0で、商用利用不可。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "independent_primary_check",
+        "notes": "Mendeley固定Version 2の全体件数・4ラベル・CC BY-NC 3.0表示、および公式RDD2020説明ページの画像内容・Japan/India/Czech出典・人物とナンバープレートを目視でぼかしたとの説明を確認。公式データ論文は日本train 10,506画像と説明。配布アーカイブ、サイズ・SHA-256、画像内容、注釈実物、国別分割の正確な内訳、個別権利と再配布条件は未確認。非商用条件の適用を確認するまで取得API・配布を保留。"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "pascal_voc_detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false,
+        "student_task_fit": "strong_candidate_japanese_road_observation"
       }
     }
   ]
