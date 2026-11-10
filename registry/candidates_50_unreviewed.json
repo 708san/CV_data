@@ -2,9 +2,9 @@
   "schema_version": "1.0.0",
   "source_inventory": {
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
-    "as_of": "2026-11-09",
+    "as_of": "2026-11-10",
     "original_record_count": 50,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 生徒向けの身近な課題への適合を再審査し、食品廃棄場面・魚種・ピスタチオ品種の3候補をteacher_referenceへ変更。"
   },
   "records": [
     {
@@ -434,10 +434,10 @@
         "decode_errors": 0,
         "duplicate_sha_groups": 0,
         "inspection_status": "full_technical_audit_sample_visual_review",
-        "publication_status": "student_enabled",
-        "last_desk_review": "2026-11-09",
+        "publication_status": "teacher_reference",
+        "last_desk_review": "2026-11-10",
         "evidence_grade": "independent_primary_check",
-        "notes": "公式Mendeley v1のCC BY 4.0表示と固定ZIPを確認。全2,148画像を600x600 RGB JPEGとしてデコード、完全一致重複0。論文は高解像度カメラで試料を撮影したと説明。4画像を目視。画像以外の特徴量表等10ファイルはartifactから除外。2021論文自身のCC BY-NC 4.0表示とMendeleyデータのCC BY 4.0表示を混同せず、dataset image rights holder/third-party rightsを公開前に追加確認するためhold。共通artifact v0.1.0準備済みだがRelease/API未公開. Mendeley CC BY 4.0と研究者作成画像の論文記載を照合し、指定論文引用付きで再配布承認。固定Releaseと取得APIを2026-11-09に公開。",
+        "notes": "公式Mendeley v1のCC BY 4.0表示と固定ZIPを確認。全2,148画像を600x600 RGB JPEGとしてデコード、完全一致重複0。論文は高解像度カメラで試料を撮影したと説明。4画像を目視。画像以外の特徴量表等10ファイルはartifactから除外。2021論文自身のCC BY-NC 4.0表示とMendeleyデータのCC BY 4.0表示を混同せず、dataset image rights holder/third-party rightsを公開前に追加確認するためhold。共通artifact v0.1.0準備済みだがRelease/API未公開. Mendeley CC BY 4.0と研究者作成画像の論文記載を照合し、指定論文引用付きで再配布承認。固定Releaseと取得APIを2026-11-09に公開。 身近な生徒課題への適合を再審査し、黒背景で撮影されたピスタチオ2品種の分類で、日本の高校生の身近な課題へ結び付く問いが見つからない。一般的な分類例として教師向けに限定し、生徒向けデータとしては使わない。",
         "sample_files_examined": 4,
         "archive_size": 27859492,
         "image_dimensions": "600x600 RGB JPEG"
@@ -453,7 +453,8 @@
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "student_task_fit": "teacher_reference_only"
       }
     },
     {
@@ -487,10 +488,10 @@
         "technical_status": "full_archive_audit_and_artifact_validation_passed",
         "files_examined": 645,
         "inspection_status": "full_decode_contact_sheet_review_and_rights_review_passed",
-        "publication_status": "student_enabled",
+        "publication_status": "teacher_reference",
         "last_desk_review": "2026-11-10",
         "evidence_grade": "official_metadata_pinned_archive_full_visual_review_and_release",
-        "notes": "固定v1 Root.zipを既知SHA-256照合後に安全展開。645枚すべてをデコードしコンタクトシートで確認。部分的に人物が写る11枚とQR風表示1枚を除外。残る633枚でCC BY 4.0帰属・変更表示を含む共通artifact v0.1.1を整備し、固定Releaseを公開。表記された商品表示は推薦・承認を意味しない。ラベルは撮影場面で食品廃棄量を示さない。"
+        "notes": "固定v1 Root.zipを既知SHA-256照合後に安全展開。645枚すべてをデコードしコンタクトシートで確認。部分的に人物が写る11枚とQR風表示1枚を除外。残る633枚でCC BY 4.0帰属・変更表示を含む共通artifact v0.1.1を整備し、固定Releaseを公開。表記された商品表示は推薦・承認を意味しない。ラベルは撮影場面で食品廃棄量を示さない。 身近な生徒課題への適合を再審査し、画像ラベルは婚礼・ビュッフェ等の撮影場面で、廃棄量・食品内容・削減行動を表さない。学校や家庭の食品ロス削減策へ結び付く教師主導の問いを確立できるまで、生徒向け一覧から除外し、教師向けの分類バイアス例に限定する。"
       },
       "preparation": {
         "planned_level": "1",
@@ -502,7 +503,8 @@
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "student_task_fit": "teacher_reference_only"
       }
     },
     {
@@ -674,10 +676,10 @@
         "technical_status": "full_archive_audit_passed",
         "files_examined": 1700,
         "inspection_status": "full_automated_image_audit_passed_sample_visual_review",
-        "publication_status": "student_enabled",
-        "last_desk_review": "2026-11-09",
+        "publication_status": "teacher_reference",
+        "last_desk_review": "2026-11-10",
         "evidence_grade": "official_metadata_and_full_archive_sha_verified",
-        "notes": "固定v2 SmallFishBD.zip（29,802,305 bytes、SHA-256 2d97368d351f4c5940b7b54f19eec2b771a7d76421dbe5ad66977cf3003eafbb）を照合後に安全展開し、1,700枚全量を監査。完全一致重複3枚を除き1,697枚を共通artifact v0.1.1へ収録。CC BY 4.0の出典・contributorsと全画像視覚レビューを確認し、帰属・変更表示条件付きで再配布可と判断。Release smallfishbd-v0.1.1は29,799,609 bytes、SHA-256 367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547。増強画像は含めない。 Synchronized with the formal student catalog and fixed Release asset on 2026-11-09."
+        "notes": "固定v2 SmallFishBD.zip（29,802,305 bytes、SHA-256 2d97368d351f4c5940b7b54f19eec2b771a7d76421dbe5ad66977cf3003eafbb）を照合後に安全展開し、1,700枚全量を監査。完全一致重複3枚を除き1,697枚を共通artifact v0.1.1へ収録。CC BY 4.0の出典・contributorsと全画像視覚レビューを確認し、帰属・変更表示条件付きで再配布可と判断。Release smallfishbd-v0.1.1は29,799,609 bytes、SHA-256 367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547。増強画像は含めない。 Synchronized with the formal student catalog and fixed Release asset on 2026-11-09. 身近な生徒課題への適合を再審査し、バングラデシュ市場の魚種・青系の固定背景に偏り、日本の学校・地域の生物多様性や魚市場の課題へ直接結び付く根拠がない。ローカル課題との対応が示せるまで教師向けの背景依存デモに限定する。"
       },
       "preparation": {
         "planned_level": "1",
@@ -689,7 +691,8 @@
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "student_task_fit": "teacher_reference_only"
       }
     },
     {
