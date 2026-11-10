@@ -1,5 +1,14 @@
 # 開発進捗
 
+## 2026-11-10：CLICK Trash Dataset Version 2の一次情報確認
+
+- Mendeleyの固定Version 2ページで、屋外画像1,126枚、2,213注釈、単一クラス／13素材クラス、YOLOとCOCO形式、分割、rare classの欠落、CC BY 4.0表示を確認した。
+- 学校周辺・通学路のポイ捨てを考える題材候補として台帳に追加。ただし撮影地域はインド・アッサムで、日本の現地状況やごみ量を表すデータではない。現地で撮った画像を別途集めない限り、地域の清掃優先度を判断する教材にはできない。
+- ページ本文の引用がVersion 1を指し、「GitHub and license: to be added」とする一方で、権利欄にはCC BY 4.0を表示している。固定ファイル・SHA-256・実画像・注釈・第三者権利・プライバシー未確認のため候補にとどめ、取得API・再配布・生徒向け公開は保留。
+- 台帳は53件に更新。main時点の状態はcandidate 35、hold 13、student_enabled 4、prepared_artifact_pending_release_asset 1。並行する生徒向け適合見直しPRでは既存4件をteacher_referenceへ移す提案中であり、両PR反映後はteacher_reference 4となる。
+- 詳細：[CLICK Trash候補レビュー](datasets/click_trash.md)、[候補表](data-first-shortlist-2026-11-09.md)。
+
+
 ## 2026-11-08：Recyclable Waste 全画像の目視確認
 
 - 整形済みの一意画像977枚を10枚の縮小一覧で確認。素材クラスと画像内容に明らかな不一致は見当たらなかった。
@@ -247,3 +256,57 @@
 - artifact準備PR #14をCV_data_artifacts mainへマージ後、固定タグReleaseを作成しました。
 - ZIPは29,799,609 bytes。GitHub APIのSHA-256 `367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547`がローカル成果物と一致し、固定URLはHTTP 200を返しました。
 - CC BY 4.0の帰属・変更表示、全画像視覚レビューを踏まえた再配布審査を記録。ライブラリの固定URL・ハッシュ・公開状態、データ説明、候補台帳を更新する内容をCV_data PR #27に提出しました。
+
+## 2026-11-10：LeFood-Setの一次情報確認
+
+- Mendeley Version 1の公式ページで、インドネシア料理の食前・食後画像524組、デジタル秤で測った食前・食後重量、観察者による7段階残量評価、CC BY 4.0表示を確認した。
+- 家庭や学校・食堂の食べ残しを減らす課題に合う候補として台帳に追加。画像からの推定を実測と比較する学習に使える可能性がある。画像だけで重量を確定したり、日本の献立・食器条件へ一般化したりしない。
+- ファイル一覧・固定SHA-256・画像と表の対応・画像の実態・第三者権利・プライバシーは未確認。取得API・整形・公開は保留。
+- 台帳は54件。main時点の状態はcandidate 36、hold 13、student_enabled 4、prepared_artifact_pending_release_asset 1。並行中の生徒適合PR #37が反映された後、既存4件はteacher_referenceとなる見込み。
+- 詳細：[LeFood-Set候補レビュー](datasets/lefood_set.md)、[候補表](data-first-shortlist-2026-11-09.md)。
+
+## 2026-11-10：RDD2020 Japan subsetの一次情報確認
+
+- Mendeley Version 2の公式ページで道路損傷検出データと4種類の損傷ラベル、CC BY-NC 3.0表示を確認。公式RDD2020資料は、日本を含む複数国の走行画像と、人物・ナンバープレートを目視でぼかした説明を掲載。公式データ論文は日本のtrain画像10,506枚と説明する。
+- 日本の通学路や地域道路で見つけた損傷を記録し、管理者に共有する課題との適合性が高い候補として台帳へ追加。現地の頻度・危険度・修繕優先度を画像モデルだけで判断しない。
+- アーカイブの固定SHA、実画像・XML注釈・国別分割・第三者権利は未監査。CC BY-NC 3.0の非商用条件と再配布可能範囲を確認するまで取得APIや配布へ進めない。
+- 台帳は55件。main時点の状態はcandidate 37、hold 13、student_enabled 4、prepared_artifact_pending_release_asset 1。並行中の生徒適合PR #37が反映された後、既存4件はteacher_referenceとなる見込み。
+- 詳細：[RDD2020候補レビュー](datasets/rdd2020_japan.md)、[候補表](data-first-shortlist-2026-11-09.md)。
+
+## 2026-11-10：FabricSpotDefectの一次情報確認
+
+- Mendeley Version 1で、家庭の布地1,014枚、汚れ注釈3,286件、増強版2,300枚、CC BY 4.0表示を確認した。
+- 洗濯・補修で布製品を長く使う課題に接続できる可能性があるため、既存候補DS-125の根拠を更新した。公式の主目的は繊維生産品質管理で、家庭の衣類に適合するかは別途確認する。
+- 注釈形式、ファイル実体・SHA-256、元画像と増強画像の関係、個人情報・第三者権利は未監査。取得API・配布・授業公開は保留。
+
+## 2026-11-10：身近な課題に直接つながらない候補をスキップ
+
+- Surface Water Floating Wasteは見た目の6カテゴリを水質の実測値として扱えず、撮影地もダッカ周辺。地域の水質を調べる課題に直接使える根拠がないため追加調査を止めた。
+- UAV Aquatic Plantはバングラデシュ湿地のドローン撮影、UAV Weed/Cropは農地をドローン撮影したデータ。高校の身近な環境で同じ植物・撮影環境を再現できる見込みが乏しいため、現時点ではスキップ。
+- いずれも台帳に重ねて追加せず、全量取得もしない。生徒の具体的な課題が合致した場合だけ再検討する。
+
+## 2026-11-10：Indoor Plant Varietiesの一次情報確認
+
+- Mendeley Version 1の公式ページで、観葉植物7種の原画像1,172枚と拡張版7,000枚、3000×3000 JPG、農学者によるラベル確認、CC BY 4.0表示を確認した。
+- 家庭や教室の観葉植物を台帳化し、植物名を調べて手入れ情報につなぐ課題の候補として根拠を更新した。種名ラベルだけでは、水やり・病気・毒性を判断できない点を明記。
+- ファイル実体・固定SHA・増強画像漏洩・第三者権利・個別画像のプライバシーは未確認。技術・権利監査前のためAPI登録は保留。
+
+## 2026-11-10：フォーム申請が必要な候補をスキップ
+
+- Humans in the Loop Recycling Datasetは、公式ページで3200枚のlitter検出・材質/物体/ブランド情報とCC0 1.0を確認した。学校のごみ分別には合うが、ダウンロードにはフォーム入力が必要で、固定ファイルURL・SHA・画像実体も未確認。生徒がすぐ使えるセルフサービス教材にできないため、ライブラリ候補への追加を見送った。利用条件やファイルの直接配布方法が明確になった場合のみ再検討する。
+
+## 2026-11-10：LeFood-Set・RDD2020 JapanのRelease公開
+
+- LeFood-Set v0.1.0を[CV_data_artifacts Release](https://github.com/708san/CV_data_artifacts/releases/tag/lefood-set-v0.1.0)で公開。524組の食前・食後画像と実測重量を含むCC BY 4.0 artifact（53,035,809 bytes）。paired-image回帰APIは未実装のため、ライブラリからは取得できない。
+- RDD2020 Japan v0.1.0を[CV_data_artifacts Release](https://github.com/708san/CV_data_artifacts/releases/tag/rdd2020-japan-v0.1.0)で公開。道路損傷4クラス、7,900画像・16,469 bboxのCC BY-NC 3.0 artifact（641,514,873 bytes）。非商用教育利用に限定。検出APIは未登録。
+- 両Release assetのGitHub上のサイズ・SHA-256をローカル作成物と照合した。正式な生徒向けライブラリ利用可能数には加えず、API連携後に更新する。
+- 台帳58件：candidate 37、hold 14、prepared_artifact_pending_release_asset 1、artifact_released_api_pending 2、student_enabled 4。
+
+## 2026-11-10：歩行者アクセシビリティ候補を追加
+
+- 横断歩道の視認性と歩道の通行しやすさは、高校生が通学・街歩きや家族・地域の移動を通して身近に考えられる課題として候補を追加した。
+- FPVCrosswalk2025は合成3000枚と実写300枚の横断歩道マスク候補。天候・照明での視認性を考える題材になるが、画像モデルを移動安全やナビゲーションに使わない。
+- FootpathVisionはダッカの歩道1,238枚をclear/encroachedに分類し、屋台や違法駐車などによる通行阻害を扱う候補。日本の歩道の実態とは分けて扱い、YouTube由来素材の個別ライセンスと大容量を確認する。
+- 両方とも固定SHA・実画像・権利・プライバシー未監査のため、APIと公開Releaseには追加していない。
+- Roboflow由来の障害物回避候補は個々の出典・許諾が不明で、学生が移動判断に使う誤解も生じるため今回はスキップ。
+- 台帳は57件。main時点の状態はcandidate 39、hold 13、student_enabled 4、prepared_artifact_pending_release_asset 1。

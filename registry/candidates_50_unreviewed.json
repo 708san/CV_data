@@ -2,9 +2,9 @@
   "schema_version": "1.0.0",
   "source_inventory": {
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
-    "as_of": "2026-11-09",
+    "as_of": "2026-11-10",
     "original_record_count": 50,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 2026-11-10に公式ページの固定Version 2を確認したCLICK Trash Dataset候補を追加。画像実体・ファイルSHA・ライセンス表示の内部整合性は未検査。 2026-11-10に給食の食前・食後画像と実測食べ残し重量を含むLeFood-Set候補を追加。 2026-11-10に日本を含む固定Version 2のRDD2020道路損傷データを確認し、非商用ライセンスを記録。 2026-11-10に歩行者アクセシビリティ関連のFPVCrosswalk2025とFootpathVisionを一次確認し候補に追加。 2026-11-10にData in Brief一次論文とMendeley固定v1を確認し、DWSD（街路・公園等のごみ領域分割）を地域清掃課題の候補として追加。画像・第三者権利・プライバシー監査前のため公開承認はしていない。 2026-11-10にLeFood-Set固定v1の全ファイルSHA-256、524画像ペア、欠損154行、画像内容・メタデータ、CC BY 4.0、派生artifactを監査。"
   },
   "records": [
     {
@@ -2014,7 +2014,7 @@
       "api_id": "fabricspotdefect",
       "name": "FabricSpotDefect",
       "task": "detection",
-      "priority": "advanced",
+      "priority": "conditional",
       "source": {
         "landing_page": "https://data.mendeley.com/datasets/6574nhzm8x/1",
         "provider": "mendeley",
@@ -2034,15 +2034,16 @@
         "labels": "布の汚れ・油染み等の位置",
         "formats": "JPG 416×416＋位置ラベル（実形式未記載）",
         "structure": "original/augmented＋train/validation/test",
-        "notes": "原本と増強画像の漏洩を防ぐ"
+        "notes": "家庭の布地を対象に、しみ・汚れの位置を検出する教材候補。洗濯・補修による布製品の長期利用につなげる可能性があるが、公式主目的は繊維生産の品質管理。家庭衣類への適合、汚れの種類や落とし方の予測能力は未確認。"
       },
       "audit": {
-        "technical_status": "not_tested",
+        "technical_status": "metadata_checked",
         "files_examined": 0,
         "inspection_status": "not_started",
         "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "independent_primary_check",
+        "notes": "Mendeley固定Version 1ページで、原画像1,014枚・3,286欠陥注釈、増強版2,300枚・7,641ラベル、家庭布地・自然光・3機種のスマートフォン撮影、416x416、CC BY 4.0表示を確認。固定ファイル一覧、サイズ、SHA-256、注釈形式と実体、元画像と増強版の対応、第三者権利、個人情報は未確認。"
       },
       "preparation": {
         "planned_level": "to_be_determined",
@@ -2052,7 +2053,8 @@
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "student_task_fit": "conditional_candidate_textile_repair_and_care"
       }
     },
     {
@@ -2454,16 +2456,16 @@
         "labels": "観葉植物7クラス",
         "formats": "JPEG、元画像は3000x3000と説明",
         "structure": "元画像と拡張画像の関係・ファイル構成は未検査",
-        "notes": "家庭の観葉植物を題材にできる。最初は元画像だけを候補とし、拡張版を別分割へ混ぜない。植物名の予測を有毒性・食用・飼育安全判断に使わない。"
+        "notes": "家庭・学校の観葉植物を7種から見分け、植物台帳や手入れ情報へつなげる教材候補。画像ラベルは植物種だけで、水やり・病気・毒性・置き場所の判断はできない。撮影地域はバングラデシュの機関・苗圃で、身近な環境との差と拡張画像による漏洩を確認する。"
       },
       "audit": {
         "technical_status": "metadata_checked",
         "files_examined": 0,
         "inspection_status": "not_started",
         "publication_status": "candidate",
-        "last_desk_review": "2026-11-09",
+        "last_desk_review": "2026-11-10",
         "evidence_grade": "independent_primary_check",
-        "notes": "公式Mendeley v1ページのCC BY 4.0表示、著者の撮影・収集説明、7クラスと元画像・拡張版の件数を確認。固定ファイル一覧、サイズ、SHA-256、画像の内容、拡張画像の対応関係、第三者権利は未確認。"
+        "notes": "Mendeley固定Version 1ページで、原画像1,172枚、7クラス、3000x3000 JPG、拡張版7,000枚、バングラデシュ農業機関・近隣苗圃での収集、農学者によるラベル確認、CC BY 4.0表示を確認。固定ファイル一覧、サイズ、SHA-256、原本/拡張の対応、画像内容、第三者権利、個別プライバシーは未確認。"
       },
       "preparation": {
         "planned_level": "1",
@@ -2473,7 +2475,359 @@
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "student_task_fit": "conditional_candidate_home_school_plant_inventory"
+      }
+    },
+    {
+      "id": "DS-153",
+      "api_id": "click_trash_dataset",
+      "name": "CLICK Trash Dataset",
+      "task": "segmentation",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/htcvvz6fm2/2",
+        "provider": "mendeley",
+        "provider_dataset_id": "htcvvz6fm2",
+        "version": "2",
+        "content_origin_claim": "著者説明では屋外の土・落葉・草・砂利・歩道でスマートフォン撮影"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0 (Mendeley Version 2 page)",
+        "evidence_url": "https://data.mendeley.com/datasets/htcvvz6fm2/2",
+        "redistribution_reviewed": false,
+        "rights_status": "under_review"
+      },
+      "claims": {
+        "quantity": "1,126枚、2,213個のごみ注釈と説明。4枚は対象物なし",
+        "labels": "単一 trash クラスと、13種類のごみ素材クラス",
+        "formats": "YOLO矩形ラベルとCOCO polygon annotationを同梱と説明",
+        "structure": "train 901 / val 113 / test 112。rare classがvalidation/testに欠落するとの説明",
+        "notes": "近所の道・公園などのポイ捨てを題材に、画像から見落としやすい litter の例を学ぶ候補。ただし画像はインド・アッサム地域の屋外環境であり、日本の学校周辺の量や分別事情を測るものではない。地域で撮影した画像を別途集めない限り、地域の清掃優先度や廃棄物政策の判断には使えない。物体名・環境の身元特定や人物の有無は未確認。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "independent_primary_check",
+        "notes": "Mendeley固定Version 2のページ説明、日付、件数、タスク形式、クラス不均衡、CC BY 4.0表示を確認。ページの本文は引用をVersion 1としており「GitHub and license: to be added」と記載する一方、ページの権利欄にはCC BY 4.0を表示。公式ファイル一覧、アーカイブサイズ・SHA-256、実画像、COCO/YOLOの整合、個別権利、プライバシー、帰属・派生条件は未確認。権利と教材公開は保留。"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "coco_instance_segmentation",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false,
+        "student_task_fit": "conditional_candidate_local_litter_awareness"
+      }
+    },
+    {
+      "id": "DS-154",
+      "api_id": "lefood_set",
+      "name": "LeFood-Set: Leftovers Food Dataset",
+      "task": "regression",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/cchsk79jkt/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "cchsk79jkt",
+        "version": "Mendeley Data v1",
+        "content_origin_claim": "公式説明はインドネシア料理の食前・食後画像とデジタル秤による計量を説明",
+        "file_set_sha256": "096b72129bd62ef742d5062db575f6c713eae2d6ea6937131de62b1a2b18a594"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0 (Mendeley Version 1 page)",
+        "evidence_url": "https://data.mendeley.com/datasets/cchsk79jkt/1",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution",
+        "notes": "Mendeley固定v1のCC BY 4.0表示を確認。データ作成者のPLOS ONE論文もCC BYを明記し、データ公開先を参照。全1,048画像を目視一覧で確認し、料理・皿・敷物の画像で、顔・人物・患者名・位置情報は見つからず。全JPGでGPS/EXIFメタデータ0。教材・改変・CC BY帰属付き再配布を承認。医療・個人の食事判断には使わない。"
+      },
+      "claims": {
+        "quantity": "524ペア、食前/食後JPEG計1,048枚。画像欠落の154行を除外。",
+        "labels": "食前・食後重量(g)の実測値、訓練を受けた観察者の7段階残量評価",
+        "formats": "食前/食後JPEGとmetadata.csv（食前/食後重量、観察者7段階、導出残量比・摂取重量、pair-level split）",
+        "structure": "34料理カテゴリ。train 366 / validation 79 / test 79（カテゴリ別・seed 42で作成、公式splitではない）。全行ペア単位で分割。",
+        "notes": "家庭の食事や学校・食堂の食べ残しを減らす課題に適合しやすい。画像からの残量推定と実測重量との差を調べ、改善案を考える題材候補。ただし画像はインドネシア料理であり、日本の献立・食器・配膳条件にそのまま一般化しない。画像だけで重量や食べ残しを確定せず、現地の実測と比較する。"
+      },
+      "audit": {
+        "technical_status": "full_image_pair_audit_and_prepared_artifact",
+        "files_examined": 1049,
+        "inspection_status": "all_source_jpegs_decoded_and_visual_contact_sheets_reviewed",
+        "publication_status": "artifact_released_api_pending",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "official_fixed_v1_files_hashes_and_published_open_access_article",
+        "notes": "Mendeley v1の全公開ファイル1,049件（JPG 1,048、XLSX 1）を個別に取得。各ファイルのサイズとSHA-256は固定v1公式公開APIの値と全件一致、合計52,621,013 bytes。XLSXの678データ行中524行は食前/食後画像が揃い、他154行は画像両方が欠落。欠落行は除外。画像ペアは34料理名に一致し、元データのページ・論文記載の524ペア/34カテゴリと整合。全1,048 JPEGをImageIOでデコード成功、完全一致重複0、GPS/EXIF/orientationメタデータ0。524ペア全件のコンタクトシートを目視し、料理・皿・敷物を確認。人物・顔・個人識別情報は見つからず。10組はafter重量がbefore重量を上回るため削除せずフラグ化。元JPEGの画素データは変更せず、画像名、CSV、残量比、重量差、seed 42のペア単位カテゴリ別splitを付与。共通artifact `lefood-set-v0.1.0.zip` 53,035,809 bytes、SHA-256 ca1846273d0636ea59f387a586c6f004cfc02d58a639ad5a3c7c844b66cb863a。Release asset未作成、回帰用API未登録。 GitHub Release lefood-set-v0.1.0公開済み（53,035,809 bytes、SHA-256 ca1846273d0636ea59f387a586c6f004cfc02d58a639ad5a3c7c844b66cb863a）。paired-image regression API未登録。",
+        "archive_sha256": null,
+        "source_file_set_sha256": "096b72129bd62ef742d5062db575f6c713eae2d6ea6937131de62b1a2b18a594",
+        "decode_errors": 0,
+        "duplicate_sha_groups": 0,
+        "class_count": 34,
+        "image_count": 1048,
+        "image_pairs": 524,
+        "missing_image_records": 154,
+        "weight_order_anomaly_pairs": 10,
+        "gps_metadata_images": 0,
+        "exif_metadata_images": 0,
+        "orientation_metadata_images": 0,
+        "artifact_sha256": "ca1846273d0636ea59f387a586c6f004cfc02d58a639ad5a3c7c844b66cb863a",
+        "artifact_size_bytes": 53035809
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "paired_image_regression_pending_api_support",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false,
+        "student_task_fit": "strong_student_food_waste_measurement",
+        "notes": "食べ残し削減の課題に、見た目の7段階評価と実測重量の差を調べる形で接続。画像はインドネシアの病院食環境で、日本の学校給食へ一般化しない。"
+      }
+    },
+    {
+      "id": "DS-155",
+      "api_id": "rdd2020_japan",
+      "name": "RDD2020: Japan subset",
+      "task": "detection",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/5ty2wb6gvg/2",
+        "provider": "mendeley",
+        "provider_dataset_id": "5ty2wb6gvg",
+        "version": "2",
+        "reference_url": "https://rdd2020.sekilab.global/data/",
+        "content_origin_claim": "日本を含む各国の道路画像。運転車両に取り付けたスマートフォンで撮影",
+        "archive_size_bytes": 1848075315,
+        "archive_sha256": "678fb0cd72baa214accf54d44611fffbc348055b0d65fbc0e9744b02d5fa084a",
+        "archive_url": "https://data.mendeley.com/public-api/zip/5ty2wb6gvg/download/2"
+      },
+      "rights": {
+        "license_claim": "CC BY-NC 3.0 (Mendeley v2)",
+        "evidence_url": "https://data.mendeley.com/datasets/5ty2wb6gvg/2",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_noncommercial_educational_redistribution",
+        "notes": "固定Version 2のMendeley表示はCC BY-NC 3.0。帰属表示を保った教育目的の非商用再配布・改変を対象に準備可。商用利用は不可。事業・有料サービスの利用者に配布する場合は別許諾が必要。画像内容は公開道路の車載写真で、人・車・住宅が写る。配布前に顔・ナンバープレートの個別プライバシー監査を継続する。"
+      },
+      "claims": {
+        "quantity": "固定v2日本trainを4つの公式損傷クラスに絞った7,900枚、16,469 bbox。元の日本train 10,506枚。",
+        "labels": "公式説明の4種類：縦ひびD00、横ひびD10、亀甲ひびD20、ポットホールD40。",
+        "formats": "JPEG images/train|valid|test と、正規化YOLO bbox labels。metadata.jsonlとannotations.jsonlを収録。",
+        "structure": "日本trainのみ。seed 42を含む画像ID SHA-256でtrain 6,299 / valid 802 / test 799。",
+        "notes": "通学路・地域道路のひびや穴を画像から探し、道路管理者へ相談する課題に使える。元trainにあったD43/D44/D50の追加ラベルと対象クラスなし画像2,606枚を除外し、4損傷クラスだけを収録。幅0のbbox1件を除外。日本の2020年頃の車載画像で、現在の道路状態・危険度を表さない。CC BY-NC 3.0により非商用教育利用に限定し、モデルだけで危険度や修繕順位を判断しない。"
+      },
+      "audit": {
+        "technical_status": "fixed_archive_and_prepared_artifact_audited",
+        "files_examined": 21012,
+        "inspection_status": "10506_japan_train_images_decoded; all_xml_parsed; dimensions_and_pairs_checked; 36_image_visual_sample_reviewed",
+        "publication_status": "artifact_released_api_pending",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "fixed_official_archive_hash_verified_and_dataset_article",
+        "notes": "固定Mendeley v2 ZIPはサイズ1,848,075,315 bytes・SHA-256 678fb0cd72baa214accf54d44611fffbc348055b0d65fbc0e9744b02d5fa084aに一致。ZIP CRC正常、危険path/symlink/重複なし。内部tar.gzも全件path、symlink、重複名を検査。日本trainのJPEG 10,506枚とXML 10,506件を一時領域へ抽出。画像全件decode成功、重複画像0、GPSメタデータ0、XMLとの寸法不一致0。全XMLを解析し公式説明の4 damage classesのみ保持。日本trainの7,900画像・16,470該当bboxのうちJapan_001265.xmlのD20に幅0のbboxが1件あり除外、対象クラスを含まない画像2,606枚を除外。標準化artifactは7,900画像・16,469 bbox、4クラス、train 6,299/valid 802/test 799、641,514,873 bytes、SHA-256 f787feead7fd3b0d63f42c7cfb8e3db6f114e57c83b3b928d5f7c58bcb411955。画像画素はbyte-identical。全ZIP CRCと全15,805 manifest file hashesを照合。危険path/symlink/重複/欠落/サイズ不一致/SHA不一致0。36枚の接触シートと原寸画像を標本目視し、明瞭な個人識別情報を確認しなかった。公開元challengeは明瞭な顔・ナンバープレートをぼかすと説明。全画像を個別目視してはいない。Release asset作成前に帰属・NC条件・変更記録を同梱する。 GitHub Release rdd2020-japan-v0.1.0公開済み（641,514,873 bytes、SHA-256 f787feead7fd3b0d63f42c7cfb8e3db6f114e57c83b3b928d5f7c58bcb411955）。normalized YOLO detection API未登録。",
+        "archive_sha256": "678fb0cd72baa214accf54d44611fffbc348055b0d65fbc0e9744b02d5fa084a",
+        "archive_size_bytes": 1848075315,
+        "image_count": 7900,
+        "annotation_count": 10506,
+        "image_decode_errors": 0,
+        "image_dimensions": "10,187 at 600x600; 147 at 1024x1024; 124 at 540x540; 48 at 1080x1080; all agree with XML dimensions",
+        "image_xml_pairs": 10506,
+        "image_xml_dimension_mismatches": 0,
+        "image_duplicate_sha_groups": 0,
+        "gps_metadata_images": 0,
+        "annotation_count_total": 24754,
+        "class_counts": {
+          "D00": 4049,
+          "D10": 3979,
+          "D20": 6198,
+          "D40": 2243
+        },
+        "invalid_bbox_count": 1,
+        "original_japan_train_image_count": 10506,
+        "retained_annotation_count": 16469,
+        "omitted_images_without_target_class": 2606,
+        "omitted_zero_area_boxes": 1,
+        "image_split_counts": {
+          "train": 6299,
+          "valid": 802,
+          "test": 799
+        },
+        "artifact_sha256": "f787feead7fd3b0d63f42c7cfb8e3db6f114e57c83b3b928d5f7c58bcb411955",
+        "artifact_size_bytes": 641514873
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "normalized_yolo_detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false,
+        "student_task_fit": "strong_noncommercial_community_road_condition_observation",
+        "notes": "地域の通学路や歩道のひび・穴・横断歩道の視認性を調査し、管理者に相談する課題に活用。公開データのみで生徒自身の通学路の状態を断定しない。"
+      }
+    },
+    {
+      "id": "DS-157",
+      "api_id": "fpvcrosswalk2025",
+      "name": "FPVCrosswalk2025",
+      "task": "segmentation",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/mcr2jwk5bp/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "mcr2jwk5bp",
+        "version": "1",
+        "content_origin_claim": "3000枚の合成FPV画像と歩行者動画から切り出した300枚の実写を含むと説明"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0 (Mendeley Version 1 page)",
+        "evidence_url": "https://data.mendeley.com/datasets/mcr2jwk5bp/1",
+        "redistribution_reviewed": false,
+        "rights_status": "under_review"
+      },
+      "claims": {
+        "quantity": "合成3000枚＋実写300枚、各画像にマスク1枚と説明",
+        "labels": "横断歩道の二値領域マスク",
+        "formats": "画像とbinary segmentation mask。実ファイル形式は未確認",
+        "structure": "合成/実写、天候・照明条件別に整理と説明",
+        "notes": "見えにくい横断歩道や歩行者アクセシビリティを題材に、昼夜・天候による視認性の違いを調べる候補。合成画像と実写300枚を分けて評価する。画像モデルの結果を歩行者の安全な移動判断やナビゲーションに使わず、街の改善案を考える補助資料として扱う。日本の交差点状況を表すとは限らない。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "independent_primary_check",
+        "notes": "Mendeley固定Version 1ページで3000 synthetic＋300 real FPV画像、binary mask、天候・照明条件、CC BY 4.0表示を確認。ファイル一覧・アーカイブサイズ・SHA-256、mask整合、合成の生成条件、元動画の権利・プライバシー、実画像の撮影地は未確認。"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "binary_segmentation_pending_audit",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false,
+        "student_task_fit": "conditional_candidate_pedestrian_accessibility"
+      }
+    },
+    {
+      "id": "DS-158",
+      "api_id": "footpathvision",
+      "name": "FootpathVision",
+      "task": "classification",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/szkhrh8dc8/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "szkhrh8dc8",
+        "version": "1",
+        "content_origin_claim": "ダッカ市内で撮影した写真と、Creative Commonsライセンス付きYouTube映像のフレーム"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0 (Mendeley Version 1 page)",
+        "evidence_url": "https://data.mendeley.com/datasets/szkhrh8dc8/1",
+        "redistribution_reviewed": false,
+        "rights_status": "under_review"
+      },
+      "claims": {
+        "quantity": "1,238枚。公式ページに2.41GBと1.9GBのZIPファイルを表示",
+        "labels": "clear footpath／encroached footpathの2分類",
+        "formats": "ZIP内の分類用フォルダと説明。内部構造未確認",
+        "structure": "撮影者撮影とYouTube由来フレームを別フォルダに格納と説明",
+        "notes": "歩道の通行しにくさや車両・屋台によるふさがりを考える歩行者アクセシビリティ課題の候補。画像はダッカ市であり日本の歩道規則や地域実態を表さない。YouTube由来フレームの元動画ごとのライセンス・帰属条件を確認するまで再配布しない。合計約4.31GBのため、取得容量と無料Colabで扱う範囲を先に検討する。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "independent_primary_check",
+        "notes": "Mendeley固定Version 1ページで1,238画像、2分類、ダッカでの撮影、YouTubeフレームの混在、Encroached.zip 2.41GBとUnencroached.zip 1.9GB、CC BY 4.0表示を確認。個別ファイルの固定SHA、サイズの整合、元YouTube動画の識別・個別ライセンス、人物・顔・ナンバープレート・プライバシー、ラベル品質は未確認。"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "classification_v1",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false,
+        "student_task_fit": "conditional_candidate_pedestrian_accessibility"
+      }
+    },
+    {
+      "id": "DS-159",
+      "api_id": "dwsd_dense_waste",
+      "name": "DWSD: Dense Waste Segmentation Dataset",
+      "task": "segmentation",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/gr99ny6b8p/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "gr99ny6b8p",
+        "version": "1",
+        "content_origin_claim": "論文では著者らが西ベンガル州の街路・公園・大学周辺等で携帯電話により撮影したと説明",
+        "reference_url": "https://data.mendeley.com/datasets/gr99ny6b8p/1",
+        "file_id": "d0a8df4f-a6d5-447a-95f9-882c7b8fb896",
+        "content_id": "d4c08124-b8a5-4928-a169-264dae813b8e",
+        "size_bytes": 252719363,
+        "sha256": "fb9229c330ed253f4fb7c18bd46dddebe4df6f8d3f602747f505ff7601a11737",
+        "download_url": "https://data.mendeley.com/public-files/datasets/gr99ny6b8p/files/d0a8df4f-a6d5-447a-95f9-882c7b8fb896/file_downloaded"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0 (Mendeley v1; article also CC BY 4.0)",
+        "evidence_url": "https://data.mendeley.com/datasets/gr99ny6b8p/1",
+        "redistribution_reviewed": false,
+        "rights_status": "under_review",
+        "notes": "掲載者のライセンス表示と論文のCC BY 4.0表記は確認。公開場所の写り込み、人物・車両番号等、ファイル単位の第三者権利を未確認。"
+      },
+      "claims": {
+        "quantity": "784枚、2,350物体領域",
+        "labels": "ごみ14分類・セマンティック領域",
+        "formats": "448×448 RGB画像＋色付き領域マスク",
+        "structure": "train 640 / test 144。西ベンガル州の街路・公園・芝地・ごみ集積地等。",
+        "notes": "地域の公園や通学路のごみ拾い・分別案を考える導入候補。画像中のごみの種類や領域を調べられるが、撮影場所・位置・量の時系列データはなく、日本の地域のごみ分布を示さない。地域の清掃優先度や自治体の分別規則をモデルだけで決めない。"
+      },
+      "audit": {
+        "technical_status": "full_archive_decode_and_pair_check_passed_with_empty_mask_issue",
+        "files_examined": 1575,
+        "inspection_status": "all_images_and_masks_decoded; 81_blank_mask_pairs_reviewed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "official_primary_page_and_open_access_research_article",
+        "notes": "Mendeley v1は784画像・2,350 segments・14カテゴリ・CC BY 4.0を記載。Data in Brief論文は撮影地と方法、640/144 train/test分割、画像と色付きmaskを説明し、倫理欄で人対象・動物実験・SNS収集なしと記載。個々の画像は未検査。 公開APIの固定v1ファイル一覧で DSWD.zip（252,719,363 bytes）、file ID d0a8df4f-a6d5-447a-95f9-882c7b8fb896、SHA-256 fb9229c330ed253f4fb7c18bd46dddebe4df6f8d3f602747f505ff7601a11737 を確認。配布元から一時領域へ取得中。SHA-256一致前は展開しない。 ダウンロードした固定ZIPは公式SHA-256と一致、1575項目のCRC検査に成功。パストラバーサル・symlink・重複ファイル名なし。Train 640 / Test 144で画像784枚・マスク784枚が同名ID対応し、全1,568 PNGをImageIOで448x448としてデコード、失敗0。画像重複0。マスク81枚が同一SHAの全黒マスク。81対応画像の一覧を確認し、ごみが視認できる画像が複数含まれたため注釈欠落の懸念としてpublication_statusをholdへ変更。残りの画像・マスクの個別対応・プライバシー・権利を全件目視したものではない。",
+        "decode_errors": 0,
+        "archive_sha256": "fb9229c330ed253f4fb7c18bd46dddebe4df6f8d3f602747f505ff7601a11737",
+        "archive_size": 252719363,
+        "image_count": 784,
+        "mask_count": 784,
+        "image_mask_pairs": 784,
+        "image_dimensions": "all 448x448",
+        "duplicate_image_sha_groups": 0,
+        "duplicate_mask_sha_groups": 1,
+        "empty_mask_count": 81
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "planned_semantic_segmentation",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false,
+        "notes": "高校生向けの地域清掃・公園ごみ課題に接続しやすい有望候補。画像・権利・プライバシー監査通過後に採用可否を決める。"
       }
     }
   ]
