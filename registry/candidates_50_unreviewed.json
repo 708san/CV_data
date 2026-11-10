@@ -2727,7 +2727,12 @@
         "provider_dataset_id": "gr99ny6b8p",
         "version": "1",
         "content_origin_claim": "論文では著者らが西ベンガル州の街路・公園・大学周辺等で携帯電話により撮影したと説明",
-        "reference_url": "https://data.mendeley.com/datasets/gr99ny6b8p/1"
+        "reference_url": "https://data.mendeley.com/datasets/gr99ny6b8p/1",
+        "file_id": "d0a8df4f-a6d5-447a-95f9-882c7b8fb896",
+        "content_id": "d4c08124-b8a5-4928-a169-264dae813b8e",
+        "size_bytes": 252719363,
+        "sha256": "fb9229c330ed253f4fb7c18bd46dddebe4df6f8d3f602747f505ff7601a11737",
+        "download_url": "https://data.mendeley.com/public-files/datasets/gr99ny6b8p/files/d0a8df4f-a6d5-447a-95f9-882c7b8fb896/file_downloaded"
       },
       "rights": {
         "license_claim": "CC BY 4.0 (Mendeley v1; article also CC BY 4.0)",
@@ -2744,13 +2749,13 @@
         "notes": "地域の公園や通学路のごみ拾い・分別案を考える導入候補。画像中のごみの種類や領域を調べられるが、撮影場所・位置・量の時系列データはなく、日本の地域のごみ分布を示さない。地域の清掃優先度や自治体の分別規則をモデルだけで決めない。"
       },
       "audit": {
-        "technical_status": "metadata_checked",
+        "technical_status": "source_archive_pinned_and_download_in_progress",
         "files_examined": 0,
         "inspection_status": "official_article_and_fixed_mendeley_page_checked_images_not_inspected",
         "publication_status": "candidate",
         "last_desk_review": "2026-11-10",
         "evidence_grade": "official_primary_page_and_open_access_research_article",
-        "notes": "Mendeley v1は784画像・2,350 segments・14カテゴリ・CC BY 4.0を記載。Data in Brief論文は撮影地と方法、640/144 train/test分割、画像と色付きmaskを説明し、倫理欄で人対象・動物実験・SNS収集なしと記載。個々の画像は未検査。"
+        "notes": "Mendeley v1は784画像・2,350 segments・14カテゴリ・CC BY 4.0を記載。Data in Brief論文は撮影地と方法、640/144 train/test分割、画像と色付きmaskを説明し、倫理欄で人対象・動物実験・SNS収集なしと記載。個々の画像は未検査。 公開APIの固定v1ファイル一覧で DSWD.zip（252,719,363 bytes）、file ID d0a8df4f-a6d5-447a-95f9-882c7b8fb896、SHA-256 fb9229c330ed253f4fb7c18bd46dddebe4df6f8d3f602747f505ff7601a11737 を確認。配布元から一時領域へ取得中。SHA-256一致前は展開しない。"
       },
       "preparation": {
         "planned_level": "1",
