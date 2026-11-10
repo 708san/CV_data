@@ -473,24 +473,24 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/w68f9w6jmm/1",
-        "redistribution_reviewed": false,
-        "rights_status": "publisher_CC_BY_4.0_confirmed_image_rights_and_release_pending"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution_CC_BY_4.0_with_attribution_and_change_notice"
       },
       "claims": {
-        "quantity": "645枚（共通artifact収録）",
+        "quantity": "633枚（元645枚から12枚を除外）",
         "labels": "撮影場面5分類",
         "formats": "JPEG、640×480が644枚・678×768が1枚",
         "structure": "固定v1 ZIP、5フォルダ",
-        "notes": "フォルダ名は撮影場面で、食品廃棄量を表さない。重複0。人物を全画像人手確認したものではない"
+        "notes": "撮影場面ラベルで、食品廃棄量を表さない。人物の一部が写る11枚とQR風表示1枚を除外。商品表示は一部残り、推薦を意味しない。"
       },
       "audit": {
-        "technical_status": "full_archive_audit_passed",
+        "technical_status": "full_archive_audit_and_artifact_validation_passed",
         "files_examined": 645,
-        "inspection_status": "full_automated_image_audit_passed_sample_visual_review",
-        "publication_status": "prepared_release_pending",
-        "last_desk_review": "2026-11-07",
-        "evidence_grade": "official_metadata_and_full_archive_sha_verified",
-        "notes": "固定v1 Root.zip（31,426,593 bytes、SHA-256 10e7a106a1f4570f404f93f8fa5c523c53f837f5e3f70981c8a06c02b7080e14）を照合後に安全展開。645枚すべてJPEGデコード成功、完全一致重複0、危険パス・symlink 0、EXIF/GPS/XMPなし。共通artifact food_waste_bangladesh-v0.1.0を生成・検証済み。クラス偏りあり、撮影場面ラベルは廃棄量を示さない。Release assetと全画像の人手権利審査待ち。"
+        "inspection_status": "full_decode_contact_sheet_review_and_rights_review_passed",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "official_metadata_pinned_archive_full_visual_review_and_release",
+        "notes": "固定v1 Root.zipを既知SHA-256照合後に安全展開。645枚すべてをデコードしコンタクトシートで確認。部分的に人物が写る11枚とQR風表示1枚を除外。残る633枚でCC BY 4.0帰属・変更表示を含む共通artifact v0.1.1を整備し、固定Releaseを公開。表記された商品表示は推薦・承認を意味しない。ラベルは撮影場面で食品廃棄量を示さない。"
       },
       "preparation": {
         "planned_level": "1",

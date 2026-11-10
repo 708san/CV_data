@@ -1,12 +1,12 @@
 # データ優先候補の確認表（2026-11-09）
 
-この表は追加データの作業順を決めるための確認記録です。表にある候補は正式カタログ掲載やRelease公開の承認済みではありません。現在、正式な生徒向けデータは3件（トマトの葉、FruitSeg30、SmallFishBD）です。準備済みartifact、権利判断、Release/API公開を別々に扱います。
+この表は追加データの作業順を決めるための確認記録です。表にある候補は正式カタログ掲載やRelease公開の承認済みではありません。現在、正式な生徒向けデータは5件（トマトの葉、FruitSeg30、SmallFishBD、Pistachio、Food Waste Bangladesh）です。Food Waste v0.1.1は固定Release済みで、API登録をこの変更で反映します。準備済みartifact、権利判断、Release/API公開を別々に扱います。
 
 ## 先に残件を解消する候補
 
 | 候補 | 固定元と規模 | 既存作業 | 次に解消すること | 判断 |
 |---|---|---|---|---|
-| Food Waste Bangladesh | [Mendeley v1](https://data.mendeley.com/datasets/w68f9w6jmm/1)、CC BY 4.0、645枚。元ZIP 31,426,593 bytes | 全画像のデコード・重複・メタデータ検査と共通artifact v0.1.0は既存記録にあり。全画像の顔・第三者権利を人手で確認した記録ではない | 撮影場面ラベルを「食品廃棄量」と誤読させない説明を維持し、人物・撮影者の写り込みとブランド表示のレビュー範囲を明記して権利判断を完了する | 高優先。再処理より残件整理から |
+| Food Waste Bangladesh | [Mendeley v1](https://data.mendeley.com/datasets/w68f9w6jmm/1)、CC BY 4.0、artifact 633枚。元ZIP 31,426,593 bytes | 人物の一部が写る11枚とQR風表示1枚を除外。5カテゴリ・638ファイルのmanifestとCRCを検証し、固定Release v0.1.1を公開 | ブランド・商品表示は文脈表示で推薦を意味しないこと、撮影カテゴリは廃棄量ではないことを明示。ライブラリAPI登録を反映 | 完了：Release済み、API登録中 |
 | Bangladeshi E-Waste Image | [Mendeley v1](https://data.mendeley.com/datasets/77383kmdnw/1)、CC BY 4.0、2,157枚。公式ページのZIPは69.6 MB | 固定ZIP SHA-256、全画像のデコードとコンタクトシート確認、注釈監査、共通artifact v0.1.0の記録あり。polygon注釈は外接矩形へ変換済み | 全体は電子廃棄物だけでなく一般廃棄物も含むため名称・課題説明を調整。画像のブランド名・製品文字の第三者権利を含むため、帰属記録だけで公開承認とせず処理方針を確定する | 技術準備度は高いが、第三者権利 sign-off 待ち |
 | Pistachio Image Dataset | [Mendeley v1](https://data.mendeley.com/datasets/h7pf57cgg9/1)、CC BY 4.0、2,148枚 | 画像作成者を述べる関連論文を照合。artifact全2,153ファイルのmanifest・SHA・サイズとCRC検証済み。Release v0.1.0を公開し取得APIへ登録 | 出典・変更・指定論文2件を表示。代表4枚の目視確認で全画像レビューではない点を明記 | 完了：生徒向け固定取得で利用可能 |
 
