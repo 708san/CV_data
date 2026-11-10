@@ -30,6 +30,8 @@ Fashion-MNISTは教師向けプレビューです。権利確認中なので、�
 
 FruitSeg30は領域分割向けの29クラスartifactを固定Releaseで公開済みです。GitHub mainブランチのコードでは`datasets.get("fruitseg30")`で取得できます。PyPI配布版への反映はパッケージ更新時です。`data.to_df()`で画像とマスクの組を確認し、`data.to_torch_dataset()`から画像テンソルと濃淡マスクを読み込めます。マスクは元の0〜255階調を保ち、PyTorch変換時も閾値で二値化しません。
 
+Road Traversing Knowledgeは多クラス領域分割です。`data.classes`の13クラス（背景を含む）に対応し、`to_torch_dataset()`はクラスIDを保った`torch.long`マスクを返します。各画素のIDをクラス番号として扱い、二値マスク用の損失関数へそのまま渡さないでください。クラス8は一覧にはありますが、元の全マスクで未出現です。データは公式train/validationのみで、test splitはありません。
+
 ピスタチオ画像v0.1.0はKirmizi種・Siirt種の2,148枚です。Mendeley DataのCC BY 4.0表示と画像作成者に関する論文記載を確認し、指定された2論文も引用しています。`datasets.get("pistachio_image_dataset")`で取得し、`data.to_df()`からクラス・分割を確認できます。撮影背景が黒に統一されているため、一般の食品写真での識別性能を保証しません。食品の品質・鮮度・安全性は判定しません。
 
 SmallFishBD v0.1.1は魚10種類、1,697枚の分類データです。固定ReleaseとSHA-256を確認済みで、`datasets.get("smallfishbd")`で取得できます。`data.to_df()`で画像・魚種ラベル・train/validation/test分割を確認できます。青系背景の画像に偏るため、自然環境の魚種判定には使わないでください。

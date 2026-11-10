@@ -1,6 +1,6 @@
 # カタログ候補の精査状況
 
-更新日：2026-11-10
+更新日：2026-11-11
 
 このページは`registry/candidates_50_unreviewed.json`を、ライブラリに追加する前の判断材料として整理したものです。台帳に書かれたライセンスは候補者の申告であり、ここで「CC BY 4.0」「CC0」などと書かれていても、画像そのものの権利確認や教材での再配布承認を意味しません。
 
@@ -14,6 +14,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 | 区分 | 件数 | ライブラリでの扱い |
 | --- | ---: | --- |
 | 固定Releaseの正式データ | 6 | `tomato_leaves`、`fruitseg30`、`smallfishbd`、`pistachio_image_dataset`、`food_waste_bangladesh`は生徒向け、`festival_icons`は教師向けLoRA素材 |
+| Release asset公開・API反映待ち | 1 | `road_traversing_knowledge`。701組を全量技術監査し、CC BY 4.0・出典・第三者権利物の注意を記録。固定Releaseを公開・再取得SHA照合済み |
 | 教師向けプレビュー | 1 | `fashion_mnist`。固定コミット・4ファイル・件数・IDX形式を検査済み。権利の最終確認中 |
 | 固定取得条件または公開条件で保留 | 3 | `fashion_mnist`、`kuzushiji_mnist`、`fruits_360`。Fruits-360には固定タグReleaseがなく、実体取得は未開始 |
 | artifact準備済み・Release asset/API待ち | 2 | `bangladeshi_e_waste_image`、`recyclable_waste`。共通形式化済み。正式公開条件はデータ別説明を参照 |
@@ -22,7 +23,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 32 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-候補台帳52件の現状は、student_enabled 4件、candidate 34件、hold 13件、Release/API反映待ち1件です。Food Waste Bangladesh v0.1.1を固定Releaseで公開し、人物が一部写る11枚とQR風表示1枚を除外した633枚を収録しました。出典・変更表示と撮影カテゴリ上の制限を明示しています。PyPI配布版は別途更新が必要です。
+候補台帳53件の現状は、`student_enabled` 4件、`candidate` 34件、`hold` 13件、Release asset準備待ち1件、Release公開・API反映待ち1件です。`road_traversing_knowledge`は公式PNG 1,402枚を全件デコードし、701画像・マスク組の一致を確認。固定Release assetを公開し、GitHub上のSHA-256と再取得したZIPを照合しました。CV_dataのAPI反映PRは作成中です。main APIでは現時点で生徒向け5件が利用できます。
 
 ## 課題別の候補
 

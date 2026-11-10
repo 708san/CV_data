@@ -41,12 +41,12 @@
 
 技術的に取得できることだけでは、教材で使えるとは判定しない。
 
-## 2. 現在地（2026-11-09）
+## 2. 現在地（2026-11-11）
 
-- ライブラリ正式一覧は`tomato_leaves`、`fruitseg30`、`smallfishbd`、`pistachio_image_dataset`の生徒向け4件と、`festival_icons`の教師向けLoRA素材1件。Fashion-MNISTは教師向けプレビュー1件。承認済みLoRA素材は0件、権利確認中のプレビューが1件。
+- main反映済みライブラリ正式一覧は生徒向け5件と教師向けLoRA素材`festival_icons`1件。Road Traversing Knowledgeは固定Release assetを公開・再取得SHA照合済みで、API登録PRを準備中。Fashion-MNISTは教師向けプレビュー1件。承認済みLoRA素材は0件、権利確認中のプレビューが1件。
 - `tomato_leaves`：7,209枚、破損0、完全一致重複0、ラベル不一致0。標準化後はtrain 5,191 / val 577 / test 1,441。
 - `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。学習済みLoRA重み3〜4件を選ぶための候補調査・取得APIは未着手。
-- 候補台帳は当初50件にConMetal-6とIndoor Plant Varietiesを加えた52件。状態は`candidate` 34件、`hold` 13件、`prepared_artifact_pending_release_asset` 1件、`student_enabled` 4件。`hold`には技術検査済みの候補と、権利・固定版・実体上の問題で未完了の候補が混在します。技術監査と権利承認を混同しません。
+- 候補台帳は当初50件にConMetal-6、Indoor Plant Varieties、Road Traversing Knowledgeを加えた53件。状態は`candidate` 34件、`hold` 13件、`prepared_artifact_pending_release_asset` 1件、`release_asset_pending_api` 1件、`student_enabled` 4件。`hold`には技術検査済みの候補と、権利・固定版・実体上の問題で未完了の候補が混在します。技術監査と権利承認を混同しません。
 - `CV_data_artifacts` mainにはsource manifest 15件、artifact manifest 7件があり、FruitSeg30 v0.1.0とSmallFishBD v0.1.1の固定Release assetを公開済みです。
 - 候補台帳の全項目を一括で`list_available()`へ加えません。選定・権利確認・固定Releaseが済んだデータだけを個別に公開します。
 - 既存Notebook、`CV_sample_data`、そのRelease、タグ、配布ファイルは変更しない。
@@ -253,3 +253,10 @@ LLM講座のNotebookを改修せず、CV用に別ディレクトリと別ファ�
 5. 全API・README・データ別説明・AI改造ガイドを揃え、指定されたネットワーク不要テストとパッケージ確認を行ってPyPI公開候補を完成させる。PyPI本番公開とデータReleaseは明示許可の境界に従う。
 
 技術的に取得できることだけでは教材公開の承認とみなさず、準備済み・権利確認済み・公開済みを別に記録する。
+
+### 2026-11-11 追加審査：Road Traversing Knowledge
+
+- CC BY 4.0の固定v1、配布ZIPサイズ・SHA-256を公式Mendeley APIで確認。全1,402 PNGをデコードし、701画像・701マスクの352×288同名対応、train 561 / validation 140の公式分割を確認しました。
+- マスクは13クラスIDの多クラス方式です。既存の二値マスク処理と混同しないよう、クラスID保持型のPyTorch Dataset対応を追加しています。
+- 画像12枚を代表目視。道路環境の課題には使えますが、ブラジルの道路画像であり日本の道路安全を判定する用途には使いません。第三者コンテンツが含まれる場合の権利は全画像で個別確認していません。
+- 整形済みZIPはCV_data_artifactsの固定Release assetに置き、Git/PyPIには画像・マスクを追加しません。Release v0.1.0を公開してassetのサイズ・SHAを再検証済み。API登録PRは提出準備中です。

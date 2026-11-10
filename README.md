@@ -73,6 +73,7 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | --- | --- | --- | --- |
 | [トマトの葉](docs/datasets/tomato_leaves.md) | トマトの葉7,209枚、5種類のラベル | `tomato-v1.2.0` | 元データ：CC0 1.0 |
 | [FruitSeg30](docs/datasets/fruitseg30.md) | 果物29クラス、画像・マスク1,914組 | `fruitseg30-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
+| [Road Traversing Knowledge](docs/datasets/road_traversing_knowledge.md) | 道路環境の13画素クラス、画像・マスク701組 | `road-traversing-knowledge-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [SmallFishBD](docs/datasets/smallfishbd.md) | 魚10種類、画像1,697枚 | `smallfishbd-v0.1.1` | CC BY 4.0、出典・変更表示が必要 |
 | [ピスタチオ2品種](docs/datasets/pistachio_image_dataset.md) | Kirmizi種・Siirt種、画像2,148枚 | `pistachio_image_dataset-v0.1.0` | CC BY 4.0、出典・変更・指定論文の表示が必要 |
 | [Food Waste Bangladesh](docs/datasets/food_waste_bangladesh.md) | 食品廃棄の撮影場面5カテゴリ、画像633枚 | `food-waste-bangladesh-v0.1.1` | CC BY 4.0、出典・変更表示が必要 |
@@ -83,6 +84,8 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 SmallFishBDは全画像レビューと帰属・変更表示条件を確認し、固定Release v0.1.1を公開済みです。ピスタチオ画像はMendeleyのCC BY 4.0表示と、研究者自身が画像を作成したという論文記載を照合し、指定論文2件の引用条件付きで固定Release v0.1.0を公開しています。電子ごみ・食品廃棄など未解決の候補は正式APIに掲載していません。
 
 FruitSeg30は全量監査後、寸法が一致しないGuavaクラスを除いた29クラス1,914組を整備し、固定Releaseを公開しました。GitHub mainブランチでは取得APIを利用できます。PyPI配布版への反映はパッケージ更新時に行います。`to_torch_dataset()`は画像と濃淡マスクを返します。
+
+Road Traversing Knowledgeは701組の画像・画素IDマスクを含む領域分割データです。`data.to_torch_dataset()`は各画素を0〜12の整数クラスIDとして保持し、マスクを`torch.long`の高さ×幅テンソルで返します。背景を含め13クラスの出力を使います。公式test splitはありません。ブラジルの道路画像を日本の通学路や安全性の判定に使わないでください。
 
 許諾済みデータの原本・派生データ・manifestは、コードとは分離した[CV_data_artifacts](https://github.com/708san/CV_data_artifacts)で管理します。PyPIとこのリポジトリには画像・LoRA・学習済み重みを収録しません。データを追加する際は、出典・ライセンス・固定版・SHA-256・変換履歴・監査結果をそろえてから、データ専用リポジトリのRelease assetとして公開します。
 
