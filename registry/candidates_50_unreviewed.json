@@ -1603,32 +1603,34 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/bdd69gyhv8/1",
-        "redistribution_reviewed": false,
-        "rights_status": "under_review"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
       },
       "claims": {
-        "quantity": "原画像3,200／増強12,335",
+        "quantity": "元画像3,200枚／整形後3,193枚（完全一致重複7枚を除外）／増強画像12,335枚は未使用",
         "labels": "8果物×新鮮／腐敗＝16分類",
-        "formats": "画像形式未記載",
-        "structure": "原画像＋データ拡張画像",
-        "notes": "同じ画像の増強版をテストに混ぜない"
+        "formats": "元画像JPEG、整形画像JPEG RGB・長辺512px以下",
+        "structure": "元画像のみを固定SHAで取得し、出典・変更表示、labels.csv、metadata.jsonl、train/validation/testを追加",
+        "notes": "CC BY 4.0の出典表示と変更記録を同梱。見た目の研究ラベルで、食用可否・健康・食品安全の判定に使わない。代表64枚の目視で人物・ロゴ・無関係な写り込みなし。"
       },
       "audit": {
-        "technical_status": "metadata_and_sample_checked",
-        "files_examined": 2,
+        "technical_status": "full_pass",
+        "files_examined": 3200,
         "sample_files_examined": 16,
         "sample_zip_crc_check": "passed",
         "sample_image_decode": "passed",
         "inspection_status": "completed",
         "publication_status": "hold",
-        "last_desk_review": "2026-11-06",
-        "evidence_grade": "independent_primary_check",
-        "notes": "Original/Augmentedの固定ZIP2本、中央ディレクトリ、Original各クラス代表16枚を検査。全量デコード・重複・分割漏洩・元画像権利は未解決。"
+        "last_desk_review": "2026-11-11",
+        "evidence_grade": "files_inspected",
+        "notes": "固定版Original Image.zip（SHA-256 f89d67d4c4b24810bcd8406db877db6b1ac9834cea0b0cb56d65acebe59e66ff）を取得し、3,200枚すべてをデコード。16クラス各200枚。完全一致重複7枚を除き3,193枚を最大辺512px・JPEG品質86へ再符号化し、メタデータを削除、seed 42で層化分割。64枚を代表目視。CC BY 4.0・原画像著者撮影説明・出典と変更表示を確認。artifact Release asset未公開のため生徒提供は保留。"
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": [],
-        "adapter": "unassigned_classification",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "classification_v1.0.0",
         "target_colab": true
       },
       "pedagogy": {

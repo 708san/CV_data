@@ -1,3 +1,13 @@
+## 2026-11-11：Fresh and Rotten Fruits 全量監査・整形
+
+- Mendeley Data v1のCC BY 4.0表記、著者撮影の説明、農業機関の専門家によるラベル確認の説明を一次情報で確認。
+- 固定Original Image.zip（2,794,170,228 bytes、SHA-256 `f89d67d4c4b24810bcd8406db877db6b1ac9834cea0b0cb56d65acebe59e66ff`）のみを取得。ZIP安全性・CRCを確認し、3,200枚を全件デコード。
+- 7枚の完全一致重複を除外。残る3,193枚を最大辺512pxのJPEGへ再符号化し、メタデータを削除。16クラスごとにseed 42で分割。
+- 64枚の代表画像を目視し、人物・ロゴ・無関係な写り込みは見つからなかった。全画像の目視レビューではないことを記録。
+- 共通artifact v0.1.0は151MB、ZIP SHA-256 `1ca92043fbb0ebbf86ddac5fec2c264e39151ab0d9def1b618002772d9b182eb`。manifest・全ファイルSHA・cvlesson分類形式を検証済み。
+- 食品ロスを考える題材として登録案を作成。研究ラベルは食用可否・健康・食品安全を示さないと説明。artifact Release asset公開後に生徒向け取得を有効化する。
+- 詳細：[Fresh and Rotten Fruits](datasets/fresh_rotten_fruits.md)、[全量監査JSON](../reports/fresh_rotten_fruits-v1-full-audit.json)。
+
 # 開発進捗
 
 ## 2026-11-08：Recyclable Waste 全画像の目視確認

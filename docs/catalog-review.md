@@ -63,7 +63,7 @@ FruitSeg30 v3は公式固定版の全3,938ファイルを取得し、サイズ�
 | 3 | `geosetennea` | 画像の中の対象物を囲めるか | アノテーション形式、座標、撮影場所、固定SHA-256 |
 | 4 | `fruitseg30` | 果物の領域を画素単位で分けられるか | マスク値、画像との対応、分割条件、固定SHA-256 |
 | 5 | `pistachio_image_dataset` | 画像から2種類のピスタチオを分類できるか | 元画像の権利、クレジット、画像以外の同梱ファイル |
-| 6 | `fresh_rotten_fruits` | 元画像と拡張画像を分けて果物の状態を分類できるか | 元画像の権利、全量重複、分割漏洩、健康・安全用途の禁止 |
+| 6 | `fresh_rotten_fruits` | 果物の画像分類と食品ロス、見た目ラベルの限界を考える | CC BY 4.0と著者撮影説明を確認。原画像3,200枚を全量検査し、3,193枚を整形。安全・健康判定には使わない。Release asset待ち |
 | 7 | `banana_guava_quality` | 果物の品質クラスを分類できるか | ラベル定義、件数差、元画像の権利、健康・安全用途の禁止 |
 | 8 | `quickdraw` | 線画を種類に分けられるか | 大容量取得、利用者投稿の不適切内容、再配布範囲 |
 
@@ -73,7 +73,7 @@ Indian Origin Flowersは公式APIの8,098画像・10クラスを固定し、各�
 
 Pistachio Image Datasetは固定ZIPをSHA-256検証後に安全展開し、画像2,148枚を全量デコードしました。破損0、完全一致重複0で教材分類候補として有望ですが、元画像の権利、クレジット、非画像ファイルの扱い、再配布条件が未完了のため公開保留です（[データ別説明](datasets/pistachio_image_dataset.md)）。
 
-Fresh and Rotten FruitsはOriginal 3,200枚とAugmented 12,335枚の固定ZIPを確認し、Original各クラス代表16枚のCRC・JPEGデコードに成功しました。拡張画像を混ぜた評価漏洩、全量監査、元画像権利、健康・安全用途を確認できるまで公開保留です（[データ別説明](datasets/fresh_rotten_fruits.md)）。
+Fresh and Rotten Fruitsは公式v1のCC BY 4.0表示と著者撮影説明を確認し、原画像3,200枚を全量デコード・完全一致重複監査しました。7枚を除く3,193枚を整形し、64枚を代表目視。固定artifactと取得API案を作成済みで、Release asset公開後に生徒向け一覧へ有効化します（[データ別説明](datasets/fresh_rotten_fruits.md)）。
 
 Banana and Guava Qualityは固定ZIPの1,748画像・6グループを確認し、各グループ代表6枚のCRC・JPEGデコードに成功しました。公式説明の1,738枚との差、ラベル定義、全量監査、元画像権利が未完了のため公開保留です（[データ別説明](datasets/banana_guava_quality.md)）。
 
