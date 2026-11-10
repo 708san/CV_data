@@ -1,28 +1,28 @@
 # カタログ候補の精査状況
 
-更新日：2026-11-09
+更新日：2026-11-10
 
 このページは`registry/candidates_50_unreviewed.json`を、ライブラリに追加する前の判断材料として整理したものです。台帳に書かれたライセンスは候補者の申告であり、ここで「CC BY 4.0」「CC0」などと書かれていても、画像そのものの権利確認や教材での再配布承認を意味しません。
 
 
 ### 2026-11-09 再確認
 
-FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのCC BY 4.0表示に基づき再配布条件を確認しました。Pistachioは画像が研究者自身により作成されたという関連論文の記載も確認し、出典・変更通知・指定論文2件の引用を条件に承認しました。Pistachio artifactはmanifest全件照合とCRC検査に成功し、固定Release v0.1.0を公開、取得APIをmainに反映済みです。Recyclable Wasteは第三者の商標・肖像審査が未完了のため保留です。PyPI配布版への反映はパッケージ更新時です。食品廃棄データとBangladeshi E-Wasteは、それぞれ人物の写り込み・印刷肖像等の確認を続けるため保留です。
+FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのCC BY 4.0表示に基づき再配布条件を確認しました。Pistachioは画像が研究者自身により作成されたという関連論文の記載も確認し、出典・変更通知・指定論文2件の引用を条件に承認しました。Pistachio artifactはmanifest全件照合とCRC検査に成功し、固定Release v0.1.0を公開、取得APIをmainに反映済みです。Recyclable Wasteは第三者の商標・肖像審査が未完了のため保留です。PyPI配布版への反映はパッケージ更新時です。Food Waste Bangladeshは人物の写り込みがあった画像を除外してv0.1.1を公開し、取得APIへ登録します。Bangladeshi E-Wasteはブランド・製品文字の権利確認が残るため保留です。
 
 ## 現在の扱い
 
 | 区分 | 件数 | ライブラリでの扱い |
 | --- | ---: | --- |
-| 固定Releaseの正式データ | 5 | `tomato_leaves`、`smallfishbd`、`fruitseg30`、`pistachio_image_dataset`は生徒向け、`festival_icons`は教師向けLoRA素材 |
+| 固定Releaseの正式データ | 6 | `tomato_leaves`、`fruitseg30`、`smallfishbd`、`pistachio_image_dataset`、`food_waste_bangladesh`は生徒向け、`festival_icons`は教師向けLoRA素材 |
 | 教師向けプレビュー | 1 | `fashion_mnist`。固定コミット・4ファイル・件数・IDX形式を検査済み。権利の最終確認中 |
 | 固定取得条件または公開条件で保留 | 3 | `fashion_mnist`、`kuzushiji_mnist`、`fruits_360`。Fruits-360には固定タグReleaseがなく、実体取得は未開始 |
-| artifact準備済み・Release asset/API待ち | 3 | `bangladeshi_e_waste_image`、`food_waste_bangladesh`、`recyclable_waste`。共通形式化済み。正式公開条件はデータ別説明を参照 |
+| artifact準備済み・Release asset/API待ち | 2 | `bangladeshi_e_waste_image`、`recyclable_waste`。共通形式化済み。正式公開条件はデータ別説明を参照 |
 | 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
 | 公式ページのライセンス表記を再確認した候補 | 7 | `geosetennea`、`indian_origin_flowers`、`fresh_rotten_fruits`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 32 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-候補50件の現状は、student_enabled 1件（FruitSeg30）、candidate 32件、hold 14件、Release待ちの準備済み候補3件です。FruitSeg30はRelease assetとmainブランチの取得APIが利用可能です。PyPI配布版は別途更新が必要です。
+候補台帳52件の現状は、student_enabled 4件、candidate 34件、hold 13件、Release/API反映待ち1件です。Food Waste Bangladesh v0.1.1を固定Releaseで公開し、人物が一部写る11枚とQR風表示1枚を除外した633枚を収録しました。出典・変更表示と撮影カテゴリ上の制限を明示しています。PyPI配布版は別途更新が必要です。
 
 ## 課題別の候補
 
@@ -77,7 +77,7 @@ Fresh and Rotten FruitsはOriginal 3,200枚とAugmented 12,335枚の固定ZIPを
 
 Banana and Guava Qualityは固定ZIPの1,748画像・6グループを確認し、各グループ代表6枚のCRC・JPEGデコードに成功しました。公式説明の1,738枚との差、ラベル定義、全量監査、元画像権利が未完了のため公開保留です（[データ別説明](datasets/banana_guava_quality.md)）。
 
-Food Waste Bangladeshは固定v1 ZIPをSHA-256照合後に安全展開し、645画像すべてをデコードしました。5フォルダは撮影場面ラベルで、婚礼320枚・野菜16枚と偏りがあります。全量の完全一致重複・危険パス・symlinkは0、EXIF/GPS/XMPも検出されませんでした。共通classification artifactを生成・検証しました。食品廃棄量の推定には使えず、Release assetと全画像の権利審査が残るためAPI未公開です（[データ別説明](datasets/food_waste_bangladesh.md)）。
+Food Waste Bangladesh v1はCC BY 4.0を確認し、固定ZIPの既知SHA-256照合と645画像の全量検査・コンタクトシート確認を完了しました。人物の一部が写る11枚とQR風表示の1枚を除外した633枚で共通artifact v0.1.1を作成し、638ファイルのmanifest・CRC検証を通して固定Releaseを公開しました。ライブラリAPI登録をこの変更で反映します。食器・容器の一部に商品表示が残りますが、推薦・承認を意味しない旨を表示します。撮影場面ラベルで食品廃棄量を測る用途には使いません（[データ別説明](datasets/food_waste_bangladesh.md)）。
 
 SmallFishBD v0.1.1は10魚種1,697枚の固定Releaseを公開し、ZIP SHA-256・サイズと固定URLのHTTP 200を確認しました。CC BY 4.0の帰属・変更表示条件を満たすLICENSE.mdを同梱し、ライブラリAPIへ登録します。青系背景への偏りがあるため自然環境での魚種判定には使えません（[データ別説明](datasets/smallfishbd.md)）。
 
