@@ -2456,16 +2456,16 @@
         "labels": "観葉植物7クラス",
         "formats": "JPEG、元画像は3000x3000と説明",
         "structure": "元画像と拡張画像の関係・ファイル構成は未検査",
-        "notes": "家庭の観葉植物を題材にできる。最初は元画像だけを候補とし、拡張版を別分割へ混ぜない。植物名の予測を有毒性・食用・飼育安全判断に使わない。"
+        "notes": "家庭・学校の観葉植物を7種から見分け、植物台帳や手入れ情報へつなげる教材候補。画像ラベルは植物種だけで、水やり・病気・毒性・置き場所の判断はできない。撮影地域はバングラデシュの機関・苗圃で、身近な環境との差と拡張画像による漏洩を確認する。"
       },
       "audit": {
         "technical_status": "metadata_checked",
         "files_examined": 0,
         "inspection_status": "not_started",
         "publication_status": "candidate",
-        "last_desk_review": "2026-11-09",
+        "last_desk_review": "2026-11-10",
         "evidence_grade": "independent_primary_check",
-        "notes": "公式Mendeley v1ページのCC BY 4.0表示、著者の撮影・収集説明、7クラスと元画像・拡張版の件数を確認。固定ファイル一覧、サイズ、SHA-256、画像の内容、拡張画像の対応関係、第三者権利は未確認。"
+        "notes": "Mendeley固定Version 1ページで、原画像1,172枚、7クラス、3000x3000 JPG、拡張版7,000枚、バングラデシュ農業機関・近隣苗圃での収集、農学者によるラベル確認、CC BY 4.0表示を確認。固定ファイル一覧、サイズ、SHA-256、原本/拡張の対応、画像内容、第三者権利、個別プライバシーは未確認。"
       },
       "preparation": {
         "planned_level": "1",
@@ -2475,7 +2475,8 @@
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "student_task_fit": "conditional_candidate_home_school_plant_inventory"
       }
     },
     {
