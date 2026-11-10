@@ -1,0 +1,119 @@
+{
+  "dataset": "FabricSpotDefect",
+  "provider": "Mendeley Data",
+  "version": 1,
+  "doi": "10.17632/6574nhzm8x.1",
+  "reviewed_on": "2026-11-10",
+  "scope": "公開メタデータ全7,921ファイルの構成確認、COCO注釈JSON 6点のSHA-256・全画像/注釈レコード・矩形境界確認、元画像1枚のSHA-256・デコード・目視確認。画像全量の取得・デコード・目視確認は未実施。",
+  "rights": {
+    "provider_license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "dataset_url": "https://data.mendeley.com/datasets/6574nhzm8x/1",
+    "paper_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11648198/",
+    "source_origin": "論文は作者が日常使用の衣類を撮影したと説明し、人・動物実験を行っていないと記載。衣類画像に写る第三者の商標・個人情報等は全量未確認。",
+    "status": "under_review"
+  },
+  "educational_fit": {
+    "decision": "promising_candidate",
+    "student_problem": "衣類の染み位置を画像上に示し、洗濯前の部分洗い・補修・再利用の検討を助ける道具を試作する。",
+    "task": "1クラス (spot) の物体検出",
+    "limits": [
+      "染みの種類や汚れの落ちやすさは予測しない。",
+      "衣類の衛生・安全、洗濯方法、品質を判定しない。",
+      "日常の衣類を撮影したデータだが、日本の家庭や学校の衣類を代表するものではない。"
+    ]
+  },
+  "published_metadata": {
+    "file_count": 7921,
+    "jpg_count": 5614,
+    "txt_count": 2300,
+    "coco_json_count": 6,
+    "yaml_count": 1,
+    "total_bytes": 944595824,
+    "license": "CC BY 4.0"
+  },
+  "derived_original_subset": {
+    "images_referenced_by_coco": 1014,
+    "total_bytes_from_official_file_metadata": 742096444,
+    "source_images_downloaded": 1,
+    "sha256_matches": true,
+    "note": "元画像と拡張画像のCOCO群の区別は、6ファイルの画像数・寸法からの推定。教材artifact作成前に公式フォルダ構造で確認する。"
+  },
+  "coco_files": [
+    {
+      "file_id": "c75b5631-a365-4f23-8fc8-96c5eb543b69",
+      "bytes": 373808,
+      "sha256": "52860826cba1623981b306e8bbfaecd88382c1912f2f20a325390e9f89e5275b",
+      "images": 643,
+      "annotations": 2180,
+      "resolution_observation": "原画像のサイズは一定でない"
+    },
+    {
+      "file_id": "597abeb9-182d-4276-ba62-ee2dc24442cd",
+      "bytes": 106854,
+      "sha256": "e6636a415abc059016b924043b4892b42639e9f4bd0064d0d2d65f658442d551",
+      "images": 219,
+      "annotations": 568,
+      "resolution_observation": "原画像のサイズは一定でない"
+    },
+    {
+      "file_id": "7130c73b-1790-4a99-9abb-b7ba9494f6bd",
+      "bytes": 1133909,
+      "sha256": "e261eba4c015ed98b5ef7964ecf6d5e790ec5652c291a3096d96e5d83c6cdac8",
+      "images": 1929,
+      "annotations": 6533,
+      "resolution_observation": "416×416"
+    },
+    {
+      "file_id": "9095d31a-e822-40ca-80b1-3f1704f41ff9",
+      "bytes": 86643,
+      "sha256": "77dbfbcba9cc22beae405d360f7176bc96ec65a9944b2b69b34da4ba6a2d15ab",
+      "images": 152,
+      "annotations": 540,
+      "resolution_observation": "416×416"
+    },
+    {
+      "file_id": "901ebb5f-c9a5-451c-9209-67954938106e",
+      "bytes": 88096,
+      "sha256": "6c329de0011479d2ac158bdeeea217a2352d9cd7886e42268b9941fed0cfdcb1",
+      "images": 152,
+      "annotations": 540,
+      "resolution_observation": "元画像のサイズは一定でない"
+    },
+    {
+      "file_id": "59f42d96-ba33-40b5-bfe3-4d7785f9ef5b",
+      "bytes": 104930,
+      "sha256": "51dc93507aaaeffbb0a5c7d36d100c4626d146cacfbc7102f3f470c50d010bad",
+      "images": 219,
+      "annotations": 568,
+      "resolution_observation": "416×416"
+    }
+  ],
+  "observed_inconsistencies": [
+    "Mendeleyページの説明は元画像の注釈数を3,286とする一方、論文と確認した元画像用COCO 3点の合計は3,288。",
+    "Mendeleyページの拡張画像の注釈数7,641はCOCO 3点の合計7,641と一致する。論文本文はYOLO 7,641、COCO 7,635と記載しており、論文内のCOCO件数に差がある。",
+    "ページには画像を416×416へ統一したとあるが、元画像用COCOの幅・高さには異なる値が記録されている。元画像と拡張画像の説明が混在している可能性がある。",
+    "COCO各ファイルのカテゴリ一覧にはHole-EnBFとspotがあるが、解析した6ファイルすべてでHole-EnBFの注釈は0件。",
+    "元画像と推定したCOCO 3点で3,288注釈中29件、拡張画像と推定した3点で7,641注釈中63件の矩形が画像境界外。"
+  ],
+  "sample_image": {
+    "file_id": "627840f6-644a-4e32-95fc-b347dc40137d",
+    "filename": "20240208_144228_jpg.rf.016ade472475e9faf56cd5f00cc29998.jpg",
+    "bytes": 1086802,
+    "sha256": "d34131eeb79145cd9ee31b2587233783f08af3b920323bd0cf9e144b157b04c0",
+    "dimensions": [3024, 4032],
+    "annotations": 1,
+    "result": "SHA-256一致、JPEGデコード成功。布の接写で人は写っていない。"
+  },
+  "release_gate": {
+    "approved_for_classroom": false,
+    "approved_for_redistribution": false,
+    "remaining": [
+      "元画像1,014枚のファイル単位manifestと総容量を確定する。",
+      "配布対象画像と注釈の全量対応・欠落・重複・境界値を監査する。",
+      "第三者権利・個人情報を再配布範囲で確認する。",
+      "元画像と拡張画像の対応と分割の意味を確認し、教材用の分割を決める。",
+      "許諾済み整形artifactを作成し、固定Release assetとして公開する。"
+    ]
+  }
+}
