@@ -59,7 +59,7 @@
 - 2026-11-10時点でライブラリ正式一覧には生徒向けデータ5件（`tomato_leaves`、`fruitseg30`、`food_waste_bangladesh`、`smallfishbd`、`pistachio_image_dataset`）がある。ただし、この5件を今回の20件目標へ自動計上しない。課題との適合が弱い候補は20件の対象外とし、必要なら正式一覧の扱いも別途見直す。
 - `tomato_leaves`：7,209枚、破損0、完全一致重複0、ラベル不一致0。標準化後はtrain 5,191 / val 577 / test 1,441。
 - `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。学習済みLoRA重み3〜4件を選ぶための候補調査・取得APIは未着手。
-- 候補台帳は当初50件にConMetal-6とIndoor Plant Varietiesを加えた52件。状態は`candidate` 34件、`hold` 13件、`prepared_artifact_pending_release_asset` 1件、`student_enabled` 4件。`hold`には技術検査済みの候補と、権利・固定版・実体上の問題で未完了の候補が混在します。技術監査と権利承認を混同しません。
+- 調査候補台帳は58件。PR #38で追加した日常課題候補とDWSDを含む。状態は`candidate` 40件、`hold` 13件、`prepared_artifact_pending_release_asset` 1件、`student_enabled` 4件。これは調査状態の集計であり、20件の採用目標や公開承認済み数ではありません。
 - `CV_data_artifacts` mainにはsource manifest 15件、artifact manifest 7件があり、FruitSeg30 v0.1.0とSmallFishBD v0.1.1の固定Release assetを公開済みです。
 - 候補台帳の全項目を一括で`list_available()`へ加えません。選定・権利確認・固定Releaseが済んだデータだけを個別に公開します。
 - 既存Notebook、`CV_sample_data`、そのRelease、タグ、配布ファイルは変更しない。
