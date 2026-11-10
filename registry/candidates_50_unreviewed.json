@@ -310,14 +310,16 @@
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/h5pxbsdz4m/1",
         "redistribution_reviewed": true,
-        "rights_status": "approved_for_redistribution"
+        "rights_status": "license_terms_reviewed_third_party_content_unresolved",
+        "third_party_rights_reviewed": false,
+        "privacy_reviewed": false
       },
       "claims": {
         "quantity": "1,000枚",
         "labels": "紙／段ボール／プラ／金属／ガラス（原データの5種）",
         "formats": "画像形式は公式説明に未記載",
         "structure": "公開1,000枚の細かなラベル配分・ファイル構成は要検査",
-        "notes": "公式公開APIの一覧ではREADMEを除く画像989枚を確認。ページ記載の1,000枚との差11枚は補完していない。固定v1の全画像を技術監査し、一意977枚の縮小一覧目視も完了。ブランド文字と包装上の肖像写真らしきものを確認した。再配布権利・肖像・商標の審査は未完了のため保留。詳細はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。"
+        "notes": "公開APIには989画像があり、ページ記載1,000枚との差11枚は補完していない。学校の回収場所における分別掲示・回収方法の改善を題材にできる。地域ごとの分別規則や第三者権利の問題をモデルに判断させない。"
       },
       "audit": {
         "technical_status": "full_image_audit",
@@ -330,7 +332,7 @@
         "publication_status": "hold",
         "last_desk_review": "2026-11-09",
         "evidence_grade": "independent_primary_check",
-        "notes": "公式固定v1の989画像（1,707,541,468 bytes）すべてを既知サイズ・SHA-256と照合し、ImageIOで全件デコード。カテゴリはcardboard 537 / glass 49 / metal 95 / paper 98 / plastic 210、完全一致重複12ファイル、内容一意977。104枚にGPSを含むEXIFを検出。共通artifact v0.1.0を977画像で作成し、EXIF/GPS等のメタデータ除去、長辺512pxへの縮小、クラス別splitを実施。整形済み一意977枚すべてを縮小一覧で目視し、クラス内容は概ね一致。明瞭な人物は見当たらず、包装上の肖像写真らしきもの1件と複数のブランド・商品文字を確認。全件目視記録はCV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json。第三者の画像権利・肖像・商標を含む再配布審査は未完了のため公開保留。",
+        "notes": "公式固定v1の公開APIにある989画像を全件SHA-256照合・デコードし、完全一致重複12件を除いた977画像で共通artifactを準備。104枚の元画像にGPS EXIFがあり、派生画像から撮影メタデータを除去。977画像すべてを縮小接触シートで目視し、分類内容は概ね一致。明瞭な通行人は見えず、包装上の印刷肖像らしきもの1件と複数の商品・ブランド表示を確認。MendeleyのCC BY 4.0表示と著者自身が撮影したとの説明に基づき、表示されたライセンス条件（帰属・変更表示）を確認済み。ただし印刷肖像・ブランド等の個別第三者権利と完全なプライバシー審査は未解決。学校の分別回収場所で、撮影条件による素材分類の違いを調べ、掲示や回収方法を見直す課題には適合するが、地域の分別ルールを自動決定する用途ではない。再配布Releaseと正式APIは保留。目視report: CV_data_artifacts/reports/recyclable-waste-visual-review-2026-11-08.json",
         "archive_sha256": null,
         "source_file_set_sha256": "154381f20cb1775f24e39801a3516cc0607d8330502924b9da6c7f2cbcfd8339",
         "decode_errors": 0,

@@ -247,3 +247,13 @@
 - artifact準備PR #14をCV_data_artifacts mainへマージ後、固定タグReleaseを作成しました。
 - ZIPは29,799,609 bytes。GitHub APIのSHA-256 `367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547`がローカル成果物と一致し、固定URLはHTTP 200を返しました。
 - CC BY 4.0の帰属・変更表示、全画像視覚レビューを踏まえた再配布審査を記録。ライブラリの固定URL・ハッシュ・公開状態、データ説明、候補台帳を更新する内容をCV_data PR #27に提出しました。
+
+
+## 2026-11-10：Recyclable Wasteの課題適合・権利状態を整理
+
+- 既存の全量監査とartifact準備を再利用。学校・地域の分別回収場所で、素材分類と背景条件の影響を調べ、掲示や回収方法の改善案を作る課題として明記した。
+- 素材クラスは地域の廃棄ルールとは異なるため、モデルに実際の廃棄判断をさせない制約を追加。
+- CC BY 4.0の帰属・変更表示条件の確認と、印刷肖像・商品表示等の個別第三者権利・プライバシー確認を別項目に整理。未解決のため、正式API・Releaseは保留。
+- 候補台帳のpublication_statusを再集計：candidate 34、hold 13、prepared_artifact_pending_release_asset 1、student_enabled 4（計52）。分類状態の変更なし。
+- 詳細：[Recyclable Waste](datasets/recyclable_waste.md)、[候補精査状況](catalog-review.md)。
+

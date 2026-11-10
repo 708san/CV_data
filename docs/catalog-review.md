@@ -7,7 +7,7 @@
 
 ### 2026-11-09 再確認
 
-FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのCC BY 4.0表示に基づき再配布条件を確認しました。Pistachioは画像が研究者自身により作成されたという関連論文の記載も確認し、出典・変更通知・指定論文2件の引用を条件に承認しました。Pistachio artifactはmanifest全件照合とCRC検査に成功し、固定Release v0.1.0を公開、取得APIをmainに反映済みです。Recyclable Wasteは第三者の商標・肖像審査が未完了のため保留です。PyPI配布版への反映はパッケージ更新時です。Food Waste Bangladeshは人物の写り込みがあった画像を除外してv0.1.1を公開し、取得APIへ登録します。Bangladeshi E-Wasteはブランド・製品文字の権利確認が残るため保留です。
+FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのCC BY 4.0表示に基づき再配布条件を確認しました。Pistachioは画像が研究者自身により作成されたという関連論文の記載も確認し、出典・変更通知・指定論文2件の引用を条件に承認しました。Pistachio artifactはmanifest全件照合とCRC検査に成功し、固定Release v0.1.0を公開、取得APIをmainに反映済みです。Recyclable WasteのCC BY 4.0帰属・変更条件は確認済みですが、第三者の商品表示・印刷肖像の審査は未完了のため公開保留です。PyPI配布版への反映はパッケージ更新時です。Food Waste Bangladeshは人物の写り込みがあった画像を除外してv0.1.1を公開し、取得APIへ登録します。Bangladeshi E-Wasteはブランド・製品文字の権利確認が残るため保留です。
 
 ## 現在の扱い
 
@@ -110,7 +110,7 @@ datasets.list_tasks(audience="teacher", include_preview=True)
 
 未審査候補は台帳に残しますが、`list_available()`、`list_tasks()`、Notebookの取得例には出しません。候補を追加するときは、固定URL・SHA-256・画像検査・ライセンス証拠・高校生向けの注意書き・共通アダプタ・ネットワーク不要テストを一つの変更としてそろえます。
 
-Recyclable Wasteは公式v1の公開989画像を全件取得・SHA-256照合・デコードし、完全一致重複12枚を除いた977画像の共通artifactを準備しました。GPS情報を持つ104枚のEXIF等を出力から除き、長辺512px以下へ縮小しました。著者自身の撮影というページ説明とCC BY 4.0を確認しましたが、全画像の人手によるプライバシー確認を終えていないためAPI・Releaseは保留です（[データ別説明](datasets/recyclable_waste.md)）。
+Recyclable Wasteは公式v1の公開989画像を全件取得・SHA-256照合・デコードし、完全一致重複12枚を除いた977画像の共通artifactを準備しました。学校の分別回収場所で素材分類を試し、背景条件が誤分類に与える影響から掲示・回収方法を検討する課題に適合します。素材ラベルは地域の廃棄ルールを表さないため、自動廃棄判断には使いません。CC BY 4.0の帰属・変更表示条件は確認済みですが、包装上の印刷肖像・商品表示等の第三者権利とプライバシー確認が残り、正式API・Releaseは保留です（[データ別説明](datasets/recyclable_waste.md)）。
 
 Fruits-360公式repoはCC BY-SA 4.0を表示しますが、更新中ブランチ以外に固定タグReleaseを確認できません。source pinningの条件を満たすまで取得しません（[データ別説明](datasets/fruits_360.md)）。
 
