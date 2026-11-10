@@ -2014,7 +2014,7 @@
       "api_id": "fabricspotdefect",
       "name": "FabricSpotDefect",
       "task": "detection",
-      "priority": "advanced",
+      "priority": "conditional",
       "source": {
         "landing_page": "https://data.mendeley.com/datasets/6574nhzm8x/1",
         "provider": "mendeley",
@@ -2034,15 +2034,16 @@
         "labels": "布の汚れ・油染み等の位置",
         "formats": "JPG 416×416＋位置ラベル（実形式未記載）",
         "structure": "original/augmented＋train/validation/test",
-        "notes": "原本と増強画像の漏洩を防ぐ"
+        "notes": "家庭の布地を対象に、しみ・汚れの位置を検出する教材候補。洗濯・補修による布製品の長期利用につなげる可能性があるが、公式主目的は繊維生産の品質管理。家庭衣類への適合、汚れの種類や落とし方の予測能力は未確認。"
       },
       "audit": {
-        "technical_status": "not_tested",
+        "technical_status": "metadata_checked",
         "files_examined": 0,
         "inspection_status": "not_started",
         "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "independent_primary_check",
+        "notes": "Mendeley固定Version 1ページで、原画像1,014枚・3,286欠陥注釈、増強版2,300枚・7,641ラベル、家庭布地・自然光・3機種のスマートフォン撮影、416x416、CC BY 4.0表示を確認。固定ファイル一覧、サイズ、SHA-256、注釈形式と実体、元画像と増強版の対応、第三者権利、個人情報は未確認。"
       },
       "preparation": {
         "planned_level": "to_be_determined",
@@ -2052,7 +2053,8 @@
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "student_task_fit": "conditional_candidate_textile_repair_and_care"
       }
     },
     {
