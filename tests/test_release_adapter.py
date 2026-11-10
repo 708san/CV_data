@@ -207,14 +207,14 @@ class ReleaseTests(unittest.TestCase):
             task="classification", audience="teacher", include_preview=True,
         )
         self.assertEqual([item["id"] for item in student], ["tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"])
-        self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "smallfishbd", "pistachio_image_dataset", "fashion_mnist"})
+        self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "fashion_mnist"})
         fashion = next(item for item in teacher if item["id"] == "fashion_mnist")
         self.assertEqual(fashion["publication_status"], "teacher_preview_only")
 
     def test_task_catalog_only_shows_usable_choices(self):
         tasks = datasets.list_tasks()
         self.assertEqual([item["task"] for item in tasks], ["classification", "segmentation"])
-        self.assertEqual(tasks[0]["datasets"], ["tomato_leaves", "smallfishbd", "pistachio_image_dataset"])
+        self.assertEqual(tasks[0]["datasets"], ["tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"])
         teacher_tasks = datasets.list_tasks(audience="teacher", include_preview=True)
         self.assertEqual(
             [item["task"] for item in teacher_tasks], ["classification", "segmentation", "lora"]
