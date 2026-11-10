@@ -2024,25 +2024,25 @@
         "reference_url": "https://data.mendeley.com/datasets/6574nhzm8x/1"
       },
       "rights": {
-        "license_claim": "CC BY 4.0",
+        "license_claim": "CC BY 4.0（Mendeley Data公開ページで確認。第三者権利とプライバシーは継続確認）",
         "evidence_url": "https://data.mendeley.com/datasets/6574nhzm8x/1",
         "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "rights_status": "under_review"
       },
       "claims": {
-        "quantity": "原1,014→増強2,300",
-        "labels": "布の汚れ・油染み等の位置",
-        "formats": "JPG 416×416＋位置ラベル（実形式未記載）",
-        "structure": "original/augmented＋train/validation/test",
-        "notes": "原本と増強画像の漏洩を防ぐ"
+        "quantity": "公開APIにJPG 5,614・TXT 2,300・COCO JSON 6・YAML 1の計7,921ファイル、944,595,824 bytes。COCOから元画像1,014枚＋3,288注釈、拡張画像2,300枚＋7,641注釈を確認",
+        "labels": "COCOは単一クラスspotの矩形。元画像側注釈数は公開説明3,286とCOCO合計3,288で不一致",
+        "formats": "JPG、YOLO TXT、COCO JSON、YAML。代表画像は3024×4032、サイズは一定でない",
+        "structure": "COCO 6点は元画像と拡張画像に分かれると推定。元画像1,014枚と拡張画像2,300枚のファイル単位対応・公式splitを要確認",
+        "notes": "家庭衣類の染み位置の可視化・補修/再利用の題材候補。染み種類・洗濯効果は判定しない。注釈・第三者権利・画像全量は未監査"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
+        "technical_status": "sample_pass",
+        "files_examined": 7,
+        "inspection_status": "in_progress",
         "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "files_inspected"
       },
       "preparation": {
         "planned_level": "to_be_determined",
