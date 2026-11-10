@@ -2610,25 +2610,46 @@
       "rights": {
         "license_claim": "CC BY-NC 3.0 (Mendeley v2)",
         "evidence_url": "https://data.mendeley.com/datasets/5ty2wb6gvg/2",
-        "redistribution_reviewed": false,
-        "rights_status": "under_review",
-        "notes": "公式Mendeley v2のCC BY-NC 3.0を確認。固定版の作者・画像収集権利と、NCの配布条件内で教材用途・GitHub Releaseを行えることを監査中。商用利用は認めない前提。大会サイトは顔とナンバープレートを目視でぼかしたと説明するが、実画像の確認前。"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_noncommercial_educational_redistribution",
+        "notes": "固定Version 2のMendeley表示はCC BY-NC 3.0。帰属表示を保った教育目的の非商用再配布・改変を対象に準備可。商用利用は不可。事業・有料サービスの利用者に配布する場合は別許諾が必要。画像内容は公開道路の車載写真で、人・車・住宅が写る。配布前に顔・ナンバープレートの個別プライバシー監査を継続する。"
       },
       "claims": {
-        "quantity": "全体26,336枚、4種類の道路損傷。公式論文は日本train 10,506枚・600×600を報告。",
-        "labels": "縦ひびD00、横ひびD10、亀甲ひびD20、ポットホールD40の4クラス",
-        "formats": "JPEG画像とPASCAL VOC形式XML注釈と説明",
-        "structure": "日本を含む3か国の画像。公式challengeのtrain/test1/test2分割。日本subsetのみを候補にする。",
-        "notes": "日本の道路画像が含まれ、通学路や地域道路の損傷を見つけて管理者へ相談する題材に使える可能性が高い。公開データだけで自分の通学路の損傷頻度や危険度を評価せず、現地の同条件画像や自治体の点検情報と照合する。画像モデルは道路の安全性・修繕優先度を決めない。Mendeley Version 2のライセンス表示はCC BY-NC 3.0で、商用利用不可。"
+        "quantity": "固定v2全体は26,336枚。日本trainは10,506枚、test1は1,313枚、test2は1,314枚。今回の実体監査は日本train 10,506枚のみ。",
+        "labels": "日本trainで7クラス・24,754 bounding boxes: D00縦ひび、D10横ひび、D20亀甲状ひび、D40ポットホール等、D43横断歩道の視認性、D44白線の視認性、D50マンホール。",
+        "formats": "JPEG画像とPASCAL VOC XML。",
+        "structure": "公式zip内train.tar.gzから日本trainのみ抽出。画像10,506枚と同名XML 10,506件。",
+        "notes": "通学路・地域道路のひび、穴、横断歩道や白線の見え方を調べ、自治体や学校に根拠を添えて改善を相談する課題に接続できる。日本の車載画像だが2020年頃の撮影条件で、現在の道路状態や地域全体の代表サンプルではない。認識結果だけで危険度や修繕優先度を決めない。配布物はCC BY-NC 3.0に従う非商用教育用途に限定する。"
       },
       "audit": {
-        "technical_status": "fixed_archive_metadata_verified_download_in_progress",
-        "files_examined": 0,
-        "inspection_status": "not_started",
+        "technical_status": "full_japan_train_image_xml_audit",
+        "files_examined": 21012,
+        "inspection_status": "all_train_images_decoded; all_xml_boxes_checked; 36_image_contact_sheet_reviewed",
         "publication_status": "candidate",
         "last_desk_review": "2026-11-10",
-        "evidence_grade": "independent_primary_check",
-        "notes": "Mendeley固定Version 2の公開メタデータはCC BY-NC 3.0、DOI 10.17632/5ty2wb6gvg.2。公開zip metadata APIで固定archive 1,848,075,315 bytes、SHA-256 678fb0cd72baa214accf54d44611fffbc348055b0d65fbc0e9744b02d5fa084a。公式RDD2020 challengeページは日本・インド・チェコの車載スマートフォン画像、bbox注釈、顔とナンバープレートのぼかしを説明。論文記載の日本train subsetは10,506枚、600x600。通学路・地域道路の損傷記録を題材にできるが、モデルのみで危険度・修繕優先度を決めない。NC条件、固定ZIP、実画像・XML、第三者権利・プライバシーを確認するため固定archiveを取得・SHA検証中。"
+        "evidence_grade": "fixed_official_archive_hash_verified_and_dataset_article",
+        "notes": "Mendeley v2 archive 1,848,075,315 bytes / SHA-256 678fb0cd72baa214accf54d44611fffbc348055b0d65fbc0e9744b02d5fa084aを確認後に監査。ZIP 4 entries、CRC正常、危険パス・symlink・重複名なし。入れ子tar.gz 3本を走査し、全tarでパストラバーサル・symlink・重複画像/XML名なし。trainの日本subsetだけを一時領域へ抽出し、JPEG 10,506枚・VOC XML 10,506件を確認。全JPEGをImageIOでデコード、失敗0、完全一致重複0、GPSメタデータ0。画像寸法とXML寸法は全件一致（600x600 10,187、1024x1024 147、540x540 124、1080x1080 48）。全XMLを解析し、7クラス24,754 boxesを集計。Japan_001265.xmlに幅0のbboxが1個あり、整形時には当該annotationだけ除外して監査記録に残す。36枚の決定的contact sheetと追加の原寸画像を目視。日本の公道・住宅・車・歩行者を含み、標本で顔・ナンバーが明瞭に識別できる事例は見当たらず。出典challengeは明瞭な顔・ナンバーをぼかすと説明するが全画像を個別の目視確認はしていないため、公開前にプライバシー監査を完了する。画像の完全版artifactは未整形・未作成。",
+        "archive_sha256": "678fb0cd72baa214accf54d44611fffbc348055b0d65fbc0e9744b02d5fa084a",
+        "archive_size_bytes": 1848075315,
+        "image_count": 10506,
+        "annotation_count": 10506,
+        "image_decode_errors": 0,
+        "image_dimensions": "10,187 at 600x600; 147 at 1024x1024; 124 at 540x540; 48 at 1080x1080; all agree with XML dimensions",
+        "image_xml_pairs": 10506,
+        "image_xml_dimension_mismatches": 0,
+        "image_duplicate_sha_groups": 0,
+        "gps_metadata_images": 0,
+        "annotation_count_total": 24754,
+        "class_counts": {
+          "D00": 4049,
+          "D10": 3979,
+          "D20": 6199,
+          "D40": 2243,
+          "D43": 736,
+          "D44": 3995,
+          "D50": 3553
+        },
+        "invalid_bbox_count": 1
       },
       "preparation": {
         "planned_level": "to_be_determined",
@@ -2639,7 +2660,8 @@
       "pedagogy": {
         "presentation_mode": "A",
         "publish_student_example": false,
-        "student_task_fit": "strong_candidate_japanese_road_observation"
+        "student_task_fit": "strong_noncommercial_community_road_accessibility",
+        "notes": "地域の通学路や歩道のひび・穴・横断歩道の視認性を調査し、管理者に相談する課題に活用。公開データのみで生徒自身の通学路の状態を断定しない。"
       }
     },
     {
