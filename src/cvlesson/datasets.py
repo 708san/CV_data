@@ -528,7 +528,7 @@ _SOURCES: dict[str, ReleaseSource] = {
             "provider": "Mohammad Manzurul Islam; Saifur Rahman; Fatema Tahsin; Zarif Syndeed Sikder",
             "url": "https://doi.org/10.17632/w68f9w6jmm.1",
             "release_repository": "https://github.com/708san/CV_data_artifacts",
-            "release_tag": "food-waste-bangladesh-v0.1.0",
+            "release_tag": "food-waste-bangladesh-v0.1.1",
         },
         file_urls={
             "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/food-waste-bangladesh-v0.1.1/food_waste_bangladesh-v0.1.1.zip",
