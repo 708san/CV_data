@@ -234,11 +234,12 @@ class DatasetBundle:
         records = []
         for row in _read_rows(self.labels_csv):
             image = row["image"]
+            label = row["class_name"]
             records.append({
                 "image_path": str((self.root / image).resolve()),
                 "mask_path": str((self.root / row["mask"]).resolve()),
-                "label": row["class_name"],
-                "label_ja": names_ja.get(row["class_name"], row["class_name"]),
+                "label": "複数クラスの画素マスク" if label == "__pixel_labels__" else label,
+                "label_ja": "複数クラスの画素マスク" if label == "__pixel_labels__" else names_ja.get(label, label),
                 "label_id": int(row["class_id"]),
                 "split": row["split"],
                 "sample_id": _sample_id(image),
@@ -270,6 +271,7 @@ class DatasetBundle:
             raise ValueError("nは1以上にしてください。")
         try:
             import matplotlib.pyplot as plt
+            import numpy as np
             from PIL import Image
         except ImportError as exc:
             raise DatasetError("画像表示にはPillowとmatplotlibが必要です。") from exc
@@ -293,7 +295,18 @@ class DatasetBundle:
             title = record.get("label_ja", record.get("caption", ""))
             if self.kind == "segmentation":
                 with Image.open(record["mask_path"]) as mask:
-                    axis.imshow(mask.convert("L"), cmap="Reds", vmin=0, vmax=255, alpha=0.45)
+                    mask_values = np.asarray(mask.convert("L"))
+                    if self.manifest.get("mask_encoding") == "class_id_grayscale":
+                        axis.imshow(
+                            mask_values,
+                            cmap="tab20",
+                            vmin=-0.5,
+                            vmax=max(0.5, len(self.classes) - 0.5),
+                            alpha=0.5,
+                            interpolation="nearest",
+                        )
+                    else:
+                        axis.imshow(mask_values, cmap="Reds", vmin=0, vmax=255, alpha=0.45)
             if self.kind == "detection":
                 from matplotlib.patches import Rectangle
                 boxes = record["boxes"]
@@ -342,6 +355,14 @@ class DatasetBundle:
         if not records:
             raise DatasetError(f"split={split}に画像がありません。")
         dataset_type = _TorchSegmentationDataset if self.kind == "segmentation" else _TorchClassificationDataset
+        if self.kind == "segmentation":
+            return dataset_type(
+                records,
+                image_size=image_size,
+                torch_module=torch,
+                mask_encoding=self.manifest.get("mask_encoding", "grayscale_0_255"),
+                class_count=len(self.classes),
+            )
         return dataset_type(records, image_size=image_size, torch_module=torch)
 
     def quality_summary(self, *, seed: int = 42, val_fraction: float = 0.1) -> dict[str, Any]:
@@ -447,6 +468,50 @@ _SOURCES: dict[str, ReleaseSource] = {
             "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/bangladeshi-ewaste-v0.1.0/bangladeshi_ewaste-v0.1.0.zip",
         },
         published=False,
+    ),
+    "road_traversing_knowledge": ReleaseSource(
+        id="road_traversing_knowledge", case_id="road_traversing_knowledge",
+        tag="road-traversing-knowledge-v0.1.0",
+        sha256="e427708f7c31c85502e6ff06b0f94fb9e5b379e11bb6983d531fc242d189a63a",
+        archive_size=101_584_942, image_count=701,
+        kind="segmentation", name_ja="道路環境の領域分割（13クラス）",
+        rights_note="CC BY 4.0。元データの著者・出典・共通形式への整理を表示します。道路の危険度や通行可否を判定する用途には使いません。",
+        aliases_ja=("道路環境の領域分割", "道路のひび・穴の画像"),
+        task="segmentation", audiences=("student", "teacher"), difficulty="intermediate",
+        use_cases_ja=("通学路や地域の道路画像から、路面や水たまりなどの領域を分ける", "画素マスクを色分けして道路環境を見比べる"),
+        input_description_ja="ブラジルの地方道路を撮影した352×288のPNG画像",
+        output_description_ja="背景を含む13種類の画素クラスを示すIDマスク",
+        download_size_mb=96.9, audit_status="full_image_and_mask_audit",
+        classes=(
+            "background", "road_asphalt", "road_paved", "road_unpaved", "road_marking",
+            "speed_bump", "cats_eye", "storm_drain", "manhole_cover", "road_patch",
+            "water_puddle", "pothole", "road_crack",
+        ),
+        class_names_ja=(
+            "背景", "アスファルト舗装", "舗装道路", "未舗装道路", "道路標示",
+            "減速帯", "道路鋲（キャッツアイ）", "雨水ます", "マンホール", "舗装補修跡",
+            "水たまり", "道路の穴", "道路のひび割れ",
+        ),
+        label_names_ja={"__pixel_labels__": "複数クラスの画素マスク"},
+        license_info={
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+            "rights_review": "固定版のMendeley Data掲載ライセンスを確認。著者・出典・画像再圧縮の変更表示を付けます。",
+        },
+        source_info={
+            "dataset_name": "Road Traversing Knowledge",
+            "provider": "Thiago Rateke; Aldo von Wangenheim; Rafael Toledo",
+            "url": "https://doi.org/10.17632/hssswvmjwf.1",
+            "source_file": "RTK.zip",
+            "source_file_id": "2c72e75d-1f50-457a-86f0-a5e3a4174df9",
+            "source_sha256": "78803e8df89eae6130139ee9c48de947edd08015fe56826c30fdacb2599841db",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "road-traversing-knowledge-v0.1.0",
+        },
+        file_urls={
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/road-traversing-knowledge-v0.1.0/road_traversing_knowledge-v0.1.0.zip",
+        },
+        published=True,
     ),
     "fruitseg30": ReleaseSource(
         id="fruitseg30", case_id="fruitseg30", tag="fruitseg30-v0.1.0",
@@ -765,12 +830,22 @@ class _TorchClassificationDataset:
 
 
 class _TorchSegmentationDataset:
-    """画像と濃淡マスクを遅延読み込みするPyTorch Dataset互換クラス。"""
+    """画像と濃淡またはクラスIDマスクを遅延読み込みするPyTorch Dataset互換クラス。"""
 
-    def __init__(self, records: list[dict[str, Any]], *, image_size: tuple[int, int], torch_module: Any) -> None:
+    def __init__(
+        self,
+        records: list[dict[str, Any]],
+        *,
+        image_size: tuple[int, int],
+        torch_module: Any,
+        mask_encoding: str = "grayscale_0_255",
+        class_count: int = 0,
+    ) -> None:
         self._records = records
         self._image_size = image_size
         self._torch = torch_module
+        self._mask_encoding = mask_encoding
+        self._class_count = class_count
         self.targets = [int(record["label_id"]) for record in records]
 
     def __len__(self) -> int:
@@ -789,7 +864,12 @@ class _TorchSegmentationDataset:
             image_array = np.asarray(image, dtype=np.float32) / 255.0
         with Image.open(record["mask_path"]) as mask:
             mask = mask.convert("L").resize(self._image_size[::-1], Image.Resampling.NEAREST)
-            mask_array = np.asarray(mask, dtype=np.float32)[None, :, :] / 255.0
+            if self._mask_encoding == "class_id_grayscale":
+                mask_array = np.asarray(mask, dtype=np.int64)
+                if mask_array.size and (mask_array.min() < 0 or mask_array.max() >= self._class_count):
+                    raise DatasetError("画素マスクにmanifestのクラス範囲外のIDがあります。")
+            else:
+                mask_array = np.asarray(mask, dtype=np.float32)[None, :, :] / 255.0
         image_tensor = self._torch.from_numpy(image_array).permute(2, 0, 1).contiguous()
         mask_tensor = self._torch.from_numpy(mask_array).contiguous()
         return image_tensor, mask_tensor
@@ -1293,6 +1373,16 @@ def _validate_segmentation_case(root: Path, src: ReleaseSource) -> dict[str, Any
             or manifest.get("image_count") != src.image_count
             or manifest.get("classes") != list(src.classes)):
         raise DatasetError("領域分割manifestの版・画像数・クラスが固定Releaseと一致しません。")
+    multiclass = manifest.get("mask_encoding") == "class_id_grayscale"
+    if multiclass:
+        classes_path = root / "classes.json"
+        if not classes_path.is_file():
+            raise DatasetError("多クラス画素マスクartifactのclasses.jsonがありません。")
+        class_items = json.loads(classes_path.read_text(encoding="utf-8")).get("classes")
+        if (not isinstance(class_items, list) or not all(isinstance(item, dict) for item in class_items)
+                or [item.get("name") for item in class_items] != list(src.classes)
+                or [item.get("id") for item in class_items] != list(range(len(src.classes)))):
+            raise DatasetError("classes.jsonの画素クラスIDとmanifestが一致しません。")
     rows = _read_rows(root / "labels.csv")
     if not rows or len(rows) != src.image_count:
         raise DatasetError("領域分割artifactのlabels.csv件数が画像数と一致しません。")
@@ -1303,14 +1393,24 @@ def _validate_segmentation_case(root: Path, src: ReleaseSource) -> dict[str, Any
         image, mask = row.get("image", ""), row.get("mask", "")
         image_parts, mask_parts = PurePosixPath(image).parts, PurePosixPath(mask).parts
         cls, split = row.get("class_name", ""), row.get("split", "")
+        if multiclass:
+            valid_layout = (
+                len(image_parts) == 3 and len(mask_parts) == 3
+                and PurePosixPath(image_parts[2]).stem == PurePosixPath(mask_parts[2]).stem
+                and cls == "__pixel_labels__" and row.get("class_id") == "-1"
+            )
+        else:
+            valid_layout = (
+                len(image_parts) == 4 and len(mask_parts) == 4
+                and cls in class_to_id and image_parts[2] == cls and mask_parts[2] == cls
+                and mask_parts[-1] == PurePosixPath(image_parts[-1]).stem + "_mask.png"
+                and row.get("class_id") == str(class_to_id.get(cls))
+            )
         if ("\\" in image or "\\" in mask or image_parts[:2] != ("images", split)
                 or mask_parts[:2] != ("masks", split) or split not in {"train", "val", "test"}
-                or len(image_parts) != 4 or len(mask_parts) != 4
                 or any(part in {"", ".", ".."} for part in (*image_parts, *mask_parts))
-                or cls not in class_to_id or image_parts[2] != cls or mask_parts[2] != cls
-                or mask_parts[-1] != PurePosixPath(image_parts[-1]).stem + "_mask.png"
-                or row.get("class_id") != str(class_to_id[cls])
-                or PurePosixPath(image).suffix.lower() not in {".jpg", ".jpeg"}
+                or not valid_layout
+                or PurePosixPath(image).suffix.lower() not in ({".jpg", ".jpeg", ".png"} if multiclass else {".jpg", ".jpeg"})
                 or PurePosixPath(mask).suffix.lower() != ".png"
                 or image in expected_images or mask in expected_masks):
             raise DatasetError(f"領域分割artifactの画像・マスク対応が不正です: {image}")
