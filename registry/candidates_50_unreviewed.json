@@ -4,7 +4,7 @@
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
     "as_of": "2026-11-10",
     "original_record_count": 50,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 2026-11-10に公式ページの固定Version 2を確認したCLICK Trash Dataset候補を追加。画像実体・ファイルSHA・ライセンス表示の内部整合性は未検査。 2026-11-10に給食の食前・食後画像と実測食べ残し重量を含むLeFood-Set候補を追加。 2026-11-10に日本を含む固定Version 2のRDD2020道路損傷データを確認し、非商用ライセンスを記録。 2026-11-10に歩行者アクセシビリティ関連のFPVCrosswalk2025とFootpathVisionを一次確認し候補に追加。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 2026-11-10に公式ページの固定Version 2を確認したCLICK Trash Dataset候補を追加。画像実体・ファイルSHA・ライセンス表示の内部整合性は未検査。 2026-11-10に給食の食前・食後画像と実測食べ残し重量を含むLeFood-Set候補を追加。 2026-11-10に日本を含む固定Version 2のRDD2020道路損傷データを確認し、非商用ライセンスを記録。 2026-11-10に歩行者アクセシビリティ関連のFPVCrosswalk2025とFootpathVisionを一次確認し候補に追加。 2026-11-10にData in Brief一次論文とMendeley固定v1を確認し、DWSD（街路・公園等のごみ領域分割）を地域清掃課題の候補として追加。画像・第三者権利・プライバシー監査前のため公開承認はしていない。"
   },
   "records": [
     {
@@ -2713,6 +2713,55 @@
         "presentation_mode": "A",
         "publish_student_example": false,
         "student_task_fit": "conditional_candidate_pedestrian_accessibility"
+      }
+    },
+    {
+      "id": "DS-159",
+      "api_id": "dwsd_dense_waste",
+      "name": "DWSD: Dense Waste Segmentation Dataset",
+      "task": "segmentation",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/gr99ny6b8p/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "gr99ny6b8p",
+        "version": "1",
+        "content_origin_claim": "論文では著者らが西ベンガル州の街路・公園・大学周辺等で携帯電話により撮影したと説明",
+        "reference_url": "https://data.mendeley.com/datasets/gr99ny6b8p/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0 (Mendeley v1; article also CC BY 4.0)",
+        "evidence_url": "https://data.mendeley.com/datasets/gr99ny6b8p/1",
+        "redistribution_reviewed": false,
+        "rights_status": "under_review",
+        "notes": "掲載者のライセンス表示と論文のCC BY 4.0表記は確認。公開場所の写り込み、人物・車両番号等、ファイル単位の第三者権利を未確認。"
+      },
+      "claims": {
+        "quantity": "784枚、2,350物体領域",
+        "labels": "ごみ14分類・セマンティック領域",
+        "formats": "448×448 RGB画像＋色付き領域マスク",
+        "structure": "train 640 / test 144。西ベンガル州の街路・公園・芝地・ごみ集積地等。",
+        "notes": "地域の公園や通学路のごみ拾い・分別案を考える導入候補。画像中のごみの種類や領域を調べられるが、撮影場所・位置・量の時系列データはなく、日本の地域のごみ分布を示さない。地域の清掃優先度や自治体の分別規則をモデルだけで決めない。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "official_article_and_fixed_mendeley_page_checked_images_not_inspected",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "official_primary_page_and_open_access_research_article",
+        "notes": "Mendeley v1は784画像・2,350 segments・14カテゴリ・CC BY 4.0を記載。Data in Brief論文は撮影地と方法、640/144 train/test分割、画像と色付きmaskを説明し、倫理欄で人対象・動物実験・SNS収集なしと記載。個々の画像は未検査。"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "planned_semantic_segmentation",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "A",
+        "publish_student_example": false,
+        "notes": "高校生向けの地域清掃・公園ごみ課題に接続しやすい有望候補。画像・権利・プライバシー監査通過後に採用可否を決める。"
       }
     }
   ]
