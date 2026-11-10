@@ -206,7 +206,7 @@ class ReleaseTests(unittest.TestCase):
         teacher = datasets.list_available(
             task="classification", audience="teacher", include_preview=True,
         )
-        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "smallfishbd", "pistachio_image_dataset"])
+        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"])
         self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "smallfishbd", "pistachio_image_dataset", "fashion_mnist"})
         fashion = next(item for item in teacher if item["id"] == "fashion_mnist")
         self.assertEqual(fashion["publication_status"], "teacher_preview_only")
@@ -397,7 +397,7 @@ class ReleaseTests(unittest.TestCase):
     def test_info_without_id_returns_catalog(self):
         catalog = datasets.info()
         self.assertIsInstance(catalog, list)
-        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "smallfishbd", "pistachio_image_dataset"})
+        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"})
 
     def test_preview_dataset_is_not_in_formal_catalog(self):
         self.assertNotIn("fashion_mnist", {item["id"] for item in datasets.list_available()})
