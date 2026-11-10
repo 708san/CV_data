@@ -2602,29 +2602,33 @@
         "provider_dataset_id": "5ty2wb6gvg",
         "version": "2",
         "reference_url": "https://rdd2020.sekilab.global/data/",
-        "content_origin_claim": "日本を含む各国の道路画像。運転車両に取り付けたスマートフォンで撮影"
+        "content_origin_claim": "日本を含む各国の道路画像。運転車両に取り付けたスマートフォンで撮影",
+        "archive_size_bytes": 1848075315,
+        "archive_sha256": "678fb0cd72baa214accf54d44611fffbc348055b0d65fbc0e9744b02d5fa084a",
+        "archive_url": "https://data.mendeley.com/public-api/zip/5ty2wb6gvg/download/2"
       },
       "rights": {
-        "license_claim": "CC BY-NC 3.0 (Mendeley Version 2 page)",
+        "license_claim": "CC BY-NC 3.0 (Mendeley v2)",
         "evidence_url": "https://data.mendeley.com/datasets/5ty2wb6gvg/2",
         "redistribution_reviewed": false,
-        "rights_status": "under_review"
+        "rights_status": "under_review",
+        "notes": "公式Mendeley v2のCC BY-NC 3.0を確認。固定版の作者・画像収集権利と、NCの配布条件内で教材用途・GitHub Releaseを行えることを監査中。商用利用は認めない前提。大会サイトは顔とナンバープレートを目視でぼかしたと説明するが、実画像の確認前。"
       },
       "claims": {
-        "quantity": "全体26,336枚。公式論文では日本のtrain画像10,506枚と説明",
+        "quantity": "全体26,336枚、4種類の道路損傷。公式論文は日本train 10,506枚・600×600を報告。",
         "labels": "縦ひびD00、横ひびD10、亀甲ひびD20、ポットホールD40の4クラス",
         "formats": "JPEG画像とPASCAL VOC形式XML注釈と説明",
-        "structure": "train、test1、test2。日本train subsetと画像のみのtest setを含むと説明",
+        "structure": "日本を含む3か国の画像。公式challengeのtrain/test1/test2分割。日本subsetのみを候補にする。",
         "notes": "日本の道路画像が含まれ、通学路や地域道路の損傷を見つけて管理者へ相談する題材に使える可能性が高い。公開データだけで自分の通学路の損傷頻度や危険度を評価せず、現地の同条件画像や自治体の点検情報と照合する。画像モデルは道路の安全性・修繕優先度を決めない。Mendeley Version 2のライセンス表示はCC BY-NC 3.0で、商用利用不可。"
       },
       "audit": {
-        "technical_status": "metadata_checked",
+        "technical_status": "fixed_archive_metadata_verified_download_in_progress",
         "files_examined": 0,
         "inspection_status": "not_started",
         "publication_status": "candidate",
         "last_desk_review": "2026-11-10",
         "evidence_grade": "independent_primary_check",
-        "notes": "Mendeley固定Version 2の全体件数・4ラベル・CC BY-NC 3.0表示、および公式RDD2020説明ページの画像内容・Japan/India/Czech出典・人物とナンバープレートを目視でぼかしたとの説明を確認。公式データ論文は日本train 10,506画像と説明。配布アーカイブ、サイズ・SHA-256、画像内容、注釈実物、国別分割の正確な内訳、個別権利と再配布条件は未確認。非商用条件の適用を確認するまで取得API・配布を保留。"
+        "notes": "Mendeley固定Version 2の公開メタデータはCC BY-NC 3.0、DOI 10.17632/5ty2wb6gvg.2。公開zip metadata APIで固定archive 1,848,075,315 bytes、SHA-256 678fb0cd72baa214accf54d44611fffbc348055b0d65fbc0e9744b02d5fa084a。公式RDD2020 challengeページは日本・インド・チェコの車載スマートフォン画像、bbox注釈、顔とナンバープレートのぼかしを説明。論文記載の日本train subsetは10,506枚、600x600。通学路・地域道路の損傷記録を題材にできるが、モデルのみで危険度・修繕優先度を決めない。NC条件、固定ZIP、実画像・XML、第三者権利・プライバシーを確認するため固定archiveを取得・SHA検証中。"
       },
       "preparation": {
         "planned_level": "to_be_determined",
