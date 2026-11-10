@@ -139,7 +139,7 @@ class ReleaseTests(unittest.TestCase):
 
     def test_pending_detection_artifact_is_not_published_in_catalog(self):
         ids = {item["id"] for item in datasets.list_available()}
-        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "smallfishbd", "pistachio_image_dataset"})
+        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"})
         self.assertIn("festival-v1.0.0", str(datasets.info("festival_icons")))
         self.assertEqual(datasets.info("tomato_leaves")["audit_status"], "full_image_audit")
         self.assertEqual(datasets.info("festival_icons")["audit_status"], "full_image_audit")
@@ -193,7 +193,7 @@ class ReleaseTests(unittest.TestCase):
 
     def test_catalog_can_filter_by_task_and_audience(self):
         student = datasets.list_available(task="classification", audience="student")
-        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "smallfishbd", "pistachio_image_dataset"])
+        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"])
         self.assertEqual(student[0]["publication_status"], "student_enabled")
         self.assertEqual(datasets.list_available(task="lora", audience="student"), [])
         teacher = datasets.list_available(task="lora", audience="teacher")
