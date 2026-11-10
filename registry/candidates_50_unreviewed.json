@@ -2749,13 +2749,23 @@
         "notes": "地域の公園や通学路のごみ拾い・分別案を考える導入候補。画像中のごみの種類や領域を調べられるが、撮影場所・位置・量の時系列データはなく、日本の地域のごみ分布を示さない。地域の清掃優先度や自治体の分別規則をモデルだけで決めない。"
       },
       "audit": {
-        "technical_status": "source_archive_pinned_and_download_in_progress",
-        "files_examined": 0,
-        "inspection_status": "official_article_and_fixed_mendeley_page_checked_images_not_inspected",
-        "publication_status": "candidate",
+        "technical_status": "full_archive_decode_and_pair_check_passed_with_empty_mask_issue",
+        "files_examined": 1575,
+        "inspection_status": "all_images_and_masks_decoded; 81_blank_mask_pairs_reviewed",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-10",
         "evidence_grade": "official_primary_page_and_open_access_research_article",
-        "notes": "Mendeley v1は784画像・2,350 segments・14カテゴリ・CC BY 4.0を記載。Data in Brief論文は撮影地と方法、640/144 train/test分割、画像と色付きmaskを説明し、倫理欄で人対象・動物実験・SNS収集なしと記載。個々の画像は未検査。 公開APIの固定v1ファイル一覧で DSWD.zip（252,719,363 bytes）、file ID d0a8df4f-a6d5-447a-95f9-882c7b8fb896、SHA-256 fb9229c330ed253f4fb7c18bd46dddebe4df6f8d3f602747f505ff7601a11737 を確認。配布元から一時領域へ取得中。SHA-256一致前は展開しない。"
+        "notes": "Mendeley v1は784画像・2,350 segments・14カテゴリ・CC BY 4.0を記載。Data in Brief論文は撮影地と方法、640/144 train/test分割、画像と色付きmaskを説明し、倫理欄で人対象・動物実験・SNS収集なしと記載。個々の画像は未検査。 公開APIの固定v1ファイル一覧で DSWD.zip（252,719,363 bytes）、file ID d0a8df4f-a6d5-447a-95f9-882c7b8fb896、SHA-256 fb9229c330ed253f4fb7c18bd46dddebe4df6f8d3f602747f505ff7601a11737 を確認。配布元から一時領域へ取得中。SHA-256一致前は展開しない。 ダウンロードした固定ZIPは公式SHA-256と一致、1575項目のCRC検査に成功。パストラバーサル・symlink・重複ファイル名なし。Train 640 / Test 144で画像784枚・マスク784枚が同名ID対応し、全1,568 PNGをImageIOで448x448としてデコード、失敗0。画像重複0。マスク81枚が同一SHAの全黒マスク。81対応画像の一覧を確認し、ごみが視認できる画像が複数含まれたため注釈欠落の懸念としてpublication_statusをholdへ変更。残りの画像・マスクの個別対応・プライバシー・権利を全件目視したものではない。",
+        "decode_errors": 0,
+        "archive_sha256": "fb9229c330ed253f4fb7c18bd46dddebe4df6f8d3f602747f505ff7601a11737",
+        "archive_size": 252719363,
+        "image_count": 784,
+        "mask_count": 784,
+        "image_mask_pairs": 784,
+        "image_dimensions": "all 448x448",
+        "duplicate_image_sha_groups": 0,
+        "duplicate_mask_sha_groups": 1,
+        "empty_mask_count": 81
       },
       "preparation": {
         "planned_level": "1",
