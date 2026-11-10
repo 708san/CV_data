@@ -2615,23 +2615,23 @@
         "notes": "固定Version 2のMendeley表示はCC BY-NC 3.0。帰属表示を保った教育目的の非商用再配布・改変を対象に準備可。商用利用は不可。事業・有料サービスの利用者に配布する場合は別許諾が必要。画像内容は公開道路の車載写真で、人・車・住宅が写る。配布前に顔・ナンバープレートの個別プライバシー監査を継続する。"
       },
       "claims": {
-        "quantity": "固定v2全体は26,336枚。日本trainは10,506枚、test1は1,313枚、test2は1,314枚。今回の実体監査は日本train 10,506枚のみ。",
-        "labels": "日本trainで7クラス・24,754 bounding boxes: D00縦ひび、D10横ひび、D20亀甲状ひび、D40ポットホール等、D43横断歩道の視認性、D44白線の視認性、D50マンホール。",
-        "formats": "JPEG画像とPASCAL VOC XML。",
-        "structure": "公式zip内train.tar.gzから日本trainのみ抽出。画像10,506枚と同名XML 10,506件。",
-        "notes": "通学路・地域道路のひび、穴、横断歩道や白線の見え方を調べ、自治体や学校に根拠を添えて改善を相談する課題に接続できる。日本の車載画像だが2020年頃の撮影条件で、現在の道路状態や地域全体の代表サンプルではない。認識結果だけで危険度や修繕優先度を決めない。配布物はCC BY-NC 3.0に従う非商用教育用途に限定する。"
+        "quantity": "固定v2日本trainを4つの公式損傷クラスに絞った7,900枚、16,469 bbox。元の日本train 10,506枚。",
+        "labels": "公式説明の4種類：縦ひびD00、横ひびD10、亀甲ひびD20、ポットホールD40。",
+        "formats": "JPEG images/train|valid|test と、正規化YOLO bbox labels。metadata.jsonlとannotations.jsonlを収録。",
+        "structure": "日本trainのみ。seed 42を含む画像ID SHA-256でtrain 6,299 / valid 802 / test 799。",
+        "notes": "通学路・地域道路のひびや穴を画像から探し、道路管理者へ相談する課題に使える。元trainにあったD43/D44/D50の追加ラベルと対象クラスなし画像2,606枚を除外し、4損傷クラスだけを収録。幅0のbbox1件を除外。日本の2020年頃の車載画像で、現在の道路状態・危険度を表さない。CC BY-NC 3.0により非商用教育利用に限定し、モデルだけで危険度や修繕順位を判断しない。"
       },
       "audit": {
-        "technical_status": "full_japan_train_image_xml_audit",
+        "technical_status": "fixed_archive_and_prepared_artifact_audited",
         "files_examined": 21012,
-        "inspection_status": "all_train_images_decoded; all_xml_boxes_checked; 36_image_contact_sheet_reviewed",
-        "publication_status": "candidate",
+        "inspection_status": "10506_japan_train_images_decoded; all_xml_parsed; dimensions_and_pairs_checked; 36_image_visual_sample_reviewed",
+        "publication_status": "prepared_artifact_pending_release_asset",
         "last_desk_review": "2026-11-10",
         "evidence_grade": "fixed_official_archive_hash_verified_and_dataset_article",
-        "notes": "Mendeley v2 archive 1,848,075,315 bytes / SHA-256 678fb0cd72baa214accf54d44611fffbc348055b0d65fbc0e9744b02d5fa084aを確認後に監査。ZIP 4 entries、CRC正常、危険パス・symlink・重複名なし。入れ子tar.gz 3本を走査し、全tarでパストラバーサル・symlink・重複画像/XML名なし。trainの日本subsetだけを一時領域へ抽出し、JPEG 10,506枚・VOC XML 10,506件を確認。全JPEGをImageIOでデコード、失敗0、完全一致重複0、GPSメタデータ0。画像寸法とXML寸法は全件一致（600x600 10,187、1024x1024 147、540x540 124、1080x1080 48）。全XMLを解析し、7クラス24,754 boxesを集計。Japan_001265.xmlに幅0のbboxが1個あり、整形時には当該annotationだけ除外して監査記録に残す。36枚の決定的contact sheetと追加の原寸画像を目視。日本の公道・住宅・車・歩行者を含み、標本で顔・ナンバーが明瞭に識別できる事例は見当たらず。出典challengeは明瞭な顔・ナンバーをぼかすと説明するが全画像を個別の目視確認はしていないため、公開前にプライバシー監査を完了する。画像の完全版artifactは未整形・未作成。",
+        "notes": "固定Mendeley v2 ZIPはサイズ1,848,075,315 bytes・SHA-256 678fb0cd72baa214accf54d44611fffbc348055b0d65fbc0e9744b02d5fa084aに一致。ZIP CRC正常、危険path/symlink/重複なし。内部tar.gzも全件path、symlink、重複名を検査。日本trainのJPEG 10,506枚とXML 10,506件を一時領域へ抽出。画像全件decode成功、重複画像0、GPSメタデータ0、XMLとの寸法不一致0。全XMLを解析し公式説明の4 damage classesのみ保持。日本trainの7,900画像・16,470該当bboxのうちJapan_001265.xmlのD20に幅0のbboxが1件あり除外、対象クラスを含まない画像2,606枚を除外。標準化artifactは7,900画像・16,469 bbox、4クラス、train 6,299/valid 802/test 799、641,514,873 bytes、SHA-256 f787feead7fd3b0d63f42c7cfb8e3db6f114e57c83b3b928d5f7c58bcb411955。画像画素はbyte-identical。全ZIP CRCと全15,805 manifest file hashesを照合。危険path/symlink/重複/欠落/サイズ不一致/SHA不一致0。36枚の接触シートと原寸画像を標本目視し、明瞭な個人識別情報を確認しなかった。公開元challengeは明瞭な顔・ナンバープレートをぼかすと説明。全画像を個別目視してはいない。Release asset作成前に帰属・NC条件・変更記録を同梱する。",
         "archive_sha256": "678fb0cd72baa214accf54d44611fffbc348055b0d65fbc0e9744b02d5fa084a",
         "archive_size_bytes": 1848075315,
-        "image_count": 10506,
+        "image_count": 7900,
         "annotation_count": 10506,
         "image_decode_errors": 0,
         "image_dimensions": "10,187 at 600x600; 147 at 1024x1024; 124 at 540x540; 48 at 1080x1080; all agree with XML dimensions",
@@ -2643,24 +2643,32 @@
         "class_counts": {
           "D00": 4049,
           "D10": 3979,
-          "D20": 6199,
-          "D40": 2243,
-          "D43": 736,
-          "D44": 3995,
-          "D50": 3553
+          "D20": 6198,
+          "D40": 2243
         },
-        "invalid_bbox_count": 1
+        "invalid_bbox_count": 1,
+        "original_japan_train_image_count": 10506,
+        "retained_annotation_count": 16469,
+        "omitted_images_without_target_class": 2606,
+        "omitted_zero_area_boxes": 1,
+        "image_split_counts": {
+          "train": 6299,
+          "valid": 802,
+          "test": 799
+        },
+        "artifact_sha256": "f787feead7fd3b0d63f42c7cfb8e3db6f114e57c83b3b928d5f7c58bcb411955",
+        "artifact_size_bytes": 641514873
       },
       "preparation": {
         "planned_level": "to_be_determined",
         "implemented_levels": [],
-        "adapter": "pascal_voc_detection",
+        "adapter": "normalized_yolo_detection",
         "target_colab": true
       },
       "pedagogy": {
         "presentation_mode": "A",
         "publish_student_example": false,
-        "student_task_fit": "strong_noncommercial_community_road_accessibility",
+        "student_task_fit": "strong_noncommercial_community_road_condition_observation",
         "notes": "地域の通学路や歩道のひび・穴・横断歩道の視認性を調査し、管理者に相談する課題に活用。公開データのみで生徒自身の通学路の状態を断定しない。"
       }
     },
