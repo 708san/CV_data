@@ -66,7 +66,7 @@
 
 | 候補 | 公式情報で確認した内容 | 身近な課題との接続 | 未完了項目と判断 |
 |---|---|---|---|
-| RDD2020: Japan subset | [Mendeley v2](https://data.mendeley.com/datasets/5ty2wb6gvg/2)、CC BY-NC 3.0。固定ZIP 1,848,075,315 bytes、SHA-256 `678fb0cd72baa214accf54d44611fffbc348055b0d65fbc0e9744b02d5fa084a`。 | 日本train 10,506画像＋同名XMLを抽出。全画像デコード成功、画像/XML寸法一致、GPS・完全一致重複なし。7ラベル24,754 boxes。36枚の接触シートと原寸画像を目視。通学路のひび・穴・横断歩道等を観察し、道路管理者へ改善を相談する題材に合う。 | NC条件で非商用教育用途に限定。幅0のbbox 1件は整形時除外。人物・車・住宅が写るため全件プライバシー確認と問題画像の選別、共通形式化、artifact manifest、Release asset、検出API連携が残る。**技術監査済み候補。** |
+| RDD2020: Japan subset | [Mendeley v2](https://data.mendeley.com/datasets/5ty2wb6gvg/2)、CC BY-NC 3.0。固定ZIPのサイズ・SHAを全件照合。 | 通学路のひび・穴を画像から探し、道路管理者へ相談する課題に適合。4公式損傷クラス、7,900画像・16,469 bbox。 | 元train 10,506画像を全件decode、XML寸法一致、重複/GPS/破損0。VOC→共通bbox変換、幅0 bboxと対象外2,606画像を除外。artifact 641,514,873 bytes、SHA-256 `f787feead7fd3b0d63f42c7cfb8e3db6f114e57c83b3b928d5f7c58bcb411955`。非商用教育のみ。**artifact準備済み・Release asset/API未登録。** |
 
 
 
