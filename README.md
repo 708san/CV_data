@@ -75,6 +75,7 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [FruitSeg30](docs/datasets/fruitseg30.md) | 果物29クラス、画像・マスク1,914組 | `fruitseg30-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [SmallFishBD](docs/datasets/smallfishbd.md) | 魚10種類、画像1,697枚 | `smallfishbd-v0.1.1` | CC BY 4.0、出典・変更表示が必要 |
 | [ピスタチオ2品種](docs/datasets/pistachio_image_dataset.md) | Kirmizi種・Siirt種、画像2,148枚 | `pistachio_image_dataset-v0.1.0` | CC BY 4.0、出典・変更・指定論文の表示が必要 |
+| [Food Waste Bangladesh](docs/datasets/food_waste_bangladesh.md) | 食品廃棄の撮影場面5カテゴリ、画像633枚 | `food-waste-bangladesh-v0.1.1` | CC BY 4.0、出典・変更表示が必要 |
 | [文化祭アイコン](docs/datasets/festival_icons.md) | アイコン168枚、画像と説明文 | `festival-v1.0.0` | 公開許可あり。改変・商用利用・再配布は要確認 |
 
 トマトの葉と文化祭アイコンは固定Releaseを全量監査済みです。実測値は[トマトの監査レポート](reports/tomato-leaves-v1.2.0.json)と[文化祭アイコンの監査レポート](reports/festival-icons-v1.0.0.json)に保存しています。これは権利の承認を意味しません。
