@@ -498,9 +498,9 @@ _SOURCES: dict[str, ReleaseSource] = {
     ),
     "food_waste_bangladesh": ReleaseSource(
         id="food_waste_bangladesh", case_id="food_waste_bangladesh",
-        tag="food-waste-bangladesh-v0.1.0",
-        sha256="46e981edbbcc6ed8d5d3a2e1cb86ae23f190b2cadbe24f9b509b5f50001d66bb",
-        archive_size=31_428_268, image_count=645,
+        tag="food-waste-bangladesh-v0.1.1",
+        sha256="bcbd7fe1f2b8d37a1b86952d59987b1067cdc55c0099199eee0217a4f805c57d",
+        archive_size=30_760_217, image_count=633,
         kind="classification", name_ja="バングラデシュの食品廃棄画像（撮影場面）",
         rights_note="CC BY 4.0。作者・出典・変更の表示が必要。フォルダは撮影カテゴリで、食品廃棄量を表しません。",
         aliases_ja=("食品廃棄画像", "Food Waste Bangladesh"),
@@ -508,8 +508,8 @@ _SOURCES: dict[str, ReleaseSource] = {
         use_cases_ja=("画像を撮影場面ごとに分類する", "クラス数の偏りが分類結果に与える影響を調べる"),
         input_description_ja="食べ残しなどを撮影した画像",
         output_description_ja="ビュッフェ・一般・レストラン・野菜・婚礼の5カテゴリ",
-        download_size_mb=31.4, audit_status="full_image_audit_artifact_prepared",
-        audit_report="reports/food_waste_bangladesh-v0.1.0.json",
+        download_size_mb=30.8, audit_status="full_image_audit_redistribution_reviewed",
+        audit_report="reports/food_waste_bangladesh-v0.1.1-full-audit.json",
         class_names_ja=("ビュッフェ", "一般", "レストラン", "野菜", "婚礼"),
         label_names_ja={
             "Buffet Food waste": "ビュッフェ",
@@ -521,7 +521,7 @@ _SOURCES: dict[str, ReleaseSource] = {
         license_info={
             "name": "CC BY 4.0",
             "url": "https://creativecommons.org/licenses/by/4.0/",
-            "rights_review": "Mendeley公式ページで表示を確認。出典・変更表示が必要。皿のブランド表示は推奨・承認を示さない。",
+            "rights_review": "固定v1のCC BY 4.0表示と撮影説明を確認。人物の一部が写る11枚とQR風表示1枚を除外。残る商品表示はブランドの推薦・承認を示しません。出典・変更表示が必要。",
         },
         source_info={
             "dataset_name": "An image dataset for food waste in Bangladesh",
@@ -531,9 +531,9 @@ _SOURCES: dict[str, ReleaseSource] = {
             "release_tag": "food-waste-bangladesh-v0.1.0",
         },
         file_urls={
-            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/food-waste-bangladesh-v0.1.0/food_waste_bangladesh-v0.1.0.zip",
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/food-waste-bangladesh-v0.1.1/food_waste_bangladesh-v0.1.1.zip",
         },
-        published=False,
+        published=True,
     ),
     "smallfishbd": ReleaseSource(
         id="smallfishbd", case_id="smallfishbd", tag="smallfishbd-v0.1.1",
