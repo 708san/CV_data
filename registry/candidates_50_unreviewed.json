@@ -2,9 +2,9 @@
   "schema_version": "1.0.0",
   "source_inventory": {
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
-    "as_of": "2026-11-09",
+    "as_of": "2026-11-10",
     "original_record_count": 50,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 2026-11-10に公式ページの固定Version 2を確認したCLICK Trash Dataset候補を追加。画像実体・ファイルSHA・ライセンス表示の内部整合性は未検査。"
   },
   "records": [
     {
@@ -2474,6 +2474,53 @@
       "pedagogy": {
         "presentation_mode": "B",
         "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-153",
+      "api_id": "click_trash_dataset",
+      "name": "CLICK Trash Dataset",
+      "task": "segmentation",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/htcvvz6fm2/2",
+        "provider": "mendeley",
+        "provider_dataset_id": "htcvvz6fm2",
+        "version": "2",
+        "content_origin_claim": "著者説明では屋外の土・落葉・草・砂利・歩道でスマートフォン撮影"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0 (Mendeley Version 2 page)",
+        "evidence_url": "https://data.mendeley.com/datasets/htcvvz6fm2/2",
+        "redistribution_reviewed": false,
+        "rights_status": "under_review"
+      },
+      "claims": {
+        "quantity": "1,126枚、2,213個のごみ注釈と説明。4枚は対象物なし",
+        "labels": "単一 trash クラスと、13種類のごみ素材クラス",
+        "formats": "YOLO矩形ラベルとCOCO polygon annotationを同梱と説明",
+        "structure": "train 901 / val 113 / test 112。rare classがvalidation/testに欠落するとの説明",
+        "notes": "学校周辺や通学路のポイ捨てを題材に、画像から見落としやすい litter の例を学ぶ候補。ただし画像はインド・アッサム地域の屋外環境であり、日本の学校周辺の量や分別事情を測るものではない。地域で撮影した画像を別途集めない限り、地域の清掃優先度や廃棄物政策の判断には使えない。物体名・環境の身元特定や人物の有無は未確認。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "independent_primary_check",
+        "notes": "Mendeley固定Version 2のページ説明、日付、件数、タスク形式、クラス不均衡、CC BY 4.0表示を確認。ページの本文は引用をVersion 1としており「GitHub and license: to be added」と記載する一方、ページの権利欄にはCC BY 4.0を表示。公式ファイル一覧、アーカイブサイズ・SHA-256、実画像、COCO/YOLOの整合、個別権利、プライバシー、帰属・派生条件は未確認。権利と教材公開は保留。"
+      },
+      "preparation": {
+        "planned_level": "to_be_determined",
+        "implemented_levels": [],
+        "adapter": "coco_instance_segmentation",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false,
+        "student_task_fit": "conditional_candidate_local_litter_awareness"
       }
     }
   ]
