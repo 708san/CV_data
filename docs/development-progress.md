@@ -302,4 +302,4 @@
 - FootpathVisionはダッカの歩道1,238枚をclear/encroachedに分類し、屋台や違法駐車などによる通行阻害を扱う候補。日本の歩道の実態とは分けて扱い、YouTube由来素材の個別ライセンスと大容量を確認する。
 - 両方とも固定SHA・実画像・権利・プライバシー未監査のため、APIと公開Releaseには追加していない。
 - Roboflow由来の障害物回避候補は個々の出典・許諾が不明で、学生が移動判断に使う誤解も生じるため今回はスキップ。
-- 台帳は58件。main時点の状態はcandidate 40、hold 13、student_enabled 4、prepared_artifact_pending_release_asset 1。
+- 台帳は57件。main時点の状態はcandidate 39、hold 13、student_enabled 4、prepared_artifact_pending_release_asset 1。
