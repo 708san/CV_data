@@ -1,6 +1,6 @@
-"""公開済みCV_sample_data Releaseを読み取り専用で取得する最小実装。
+"""固定タグの公開Releaseから画像データを読み取り専用で取得する最小実装。
 
-このモジュールは配布元を変更しない。既存Releaseの固定URLとSHA-256を照合する。
+配布元は変更せず、固定URL・SHA-256・データ形式を照合して安全に展開する。
 """
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import csv
 import gzip
 import hashlib
 import json
+import math
 import os
 import re
 import shutil
@@ -66,6 +67,8 @@ class ReleaseSource:
     file_urls: dict[str, str] = field(default_factory=dict)
     file_sha256: dict[str, str] = field(default_factory=dict)
     file_sizes: dict[str, int] = field(default_factory=dict)
+    archive_root_name: str | None = None
+    sample_count: int | None = None
 
     @property
     def url(self) -> str:
@@ -134,6 +137,11 @@ class DatasetBundle:
         return self.root / "labels.csv"
 
     @property
+    def metadata_csv(self) -> Path:
+        """ペア画像回帰データの測定値と画像対応表。"""
+        return self.root / "metadata.csv"
+
+    @property
     def annotations_jsonl(self) -> Path:
         return self.root / "annotations.jsonl"
 
@@ -152,7 +160,7 @@ class DatasetBundle:
         return path if path.is_dir() else None
 
     def to_df(self, *, val_fraction: float = 0.1, seed: int = 42):
-        """分類または検出データを共通列のDataFrameに変換する。
+        """画像とラベル・測定値の対応をDataFrameに変換する。
 
         元Releaseに検証用分割がない場合、公式testを保持したまま、trainだけを
         クラス比率を保つ決定的な方法でtrain/valへ分ける。元画像やCSVは変更しない。
@@ -192,6 +200,28 @@ class DatasetBundle:
             return pd.DataFrame(records, columns=[
                 "image_path", "mask_path", "label", "label_ja", "label_id", "split", "sample_id",
             ])
+        if self.kind == "regression":
+            records = []
+            for row in _read_rows(self.metadata_csv):
+                records.append({
+                    "sample_id": row["sample_id"],
+                    "source_record_id": int(row["source_record_id"]),
+                    "food_category": row["food_category"],
+                    "food_name_original": row["food_name_original"],
+                    "image_before_path": str((self.root / row["image_before"]).resolve()),
+                    "image_after_path": str((self.root / row["image_after"]).resolve()),
+                    "weight_before_g": float(row["weight_before_g"]),
+                    "weight_after_g": float(row["weight_after_g"]),
+                    "consumed_weight_g": float(row["consumed_weight_g"]),
+                    "leftover_ratio": float(row["leftover_ratio"]),
+                    "visual_leftover_level": int(row["visual_leftover_level"]),
+                    "weight_order_anomaly": row["weight_order_anomaly"].lower() == "true",
+                    "source_image_before": row["source_image_before"],
+                    "source_image_after": row["source_image_after"],
+                    "food_category_id": int(row["food_category_id"]),
+                    "split": row["split"],
+                })
+            return pd.DataFrame(records)
         rows = _read_rows(self.labels_csv)
         if self.kind != "classification":
             return pd.DataFrame([
@@ -248,6 +278,9 @@ class DatasetBundle:
     @property
     def splits(self) -> dict[str, int]:
         """標準化後のtrain/val/test件数。"""
+        if self.kind == "regression":
+            counts = Counter(row["split"] for row in _read_rows(self.metadata_csv))
+            return {name: int(counts.get(name, 0)) for name in ("train", "validation", "test")}
         if self.kind == "detection":
             counts = Counter()
             for line in self.annotations_jsonl.read_text(encoding="utf-8").splitlines():
@@ -274,6 +307,32 @@ class DatasetBundle:
         except ImportError as exc:
             raise DatasetError("画像表示にはPillowとmatplotlibが必要です。") from exc
         frame = self.to_df(seed=seed)
+        if self.kind == "regression":
+            if split == "val":
+                split = "validation"
+            if split is not None:
+                if split not in {"train", "validation", "test"}:
+                    raise ValueError("splitはtrain、validation、testのいずれかです。")
+                frame = frame[frame["split"] == split]
+            if frame.empty:
+                raise DatasetError("表示できる画像ペアがありません。")
+            selected = frame.sample(n=min(n, len(frame)), random_state=seed).reset_index(drop=True)
+            figure, axes = plt.subplots(len(selected), 2, squeeze=False,
+                                        figsize=(8, max(3, len(selected) * 2.4)))
+            for index, record in selected.iterrows():
+                cells = (
+                    (axes[index, 0], record["image_before_path"], f"食前 {record['weight_before_g']:g} g"),
+                    (axes[index, 1], record["image_after_path"],
+                     f"食後 {record['weight_after_g']:g} g / 残量比 {record['leftover_ratio']:.2f}"),
+                )
+                for axis, image_path, title in cells:
+                    with Image.open(image_path) as image:
+                        axis.imshow(image.convert("RGB"))
+                    axis.set_title(title)
+                    axis.axis("off")
+            figure.tight_layout()
+            plt.show()
+            return figure
         if split == "val" and self.kind == "detection":
             split = "valid"
         if split is not None:
@@ -362,6 +421,13 @@ class DatasetBundle:
                 "classes": {str(k): int(v) for k, v in frame["label"].value_counts().sort_index().items()},
                 "splits": self.splits, "validated_at": _utc_now(),
             }
+        if self.kind == "regression":
+            frame = self.to_df()
+            return {
+                "dataset_id": self.id, "kind": self.kind, "usable_pairs": int(len(frame)),
+                "weight_order_anomalies": int(frame["weight_order_anomaly"].sum()),
+                "splits": self.splits, "validated_at": _utc_now(),
+            }
         if self.kind != "classification":
             return {"dataset_id": self.id, "kind": self.kind, "validated_at": _utc_now()}
         frame = self.to_df(seed=seed, val_fraction=val_fraction)
@@ -379,6 +445,42 @@ class DatasetBundle:
 
 
 _SOURCES: dict[str, ReleaseSource] = {
+    "lefood_set": ReleaseSource(
+        id="lefood_set", case_id="lefood_set", tag="lefood-set-v0.1.0",
+        sha256="ca1846273d0636ea59f387a586c6f004cfc02d58a639ad5a3c7c844b66cb863a",
+        archive_size=53_035_809, image_count=1048, sample_count=524,
+        kind="regression", name_ja="LeFood-Set 食べ残しの計測",
+        rights_note=(
+            "CC BY 4.0。出典と変更内容を表示してください。インドネシアの病院食研究の画像で、"
+            "日本の学校給食を代表しません。健康・栄養・医療の判断には使わないでください。"
+        ),
+        aliases_ja=("食べ残し画像ペア", "食事前後の重量", "LeFood-Set"),
+        task="regression", audiences=("student", "teacher"), difficulty="introductory",
+        use_cases_ja=(
+            "食前・食後の画像を見比べ、見た目の評価と実測重量の関係を調べる",
+            "家庭や学校で食べ残しを減らすために、どんな計測が必要か考える",
+        ),
+        input_description_ja="料理の食前・食後画像と食前・食後の実測重量",
+        output_description_ja="実測重量差と7段階の見た目評価。残量比を画像から推定する課題にも使えます。",
+        download_size_mb=53.0, audit_status="all_source_images_decoded_and_pairs_visually_reviewed",
+        audit_report="docs/datasets/lefood_set.md",
+        license_info={
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+            "rights_review": "Mendeley Data v1と論文の表示を確認。出典・ライセンス・変更表示が必要。",
+        },
+        source_info={
+            "dataset_name": "LeFood-Set: Leftovers Food Dataset",
+            "provider": "Sari, Yuita Arum; Wani, Yudi Arimba; Nakazawa, Atsushi (2025)",
+            "url": "https://doi.org/10.17632/cchsk79jkt.1",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "lefood-set-v0.1.0",
+        },
+        file_urls={
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/lefood-set-v0.1.0/lefood-set-v0.1.0.zip",
+        },
+        archive_root_name="lefood-set-v0.1.0",
+    ),
     "tomato_leaves": ReleaseSource(
         id="tomato_leaves", case_id="tomato-leaves", tag="tomato-v1.2.0",
         sha256="506560a5ce57394fd739fa73ac3b997a2646f87ea04257334dacb54497e0e1fa",
@@ -804,6 +906,10 @@ _TASKS: dict[str, dict[str, str]] = {
         "name_ja": "物体検出",
         "description_ja": "画像の中の物体の位置と種類を調べる課題。",
     },
+    "regression": {
+        "name_ja": "画像と実測値の関係を調べる",
+        "description_ja": "画像の特徴と実際に測った数値を比べる課題。",
+    },
     "segmentation": {
         "name_ja": "領域分割",
         "description_ja": "画像の画素を、物体や背景の領域に分ける課題。",
@@ -862,6 +968,7 @@ def list_available(*, task: str | None = None, audience: str | None = None,
             "input_description_ja": src.input_description_ja,
             "output_description_ja": src.output_description_ja,
             "画像数": src.image_count,
+            "サンプル数": src.sample_count,
             "ダウンロードサイズMB": src.download_size_mb,
             "audit_status": src.audit_status,
             "audit_report": src.audit_report,
@@ -902,6 +1009,7 @@ def info(dataset_id: str | None = None) -> dict[str, Any] | list[dict[str, Any]]
         "ダウンロードサイズMB": src.download_size_mb, "publication_status": _source_status(src),
         "audit_status": src.audit_status, "audit_report": src.audit_report,
         "画像数（配布元申告）": src.image_count, "固定版": src.tag,
+        "サンプル数": src.sample_count,
         "取得元": src.url,
         "ZIPのSHA-256": src.sha256,
         "ファイルSHA-256": dict(src.file_sha256),
@@ -1078,7 +1186,7 @@ def _archive_entries(archive: zipfile.ZipFile, src: ReleaseSource) -> list[zipfi
         raise DatasetError("ZIPのファイル数が上限を超えています。")
     total = 0
     seen: set[str] = set()
-    root = src.case_id
+    root = src.archive_root_name or src.case_id
     for entry in entries:
         name = entry.filename
         path = PurePosixPath(name)
@@ -1113,7 +1221,7 @@ def _extract_verified(archive_path: Path, destination: Path, src: ReleaseSource)
             # ZIP内パスは上で検証済み。ファイルは直接展開せずチャンクコピー。
             with archive.open(entry) as reader, member.open("xb") as writer:
                 shutil.copyfileobj(reader, writer, length=1024 * 1024)
-    root = destination / src.case_id
+    root = destination / (src.archive_root_name or src.case_id)
     _validate_case(root, src)
     return root
 
@@ -1221,6 +1329,8 @@ def _validate_detection_case(root: Path, src: ReleaseSource, manifest: dict[str,
 
 
 def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
+    if src.kind == "regression":
+        return _validate_regression_case(root, src)
     if src.kind == "segmentation":
         return _validate_segmentation_case(root, src)
     if src.kind == "detection":
@@ -1280,6 +1390,83 @@ def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
                                      if src.kind == "classification" else {"text": item["text"]})
     if actual_metadata != expected_metadata:
         raise DatasetError("metadata.jsonlとlabels.csvが一致しません。")
+    return manifest
+
+
+def _validate_regression_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
+    required = ("manifest.json", "metadata.csv", "README.md", "LICENSE.txt")
+    if not all((root / name).is_file() for name in required):
+        raise DatasetError("ペア画像回帰artifactの必須ファイルがありません。")
+    manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
+    pair_count = src.sample_count
+    if (manifest.get("dataset_id") != src.case_id
+            or manifest.get("artifact_version") != "0.1.0"
+            or manifest.get("source_license") != "CC BY 4.0"
+            or manifest.get("transformation", {}).get("included_pairs") != pair_count
+            or pair_count is None):
+        raise DatasetError("ペア画像回帰manifestの版・ライセンス・ペア数が一致しません。")
+
+    rows = _read_rows(root / "metadata.csv")
+    if len(rows) != pair_count:
+        raise DatasetError("metadata.csvの行数が固定Releaseのペア数と一致しません。")
+    required_columns = {
+        "sample_id", "source_record_id", "food_category", "food_name_original",
+        "image_before", "image_after", "weight_before_g", "weight_after_g",
+        "consumed_weight_g", "leftover_ratio", "visual_leftover_level",
+        "weight_order_anomaly", "source_image_before", "source_image_after",
+        "food_category_id", "split",
+    }
+    if not rows or not required_columns.issubset(rows[0]):
+        raise DatasetError("metadata.csvの列が固定artifactの仕様と一致しません。")
+
+    sample_ids: set[str] = set()
+    image_names: set[str] = set()
+    for row in rows:
+        sample_id = row["sample_id"]
+        before_name, after_name = row["image_before"], row["image_after"]
+        before_parts = PurePosixPath(before_name).parts
+        after_parts = PurePosixPath(after_name).parts
+        if (not sample_id or sample_id in sample_ids
+                or len(before_parts) != 3 or before_parts[0:2] != ("images", "before")
+                or len(after_parts) != 3 or after_parts[0:2] != ("images", "after")
+                or any(part in {"", ".", ".."} for part in (*before_parts, *after_parts))
+                or "\\" in before_name or "\\" in after_name
+                or PurePosixPath(before_name).suffix.lower() not in {".jpg", ".jpeg"}
+                or PurePosixPath(after_name).suffix.lower() not in {".jpg", ".jpeg"}
+                or before_name == after_name or before_name in image_names or after_name in image_names
+                or row["split"] not in {"train", "validation", "test"}):
+            raise DatasetError(f"食前・食後画像の対応、sample_id、またはsplitが不正です: {sample_id}")
+        sample_ids.add(sample_id)
+        image_names.update((before_name, after_name))
+        try:
+            source_record_id = int(row["source_record_id"])
+            category_id = int(row["food_category_id"])
+            visual_level = int(row["visual_leftover_level"])
+            before_weight = float(row["weight_before_g"])
+            after_weight = float(row["weight_after_g"])
+            consumed_weight = float(row["consumed_weight_g"])
+            leftover_ratio = float(row["leftover_ratio"])
+        except (TypeError, ValueError) as exc:
+            raise DatasetError(f"食事計測値が数値ではありません: {sample_id}") from exc
+        values = (before_weight, after_weight, consumed_weight, leftover_ratio)
+        anomaly_text = row["weight_order_anomaly"].lower()
+        if (source_record_id <= 0 or category_id < 0 or not 1 <= visual_level <= 7
+                or any(not math.isfinite(value) for value in values)
+                or before_weight <= 0 or after_weight < 0
+                or anomaly_text not in {"true", "false"}
+                or (anomaly_text == "true") != (after_weight > before_weight)
+                or not math.isclose(consumed_weight, before_weight - after_weight, rel_tol=1e-8, abs_tol=1e-8)
+                or not math.isclose(leftover_ratio, after_weight / before_weight, rel_tol=1e-8, abs_tol=1e-8)):
+            raise DatasetError(f"食事計測値または導出列が不正です: {sample_id}")
+
+    found_images: set[str] = set()
+    for path in (root / "images").rglob("*"):
+        if path.is_symlink():
+            raise DatasetError(f"ペア画像回帰artifactにsymlinkがあります: {path}")
+        if path.is_file():
+            found_images.add(path.relative_to(root).as_posix())
+    if found_images != image_names or len(found_images) != src.image_count:
+        raise DatasetError("食前・食後画像とmetadata.csvのファイル集合が一致しません。")
     return manifest
 
 
@@ -1463,7 +1650,7 @@ def _get_idx_preview(src: ReleaseSource, *, cache_dir: str | Path | None,
 
 def get(dataset_id: str, *, cache_dir: str | Path | None = None,
         allow_download: bool = True, allow_preview: bool = False) -> DatasetBundle:
-    """既存の固定Releaseを取得する。CV_sample_dataへの書込みは一切行わない。"""
+    """固定Releaseのデータを取得する。配布元へ書き込みは行わない。"""
     src = _source(dataset_id)
     if not src.published:
         raise DatasetError("データartifactは準備済みですが、公開Releaseがまだありません。公開後に再度お試しください。")

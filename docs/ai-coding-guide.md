@@ -24,9 +24,11 @@
 
 Fashion-MNISTは教師向けプレビューです。権利確認中なので、生徒向けコードでは使わず、開発者が必要な場合だけ `datasets.get("fashion_mnist", allow_preview=True)` を使います。Kuzushiji-MNISTは固定版未確定のため、まだ取得APIを提供していません。
 
-`list_available()`の`task`は`classification`、`detection`、`segmentation`、`lora`のいずれかです。正式APIに表示されない候補は、台帳上の調査候補であり、取得可能・教材利用可能とは限りません。`include_preview=True`は教師が確認するときだけ指定します。
+`list_available()`の`task`は`classification`、`detection`、`regression`、`segmentation`、`lora`のいずれかです。正式APIに表示されない候補は、台帳上の調査候補であり、取得可能・教材利用可能とは限りません。`include_preview=True`は教師が確認するときだけ指定します。
 
 物体検出用の候補データは全量監査と共通形式への変換まで終えましたが、固定Release assetが公開されるまでは正式一覧・取得APIに掲載しません。候補ページには監査結果とpolygonから外接矩形への変換内容を記録しています。
+
+LeFood-Setは`datasets.get("lefood_set")`で食前・食後画像524組を取得できます。`data.to_df()`には各画像のパス、食前・食後の実測重量、見た目の7段階評価、残量比、pair単位のtrain/validation/testが入ります。`data.show_examples(6)`は食前と食後を並べて表示します。CC BY 4.0の出典・変更表示を付け、画像からの推定は実測値と比べてください。日本の献立や食器にそのまま当てはめず、健康・栄養・医療の判断には使いません。
 
 FruitSeg30は領域分割向けの29クラスartifactを固定Releaseで公開済みです。GitHub mainブランチのコードでは`datasets.get("fruitseg30")`で取得できます。PyPI配布版への反映はパッケージ更新時です。`data.to_df()`で画像とマスクの組を確認し、`data.to_torch_dataset()`から画像テンソルと濃淡マスクを読み込めます。マスクは元の0〜255階調を保ち、PyTorch変換時も閾値で二値化しません。
 

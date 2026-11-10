@@ -80,6 +80,36 @@ def make_detection_zip(case="bangladeshi_ewaste_image", *, corrupt_label=False) 
     return output.getvalue()
 
 
+def make_regression_zip(*, unsafe_path=False, incorrect_ratio=False) -> bytes:
+    root = "lefood-set-v0.1.0/"
+    metadata = (
+        "sample_id,source_record_id,food_category,food_name_original,image_before,image_after,"
+        "weight_before_g,weight_after_g,consumed_weight_g,leftover_ratio,visual_leftover_level,"
+        "weight_order_anomaly,source_image_before,source_image_after,food_category_id,split\n"
+        "pair-0001,1,Nasi,Nasi,images/before/0001_before.jpg,images/after/0001_after.jpg,"
+        f"100,75,25,{0.7 if incorrect_ratio else 0.75},3,False,source_before.JPG,source_after.JPG,1,train\n"
+    )
+    if unsafe_path:
+        metadata = metadata.replace("images/before/0001_before.jpg", "../outside.jpg")
+    manifest = {
+        "dataset_id": "lefood_set", "artifact_version": "0.1.0", "source_license": "CC BY 4.0",
+        "transformation": {"included_pairs": 1},
+    }
+    files = {
+        root + "manifest.json": json.dumps(manifest),
+        root + "metadata.csv": metadata,
+        root + "README.md": "test artifact",
+        root + "LICENSE.txt": "CC BY 4.0 attribution",
+        root + "images/before/0001_before.jpg": b"before-image",
+        root + "images/after/0001_after.jpg": b"after-image",
+    }
+    output = io.BytesIO()
+    with zipfile.ZipFile(output, "w") as archive:
+        for name, content in files.items():
+            archive.writestr(name, content)
+    return output.getvalue()
+
+
 def make_segmentation_zip(case="fruitseg30", *, omit_mask=False) -> bytes:
     image = "images/train/Avocado/1.jpg"
     mask = "masks/train/Avocado/1_mask.png"
@@ -139,7 +169,7 @@ class ReleaseTests(unittest.TestCase):
 
     def test_pending_detection_artifact_is_not_published_in_catalog(self):
         ids = {item["id"] for item in datasets.list_available()}
-        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"})
+        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "lefood_set"})
         self.assertIn("festival-v1.0.0", str(datasets.info("festival_icons")))
         self.assertEqual(datasets.info("tomato_leaves")["audit_status"], "full_image_audit")
         self.assertEqual(datasets.info("festival_icons")["audit_status"], "full_image_audit")
@@ -151,6 +181,8 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(
             datasets.info("food_waste_bangladesh")["publication_status"], "student_enabled"
         )
+        self.assertEqual(datasets.info("lefood_set")["publication_status"], "student_enabled")
+        self.assertEqual(datasets.info("lefood_set")["サンプル数"], 524)
 
     def test_fruitseg30_is_available_after_fixed_release_is_published(self):
         self.assertEqual(datasets.info("fruitseg30")["publication_status"], "student_enabled")
@@ -213,11 +245,12 @@ class ReleaseTests(unittest.TestCase):
 
     def test_task_catalog_only_shows_usable_choices(self):
         tasks = datasets.list_tasks()
-        self.assertEqual([item["task"] for item in tasks], ["classification", "segmentation"])
+        self.assertEqual([item["task"] for item in tasks], ["classification", "regression", "segmentation"])
         self.assertEqual(tasks[0]["datasets"], ["tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"])
+        self.assertEqual(tasks[1]["datasets"], ["lefood_set"])
         teacher_tasks = datasets.list_tasks(audience="teacher", include_preview=True)
         self.assertEqual(
-            [item["task"] for item in teacher_tasks], ["classification", "segmentation", "lora"]
+            [item["task"] for item in teacher_tasks], ["classification", "regression", "segmentation", "lora"]
         )
 
     def test_festival_download_and_offline_cache(self):
@@ -344,6 +377,58 @@ class ReleaseTests(unittest.TestCase):
             with self.assertRaisesRegex(datasets.DatasetError, "範囲外"):
                 datasets.get(key, cache_dir=self.cache)
 
+    def test_lefood_pair_release_is_cached_and_split_counts_are_preserved(self):
+        payload = make_regression_zip()
+        source = replace(
+            datasets._SOURCES["lefood_set"], sha256=hashlib.sha256(payload).hexdigest(),
+            archive_size=len(payload), image_count=2, sample_count=1,
+        )
+        with patch.dict(datasets._SOURCES, {"lefood_set": source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            data = datasets.get("lefood_set", cache_dir=self.cache)
+            self.assertEqual(data.kind, "regression")
+            self.assertTrue((data.root / "manifest.json").is_file())
+            self.assertTrue((data.root / "images/before/0001_before.jpg").is_file())
+            self.assertEqual(data.splits, {"train": 1, "validation": 0, "test": 0})
+            cached = datasets.get("lefood_set", cache_dir=self.cache, allow_download=False)
+            self.assertEqual(cached.root, data.root)
+
+    @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
+    def test_lefood_dataframe_keeps_paired_paths_and_measured_targets(self):
+        payload = make_regression_zip()
+        source = replace(
+            datasets._SOURCES["lefood_set"], sha256=hashlib.sha256(payload).hexdigest(),
+            archive_size=len(payload), image_count=2, sample_count=1,
+        )
+        with patch.dict(datasets._SOURCES, {"lefood_set": source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            frame = datasets.get("lefood_set", cache_dir=self.cache).to_df()
+        self.assertEqual(len(frame), 1)
+        self.assertTrue(Path(frame.loc[0, "image_before_path"]).is_file())
+        self.assertTrue(Path(frame.loc[0, "image_after_path"]).is_file())
+        self.assertEqual(frame.loc[0, "weight_before_g"], 100.0)
+        self.assertEqual(frame.loc[0, "consumed_weight_g"], 25.0)
+        self.assertAlmostEqual(frame.loc[0, "leftover_ratio"], 0.75)
+
+    def test_lefood_regression_validator_rejects_unsafe_paths_and_wrong_derived_values(self):
+        for kwargs, message in (
+            ({"unsafe_path": True}, "対応、sample_id、またはsplit"),
+            ({"incorrect_ratio": True}, "計測値または導出列"),
+        ):
+            with self.subTest(kwargs=kwargs):
+                payload = make_regression_zip(**kwargs)
+                source = replace(
+                    datasets._SOURCES["lefood_set"], sha256=hashlib.sha256(payload).hexdigest(),
+                    archive_size=len(payload), image_count=2, sample_count=1,
+                )
+                with patch.dict(datasets._SOURCES, {"lefood_set": source}), patch.object(
+                    datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+                ):
+                    with self.assertRaisesRegex(datasets.DatasetError, message):
+                        datasets.get("lefood_set", cache_dir=self.cache)
+
     def test_download_disabled(self):
         with self.assertRaisesRegex(datasets.DatasetError, "キャッシュ"):
             datasets.get("festival_icons", cache_dir=self.cache, allow_download=False)
@@ -397,7 +482,7 @@ class ReleaseTests(unittest.TestCase):
     def test_info_without_id_returns_catalog(self):
         catalog = datasets.info()
         self.assertIsInstance(catalog, list)
-        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"})
+        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "lefood_set"})
 
     def test_preview_dataset_is_not_in_formal_catalog(self):
         self.assertNotIn("fashion_mnist", {item["id"] for item in datasets.list_available()})
