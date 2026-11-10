@@ -9,11 +9,18 @@
 
 FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのCC BY 4.0表示に基づき再配布条件を確認しました。Pistachioは画像が研究者自身により作成されたという関連論文の記載も確認し、出典・変更通知・指定論文2件の引用を条件に承認しました。Pistachio artifactはmanifest全件照合とCRC検査に成功し、固定Release v0.1.0を公開、取得APIをmainに反映済みです。Recyclable Wasteは第三者の商標・肖像審査が未完了のため保留です。PyPI配布版への反映はパッケージ更新時です。Food Waste Bangladeshは人物の写り込みがあった画像を除外してv0.1.1を公開し、取得APIへ登録します。Bangladeshi E-Wasteはブランド・製品文字の権利確認が残るため保留です。
 
+## 2026-11-10 生徒向け適合の再審査
+
+「画像・ラベルから身近な課題について何を判断でき、どんな改善案に結び付くか」を必須条件にしました。現時点で、固定Releaseの生徒向け課題一覧には学校・家庭のトマト栽培の観察を題材にできる`tomato_leaves`だけを残します。
+
+`fruitseg30`は単品果物の領域マスクで実際の果物かご・食堂の在庫を表さず、`food_waste_bangladesh`は撮影場面ラベルで廃棄量や削減行動を表さず、`smallfishbd`はバングラデシュ市場の魚と青背景に限定され、`pistachio_image_dataset`は黒背景の品種2種だけです。いずれも現時点で生徒の身近な課題改善へ直接つながる根拠が弱いため、固定Releaseは維持しつつ教師向け参照に切り替えました。候補50件台帳の`student_enabled`は0、`teacher_reference`は4です。トマトは候補50件台帳の外にある既存データです。
+
 ## 現在の扱い
 
 | 区分 | 件数 | ライブラリでの扱い |
 | --- | ---: | --- |
-| 固定Releaseの正式データ | 6 | `tomato_leaves`、`fruitseg30`、`smallfishbd`、`pistachio_image_dataset`、`food_waste_bangladesh`は生徒向け、`festival_icons`は教師向けLoRA素材 |
+| 固定Releaseの画像データ | 5 | `tomato_leaves`は生徒向け。`fruitseg30`、`smallfishbd`、`pistachio_image_dataset`、`food_waste_bangladesh`は教師向け参照 |
+| 教師向けLoRA素材 | 1 | `festival_icons`。改変・商用利用・再配布の許諾未確認 |
 | 教師向けプレビュー | 1 | `fashion_mnist`。固定コミット・4ファイル・件数・IDX形式を検査済み。権利の最終確認中 |
 | 固定取得条件または公開条件で保留 | 3 | `fashion_mnist`、`kuzushiji_mnist`、`fruits_360`。Fruits-360には固定タグReleaseがなく、実体取得は未開始 |
 | artifact準備済み・Release asset/API待ち | 2 | `bangladeshi_e_waste_image`、`recyclable_waste`。共通形式化済み。正式公開条件はデータ別説明を参照 |
@@ -22,7 +29,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 32 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-候補台帳52件の現状は、student_enabled 4件、candidate 34件、hold 13件、Release/API反映待ち1件です。Food Waste Bangladesh v0.1.1を固定Releaseで公開し、人物が一部写る11枚とQR風表示1枚を除外した633枚を収録しました。出典・変更表示と撮影カテゴリ上の制限を明示しています。PyPI配布版は別途更新が必要です。
+候補台帳52件の現状は、candidate 34件、hold 13件、teacher_reference 4件、Release/API反映待ち1件です。Food Waste Bangladesh v0.1.1は固定Releaseで公開済みですが、撮影場面ラベルが廃棄量や削減行動を示さないため、教師向け参照に限定します。
 
 ## 課題別の候補
 
