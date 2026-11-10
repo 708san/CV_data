@@ -56,7 +56,7 @@
 
 ## 2. 現在地（2026-11-09）
 
-- ライブラリ正式一覧は`tomato_leaves`、`fruitseg30`、`smallfishbd`、`pistachio_image_dataset`の生徒向け4件と、`festival_icons`の教師向けLoRA素材1件。Fashion-MNISTは教師向けプレビュー1件。承認済みLoRA素材は0件、権利確認中のプレビューが1件。
+- 2026-11-10時点でライブラリ正式一覧には生徒向けデータ5件（`tomato_leaves`、`fruitseg30`、`food_waste_bangladesh`、`smallfishbd`、`pistachio_image_dataset`）がある。ただし、この5件を今回の20件目標へ自動計上しない。課題との適合が弱い候補は20件の対象外とし、必要なら正式一覧の扱いも別途見直す。
 - `tomato_leaves`：7,209枚、破損0、完全一致重複0、ラベル不一致0。標準化後はtrain 5,191 / val 577 / test 1,441。
 - `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。学習済みLoRA重み3〜4件を選ぶための候補調査・取得APIは未着手。
 - 候補台帳は当初50件にConMetal-6とIndoor Plant Varietiesを加えた52件。状態は`candidate` 34件、`hold` 13件、`prepared_artifact_pending_release_asset` 1件、`student_enabled` 4件。`hold`には技術検査済みの候補と、権利・固定版・実体上の問題で未完了の候補が混在します。技術監査と権利承認を混同しません。
