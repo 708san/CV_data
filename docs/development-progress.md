@@ -5,7 +5,7 @@
 - Mendeleyの固定Version 2ページで、屋外画像1,126枚、2,213注釈、単一クラス／13素材クラス、YOLOとCOCO形式、分割、rare classの欠落、CC BY 4.0表示を確認した。
 - 学校周辺・通学路のポイ捨てを考える題材候補として台帳に追加。ただし撮影地域はインド・アッサムで、日本の現地状況やごみ量を表すデータではない。現地で撮った画像を別途集めない限り、地域の清掃優先度を判断する教材にはできない。
 - ページ本文の引用がVersion 1を指し、「GitHub and license: to be added」とする一方で、権利欄にはCC BY 4.0を表示している。固定ファイル・SHA-256・実画像・注釈・第三者権利・プライバシー未確認のため候補にとどめ、取得API・再配布・生徒向け公開は保留。
-- 台帳は53件に更新。状態はcandidate 35、hold 13、teacher_reference 4、prepared_artifact_pending_release_asset 1。
+- 台帳は53件に更新。main時点の状態はcandidate 35、hold 13、student_enabled 4、prepared_artifact_pending_release_asset 1。並行する生徒向け適合見直しPRでは既存4件をteacher_referenceへ移す提案中であり、両PR反映後はteacher_reference 4となる。
 - 詳細：[CLICK Trash候補レビュー](datasets/click_trash.md)、[候補表](data-first-shortlist-2026-11-09.md)。
 
 
