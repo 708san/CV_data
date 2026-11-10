@@ -23,7 +23,11 @@ print(datasets.info("tomato_leaves"))
 # 課題と対象者から選ぶ（生徒向けには承認済みデータだけ）
 print(datasets.list_tasks(audience="student"))
 print(datasets.list_available(task="classification", audience="student"))
+```
 
+課題は学校内に限りません。家庭の食事や衣類、通学・街歩き、趣味、地域の自然など、高校生が身近に感じるテーマから選びます。データが海外や特定の撮影条件に限られる場合は、地域の実態を示すとは考えず、必要に応じて自分たちの場所で確かめます。
+
+```python
 # 初回は約124MBのZIPをダウンロードします。
 data = datasets.get("tomato_leaves")
 print(data.root)          # 保存先
