@@ -148,12 +148,9 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(datasets.info("bangladeshi_ewaste_image")["publication_status"], "release_pending")
         with self.assertRaisesRegex(datasets.DatasetError, "公開Releaseがまだありません"):
             datasets.get("bangladeshi_ewaste_image", cache_dir=self.cache)
-        for dataset_id in ("food_waste_bangladesh",):
-            self.assertEqual(datasets.info(dataset_id)["publication_status"], "release_pending")
-            with self.subTest(dataset=dataset_id), self.assertRaisesRegex(
-                datasets.DatasetError, "公開Releaseがまだありません"
-            ):
-                datasets.get(dataset_id, cache_dir=self.cache)
+        self.assertEqual(
+            datasets.info("food_waste_bangladesh")["publication_status"], "student_enabled"
+        )
 
     def test_fruitseg30_is_available_after_fixed_release_is_published(self):
         self.assertEqual(datasets.info("fruitseg30")["publication_status"], "student_enabled")
