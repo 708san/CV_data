@@ -76,6 +76,7 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [SmallFishBD](docs/datasets/smallfishbd.md) | 魚10種類、画像1,697枚 | `smallfishbd-v0.1.1` | CC BY 4.0、出典・変更表示が必要 |
 | [ピスタチオ2品種](docs/datasets/pistachio_image_dataset.md) | Kirmizi種・Siirt種、画像2,148枚 | `pistachio_image_dataset-v0.1.0` | CC BY 4.0、出典・変更・指定論文の表示が必要 |
 | [Food Waste Bangladesh](docs/datasets/food_waste_bangladesh.md) | 食品廃棄の撮影場面5カテゴリ、画像633枚 | `food-waste-bangladesh-v0.1.1` | CC BY 4.0、出典・変更表示が必要 |
+| [Fresh and Rotten Fruits](docs/datasets/fresh_rotten_fruits.md) | 果物8種類のfresh／rotten画像3,193枚、16クラス | `fresh-rotten-fruits-v0.1.0` | CC BY 4.0、出典・変更表示が必要。食品安全の判定には使わない |
 | [文化祭アイコン](docs/datasets/festival_icons.md) | アイコン168枚、画像と説明文 | `festival-v1.0.0` | 公開許可あり。改変・商用利用・再配布は要確認 |
 
 トマトの葉と文化祭アイコンは固定Releaseを全量監査済みです。実測値は[トマトの監査レポート](reports/tomato-leaves-v1.2.0.json)と[文化祭アイコンの監査レポート](reports/festival-icons-v1.0.0.json)に保存しています。これは権利の承認を意味しません。
@@ -88,7 +89,7 @@ FruitSeg30は全量監査後、寸法が一致しないGuavaクラスを除い�
 
 Fashion-MNISTは固定コミットとファイル整合性を確認した教師向けプレビューですが、教材公開・再配布の最終確認中です。正式一覧には含めず、開発者が明示した場合だけ`datasets.get("fashion_mnist", allow_preview=True)`で取得できます。Kuzushiji-MNISTは公式データファイルの固定版が確定していないため保留中です。
 
-`datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。現在の正式一覧には画像分類と領域分割が表示されます。物体検出は固定データReleaseが未公開のため課題一覧には表示しません。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
+`datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。現在の正式一覧には画像分類と領域分割が表示されます。画像分類にはFresh and Rotten Fruitsが含まれます。物体検出は固定データReleaseが未公開のため課題一覧には表示しません。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
 
 LoRA素材は画像・キャプション・トリガーワード・利用条件を管理します。モデル重みは再配布しません。生徒向けに承認された素材がない場合、`loras.list_available()`は空になります。
 

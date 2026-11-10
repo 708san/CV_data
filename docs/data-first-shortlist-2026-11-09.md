@@ -1,6 +1,6 @@
 # データ優先候補の確認表（2026-11-09）
 
-この表は追加データの作業順を決めるための確認記録です。表にある候補は正式カタログ掲載やRelease公開の承認済みではありません。現在、正式な生徒向けデータは5件（トマトの葉、FruitSeg30、SmallFishBD、Pistachio、Food Waste Bangladesh）です。Food Waste v0.1.1は固定Release済みで、API登録をこの変更で反映します。準備済みartifact、権利判断、Release/API公開を別々に扱います。
+この表は追加データの作業順を決めるための確認記録です。表にある候補は正式カタログ掲載やRelease公開の承認済みではありません。現在、正式な生徒向けデータは6件（トマトの葉、FruitSeg30、SmallFishBD、Pistachio、Food Waste Bangladesh、Fresh and Rotten Fruits）です。Fresh and Rotten Fruits v0.1.0のRelease assetは公開済みで、API登録はPR #44にあります。準備済みartifact、権利判断、Release/API公開を別々に扱います。
 
 ## 先に残件を解消する候補
 

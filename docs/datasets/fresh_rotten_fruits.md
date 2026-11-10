@@ -2,7 +2,7 @@
 
 ## 状態
 
-整形artifact v0.1.0を準備し、取得APIへの登録案を作成しました。GitHub Release assetの公開が完了するまでは、`datasets.list_available()`には表示されず、取得もできません。
+整形artifact v0.1.0を[GitHub Release](https://github.com/708san/CV_data_artifacts/releases/tag/fresh-rotten-fruits-v0.1.0)で公開しました。CV_dataの取得API登録はPR #44に含まれており、mainへ反映されると生徒一覧から取得できます。
 
 ## 教材で使えること
 
@@ -21,6 +21,6 @@
 - 画素を最大512pxに縮小し、JPEG品質86で再符号化しました。向きを補正し、元の画像メタデータを除いています。
 - クラスごとにseed 42でtrain／validation／testへ分割しました。
 - 64枚（全16クラスから各4枚）の代表画像を目視し、人物・ロゴ・無関係な写り込みは見つかりませんでした。全画像の手作業レビューではありません。
-- 固定artifact ZIPは150,919,158 bytes、SHA-256は`1ca92043fbb0ebbf86ddac5fec2c264e39151ab0d9def1b618002772d9b182eb`です。
+- 固定artifact ZIPは150,919,158 bytes、SHA-256は`1ca92043fbb0ebbf86ddac5fec2c264e39151ab0d9def1b618002772d9b182eb`です。公開URLから再取得して同じサイズ・SHA-256を確認しました。
 
 内訳と完全一致重複の記録は[全量監査JSON](../../reports/fresh_rotten_fruits-v1-full-audit.json)を参照してください。

@@ -538,7 +538,7 @@ _SOURCES: dict[str, ReleaseSource] = {
         file_urls={
             "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/fresh-rotten-fruits-v0.1.0/fresh_rotten_fruits-v0.1.0.zip",
         },
-        published=False,
+        published=True,
     ),
     "food_waste_bangladesh": ReleaseSource(
         id="food_waste_bangladesh", case_id="food_waste_bangladesh",

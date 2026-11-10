@@ -1620,10 +1620,10 @@
         "sample_zip_crc_check": "passed",
         "sample_image_decode": "passed",
         "inspection_status": "completed",
-        "publication_status": "hold",
+        "publication_status": "student_enabled",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "files_inspected",
-        "notes": "固定版Original Image.zip（SHA-256 f89d67d4c4b24810bcd8406db877db6b1ac9834cea0b0cb56d65acebe59e66ff）を取得し、3,200枚すべてをデコード。16クラス各200枚。完全一致重複7枚を除き3,193枚を最大辺512px・JPEG品質86へ再符号化し、メタデータを削除、seed 42で層化分割。64枚を代表目視。CC BY 4.0・原画像著者撮影説明・出典と変更表示を確認。artifact Release asset未公開のため生徒提供は保留。"
+        "notes": "固定版Original Image.zip（SHA-256 f89d67d4c4b24810bcd8406db877db6b1ac9834cea0b0cb56d65acebe59e66ff）を取得し、3,200枚すべてをデコード。16クラス各200枚。完全一致重複7枚を除き3,193枚を最大辺512px・JPEG品質86へ再符号化し、メタデータを削除、seed 42で層化分割。64枚を代表目視。CC BY 4.0・原画像著者撮影説明・出典と変更表示を確認。固定Release assetを公開し、取得API登録案へ追加。"
       },
       "preparation": {
         "planned_level": "1",

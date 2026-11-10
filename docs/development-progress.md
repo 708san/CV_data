@@ -5,7 +5,7 @@
 - 7枚の完全一致重複を除外。残る3,193枚を最大辺512pxのJPEGへ再符号化し、メタデータを削除。16クラスごとにseed 42で分割。
 - 64枚の代表画像を目視し、人物・ロゴ・無関係な写り込みは見つからなかった。全画像の目視レビューではないことを記録。
 - 共通artifact v0.1.0は151MB、ZIP SHA-256 `1ca92043fbb0ebbf86ddac5fec2c264e39151ab0d9def1b618002772d9b182eb`。manifest・全ファイルSHA・cvlesson分類形式を検証済み。
-- 食品ロスを考える題材として登録案を作成。研究ラベルは食用可否・健康・食品安全を示さないと説明。artifact Release asset公開後に生徒向け取得を有効化する。
+- 食品ロスを考える題材として登録案を作成。研究ラベルは食用可否・健康・食品安全を示さないと説明。Release assetを公開URLから再取得し、サイズ・SHA-256一致を確認。CV_data PR #44に取得API登録を追加。
 - 詳細：[Fresh and Rotten Fruits](datasets/fresh_rotten_fruits.md)、[全量監査JSON](../reports/fresh_rotten_fruits-v1-full-audit.json)。
 
 # 開発進捗
