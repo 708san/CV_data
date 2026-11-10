@@ -4,7 +4,7 @@
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
     "as_of": "2026-11-04",
     "original_record_count": 50,
-    "note": "前回調査の申告情報を取り込んだ未承認レジストリ。画像現物は未検査。生徒への公開不可。"
+    "note": "元の50件に追加調査候補を追記した未承認レジストリ。2026-11-10時点で54レコード。候補・保留は正式な生徒向け公開を意味しない。"
   },
   "records": [
     {
@@ -2379,6 +2379,190 @@
       },
       "pedagogy": {
         "presentation_mode": "C",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-146",
+      "api_id": "lefood_set",
+      "name": "LeFood-Set: Leftovers Food Dataset",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/cchsk79jkt/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "cchsk79jkt",
+        "version": "1",
+        "content_origin_claim": "インドネシア料理の食前・食後画像。デジタル秤による重量記録を含む",
+        "reference_url": "https://data.mendeley.com/datasets/cchsk79jkt/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/cchsk79jkt/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "食前・食後の画像524組",
+        "labels": "料理名、前後重量、観察者による食べ残し7段階",
+        "formats": "画像＋対応表（画像形式・容量は未確認）",
+        "structure": "食前・食後を対応させた組データ",
+        "notes": "家庭や食堂の食べ残しを考える題材。料理や盛り付けの地域差があり、見た目から重量を推定する精度を一般化しない。人物・位置情報等の画像検査前。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "independent_primary_check"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-147",
+      "api_id": "fpvcrosswalk2025",
+      "name": "FPVCrosswalk2025",
+      "task": "segmentation",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/mcr2jwk5bp/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "mcr2jwk5bp",
+        "version": "1",
+        "content_origin_claim": "3,000合成画像と歩行者を撮影した実画像。各画像に横断歩道マスク",
+        "reference_url": "https://data.mendeley.com/datasets/mcr2jwk5bp/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/mcr2jwk5bp/1",
+        "redistribution_reviewed": false,
+        "rights_status": "under_review"
+      },
+      "claims": {
+        "quantity": "合成3,000枚＋実写300枚、二値マスク付き",
+        "labels": "横断歩道領域／背景",
+        "formats": "画像＋対応する領域マスク（容量・形式未確認）",
+        "structure": "合成・実写と天候・照明条件別に整理",
+        "notes": "歩行時に横断歩道が見えにくい条件を考える題材。実画像の撮影同意・第三者の写り込み、合成画像生成条件を確認するまで配布保留。モデルを移動・安全判断に使わない。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "independent_primary_check"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_segmentation",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-148",
+      "api_id": "footpathvision",
+      "name": "FootpathVision",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/szkhrh8dc8/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "szkhrh8dc8",
+        "version": "1",
+        "content_origin_claim": "ダッカの歩道画像。著者撮影とCreative Commons表記のYouTube動画から抽出したフレーム",
+        "reference_url": "https://data.mendeley.com/datasets/szkhrh8dc8/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/szkhrh8dc8/1",
+        "redistribution_reviewed": false,
+        "rights_status": "under_review"
+      },
+      "claims": {
+        "quantity": "1,238枚。配布ZIPは計約4.31 GB",
+        "labels": "歩道が障害物で塞がれている／通行可能",
+        "formats": "画像ZIP 2件（ラベル形式未確認）",
+        "structure": "encroached／non-encroached、著者撮影／動画由来のフォルダ構成",
+        "notes": "通学や徒歩移動の歩きやすさを考える題材。動画フレームの元動画ごとのライセンス・再配布条件、人物や車両のプライバシーを確認するまで配布保留。データが大きくColab向けの部分取得方法も未確認。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "independent_primary_check"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "unassigned_classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-149",
+      "api_id": "bdfd9",
+      "name": "BDFD9: Bangladesh Centric Fabric Defect Dataset",
+      "task": "detection",
+      "priority": "advanced",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/z49cc7zvfc/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "z49cc7zvfc",
+        "version": "1",
+        "content_origin_claim": "著者がバングラデシュの縫製工場4か所の生産ラインで撮影",
+        "reference_url": "https://data.mendeley.com/datasets/z49cc7zvfc/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/z49cc7zvfc/1",
+        "redistribution_reviewed": false,
+        "rights_status": "unreviewed"
+      },
+      "claims": {
+        "quantity": "1,088枚。ZIPは765 MBと掲載",
+        "labels": "布の欠陥9クラス、YOLOv8矩形",
+        "formats": "JPEG画像、YOLOラベル、dataset_metadata.csv",
+        "structure": "train 775／valid 208／test 105。複数欠陥画像はクラス別フォルダに重複配置",
+        "notes": "衣服の穴・ほつれ等を見つける修繕・長く使う課題につなげられる。工場撮影の布地画像に限られ、家庭の衣服へそのまま一般化できない。重複配置を考慮した分割単位、従業員・製品表示等の写り込みを監査する。"
+      },
+      "audit": {
+        "technical_status": "metadata_checked",
+        "files_examined": 0,
+        "inspection_status": "not_started",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "independent_primary_check"
+      },
+      "preparation": {
+        "planned_level": "2",
+        "implemented_levels": [],
+        "adapter": "unassigned_detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
         "publish_student_example": false
       }
     }
