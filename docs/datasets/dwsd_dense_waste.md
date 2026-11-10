@@ -2,7 +2,7 @@
 
 ## 一次情報と権利
 
-- [Mendeley Data Version 1](https://data.mendeley.com/datasets/gr99ny6b8p/1)、DOI: `10.17632/gr99ny6b8p.1)
+- [Mendeley Data Version 1](https://data.mendeley.com/datasets/gr99ny6b8p/1)、DOI: `10.17632/gr99ny6b8p.1`
 - 著者：Asfak Ali、Suvojit Acharjee、Md Manarul Sk、Salman Z Alharthi、Sheli Sinha Chaudhuri、Adnan Akhunzada
 - MendeleyページはCC BY 4.0を表示。対応するData in Brief論文もCC BY 4.0で公開されています。
 - 論文では、西ベンガル州の街路、公園、芝地、大学周辺などで著者らが携帯電話を使って撮影し、1,000枚以上から選んだ784枚を手作業で注釈したと説明しています。SNS由来画像ではなく、人対象研究を含まないとの倫理記載があります。
