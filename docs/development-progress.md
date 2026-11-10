@@ -264,3 +264,11 @@
 - ファイル一覧・固定SHA-256・画像と表の対応・画像の実態・第三者権利・プライバシーは未確認。取得API・整形・公開は保留。
 - 台帳は54件。main時点の状態はcandidate 36、hold 13、student_enabled 4、prepared_artifact_pending_release_asset 1。並行中の生徒適合PR #37が反映された後、既存4件はteacher_referenceとなる見込み。
 - 詳細：[LeFood-Set候補レビュー](datasets/lefood_set.md)、[候補表](data-first-shortlist-2026-11-09.md)。
+
+## 2026-11-10：RDD2020 Japan subsetの一次情報確認
+
+- Mendeley Version 2の公式ページで道路損傷検出データと4種類の損傷ラベル、CC BY-NC 3.0表示を確認。公式RDD2020資料は、日本を含む複数国の走行画像と、人物・ナンバープレートを目視でぼかした説明を掲載。公式データ論文は日本のtrain画像10,506枚と説明する。
+- 日本の通学路や地域道路で見つけた損傷を記録し、管理者に共有する課題との適合性が高い候補として台帳へ追加。現地の頻度・危険度・修繕優先度を画像モデルだけで判断しない。
+- アーカイブの固定SHA、実画像・XML注釈・国別分割・第三者権利は未監査。CC BY-NC 3.0の非商用条件と再配布可能範囲を確認するまで取得APIや配布へ進めない。
+- 台帳は55件。main時点の状態はcandidate 37、hold 13、student_enabled 4、prepared_artifact_pending_release_asset 1。並行中の生徒適合PR #37が反映された後、既存4件はteacher_referenceとなる見込み。
+- 詳細：[RDD2020候補レビュー](datasets/rdd2020_japan.md)、[候補表](data-first-shortlist-2026-11-09.md)。
