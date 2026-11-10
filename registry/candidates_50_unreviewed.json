@@ -2,9 +2,9 @@
   "schema_version": "1.0.0",
   "source_inventory": {
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
-    "as_of": "2026-11-09",
+    "as_of": "2026-11-10",
     "original_record_count": 50,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 2026-11-10にGeoSetEnnea v1の画像・ラベル全量監査と共通artifact準備を完了。"
   },
   "records": [
     {
@@ -268,23 +268,48 @@
         "notes": "拡張画像を分割前に混ぜない"
       },
       "audit": {
-        "technical_status": "metadata_checked",
-        "files_examined": 2898,
-        "sample_files_examined": 6,
-        "sample_sha256_check": "passed",
-        "sample_image_decode": "passed",
-        "sample_yolo_label_check": "passed",
+        "technical_status": "full_image_label_audit",
+        "files_examined": 1932,
+        "source_inventory_files": 2898,
+        "image_count": 966,
+        "annotation_count": 8253,
+        "classes": 9,
+        "source_image_split": {
+          "train": 676,
+          "valid": 193,
+          "test": 97
+        },
+        "source_group_count": 199,
+        "source_groups_crossing_original_splits": 81,
+        "sample_sha256_check": "passed_all_images_and_labels",
+        "image_decode": "passed_all_966",
+        "annotation_match": "passed_all_8253_against_Metadata.csv",
+        "annotation_coordinate_check": "passed_all",
+        "prepared_group_leakage": 0,
+        "prepared_split": {
+          "train": 676,
+          "valid": 193,
+          "test": 97
+        },
+        "artifact_validation": "passed",
+        "artifact_zip_bytes": 55650689,
+        "artifact_zip_sha256": "84d8b42f88eb5c6582657b33014689d7d8342a261302486c517558609ec9033b",
+        "visual_review_status": "all_contact_sheets_reviewed",
+        "exif_gps_metadata": "none_detected; JPEG JFIF marker only",
         "metadata_duplicate_sha_groups": 1,
         "inspection_status": "completed",
         "publication_status": "hold",
-        "last_desk_review": "2026-11-05",
-        "evidence_grade": "independent_primary_check",
-        "notes": "公式公開APIの全公開フォルダ一覧を確認。分割済み画像966件（train 676 / valid 193 / test 97）と対応するYOLOラベル966件、augmented 810件、raw 154件、補助ファイルを含む計2898ファイルを固定した。APIメタデータの各ファイルにSHA-256があり、内容SHA重複は1グループ（augmented内4ファイル）確認された。train/valid/testから画像3枚と対応ラベル3枚を取得し、SHA-256、640x640 JPEGデコード、YOLO 5列・座標範囲を確認した。全量画像取得・分割漏洩・再配布許諾は未実施のため保留。"
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "full_image_label_audit",
+        "notes": "Mendeley v1 API記載SHA-256を画像966件・YOLOラベル966件すべて照合。画像は全件640x640 JPEGとしてデコードし、全8,253注釈を提供者Metadata.csvとクラス・座標まで照合。元train/valid/testはファイル名で識別できた199撮影系列のうち81系列が複数splitにまたがる。共通artifactでは系列を一つのsplitにまとめ、元split比と件数676/193/97を維持。ZIPは共通detection validatorに合格。接触シートで全画像をレビューし、商品パッケージ等のブランド表記を確認。個別の第三者商標・画像権利の結論は未確定。ダッカの文具店・図書館画像は、学校の共有作図用具を授業前後に見つけ返却・補充項目を整理する試作に結び付けられるが、日本の学校での実用性は未検証。CC BY 4.0と画像の再配布条件を分けて審査するため、正式公開は保留。 LICENSE.mdに出典・帰属・変更内容・第三者表示の留保を追加。",
+        "artifact_entry_count": 1938
       },
       "preparation": {
-        "planned_level": "to_be_determined",
+        "planned_level": "1",
         "implemented_levels": [],
-        "adapter": "planned_yolo",
+        "adapter": "detection_common_v1_artifact_prepared",
+        "artifact_prepared_locally": true,
+        "artifact_version": "v0.1.0",
         "target_colab": true
       },
       "pedagogy": {
