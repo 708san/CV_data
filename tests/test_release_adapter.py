@@ -80,6 +80,28 @@ def make_detection_zip(case="bangladeshi_ewaste_image", *, corrupt_label=False) 
     return output.getvalue()
 
 
+def make_indoor_plant_zip(case="indoor_plant_varieties") -> bytes:
+    classes = ["Aglaonema", "Cryptanthus", "Devil's Ivy", "Heartleaf philodendron",
+               "N-Joy Pothos", "Rhaphidophora", "Zz plant"]
+    image = "images/train/Aglaonema/sample.jpg"
+    row = {"file_name": image, "label": "Aglaonema", "label_id": 0,
+           "split": "train", "sample_id": "images/train/Aglaonema/sample"}
+    manifest = {"case_id": case, "version": "v0.1.0", "image_count": 1, "classes": classes}
+    files = {
+        f"{case}/manifest.json": json.dumps(manifest),
+        f"{case}/labels.csv": "image,label,label_id,split,sample_id\n"
+        f'"{image}",Aglaonema,0,train,"images/train/Aglaonema/sample"\n',
+        f"{case}/metadata.jsonl": json.dumps(row) + "\n",
+        f"{case}/README.md": "test",
+        f"{case}/{image}": b"image-bytes",
+    }
+    output = io.BytesIO()
+    with zipfile.ZipFile(output, "w") as archive:
+        for name, content in files.items():
+            archive.writestr(name, content)
+    return output.getvalue()
+
+
 def make_segmentation_zip(case="fruitseg30", *, omit_mask=False) -> bytes:
     image = "images/train/Avocado/1.jpg"
     mask = "masks/train/Avocado/1_mask.png"
@@ -139,7 +161,7 @@ class ReleaseTests(unittest.TestCase):
 
     def test_pending_detection_artifact_is_not_published_in_catalog(self):
         ids = {item["id"] for item in datasets.list_available()}
-        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"})
+        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"})
         self.assertIn("festival-v1.0.0", str(datasets.info("festival_icons")))
         self.assertEqual(datasets.info("tomato_leaves")["audit_status"], "full_image_audit")
         self.assertEqual(datasets.info("festival_icons")["audit_status"], "full_image_audit")
@@ -193,7 +215,7 @@ class ReleaseTests(unittest.TestCase):
 
     def test_catalog_can_filter_by_task_and_audience(self):
         student = datasets.list_available(task="classification", audience="student")
-        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"])
+        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
         self.assertEqual(student[0]["publication_status"], "student_enabled")
         self.assertEqual(datasets.list_available(task="lora", audience="student"), [])
         teacher = datasets.list_available(task="lora", audience="teacher")
@@ -206,15 +228,15 @@ class ReleaseTests(unittest.TestCase):
         teacher = datasets.list_available(
             task="classification", audience="teacher", include_preview=True,
         )
-        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"])
-        self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "fashion_mnist"})
+        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
+        self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties", "fashion_mnist"})
         fashion = next(item for item in teacher if item["id"] == "fashion_mnist")
         self.assertEqual(fashion["publication_status"], "teacher_preview_only")
 
     def test_task_catalog_only_shows_usable_choices(self):
         tasks = datasets.list_tasks()
         self.assertEqual([item["task"] for item in tasks], ["classification", "segmentation"])
-        self.assertEqual(tasks[0]["datasets"], ["tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"])
+        self.assertEqual(tasks[0]["datasets"], ["tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
         teacher_tasks = datasets.list_tasks(audience="teacher", include_preview=True)
         self.assertEqual(
             [item["task"] for item in teacher_tasks], ["classification", "segmentation", "lora"]
@@ -394,10 +416,28 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(frame.loc[0, "label_ja"], "健全")
         self.assertEqual(data.splits, {"train": 1, "val": 0, "test": 0})
 
+    @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
+    def test_indoor_plant_classification(self):
+        payload = make_indoor_plant_zip()
+        key = "indoor_plant_varieties"
+        source = replace(
+            datasets._SOURCES[key], sha256=hashlib.sha256(payload).hexdigest(),
+            archive_size=len(payload), image_count=1, published=True,
+        )
+        with patch.dict(datasets._SOURCES, {key: source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            data = datasets.get(key, cache_dir=self.cache)
+            frame = data.to_df()
+            self.assertEqual(data.kind, "classification")
+            self.assertEqual(frame.loc[0, "label_ja"], "アグラオネマ")
+            self.assertEqual(data.classes, source.classes)
+            self.assertEqual(data.splits, {"train": 1, "val": 0, "test": 0})
+
     def test_info_without_id_returns_catalog(self):
         catalog = datasets.info()
         self.assertIsInstance(catalog, list)
-        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"})
+        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"})
 
     def test_preview_dataset_is_not_in_formal_catalog(self):
         self.assertNotIn("fashion_mnist", {item["id"] for item in datasets.list_available()})

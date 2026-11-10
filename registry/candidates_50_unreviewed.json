@@ -2444,30 +2444,32 @@
         "reference_url": "https://data.mendeley.com/datasets/ct79299k27/1"
       },
       "rights": {
-        "license_claim": "CC BY 4.0 (Mendeley v1 page)",
+        "license_claim": "CC BY 4.0（Mendeley Data v1の公式表示。作者・出典・変更を表示）",
         "evidence_url": "https://data.mendeley.com/datasets/ct79299k27/1",
-        "redistribution_reviewed": false,
-        "rights_status": "under_review"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
       },
       "claims": {
-        "quantity": "元画像1,172枚。拡張版は7,000枚と説明",
-        "labels": "観葉植物7クラス",
-        "formats": "JPEG、元画像は3000x3000と説明",
-        "structure": "元画像と拡張画像の関係・ファイル構成は未検査",
-        "notes": "家庭の観葉植物を題材にできる。最初は元画像だけを候補とし、拡張版を別分割へ混ぜない。植物名の予測を有毒性・食用・飼育安全判断に使わない。"
+        "quantity": "元画像1,172枚を全量検査。完全一致重複10枚を除いた1,162枚を整形。train 813 / validation 174 / test 175",
+        "labels": "観葉植物7クラス。農業機関の専門家がクラス名を確認したとの公開説明",
+        "formats": "RGB JPEG。長辺512px以下、GPSを含むEXIF等を除去",
+        "structure": "元画像1,172枚をクラス層化しseed 42で約70/15/15に分割。拡張版7,000枚は含めない",
+        "notes": "家庭・学校で見かける観葉植物の画像分類。Mendeley CC BY 4.0。作者・出典・変更表示。毒性・食用・病気・育て方・安全性の判定には使わない"
       },
       "audit": {
-        "technical_status": "metadata_checked",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-09",
-        "evidence_grade": "independent_primary_check",
-        "notes": "公式Mendeley v1ページのCC BY 4.0表示、著者の撮影・収集説明、7クラスと元画像・拡張版の件数を確認。固定ファイル一覧、サイズ、SHA-256、画像の内容、拡張画像の対応関係、第三者権利は未確認。"
+        "technical_status": "full_pass",
+        "files_examined": 1172,
+        "inspection_status": "completed",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-10",
+        "evidence_grade": "files_inspected",
+        "notes": "固定元ZIP 765,167,460 bytes / SHA-256照合、CRC・安全パス検査、1,172画像全量デコード成功。完全一致重複10枚を除外。56枚の見本を目視。1,159枚のGPS EXIFを含む全EXIFを整形画像から除去。"
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": [],
+        "implemented_levels": [
+          "1"
+        ],
         "adapter": "classification_v1",
         "target_colab": true
       },

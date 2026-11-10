@@ -1,5 +1,12 @@
 # 開発進捗
 
+## 2026-11-10：Indoor Plant Varieties v0.1.0をライブラリへ統合
+
+- Mendeley Data v1（CC BY 4.0）の1,172画像を全量デコードし、10枚の完全一致重複を除外。残る1,162枚からEXIF/GPSを除去し、長辺512px以下の分類データを整備しました。
+- 成果物Release `indoor-plant-varieties-v0.1.0` を固定URLで公開。1,167ファイル、74,718,549 bytes、SHA-256 `0194a3631ecaf0293cc0271d938ffe6933b61ce58e58e648f8ca346bd1dbe714`。Release assetとartifact manifestを照合しました。
+- `cvlesson.get("indoor_plant_varieties")`の取得、ZIP安全展開、manifest検証、DataFrame化を実データで確認。1,162行・7クラスと全画像パスの存在を確認しました。
+- 成果物リポジトリPR #25とライブラリPRを作成中。いずれもmainへは未マージ。
+
 ## 2026-11-08：Recyclable Waste 全画像の目視確認
 
 - 整形済みの一意画像977枚を10枚の縮小一覧で確認。素材クラスと画像内容に明らかな不一致は見当たらなかった。

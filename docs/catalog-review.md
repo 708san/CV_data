@@ -13,7 +13,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 
 | 区分 | 件数 | ライブラリでの扱い |
 | --- | ---: | --- |
-| 固定Releaseの正式データ | 6 | `tomato_leaves`、`fruitseg30`、`smallfishbd`、`pistachio_image_dataset`、`food_waste_bangladesh`は生徒向け、`festival_icons`は教師向けLoRA素材 |
+| 固定Releaseの正式データ | 7 | `tomato_leaves`、`fruitseg30`、`smallfishbd`、`pistachio_image_dataset`、`food_waste_bangladesh`、`indoor_plant_varieties`は生徒向け、`festival_icons`は教師向けLoRA素材 |
 | 教師向けプレビュー | 1 | `fashion_mnist`。固定コミット・4ファイル・件数・IDX形式を検査済み。権利の最終確認中 |
 | 固定取得条件または公開条件で保留 | 3 | `fashion_mnist`、`kuzushiji_mnist`、`fruits_360`。Fruits-360には固定タグReleaseがなく、実体取得は未開始 |
 | artifact準備済み・Release asset/API待ち | 2 | `bangladeshi_e_waste_image`、`recyclable_waste`。共通形式化済み。正式公開条件はデータ別説明を参照 |
@@ -22,7 +22,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 32 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-候補台帳52件の現状は、student_enabled 4件、candidate 34件、hold 13件、Release/API反映待ち1件です。Food Waste Bangladesh v0.1.1を固定Releaseで公開し、人物が一部写る11枚とQR風表示1枚を除外した633枚を収録しました。出典・変更表示と撮影カテゴリ上の制限を明示しています。PyPI配布版は別途更新が必要です。
+候補台帳52件の現状は、student_enabled 5件、candidate 33件、hold 13件、Release/API反映待ち1件です（別管理のトマトを含め、生徒向け正式データは6件）。Indoor Plant Varieties v0.1.0はCC BY 4.0表示を確認し、元画像1,172枚を全量デコードしました。重複10枚とGPS等のEXIFを除き、1,162枚を512px以下へ整形して固定Release assetを公開しました。取得APIは変更提案中です。Food Waste Bangladesh v0.1.1は人物の一部が写る11枚とQR風表示1枚を除外した633枚を収録し、出典・変更表示と撮影カテゴリ上の制限を明示しています。
 
 ## 課題別の候補
 
