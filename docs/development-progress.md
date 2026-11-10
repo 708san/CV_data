@@ -254,7 +254,7 @@
 - Mendeley公式ページのv1・CC BY 4.0表示、著者、撮影場所（ダッカの文具店・図書館）、9クラス・966画像・8,253注釈を確認した。高校生向けの用途を、共有作図用具の返却・補充を授業前後に点検する検出試作に絞った。
 - 公開APIの2,898ファイル目録を確認し、学習用966画像と966ラベルを取得。全1,932ファイルのAPI記載SHA-256が一致した。画像966件は640×640 JPEGとして全件デコードできた。
 - 全8,253注釈を提供者Metadata.csvのクラス・座標と照合し、不一致0。ファイル名から199撮影系列を識別し、元train/valid/testでは81系列がsplitをまたぐことを確認した。
-- 系列を分けず、train 676 / valid 193 / test 97の共通形式artifact v0.1.0を作成。既存detection validatorに合格。ZIP 55,649,466 bytes、SHA-256 `fd34d6361b1b904cbf3980d829891e8501dd05a55f01233a46a410b935d1def8`。画像内のブランド表示の権利審査が残るため、artifactは一時領域に置き、Release/APIには出していない。
+- 系列を分けず、train 676 / valid 193 / test 97の共通形式artifact v0.1.0を作成。既存detection validatorに合格。ZIP 55,650,689 bytes（LICENSE.mdを含む1,938ファイル）、SHA-256 `84d8b42f88eb5c6582657b33014689d7d8342a261302486c517558609ec9033b`。画像内のブランド表示の権利審査が残るため、artifactは一時領域に置き、Release/APIには出していない。LICENSE.mdに出典・変更点・第三者表示の留保を記録。
 - 全画像の接触シートを確認し、JPEGにGPS/EXIF撮影情報は見つからなかった。教材課題に適合する具体的な用途を確認できた一方、日本の学校での実用性と第三者商標等の権利は未検証として明記。
 - 候補台帳のpublication_statusを再集計：candidate 34、hold 13、prepared_artifact_pending_release_asset 1、student_enabled 4（計52）。技術監査の完了は権利審査・公開承認を意味しない。
 - 詳細：[GeoSetEnnea](datasets/geoset_ennea.md)、[候補精査状況](catalog-review.md)。
