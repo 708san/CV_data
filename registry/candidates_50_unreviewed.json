@@ -1477,10 +1477,10 @@
         "metadata_pair_check": "passed_with_52_guava_dimension_mismatches",
         "metadata_duplicate_sha_groups": 0,
         "inspection_status": "full_audit_complete",
-        "publication_status": "student_enabled",
-        "last_desk_review": "2026-11-09",
+        "publication_status": "teacher_reference",
+        "last_desk_review": "2026-11-10",
         "evidence_grade": "independent_primary_check",
-        "notes": "公式v3の3,938ファイルすべてを固定ID・SHA-256照合し、1,969 JPEGと1,969 PNGを全量デコード。1,914組・29クラスは画像/マスク512x512で対応。Guava 55組は非標準寸法、うち52組は対応寸法不一致のため全クラスをartifactから除外。マスクは8-bit grayscaleで濃淡境界。共通artifact v0.1.0をローカル作成しmanifest検証済み。固定Release asset fruitseg30-v0.1.0を公開済み。ライブラリ公開設定はPRで反映中。 Synchronized with the formal student catalog and fixed Release asset on 2026-11-09."
+        "notes": "公式v3の3,938ファイルすべてを固定ID・SHA-256照合し、1,969 JPEGと1,969 PNGを全量デコード。1,914組・29クラスは画像/マスク512x512で対応。Guava 55組は非標準寸法、うち52組は対応寸法不一致のため全クラスをartifactから除外。マスクは8-bit grayscaleで濃淡境界。共通artifact v0.1.0をローカル作成しmanifest検証済み。固定Release asset fruitseg30-v0.1.0を公開済み。ライブラリ公開設定はPRで反映中。 Synchronized with the formal student catalog and fixed Release asset on 2026-11-09. 身近な生徒課題への適合を再審査。現在の単品果物画像・前景マスクは、家庭や学校の混在した果物かご・食堂の実在庫を直接表さず、身近な課題への具体的な効果を示せない。教材形式の教師向け参照に限定し、生徒向け課題一覧から外す。"
       },
       "preparation": {
         "planned_level": "1",
@@ -1490,7 +1490,8 @@
       },
       "pedagogy": {
         "presentation_mode": "A",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "student_task_fit": "teacher_reference_only"
       }
     },
     {
