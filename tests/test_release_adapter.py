@@ -53,7 +53,7 @@ def make_zip(case="festival-icons", *, corrupt=False, unsafe=False, symlink=Fals
     return output.getvalue()
 
 
-def make_detection_zip(case="bangladeshi_ewaste_image", *, corrupt_label=False) -> bytes:
+def make_detection_zip(case="bangladeshi_ewaste_image", *, corrupt_label=False, root_folder=True, unsafe=False) -> bytes:
     image = "images/train/one.png"
     label = "labels/train/one.txt"
     annotation = {
@@ -73,10 +73,13 @@ def make_detection_zip(case="bangladeshi_ewaste_image", *, corrupt_label=False) 
         f"{case}/{image}": b"\x89PNG\r\n\x1a\n",
         f"{case}/{label}": detection_label,
     }
+    if unsafe:
+        files["../outside.txt"] = b"escape"
     output = io.BytesIO()
+    prefix = f"{case}/" if root_folder else ""
     with zipfile.ZipFile(output, "w") as archive:
         for name, content in files.items():
-            archive.writestr(name, content)
+            archive.writestr(name.replace(f"{case}/", prefix, 1), content)
     return output.getvalue()
 
 
@@ -137,9 +140,9 @@ class ReleaseTests(unittest.TestCase):
         )
         return key, source
 
-    def test_pending_detection_artifact_is_not_published_in_catalog(self):
+    def test_published_detection_and_pending_artifacts_have_correct_status(self):
         ids = {item["id"] for item in datasets.list_available()}
-        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"})
+        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "rdd2020_japan"})
         self.assertIn("festival-v1.0.0", str(datasets.info("festival_icons")))
         self.assertEqual(datasets.info("tomato_leaves")["audit_status"], "full_image_audit")
         self.assertEqual(datasets.info("festival_icons")["audit_status"], "full_image_audit")
@@ -148,6 +151,9 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(datasets.info("bangladeshi_ewaste_image")["publication_status"], "release_pending")
         with self.assertRaisesRegex(datasets.DatasetError, "公開Releaseがまだありません"):
             datasets.get("bangladeshi_ewaste_image", cache_dir=self.cache)
+        self.assertEqual(datasets.info("rdd2020_japan")["publication_status"], "student_enabled")
+        self.assertEqual(datasets.info("rdd2020_japan")["task"], "detection")
+        self.assertEqual(datasets.info("rdd2020_japan")["ZIPのSHA-256"], datasets._SOURCES["rdd2020_japan"].sha256)
         self.assertEqual(
             datasets.info("food_waste_bangladesh")["publication_status"], "student_enabled"
         )
@@ -213,11 +219,12 @@ class ReleaseTests(unittest.TestCase):
 
     def test_task_catalog_only_shows_usable_choices(self):
         tasks = datasets.list_tasks()
-        self.assertEqual([item["task"] for item in tasks], ["classification", "segmentation"])
+        self.assertEqual([item["task"] for item in tasks], ["classification", "detection", "segmentation"])
         self.assertEqual(tasks[0]["datasets"], ["tomato_leaves", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"])
+        self.assertEqual(tasks[1]["datasets"], ["rdd2020_japan"])
         teacher_tasks = datasets.list_tasks(audience="teacher", include_preview=True)
         self.assertEqual(
-            [item["task"] for item in teacher_tasks], ["classification", "segmentation", "lora"]
+            [item["task"] for item in teacher_tasks], ["classification", "detection", "segmentation", "lora"]
         )
 
     def test_festival_download_and_offline_cache(self):
@@ -344,6 +351,39 @@ class ReleaseTests(unittest.TestCase):
             with self.assertRaisesRegex(datasets.DatasetError, "範囲外"):
                 datasets.get(key, cache_dir=self.cache)
 
+    def test_rdd2020_rootless_archive_uses_dataset_specific_limits(self):
+        payload = make_detection_zip(case="rdd2020_japan", root_folder=False)
+        source = replace(
+            datasets._SOURCES["rdd2020_japan"], sha256=hashlib.sha256(payload).hexdigest(),
+            archive_size=len(payload), image_count=1, max_archive_bytes=len(payload),
+            max_unpacked_bytes=1_000_000, max_files=20,
+        )
+
+        def download(url, destination, *, max_bytes):
+            self.assertEqual(max_bytes, len(payload))
+            destination.write_bytes(payload)
+
+        with patch.dict(datasets._SOURCES, {"rdd2020_japan": source}), patch.object(
+            datasets, "_download", side_effect=download
+        ):
+            data = datasets.get("rdd2020_japan", cache_dir=self.cache)
+            self.assertEqual(data.kind, "detection")
+            self.assertTrue((data.root / "manifest.json").is_file())
+            self.assertTrue((data.root / "images/train/one.png").is_file())
+            self.assertEqual(data.splits, {"train": 1, "valid": 0, "test": 0})
+
+    def test_rdd2020_rootless_archive_rejects_parent_paths(self):
+        payload = make_detection_zip(case="rdd2020_japan", root_folder=False, unsafe=True)
+        source = replace(
+            datasets._SOURCES["rdd2020_japan"], sha256=hashlib.sha256(payload).hexdigest(),
+            archive_size=len(payload), image_count=1,
+        )
+        with patch.dict(datasets._SOURCES, {"rdd2020_japan": source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            with self.assertRaisesRegex(datasets.DatasetError, "安全でないZIP内のパス"):
+                datasets.get("rdd2020_japan", cache_dir=self.cache)
+
     def test_download_disabled(self):
         with self.assertRaisesRegex(datasets.DatasetError, "キャッシュ"):
             datasets.get("festival_icons", cache_dir=self.cache, allow_download=False)
@@ -397,7 +437,7 @@ class ReleaseTests(unittest.TestCase):
     def test_info_without_id_returns_catalog(self):
         catalog = datasets.info()
         self.assertIsInstance(catalog, list)
-        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset"})
+        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "rdd2020_japan"})
 
     def test_preview_dataset_is_not_in_formal_catalog(self):
         self.assertNotIn("fashion_mnist", {item["id"] for item in datasets.list_available()})
