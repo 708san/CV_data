@@ -1,6 +1,9 @@
-"""公開済みCV_sample_data Releaseを読み取り専用で取得する最小実装。
+Warning: truncated output (original token count: 21717)
+Total output lines: 1657
 
-このモジュールは配布元を変更しない。既存Releaseの固定URLとSHA-256を照合する。
+"""固定タグの公開Releaseから画像データを読み取り専用で取得する最小実装。
+
+配布元は変更せず、固定URL・サイズ・SHA-256を照合して安全に展開する。
 """
 from __future__ import annotations
 
@@ -66,6 +69,10 @@ class ReleaseSource:
     file_urls: dict[str, str] = field(default_factory=dict)
     file_sha256: dict[str, str] = field(default_factory=dict)
     file_sizes: dict[str, int] = field(default_factory=dict)
+    max_archive_bytes: int = MAX_ARCHIVE_BYTES
+    max_unpacked_bytes: int = MAX_UNPACKED_BYTES
+    max_files: int = MAX_FILES
+    archive_root_folder: bool = True
 
     @property
     def url(self) -> str:
@@ -400,6 +407,45 @@ class DatasetBundle:
 
 
 _SOURCES: dict[str, ReleaseSource] = {
+    "rdd2020_japan": ReleaseSource(
+        id="rdd2020_japan", case_id="rdd2020_japan", tag="rdd2020-japan-v0.1.0",
+        sha256="f787feead7fd3b0d63f42c7cfb8e3db6f114e57c83b3b928d5f7c58bcb411955",
+        archive_size=641_514_873, image_count=7900,
+        kind="detection", name_ja="RDD2020 日本の道路損傷",
+        rights_note=(
+            "CC BY-NC 3.0。非商用の教育目的に限って利用できます。出典・変更内容を表示してください。"
+            "商用利用はできません。2020年頃の道路画像で、現在の安全性や修繕順位は判断できません。"
+        ),
+        aliases_ja=("RDD2020", "日本の道路損傷", "道路のひび・穴"),
+        task="detection", audiences=("student", "teacher"), difficulty="intermediate",
+        use_cases_ja=(
+            "通学路や地域道路のひび・穴を画像から探し、道路管理者へ相談する資料を作る",
+            "検出結果と画像を照らし合わせ、見落としや誤検出を調べる",
+        ),
+        input_description_ja="日本の道路を車載スマートフォンで撮影した画像",
+        output_description_ja="縦ひび・横ひび・亀甲ひび・ポットホールの位置と種類",
+        download_size_mb=641.5, audit_status="full_source_image_and_annotation_audit_sample_visual_review",
+        audit_report="docs/datasets/rdd2020_japan.md",
+        classes=("D00", "D10", "D20", "D40"),
+        class_names_ja=("縦ひび", "横ひび", "亀甲ひび", "ポットホール"),
+        license_info={
+            "name": "CC BY-NC 3.0",
+            "url": "https://creativecommons.org/licenses/by-nc/3.0/",
+            "rights_review": "Mendeley Data固定v2の表示を確認。非商用の教育利用に限定し、帰属・変更表示が必要。",
+        },
+        source_info={
+            "dataset_name": "RDD2020: An Image Dataset for Smartphone-based Road Damage Detection and Classification",
+            "provider": "Deeksha Arya et al. (2021)",
+            "url": "https://doi.org/10.17632/5ty2wb6gvg.2",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "rdd2020-japan-v0.1.0",
+        },
+        file_urls={
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/rdd2020-japan-v0.1.0/rdd2020-japan-v0.1.0.zip",
+        },
+        max_archive_bytes=700_000_000, max_unpacked_bytes=700_000_000,
+        max_files=20_000, archive_root_folder=False,
+    ),
     "tomato_leaves": ReleaseSource(
         id="tomato_leaves", case_id="tomato-leaves", tag="tomato-v1.2.0",
         sha256="506560a5ce57394fd739fa73ac3b997a2646f87ea04257334dacb54497e0e1fa",
@@ -640,331 +686,7 @@ _SOURCES: dict[str, ReleaseSource] = {
         rights_note="CC BY 4.0。Murat Koklu氏・データ出典・変更と指定2論文を表示してください。品質・鮮度・食品安全の判定には使いません。",
         aliases_ja=("ピスタチオ2品種", "ピスタチオ画像"),
         task="classification", audiences=("student", "teacher"), difficulty="introductory",
-        use_cases_ja=("ピスタチオ2品種を画像で分類する", "背景が固定された画像で誤分類を調べる"),
-        input_description_ja="黒い背景上で撮影された600×600のピスタチオ試料画像",
-        output_description_ja="Kirmizi種またはSiirt種のラベル",
-        download_size_mb=24.7, audit_status="full_image_audit",
-        audit_report="reports/pistachio_image_dataset-v1-full-audit.json",
-        classes=("Kirmizi_Pistachio", "Siirt_Pistachio"),
-        class_names_ja=("Kirmizi種", "Siirt種"),
-        license_info={
-            "name": "CC BY 4.0",
-            "url": "https://creativecommons.org/licenses/by/4.0/",
-            "rights_review": "Mendeley v1のCC BY 4.0表示と、研究者自身が試料を集めて画像を作成したとの論文記載を確認。Murat Koklu氏、出典、変更、指定2論文の引用が必要。",
-        },
-        source_info={
-            "dataset_name": "Pistachio Image Dataset",
-            "provider": "Murat Koklu (Mendeley Data contributor)",
-            "url": "https://data.mendeley.com/datasets/h7pf57cgg9/1",
-            "doi": "10.17632/h7pf57cgg9.1",
-            "release_repository": "https://github.com/708san/CV_data_artifacts",
-            "release_tag": "pistachio_image_dataset-v0.1.0",
-        },
-        file_urls={
-            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/pistachio_image_dataset-v0.1.0/pistachio_image_dataset-v0.1.0.zip",
-        },
-        published=True,
-    ),
-    "festival_icons": ReleaseSource(
-        id="festival_icons", case_id="festival-icons", tag="festival-v1.0.0",
-        sha256="7ed662a947ba364947fb2b10bec2a7fdc8a1019e12b3ff0f06001b61b55d2ccc",
-        archive_size=2_838_163, image_count=168,
-        kind="lora_training_images", name_ja="文化祭案内アイコン（LoRA学習用）",
-        rights_note="GitHubでの公開許可あり。改変・商用利用・再配布の条件は未確定。",
-        aliases_ja=("文化祭アイコン", "文化祭案内アイコン"),
-        task="lora",
-        audiences=("teacher",),
-        difficulty="advanced",
-        use_cases_ja=("画像生成の絵柄をそろえる", "画像とキャプションの関係を調べる"),
-        input_description_ja="文化祭案内アイコンとキャプション",
-        output_description_ja="学習用の画像表現（LoRAの重みは提供しない）",
-        download_size_mb=2.7,
-        audit_status="full_image_audit",
-        audit_report="reports/festival-icons-v1.0.0.json",
-        license_info={
-            "name": "標準ライセンス未設定（公開許可の範囲のみ確認）",
-            "url": "https://github.com/708san/CV_sample_data/tree/main/cases/festival-icons",
-            "rights_review": "改変・商用利用・再配布は未確認。教材配布用の承認なし。",
-        },
-        source_info={
-            "dataset_name": "文化祭案内アイコン",
-            "provider": "CV_sample_data contributors",
-            "url": "https://github.com/708san/CV_sample_data/tree/main/cases/festival-icons",
-            "release_repository": RELEASE_REPOSITORY,
-            "release_tag": "festival-v1.0.0",
-        },
-    ),
-}
-
-
-_PREVIEW_SOURCES: dict[str, ReleaseSource] = {
-    "fashion_mnist": ReleaseSource(
-        id="fashion_mnist",
-        case_id="fashion-mnist",
-        tag="github-b2617bb6d3ffa2e429640350f613e3291e10b141",
-        sha256="",
-        archive_size=0,
-        image_count=70_000,
-        kind="classification",
-        name_ja="Fashion-MNIST",
-        rights_note="公式リポジトリのMIT表記を確認済み。教材公開・再配布の最終確認中。正式一覧には未掲載。",
-        aliases_ja=("ファッションMNIST", "衣類MNIST"),
-        task="classification",
-        audiences=("teacher",),
-        difficulty="introductory",
-        use_cases_ja=("衣類画像を分類する", "画像分類の評価方法を練習する"),
-        input_description_ja="28×28の白黒衣類画像",
-        output_description_ja="衣類10クラスのラベル",
-        download_size_mb=29.5,
-        audit_status="metadata_and_idx_checked",
-        audit_report="reports/fashion-mnist-github-b2617bb6.json",
-        class_names_ja=(
-            "Tシャツ・トップス", "ズボン", "プルオーバー", "ワンピース", "コート",
-            "サンダル", "シャツ", "スニーカー", "バッグ", "アンクルブーツ",
-        ),
-        label_names_ja={
-            "0": "Tシャツ・トップス", "1": "ズボン", "2": "プルオーバー", "3": "ワンピース",
-            "4": "コート", "5": "サンダル", "6": "シャツ", "7": "スニーカー",
-            "8": "バッグ", "9": "アンクルブーツ",
-        },
-        license_info={
-            "name": "MIT License（公式リポジトリの表記）",
-            "url": "https://github.com/zalandoresearch/fashion-mnist/blob/b2617bb6d3ffa2e429640350f613e3291e10b141/LICENSE",
-            "rights_review": "公式表記は確認済み。元画像の教材公開・再配布について人による最終確認が必要。",
-        },
-        source_info={
-            "dataset_name": "Fashion-MNIST",
-            "provider": "Zalando Research",
-            "url": "https://github.com/zalandoresearch/fashion-mnist/tree/b2617bb6d3ffa2e429640350f613e3291e10b141",
-            "commit": "b2617bb6d3ffa2e429640350f613e3291e10b141",
-            "format": "IDX gzip",
-        },
-        preview=True,
-        file_urls={
-            name: f"https://raw.githubusercontent.com/zalandoresearch/fashion-mnist/b2617bb6d3ffa2e429640350f613e3291e10b141/data/fashion/{name}"
-            for name in (
-                "train-images-idx3-ubyte.gz", "train-labels-idx1-ubyte.gz",
-                "t10k-images-idx3-ubyte.gz", "t10k-labels-idx1-ubyte.gz",
-            )
-        },
-        file_sha256={
-            "train-images-idx3-ubyte.gz": "3aede38d61863908ad78613f6a32ed271626dd12800ba2636569512369268a84",
-            "train-labels-idx1-ubyte.gz": "a04f17134ac03560a47e3764e11b92fc97de4d1bfaf8ba1a3aa29af54cc90845",
-            "t10k-images-idx3-ubyte.gz": "346e55b948d973a97e58d2351dde16a484bd415d4595297633bb08f03db6a073",
-            "t10k-labels-idx1-ubyte.gz": "67da17c76eaffca5446c3361aaab5c3cd6d1c2608764d35dfb1850b086bf8dd5",
-        },
-        file_sizes={
-            "train-images-idx3-ubyte.gz": 26_421_880,
-            "train-labels-idx1-ubyte.gz": 29_515,
-            "t10k-images-idx3-ubyte.gz": 4_422_102,
-            "t10k-labels-idx1-ubyte.gz": 5_148,
-        },
-    ),
-}
-
-
-def _utc_now() -> str:
-    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
-
-
-def _read_rows(labels_csv: Path) -> list[dict[str, str]]:
-    with labels_csv.open(encoding="utf-8-sig", newline="") as stream:
-        return list(csv.DictReader(stream))
-
-
-def _sample_id(image: str) -> str:
-    path = PurePosixPath(image)
-    return path.with_suffix("").as_posix()
-
-
-def _effective_splits(rows: Sequence[dict[str, str]], *, val_fraction: float, seed: int) -> list[str]:
-    if not 0 <= val_fraction < 1:
-        raise ValueError("val_fractionは0以上1未満で指定してください。")
-    if not rows:
-        return []
-    # Releaseの公式testは保持し、trainの中だけをラベルごとに分割する。
-    result = [row["split"] if row.get("split") in {"val", "test"} else "train" for row in rows]
-    by_label: dict[str, list[int]] = {}
-    for index, row in enumerate(rows):
-        if row.get("split") not in {"val", "test"}:
-            by_label.setdefault(row.get("label", ""), []).append(index)
-    for label, indices in by_label.items():
-        count = int(round(len(indices) * val_fraction))
-        if val_fraction > 0 and len(indices) >= 2:
-            count = max(1, count)
-        count = min(count, max(0, len(indices) - 1))
-        ranked = sorted(
-            indices,
-            key=lambda i: hashlib.sha256(f"{seed}:{label}:{_sample_id(rows[i]['image'])}".encode()).hexdigest(),
-        )
-        for index in ranked[:count]:
-            result[index] = "val"
-    return result
-
-
-class _TorchClassificationDataset:
-    """torch.utils.data.Dataset互換の遅延読み込みラッパー。"""
-
-    def __init__(self, records: list[dict[str, Any]], *, image_size: tuple[int, int], torch_module: Any) -> None:
-        self._records = records
-        self._image_size = image_size
-        self._torch = torch_module
-        self.targets = [int(record["label_id"]) for record in records]
-
-    def __len__(self) -> int:
-        return len(self._records)
-
-    def __getitem__(self, index: int):
-        try:
-            from PIL import Image
-        except ImportError as exc:
-            raise DatasetError("画像読み込みにはPillowが必要です。") from exc
-        import numpy as np
-
-        record = self._records[index]
-        with Image.open(record["image_path"]) as image:
-            image = image.convert("RGB").resize(self._image_size[::-1], Image.Resampling.BILINEAR)
-            array = np.asarray(image, dtype=np.float32) / 255.0
-        tensor = self._torch.from_numpy(array).permute(2, 0, 1).contiguous()
-        return tensor, int(record["label_id"])
-
-
-class _TorchSegmentationDataset:
-    """画像と濃淡またはクラスIDマスクを遅延読み込みするPyTorch Dataset互換クラス。"""
-
-    def __init__(
-        self,
-        records: list[dict[str, Any]],
-        *,
-        image_size: tuple[int, int],
-        torch_module: Any,
-        mask_encoding: str = "grayscale_0_255",
-        class_count: int = 0,
-    ) -> None:
-        self._records = records
-        self._image_size = image_size
-        self._torch = torch_module
-        self._mask_encoding = mask_encoding
-        self._class_count = class_count
-        self.targets = [int(record["label_id"]) for record in records]
-
-    def __len__(self) -> int:
-        return len(self._records)
-
-    def __getitem__(self, index: int):
-        try:
-            from PIL import Image
-        except ImportError as exc:
-            raise DatasetError("画像読み込みにはPillowが必要です。") from exc
-        import numpy as np
-
-        record = self._records[index]
-        with Image.open(record["image_path"]) as image:
-            image = image.convert("RGB").resize(self._image_size[::-1], Image.Resampling.BILINEAR)
-            image_array = np.asarray(image, dtype=np.float32) / 255.0
-        with Image.open(record["mask_path"]) as mask:
-            mask = mask.convert("L").resize(self._image_size[::-1], Image.Resampling.NEAREST)
-            if self._mask_encoding == "class_id_grayscale":
-                mask_array = np.asarray(mask, dtype=np.int64)
-                if mask_array.size and (mask_array.min() < 0 or mask_array.max() >= self._class_count):
-                    raise DatasetError("画素マスクにmanifestのクラス範囲外のIDがあります。")
-            else:
-                mask_array = np.asarray(mask, dtype=np.float32)[None, :, :] / 255.0
-        image_tensor = self._torch.from_numpy(image_array).permute(2, 0, 1).contiguous()
-        mask_tensor = self._torch.from_numpy(mask_array).contiguous()
-        return image_tensor, mask_tensor
-
-
-_TASKS: dict[str, dict[str, str]] = {
-    "classification": {
-        "name_ja": "画像分類",
-        "description_ja": "画像全体を、決めた種類のどれかに分ける課題。",
-    },
-    "detection": {
-        "name_ja": "物体検出",
-        "description_ja": "画像の中の物体の位置と種類を調べる課題。",
-    },
-    "segmentation": {
-        "name_ja": "領域分割",
-        "description_ja": "画像の画素を、物体や背景の領域に分ける課題。",
-    },
-    "lora": {
-        "name_ja": "画像生成・LoRA",
-        "description_ja": "画像と説明文を使い、表現の特徴をそろえる課題。",
-    },
-}
-
-
-def _catalog_sources(*, include_preview: bool) -> tuple[ReleaseSource, ...]:
-    sources = [source for source in _SOURCES.values() if source.published]
-    if include_preview:
-        sources.extend(_PREVIEW_SOURCES.values())
-    return tuple(sources)
-
-
-def _source_status(src: ReleaseSource) -> str:
-    if not src.published:
-        return "release_pending"
-    if src.preview:
-        return "teacher_preview_only"
-    if "student" in src.audiences:
-        return "student_enabled"
-    return "teacher_only"
-
-
-def list_available(*, task: str | None = None, audience: str | None = None,
-                   include_preview: bool = False) -> list[dict[str, Any]]:
-    """利用可能なデータを課題タイプ・対象者で絞り込む。
-
-    デフォルトは後方互換のため正式一覧だけを返す。プレビューは
-    ``include_preview=True``を明示した教師向け確認用であり、生徒向け一覧には
-    ``audience="student"``を指定しても含まれない。
-    """
-    if task is not None and task not in _TASKS:
-        raise ValueError(f"taskは{', '.join(_TASKS)}のいずれかです。")
-    if audience is not None and audience not in {"student", "teacher"}:
-        raise ValueError("audienceはstudentまたはteacherです。")
-    result = []
-    for src in _catalog_sources(include_preview=include_preview):
-        if task is not None and src.task != task:
-            continue
-        if audience is not None and audience not in src.audiences:
-            continue
-        result.append({
-            "id": src.id,
-            "name_ja": src.name_ja,
-            "aliases_ja": list(src.aliases_ja),
-            "task": src.task,
-            "kind": src.kind,
-            "audiences": list(src.audiences),
-            "difficulty": src.difficulty,
-            "use_cases_ja": list(src.use_cases_ja),
-            "input_description_ja": src.input_description_ja,
-            "output_description_ja": src.output_description_ja,
-            "画像数": src.image_count,
-            "ダウンロードサイズMB": src.download_size_mb,
-            "audit_status": src.audit_status,
-            "audit_report": src.audit_report,
-            "固定版": src.tag,
-            "権利上の注意": src.rights_note,
-            "publication_status": _source_status(src),
-        })
-    return result
-
-
-def list_tasks(*, audience: str = "student", include_preview: bool = False) -> list[dict[str, Any]]:
-    """課題タイプと、その条件で選べるデータIDを一覧表示する。"""
-    if audience not in {"student", "teacher"}:
-        raise ValueError("audienceはstudentまたはteacherです。")
-    result = []
-    for task, task_info in _TASKS.items():
-        items = list_available(task=task, audience=audience, include_preview=include_preview)
-        if not items:
-            continue
-        result.append({
-            "task": task,
-            **task_info,
-            "datasets": [item["id"] for item in items],
+        use_cases_ja=("ピスタチオ2品種を画像で分類する", "背景が固定された画像…3717 tokens truncated…or item in items],
         })
     return result
 
@@ -1154,7 +876,7 @@ def _download(url: str, destination: Path, *, max_bytes: int) -> None:
 
 def _archive_entries(archive: zipfile.ZipFile, src: ReleaseSource) -> list[zipfile.ZipInfo]:
     entries = archive.infolist()
-    if len(entries) > MAX_FILES:
+    if len(entries) > src.max_files:
         raise DatasetError("ZIPのファイル数が上限を超えています。")
     total = 0
     seen: set[str] = set()
@@ -1162,9 +884,14 @@ def _archive_entries(archive: zipfile.ZipFile, src: ReleaseSource) -> list[zipfi
     for entry in entries:
         name = entry.filename
         path = PurePosixPath(name)
-        is_root_directory = name.rstrip("/") == root and name.endswith("/")
+        is_root_directory = src.archive_root_folder and name.rstrip("/") == root and name.endswith("/")
         if (not name or "\\" in name or "\x00" in name or path.is_absolute()
-                or len(path.parts) < 2 and not is_root_directory or path.parts[0] != root
+                or len(path.parts) < (2 if src.archive_root_folder else 1) and not is_root_directory
+                or src.archive_root_folder and path.parts[0] != root
+                or not src.archive_root_folder and path.parts[0] not in {
+                    "LICENSE.md", "README.md", "annotations.jsonl", "classes.json",
+                    "metadata.jsonl", "manifest.json", "images", "labels",
+                }
                 or any(part in {"", ".", ".."} for part in path.parts)
                 or re.match(r"^[A-Za-z]:", name)):
             raise DatasetError(f"安全でないZIP内のパスです: {name}")
@@ -1175,7 +902,7 @@ def _archive_entries(archive: zipfile.ZipFile, src: ReleaseSource) -> list[zipfi
         if stat.S_ISLNK(mode):
             raise DatasetError(f"ZIPにシンボリックリンクが含まれています: {name}")
         total += entry.file_size
-        if total > MAX_UNPACKED_BYTES:
+        if total > src.max_unpacked_bytes:
             raise DatasetError("ZIPの展開後サイズが上限を超えています。")
     return entries
 
@@ -1193,7 +920,7 @@ def _extract_verified(archive_path: Path, destination: Path, src: ReleaseSource)
             # ZIP内パスは上で検証済み。ファイルは直接展開せずチャンクコピー。
             with archive.open(entry) as reader, member.open("xb") as writer:
                 shutil.copyfileobj(reader, writer, length=1024 * 1024)
-    root = destination / src.case_id
+    root = destination / src.case_id if src.archive_root_folder else destination
     _validate_case(root, src)
     return root
 
@@ -1563,7 +1290,7 @@ def _get_idx_preview(src: ReleaseSource, *, cache_dir: str | Path | None,
 
 def get(dataset_id: str, *, cache_dir: str | Path | None = None,
         allow_download: bool = True, allow_preview: bool = False) -> DatasetBundle:
-    """既存の固定Releaseを取得する。CV_sample_dataへの書込みは一切行わない。"""
+    """固定Releaseのデータを取得する。配布元へ書き込みは行わない。"""
     src = _source(dataset_id)
     if not src.published:
         raise DatasetError("データartifactは準備済みですが、公開Releaseがまだありません。公開後に再度お試しください。")
@@ -1591,7 +1318,7 @@ def get(dataset_id: str, *, cache_dir: str | Path | None = None,
     with tempfile.TemporaryDirectory(prefix="cvlesson-", dir=base) as work:
         workspace = Path(work)
         archive = workspace / f"{src.case_id}.zip"
-        _download(src.url, archive, max_bytes=MAX_ARCHIVE_BYTES)
+        _download(src.url, archive, max_bytes=src.max_archive_bytes)
         if archive.stat().st_size != src.archive_size:
             raise DatasetError("ZIPのサイズが固定Releaseの登録値と異なります。")
         if _sha256(archive) != src.sha256:
