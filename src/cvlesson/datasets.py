@@ -854,6 +854,40 @@ _SOURCES: dict[str, ReleaseSource] = {
         },
         published=True,
     ),
+    "indoor_plant_varieties": ReleaseSource(
+        id="indoor_plant_varieties", case_id="indoor_plant_varieties",
+        tag="indoor-plant-varieties-v0.1.0",
+        sha256="0194a3631ecaf0293cc0271d938ffe6933b61ce58e58e648f8ca346bd1dbe714",
+        archive_size=74_718_549, image_count=1162,
+        kind="classification", name_ja="観葉植物の種類（7種類）",
+        rights_note="CC BY 4.0。作者・出典・変更を表示してください。植物名の予測を有毒性・食用・病気・育て方の判定に使わないでください。",
+        aliases_ja=("観葉植物", "観葉植物の種類", "観葉植物画像"),
+        task="classification", audiences=("student", "teacher"), difficulty="introductory",
+        use_cases_ja=("家や学校で見かける観葉植物を画像で分類する", "撮影条件で予測がどう変わるか調べる"),
+        input_description_ja="長辺512px以下の観葉植物画像",
+        output_description_ja="7種類の観葉植物ラベル",
+        download_size_mb=71.3, audit_status="full_image_audit",
+        audit_report="reports/indoor_plant_varieties-v0.1.0-audit.json",
+        classes=("Aglaonema", "Cryptanthus", "Devil's Ivy", "Heartleaf philodendron", "N-Joy Pothos", "Rhaphidophora", "Zz plant"),
+        class_names_ja=("アグラオネマ", "クリプタンサス", "ポトス", "ハートリーフ・フィロデンドロン", "エンジョイ・ポトス", "ヒメモンステラ", "ザミオクルカス"),
+        license_info={
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+            "rights_review": "Mendeley v1のCC BY 4.0表示、著者による収集説明を確認。EXIF/GPSを全て除去し、10枚の完全一致重複を除外。作者・出典・変更の表示が必要。",
+        },
+        source_info={
+            "dataset_name": "Indoor Plant Varieties for Computer Vision Applications: A Diverse Image Dataset",
+            "provider": "Sajib Bin Mamun; Md Asraful Sharker Nirob; Md Taimur Ahad; Mashreka Akter; Pranta Saha; Md Assaduzzaman",
+            "url": "https://data.mendeley.com/datasets/ct79299k27/1",
+            "doi": "10.17632/ct79299k27.1",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "indoor-plant-varieties-v0.1.0",
+        },
+        file_urls={
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/indoor-plant-varieties-v0.1.0/indoor_plant_varieties-v0.1.0.zip",
+        },
+        published=True,
+    ),
     "festival_icons": ReleaseSource(
         id="festival_icons", case_id="festival-icons", tag="festival-v1.0.0",
         sha256="7ed662a947ba364947fb2b10bec2a7fdc8a1019e12b3ff0f06001b61b55d2ccc",
@@ -1512,7 +1546,7 @@ def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
     if not all(p.is_file() for p in required):
         raise DatasetError("manifest.jsonなどの必須ファイルがありません。")
     manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
-    version = src.tag if src.preview else "v" + src.tag.split("-v", 1)[1]
+    version = src.tag if src.preview else "v" + src.tag.rsplit("-v", 1)[1]
     if (manifest.get("case_id") != src.case_id or manifest.get("version") != version
             or manifest.get("image_count") != src.image_count):
         raise DatasetError("manifest.jsonの版または画像枚数が固定Releaseの情報と一致しません。")
