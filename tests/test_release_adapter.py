@@ -265,7 +265,7 @@ class ReleaseTests(unittest.TestCase):
             task="classification", audience="teacher", include_preview=True,
         )
         self.assertEqual([item["id"] for item in student], ["tomato_leaves", "recyclable_waste", "fashion_mnist", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
-        self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties", "recyclable_waste", "fashion_mnist", "bangladeshi_ewaste_image", "pust_cafeteria_food"})
+        self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties", "recyclable_waste", "fashion_mnist"})
         fashion = next(item for item in teacher if item["id"] == "fashion_mnist")
         self.assertEqual(fashion["publication_status"], "student_enabled")
 
