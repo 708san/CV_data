@@ -17,7 +17,7 @@
 
 ## 取得
 
-固定Release assetの公開後に、次の方法で取得できます。
+次の方法で固定Release assetを取得できます。
 
 ```python
 from cvlesson import datasets
@@ -35,8 +35,6 @@ data.show_examples(8)
 
 Jannatul Ferdeous; Md. Abdul Kayum; Ahmed Islam; Md Roman Nihal; ASM Shihavuddin; Muhammad Hasan (2026), “ChakmaLipī Dataset,” Mendeley Data v6, DOI: [10.17632/rzjphbvz9f.6](https://doi.org/10.17632/rzjphbvz9f.6).
 
-配布元はCC BY 4.0を表示しています。作者・出典・変更内容を表示してください。関連論文は、参加者から同意を得て倫理審査を受けたことを説明しています。配布物は画素値を変えず、完全一致重複を除いて分割しています。
+配布元はCC BY 4.0を表示しています。作者・出典・変更内容を表示してください。関連論文は、参加者から同意を得て倫理審査を受けたことを説明しています（[研究論文](https://pmc.ncbi.nlm.nih.gov/articles/PMC13136726/)）。配布物は画素値を変えず、完全一致重複を除いて分割しています。
 
 元画像全件をデコードし、全48クラスから各4枚の見本を確認しました。これは全画像の人手確認ではありません。書き手IDが公開されていないため、書き手単位で分離した評価はできません。詳細は[監査レポート](https://github.com/708san/CV_data_artifacts/blob/main/reports/chakmalipi-v0.1.0-audit.json)を参照してください。
-
-Release assetは準備中です。公開されるまではライブラリから取得できません。

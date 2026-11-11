@@ -13,8 +13,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 
 | 区分 | 件数 | ライブラリでの扱い |
 | --- | ---: | --- |
-| main APIで利用できる生徒向けデータ | 15 | `rdd2020_japan`、`lefood_set`、`tomato_leaves`、`bangladeshi_ewaste_image`、`recyclable_waste`、`pust_cafeteria_food`、`fashion_mnist`、`geoset_ennea`、`road_traversing_knowledge`、`fruitseg30`、`fresh_rotten_fruits`、`food_waste_bangladesh`、`smallfishbd`、`pistachio_image_dataset`、`indoor_plant_varieties` |
-| 整形・監査済み、Release asset/API登録待ち | 1 | ChakmaLipī v0.1.0。CV_data_artifacts PR #36をマージ済み。asset公開後に取得APIへ登録 |
+| main APIで利用できる生徒向けデータ | 16 | `rdd2020_japan`、`lefood_set`、`tomato_leaves`、`bangladeshi_ewaste_image`、`recyclable_waste`、`pust_cafeteria_food`、`fashion_mnist`、`geoset_ennea`、`road_traversing_knowledge`、`fruitseg30`、`fresh_rotten_fruits`、`food_waste_bangladesh`、`smallfishbd`、`pistachio_image_dataset`、`indoor_plant_varieties`、`chakmalipi` |
 | 教師向けLoRA素材 | 1 | `festival_icons`。公開許可のみ確認済み。改変・商用利用・再配布許諾は未確認 |
 | 固定取得条件または公開条件で保留 | 2 | `kuzushiji_mnist`、`fruits_360`。Kuzushiji-MNISTはCC BY-SA 4.0表記を確認済みだが、配布データの固定版とSHA-256を確定できず保留。Fruits-360には固定タグReleaseがなく、実体取得は未開始 |
 | 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
@@ -22,11 +21,11 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 32 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-候補台帳53件の現状は、`student_enabled` 8件、`candidate` 32件、`hold` 11件、整形artifact準備済み・Release asset待ち2件です。台帳に含まれないデータも含め、main APIで生徒が取得できるデータは15件です。目標20件まであと5件です。審査・固定版・実体確認が終わる前の候補はこの数に含めません。
+候補台帳53件の現状は、`student_enabled` 10件、`candidate` 32件、`hold` 11件です。台帳に含まれないデータも含め、main APIで生徒が取得できるデータは16件です。目標20件まであと4件です。審査・固定版・実体確認が終わる前の候補はこの数に含めません。
 
 ## 課題別の候補
 
-ChakmaLipī v6はMendeley DataのCC BY 4.0表示と、関連論文の参加同意・倫理審査の説明を確認しました。37,708画像を全量デコードし、同じ数字クラス内の完全一致重複1,450枚を除外。残る36,258枚を48クラス別に分割し、画素値を変えずに共通形式化しました。書き手IDがないため、書き手を分けた評価はできません。`CV_data_artifacts` PR #36はマージ済みで、Release assetが公開されるまでは取得APIへ有効化しません（[データ別説明](datasets/chakmalipi.md)）。
+ChakmaLipī v6はMendeley DataのCC BY 4.0表示と、関連論文の参加同意・倫理審査の説明を確認しました。37,708画像を全量デコードし、同じ数字クラス内の完全一致重複1,450枚を除外。残る36,258枚を48クラス別に分割し、画素値を変えずに共通形式化しました。書き手IDがないため、書き手を分けた評価はできません。`CV_data_artifacts` PR #36をマージし、固定Release assetを公開、SHA-256を再取得照合しました（[データ別説明](datasets/chakmalipi.md)）。
 
 HGM-4 v8はMendeleyのCC BY 4.0表示、固定RAR（228,825,330 bytes）のSHA-256、および安全なアーカイブ目録を確認しましたが、標準の展開ツールがRAR内フィルターに対応せず、完全展開できませんでした。画像実体・同意・プライバシーを未検査のため、配布・教材化は保留です（[データ別説明](datasets/hgm_4_hand_gestures.md)）。
 

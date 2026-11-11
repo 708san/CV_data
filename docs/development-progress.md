@@ -16,7 +16,7 @@
 - 固定ZIP（103,184,395 bytes、SHA-256 `187b7294c7d4720981022d14d4ae3edccae642c7471a195a27a580a55d6fee52`）を全量検査。37,708枚をデコードし、完全一致重複1,450枚を除外。
 - 残る36,258枚を48クラス、seed 42のクラス別70/15/15に分割。画素値は変更せず、全クラスから代表画像を確認。書き手単位の分割・評価はできないと記録。
 - 整形ZIPは99,131,569 bytes、SHA-256 `d9ef73e59c084492939b1d7b23d3ffde0fa865f76f132a29c5cba7c12cb19759`。manifest、画像ハッシュ、ラベル、CRCを検証。
-- `CV_data_artifacts` PR #36をマージ。GitHub CLIの認証トークンが無効のためRelease assetは未作成。CV_data側は取得設定と日本語説明を準備し、公開までは`published=False`でカタログから隠します。
+- `CV_data_artifacts` PR #36をマージし、固定Release asset `chakmalipi-v0.1.0`を公開。公開URLから再取得した99,131,569 bytesのSHA-256が成果ZIPと一致しました。CV_data PR #49で取得API登録を審査中です。
 - 詳細：[ChakmaLipī説明](datasets/chakmalipi.md)、[候補精査状況](catalog-review.md)。
 
 ## 2026-11-11：GeoSetEnneaを整備・固定Release公開

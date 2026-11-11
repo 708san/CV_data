@@ -86,6 +86,7 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [大学食堂の料理](docs/datasets/pust_cafeteria_food.md) | 料理16種類、画像691枚・位置注釈 | `pust-cafeteria-food-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [Fashion-MNIST](docs/datasets/fashion_mnist.md) | 衣類等10種類、28×28画素の画像70,000枚 | `fashion-mnist-v0.1.0` | MIT、出典・変更表示を収録 |
 | [GeoSetEnnea](docs/datasets/geoset_ennea.md) | 製図用具9種類、画像136枚・位置注釈1,188件 | `geoset-ennea-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
+| [ChakmaLipī](docs/datasets/chakmalipi.md) | チャクマ文字38種類・数字10種類、手書き画像36,258枚 | `chakmalipi-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [文化祭アイコン](docs/datasets/festival_icons.md) | アイコン168枚、画像と説明文 | `festival-v1.0.0` | 公開許可あり。改変・商用利用・再配布は要確認 |
 
 トマトの葉と文化祭アイコンは固定Releaseを全量監査済みです。実測値は[トマトの監査レポート](reports/tomato-leaves-v1.2.0.json)と[文化祭アイコンの監査レポート](reports/festival-icons-v1.0.0.json)に保存しています。これは権利の承認を意味しません。

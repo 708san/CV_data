@@ -43,11 +43,11 @@
 
 ## 2. 現在地（2026-11-11）
 
-- main APIの生徒向けデータは15件です。目標20件まであと5件です。教師向けLoRA素材は`festival_icons`1件です。
-- ChakmaLipī v6を権利確認・全量デコードし、完全一致重複を除いた36,258枚を共通形式化しました。`CV_data_artifacts`の監査記録とmanifestはPR #36でmainへ反映済みです。Release assetの公開後にライブラリAPIを有効化します。
+- main APIの生徒向けデータは16件です。目標20件まであと4件です。教師向けLoRA素材は`festival_icons`1件です。
+- ChakmaLipī v6を権利確認・全量デコードし、完全一致重複を除いた36,258枚を共通形式化しました。固定Release assetを公開し、再取得時のサイズ・SHA-256一致を確認。CV_dataの公開API登録はPR #49で審査中です。
 - `tomato_leaves`：7,209枚、破損0、完全一致重複0、ラベル不一致0。標準化後はtrain 5,191 / val 577 / test 1,441。
 - `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。承認済み学習済みLoRA重みは0件。
-- 候補台帳は53件。状態は`candidate` 32件、`hold` 11件、`student_enabled` 8件、`prepared_artifact_pending_release_asset` 2件。候補台帳外の追加採用データもあるため、正式一覧件数と台帳状態件数は別に集計します。
+- 候補台帳は53件。状態は`candidate` 32件、`hold` 11件、`student_enabled` 10件。候補台帳外の追加採用データもあるため、正式一覧件数と台帳状態件数は別に集計します。
 - `CV_data_artifacts` mainにはsource manifest 15件、artifact registry掲載8件があります。PUSTのRelease assetは存在しますが、artifact registryへの登録が見当たらず、別途台帳を整合させます。
 - 候補台帳の全項目を一括で`list_available()`へ加えません。選定・権利確認・固定Releaseが済んだデータだけを個別に公開します。
 - 既存Notebook、`CV_sample_data`、そのRelease、タグ、配布ファイルは変更しない。

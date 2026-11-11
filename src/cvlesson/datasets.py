@@ -1033,6 +1033,7 @@ _SOURCES: dict[str, ReleaseSource] = {
             "provider": "Jannatul Ferdeous; Md. Abdul Kayum; Ahmed Islam; Md Roman Nihal; ASM Shihavuddin; Muhammad Hasan",
             "url": "https://data.mendeley.com/datasets/rzjphbvz9f/6",
             "doi": "10.17632/rzjphbvz9f.6",
+            "article_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13136726/",
             "release_repository": "https://github.com/708san/CV_data_artifacts",
             "release_tag": "chakmalipi-v0.1.0",
         },
@@ -1040,7 +1041,7 @@ _SOURCES: dict[str, ReleaseSource] = {
             "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/chakmalipi-v0.1.0/chakmalipi-v0.1.0.zip",
         },
         archive_root_name="chakmalipi", max_files=40_000,
-        published=False,
+        published=True,
     ),
     "festival_icons": ReleaseSource(
         id="festival_icons", case_id="festival-icons", tag="festival-v1.0.0",
