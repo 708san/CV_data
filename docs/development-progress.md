@@ -10,6 +10,15 @@
 
 # 開発進捗
 
+## 2026-11-11：FabricSpotDefectを権利確認・整形・公開
+
+- Mendeley Data v1のCC BY 4.0表示と、著者が日常の家庭用布をスマートフォン撮影したという説明を先に確認。洗濯前に衣類の目立つ汚れを探す補助という生徒課題に適合するため採用しました。柄布も含むデータで、柄の存在は除外理由にしていません。
+- 固定元ZIP（941,581,889 bytes、SHA-256 `2e4fd58488734fe3b888c0c3633ca4d68da76f3a96f1e9bba08ec710645d6ab2`）を取得し、危険パス・symlinkなし、CRC正常、画像1,014枚のデコード成功、完全一致重複0を確認。
+- 元のsplit（643/219/152）と画像画素・寸法を維持し、増強画像を除外。COCO bbox 3,288件を正規化し、0.5px以下の端のはみ出し29件をクリップ。掲載ページの3,286件とアーカイブ・論文の3,288件の差も記録しました。
+- 共通artifact `fabricspotdefect-v0.1.0`（744,311,786 bytes、SHA-256 `b40dca04e3879e92533face725d4e12bbfe9ba85e41b1c7ef59e290f1421943d`）を公開。Releaseの掲載サイズ・GitHub SHA-256を照合し、共通形式validatorとZIP CRC検査を通過。
+- 生徒向けAPIを16件へ更新。衣類の清潔さ、着用可否、安全性、汚れ落ちを判定する用途ではないと記載。
+- 詳細：[データ説明](datasets/fabricspotdefect.md)、[全量監査JSON](../reports/fabricspotdefect-v1-audit.json)。
+
 ## 2026-11-11：ChakmaLipīを審査・共通形式化
 
 - Mendeley Data v6のCC BY 4.0表示を確認。関連論文に参加同意と倫理審査の説明があり、書き手IDはデータに含まれません。
