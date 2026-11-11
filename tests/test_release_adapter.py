@@ -53,7 +53,7 @@ def make_zip(case="festival-icons", *, corrupt=False, unsafe=False, symlink=Fals
     return output.getvalue()
 
 
-def make_detection_zip(case="bangladeshi_ewaste_image", *, corrupt_label=False, root_folder=True, unsafe=False) -> bytes:
+def make_detection_zip(case="bangladeshi_ewaste", *, corrupt_label=False, root_folder=True, unsafe=False) -> bytes:
     image = "images/train/one.png"
     label = "labels/train/one.txt"
     annotation = {
@@ -194,15 +194,13 @@ class ReleaseTests(unittest.TestCase):
 
     def test_published_detection_and_pending_artifacts_have_correct_status(self):
         ids = {item["id"] for item in datasets.list_available()}
-        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "road_traversing_knowledge", "rdd2020_japan", "lefood_set", "indoor_plant_varieties", "geoset_ennea"})
+        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "road_traversing_knowledge", "rdd2020_japan", "lefood_set", "indoor_plant_varieties", "geoset_ennea", "bangladeshi_ewaste_image", "recyclable_waste", "pust_cafeteria_food", "fashion_mnist"})
         self.assertIn("festival-v1.0.0", str(datasets.info("festival_icons")))
         self.assertEqual(datasets.info("tomato_leaves")["audit_status"], "full_image_audit")
         self.assertEqual(datasets.info("festival_icons")["audit_status"], "full_image_audit")
         self.assertEqual(datasets.info("bangladeshi_ewaste_image")["task"], "detection")
         self.assertEqual(datasets.info("bangladeshi_ewaste_image")["権利上の注意"].split("。")[0], "CC BY 4.0")
-        self.assertEqual(datasets.info("bangladeshi_ewaste_image")["publication_status"], "release_pending")
-        with self.assertRaisesRegex(datasets.DatasetError, "公開Releaseがまだありません"):
-            datasets.get("bangladeshi_ewaste_image", cache_dir=self.cache)
+        self.assertEqual(datasets.info("bangladeshi_ewaste_image")["publication_status"], "student_enabled")
         self.assertEqual(datasets.info("rdd2020_japan")["publication_status"], "student_enabled")
         self.assertEqual(datasets.info("rdd2020_japan")["task"], "detection")
         self.assertEqual(datasets.info("rdd2020_japan")["ZIPのSHA-256"], datasets._SOURCES["rdd2020_japan"].sha256)
@@ -253,29 +251,29 @@ class ReleaseTests(unittest.TestCase):
 
     def test_catalog_can_filter_by_task_and_audience(self):
         student = datasets.list_available(task="classification", audience="student")
-        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
+        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "recyclable_waste", "fashion_mnist", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
         self.assertEqual(student[0]["publication_status"], "student_enabled")
         self.assertEqual(datasets.list_available(task="lora", audience="student"), [])
         teacher = datasets.list_available(task="lora", audience="teacher")
         self.assertEqual([item["id"] for item in teacher], ["festival_icons"])
 
-    def test_preview_is_only_in_teacher_catalog_when_requested(self):
+    def test_student_datasets_are_also_available_to_teachers(self):
         student = datasets.list_available(
             task="classification", audience="student", include_preview=True,
         )
         teacher = datasets.list_available(
             task="classification", audience="teacher", include_preview=True,
         )
-        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
-        self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties", "fashion_mnist"})
+        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "recyclable_waste", "fashion_mnist", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
+        self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties", "recyclable_waste", "fashion_mnist"})
         fashion = next(item for item in teacher if item["id"] == "fashion_mnist")
-        self.assertEqual(fashion["publication_status"], "teacher_preview_only")
+        self.assertEqual(fashion["publication_status"], "student_enabled")
 
     def test_task_catalog_only_shows_usable_choices(self):
         tasks = datasets.list_tasks()
         self.assertEqual([item["task"] for item in tasks], ["classification", "detection", "regression", "segmentation"])
-        self.assertEqual(tasks[0]["datasets"], ["tomato_leaves", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
-        self.assertEqual(tasks[1]["datasets"], ["rdd2020_japan", "geoset_ennea"])
+        self.assertEqual(tasks[0]["datasets"], ["tomato_leaves", "recyclable_waste", "fashion_mnist", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
+        self.assertEqual(tasks[1]["datasets"], ["rdd2020_japan", "bangladeshi_ewaste_image", "pust_cafeteria_food", "geoset_ennea"])
         self.assertEqual(tasks[2]["datasets"], ["lefood_set"])
         teacher_tasks = datasets.list_tasks(audience="teacher", include_preview=True)
         self.assertEqual(
@@ -562,33 +560,13 @@ class ReleaseTests(unittest.TestCase):
     def test_info_without_id_returns_catalog(self):
         catalog = datasets.info()
         self.assertIsInstance(catalog, list)
-        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "road_traversing_knowledge", "rdd2020_japan", "lefood_set", "indoor_plant_varieties", "geoset_ennea"})
+        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "road_traversing_knowledge", "rdd2020_japan", "lefood_set", "indoor_plant_varieties", "geoset_ennea", "bangladeshi_ewaste_image", "recyclable_waste", "pust_cafeteria_food", "fashion_mnist"})
 
-    def test_preview_dataset_is_not_in_formal_catalog(self):
-        self.assertNotIn("fashion_mnist", {item["id"] for item in datasets.list_available()})
-        self.assertEqual(datasets.list_preview()[0]["id"], "fashion_mnist")
-        with self.assertRaisesRegex(datasets.DatasetError, "教師向けプレビュー"):
-            datasets.get("fashion_mnist", cache_dir=self.cache)
+    def test_fashion_mnist_is_in_student_catalog(self):
+        self.assertIn("fashion_mnist", {item["id"] for item in datasets.list_available(audience="student")})
+        self.assertEqual(datasets.info("fashion_mnist")["publication_status"], "student_enabled")
+        self.assertEqual(datasets.list_preview(), [])
 
-    def test_idx_preview_materializes_verified_pgm_cache(self):
-        payloads = make_idx_gzip_files()
-        base = datasets._PREVIEW_SOURCES["fashion_mnist"]
-        source = replace(
-            base,
-            tag="github-test-idx",
-            image_count=2,
-            file_sha256={name: hashlib.sha256(payload).hexdigest() for name, payload in payloads.items()},
-            file_sizes={name: len(payload) for name, payload in payloads.items()},
-        )
-        def fake_download(url, destination, *, max_bytes):
-            destination.write_bytes(payloads[destination.name])
-        with patch.dict(datasets._PREVIEW_SOURCES, {"fashion_mnist": source}), patch.object(
-            datasets, "_download", side_effect=fake_download,
-        ):
-            data = datasets.get("fashion_mnist", cache_dir=self.cache, allow_preview=True)
-        self.assertEqual(data.manifest["image_count"], 2)
-        self.assertTrue((data.root / "images/train/0/000001.pgm").is_file())
-        self.assertTrue((data.root / "images/test/1/000001.pgm").is_file())
 
 
 if __name__ == "__main__":

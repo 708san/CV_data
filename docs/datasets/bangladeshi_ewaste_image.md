@@ -1,4 +1,4 @@
-# Custom Bangladeshi E-Waste Image Dataset（廃棄物品12分類・整備候補）
+# Custom Bangladeshi E-Waste Image Dataset（廃棄物品12分類）
 
 画像の中の物品を囲み、12種類のラベルを付ける物体検出教材の候補です。電池・携帯電話・基板などの電子関連品のほか、紙・有機物・医療ごみ・金属・ガラス・プラスチックも含みます。「電子ごみだけ」のデータではありません。
 
@@ -12,7 +12,7 @@
 
 ## 実体検査
 
-- 固定ZIP：72,987,704 bytes、SHA-256 `f73b30286225c208e98b34f81eb5ffef7baf79e883039d2087e8db53f6ee284e`。
+- 固定Release：71,712,360 bytes、SHA-256 `70f1bc03d605922370611a7b326d1647fd2bddf030e2acb95c60f55edb6eb6f3`。
 - 4,326項目。パス逸脱・シンボリックリンクなし。ZIP全体のCRC検査に成功しました。
 - JPEG 2,157枚すべてをデコードし、640×640であることを確認しました。画像とラベルは同名で2,157組すべて対応し、完全一致画像重複はありません。
 - クラスはBattery Waste、Glass Waste、Keyboard、Light Bulb、Medical Waste、Metal Waste、Mobile、Mouse、Organic Waste、PCB、Paper Waste、Plastic Wasteの12種です。
@@ -24,6 +24,11 @@
 
 まずは画像中の物品を枠で囲み、12種類からラベルを選ぶ課題に使えます。教材では「廃棄物品の写真を使った物体検出」と説明し、電子ごみの回収現場や実際の分別を再現したデータとは紹介しません。
 
-予測結果を、実際のごみ分別、医療廃棄物の処理、危険物の取り扱いに使いません。クラス名はこのデータに付けられたラベルであり、地域の分別規則や安全基準を示すものではありません。polygonから外接矩形へ変換した共通artifact v0.1.0をローカル生成し、manifest照合に成功しました。まだ公開Releaseと固定取得APIがないため、ライブラリへの登録は保留です。
+予測結果を、実際のごみ分別、医療廃棄物の処理、危険物の取り扱いに使いません。クラス名はこのデータに付けられたラベルであり、地域の分別規則や安全基準を示すものではありません。polygonから外接矩形へ変換した共通artifact v0.1.0を公開し、固定SHA-256で取得できます。共通artifact v0.1.0は固定Releaseで公開済みです。画像は変更せず、polygon 1,407件を外接矩形へ変換しています。
 
 詳細：[全量監査JSON](../../reports/bangladeshi-ewaste-full-audit.json)、[全画像の目視確認](../../reports/bangladeshi-ewaste-visual-review-2026-11-08.json)。
+
+
+## 公開版
+
+[CV_data_artifactsのRelease](https://github.com/708san/CV_data_artifacts/releases/tag/bangladeshi-ewaste-v0.1.0)から、画像2,157枚を取得できます。

@@ -43,12 +43,12 @@
 
 ## 2. 現在地（2026-11-11）
 
-- main APIの生徒向けデータは10件。GeoSetEnnea v0.1.0のRelease assetを公開し、SHA-256を再取得照合済みのため、CV_data PR #46反映後は11件になります。教師向けLoRA素材は`festival_icons`1件。
-- 次の目標は生徒向けデータ最低15件。未審査候補は件数に含めず、既存の固定Releaseと監査記録を優先する。
+- main APIの生徒向けデータは11件です。今回のcatalog PRで、公開済みの廃棄物品・リサイクル素材・PUST食堂料理・Fashion-MNISTを登録し、マージ後に15件となる予定です。教師向けLoRA素材は`festival_icons`1件です。
+- 最低目標の生徒向けデータ15件に届くcatalog PRを準備中です。未審査候補は件数に含めず、公開済み固定Releaseと監査記録を優先します。
 - `tomato_leaves`：7,209枚、破損0、完全一致重複0、ラベル不一致0。標準化後はtrain 5,191 / val 577 / test 1,441。
 - `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。承認済み学習済みLoRA重みは0件。
 - 候補台帳は53件。状態は`candidate` 33件、`hold` 11件、`student_enabled` 8件、`prepared_artifact_pending_release_asset` 1件。候補台帳外の追加採用データもあるため、正式一覧件数と台帳状態件数は別に集計します。
-- `CV_data_artifacts` mainにはsource manifest 15件、artifact manifest 8件があります。GeoSetEnnea用manifest・監査記録・変換スクリプトのPR #28を審査中。
+- `CV_data_artifacts` mainにはsource manifest 15件、artifact registry掲載8件があります。PUSTのRelease assetは存在しますが、artifact registryへの登録が見当たらず、別途台帳を整合させます。
 - 候補台帳の全項目を一括で`list_available()`へ加えません。選定・権利確認・固定Releaseが済んだデータだけを個別に公開します。
 - 既存Notebook、`CV_sample_data`、そのRelease、タグ、配布ファイルは変更しない。
 - データ本体は`CV_data`、`CV_data_artifacts`のGit履歴、PyPIへ収録しない。GitHub Release assetまたは、権利上ミラーしない大容量原本の固定された公式配布元を利用する。実際のRelease公開は許諾と明示承認後に限る。
