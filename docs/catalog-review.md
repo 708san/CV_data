@@ -13,7 +13,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 
 | 区分 | 件数 | ライブラリでの扱い |
 | --- | ---: | --- |
-| 固定Releaseの正式データ | 6 | `tomato_leaves`、`fruitseg30`、`smallfishbd`、`pistachio_image_dataset`、`food_waste_bangladesh`は生徒向け、`festival_icons`は教師向けLoRA素材 |
+| 固定Releaseの正式データ | 7 | `tomato_leaves`、`fruitseg30`、`smallfishbd`、`pistachio_image_dataset`、`food_waste_bangladesh`、`indoor_plant_varieties`は生徒向け、`festival_icons`は教師向けLoRA素材 |
 | Release asset公開・API反映待ち | 1 | `road_traversing_knowledge`。701組を全量技術監査し、CC BY 4.0・出典・第三者権利物の注意を記録。固定Releaseを公開・再取得SHA照合済み |
 | 教師向けプレビュー | 1 | `fashion_mnist`。固定コミット・4ファイル・件数・IDX形式を検査済み。権利の最終確認中 |
 | 固定取得条件または公開条件で保留 | 3 | `fashion_mnist`、`kuzushiji_mnist`、`fruits_360`。Fruits-360には固定タグReleaseがなく、実体取得は未開始 |

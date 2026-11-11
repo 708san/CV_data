@@ -43,10 +43,11 @@
 
 ## 2. 現在地（2026-11-11）
 
-- 正式一覧は生徒向け6件（トマトの葉、FruitSeg30、SmallFishBD、Pistachio、Food Waste Bangladesh、Road Traversing Knowledge）と教師向けLoRA素材`festival_icons`1件。Fresh and Rotten FruitsはCC BY 4.0、16クラス・3,193枚の整形済みデータで、固定Release assetを公開済み。API追加PR #44を更新中。
+- 正式一覧は生徒向け9件（トマトの葉、FruitSeg30、SmallFishBD、Pistachio、Food Waste Bangladesh、Road Traversing Knowledge、Fresh and Rotten Fruits、RDD2020 Japan、LeFood-Set）と教師向けLoRA素材`festival_icons`1件。Indoor Plant VarietiesはCC BY 4.0、1,162枚の整形済み固定Releaseがあり、API追加PR #43を現行mainへ統合中。
+- 次の目標は生徒向けデータ最低15件。未審査候補は件数に含めず、既存の固定Releaseと監査記録を優先する。
 - `tomato_leaves`：7,209枚、破損0、完全一致重複0、ラベル不一致0。標準化後はtrain 5,191 / val 577 / test 1,441。
 - `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。承認済み学習済みLoRA重みは0件。
-- 候補台帳は53件。状態は`candidate` 34件、`hold` 12件、`student_enabled` 5件、`prepared_artifact_pending_release_asset` 1件、`release_asset_pending_api` 1件。`hold`には技術検査済みの候補と、権利・固定版・実体上の問題で未完了の候補が混在します。技術監査と権利承認を混同しません。
+- 候補台帳は52件。状態は`candidate` 33件、`hold` 13件、`student_enabled` 5件、`prepared_artifact_pending_release_asset` 1件。`hold`には技術検査済みの候補と、権利・固定版・実体上の問題で未完了の候補が混在します。技術監査と権利承認を混同しません。
 - `CV_data_artifacts` mainにはsource manifest 15件、artifact manifest 7件があり、FruitSeg30 v0.1.0とSmallFishBD v0.1.1の固定Release assetを公開済みです。
 - 候補台帳の全項目を一括で`list_available()`へ加えません。選定・権利確認・固定Releaseが済んだデータだけを個別に公開します。
 - 既存Notebook、`CV_sample_data`、そのRelease、タグ、配布ファイルは変更しない。

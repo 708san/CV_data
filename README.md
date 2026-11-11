@@ -80,11 +80,14 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [LeFood-Set](docs/datasets/lefood_set.md) | 食前・食後の料理画像524組、実測重量と見た目評価 | `lefood-set-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [Fresh and Rotten Fruits](docs/datasets/fresh_rotten_fruits.md) | 果物8種類のfresh／rotten画像3,193枚、16クラス | `fresh-rotten-fruits-v0.1.0` | CC BY 4.0、出典・変更表示が必要。食品安全の判定には使わない |
 | [RDD2020 Japan](docs/datasets/rdd2020_japan.md) | 道路損傷4種類、画像7,900枚・bbox 16,469個 | `rdd2020-japan-v0.1.0` | CC BY-NC 3.0、非商用教育利用のみ。出典・変更表示が必要 |
+| [観葉植物の種類](docs/datasets/indoor_plant_varieties.md) | 観葉植物7種類、重複除外後1,162枚 | `indoor-plant-varieties-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [文化祭アイコン](docs/datasets/festival_icons.md) | アイコン168枚、画像と説明文 | `festival-v1.0.0` | 公開許可あり。改変・商用利用・再配布は要確認 |
 
 トマトの葉と文化祭アイコンは固定Releaseを全量監査済みです。実測値は[トマトの監査レポート](reports/tomato-leaves-v1.2.0.json)と[文化祭アイコンの監査レポート](reports/festival-icons-v1.0.0.json)に保存しています。これは権利の承認を意味しません。
 
 SmallFishBDは全画像レビューと帰属・変更表示条件を確認し、固定Release v0.1.1を公開済みです。ピスタチオ画像はMendeleyのCC BY 4.0表示と、研究者自身が画像を作成したという論文記載を照合し、指定論文2件の引用条件付きで固定Release v0.1.0を公開しています。電子ごみ・食品廃棄など未解決の候補は正式APIに掲載していません。
+
+観葉植物データは元画像1,172枚を全量デコードし、完全一致重複10枚を除外しました。GPSを含むEXIF情報を取り除き、長辺512px以下にそろえた1,162枚を取得できます。家庭や学校で見かける植物の分類を試せますが、有毒性・食用・病気・育て方の判定には使えません。
 
 FruitSeg30は全量監査後、寸法が一致しないGuavaクラスを除いた29クラス1,914組を整備し、固定Releaseを公開しました。GitHub mainブランチでは取得APIを利用できます。PyPI配布版への反映はパッケージ更新時に行います。`to_torch_dataset()`は画像と濃淡マスクを返します。
 

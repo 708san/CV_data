@@ -1,0 +1,51 @@
+{
+  "dataset_id": "indoor_plant_varieties",
+  "source": {
+    "provider": "Mendeley Data",
+    "version": "1",
+    "doi": "10.17632/ct79299k27.1",
+    "url": "https://data.mendeley.com/datasets/ct79299k27/1",
+    "license": "CC BY 4.0",
+    "archive_size": 765167460,
+    "archive_sha256": "c6e3839666e344ca4bb72fa9b09f36605fe8f972c088f0bba72c5dbe06bde2df"
+  },
+  "artifact": {
+    "tag": "indoor-plant-varieties-v0.1.0",
+    "url": "https://github.com/708san/CV_data_artifacts/releases/download/indoor-plant-varieties-v0.1.0/indoor_plant_varieties-v0.1.0.zip",
+    "size": 74718549,
+    "sha256": "0194a3631ecaf0293cc0271d938ffe6933b61ce58e58e648f8ca346bd1dbe714",
+    "images": 1162
+  },
+  "full_image_audit": {
+    "source_images_decoded": 1172,
+    "corrupt_images": 0,
+    "rgb_images": 1172,
+    "dimensions": {"3000x3000": 1168, "720x720": 4},
+    "source_gps_exif_images": 1159,
+    "prepared_images_exif_removed": true,
+    "exact_duplicate_groups": 10,
+    "duplicate_images_excluded": 10,
+    "duplicate_class": "N-Joy Pothos",
+    "visual_sample_review": {"images": 56, "per_class": 8, "result": "sampled images showed potted plants consistent with folder labels; not an exhaustive visual review"}
+  },
+  "prepared_dataset": {
+    "classes": ["Aglaonema", "Cryptanthus", "Devil's Ivy", "Heartleaf philodendron", "N-Joy Pothos", "Rhaphidophora", "Zz plant"],
+    "class_counts": {"Aglaonema": 187, "Cryptanthus": 150, "Devil's Ivy": 172, "Heartleaf philodendron": 158, "N-Joy Pothos": 162, "Rhaphidophora": 166, "Zz plant": 167},
+    "splits": {"train": 813, "validation": 174, "test": 175},
+    "transform": "Long side <=512 px; JPEG quality 86; Pillow LANCZOS; remove EXIF/GPS; seed 42 class-stratified 70/15/15 split",
+    "total_image_bytes": 74466644
+  },
+  "rights_review": {
+    "status": "approved_for_redistribution",
+    "basis": "Mendeley Data v1 displays CC BY 4.0. The dataset page describes images collected from BADC and nearby nurseries; the associated article credits the authors with data collection.",
+    "attribution_required": true,
+    "modification_notice_required": true,
+    "privacy_action": "EXIF/GPS removed from all prepared images"
+  },
+  "limitations": [
+    "56 images were reviewed visually; every image was decoded but not individually reviewed by a person.",
+    "Plant names are the dataset labels and were not independently taxonomically verified.",
+    "The data represent plants collected in Bangladesh and do not represent all household plants in Japan.",
+    "Predictions must not be used for toxicity, edibility, disease, care, or human/pet safety decisions."
+  ]
+}
