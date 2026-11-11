@@ -652,7 +652,7 @@ _SOURCES: dict[str, ReleaseSource] = {
         license_info={"name": "CC BY 4.0", "url": "https://creativecommons.org/licenses/by/4.0/",
                       "rights_review": "Mendeley Data v2のCC BY 4.0表示を確認。出典・変更表示を収録。"},
         source_info={"dataset_name": "PUST Cafeteria Food Dataset", "provider": "Marufa Yeasmin; Md. Razu Ahmed; Protiva Rani Kundu; Jannatul Mauya; Md. Shamim Reza",
-                     "url": "https://data.mendeley.com/datasets/...", "doi": "10.17632/...", 
+                     "url": "https://data.mendeley.com/datasets/fn6yhzjz83/2", "doi": "10.17632/fn6yhzjz83.2", 
                      "release_repository": "https://github.com/708san/CV_data_artifacts", "release_tag": "pust-cafeteria-food-v0.1.0"},
         file_urls={"artifact": "https://github.com/708san/CV_data_artifacts/releases/download/pust-cafeteria-food-v0.1.0/pust_cafeteria_food-v0.1.0.zip"},
         published=True,
