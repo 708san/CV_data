@@ -47,7 +47,7 @@
 - ChakmaLipī v6を権利確認・全量デコードし、完全一致重複を除いた36,258枚を共通形式化しました。固定Release assetを公開し、再取得時のサイズ・SHA-256一致を確認。CV_data PR #49はmainへ統合済みです。
 - `tomato_leaves`：7,209枚、破損0、完全一致重複0、ラベル不一致0。標準化後はtrain 5,191 / val 577 / test 1,441。
 - `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。承認済み学習済みLoRA重みは0件。
-- 候補台帳は53件。状態は`candidate` 32件、`hold` 11件、`student_enabled` 10件。候補台帳外の追加採用データもあるため、正式一覧件数と台帳状態件数は別に集計します。
+- 候補台帳は53件。2026-11-11時点で`candidate` 32件、`hold` 10件、`student_enabled` 11件。候補台帳外の追加採用データもあるため、正式一覧件数と台帳状態件数は別に集計します。
 - `CV_data_artifacts` mainにはsource manifest 15件、artifact registry掲載8件があります。PUSTのRelease assetは存在しますが、artifact registryへの登録が見当たらず、別途台帳を整合させます。
 - 候補台帳の全項目を一括で`list_available()`へ加えません。選定・権利確認・固定Releaseが済んだデータだけを個別に公開します。
 - 既存Notebook、`CV_sample_data`、そのRelease、タグ、配布ファイルは変更しない。
