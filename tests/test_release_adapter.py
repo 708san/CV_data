@@ -194,7 +194,7 @@ class ReleaseTests(unittest.TestCase):
 
     def test_published_detection_and_pending_artifacts_have_correct_status(self):
         ids = {item["id"] for item in datasets.list_available()}
-        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "road_traversing_knowledge", "rdd2020_japan", "lefood_set", "indoor_plant_varieties"})
+        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "road_traversing_knowledge", "rdd2020_japan", "lefood_set", "indoor_plant_varieties", "geoset_ennea"})
         self.assertIn("festival-v1.0.0", str(datasets.info("festival_icons")))
         self.assertEqual(datasets.info("tomato_leaves")["audit_status"], "full_image_audit")
         self.assertEqual(datasets.info("festival_icons")["audit_status"], "full_image_audit")
@@ -275,7 +275,7 @@ class ReleaseTests(unittest.TestCase):
         tasks = datasets.list_tasks()
         self.assertEqual([item["task"] for item in tasks], ["classification", "detection", "regression", "segmentation"])
         self.assertEqual(tasks[0]["datasets"], ["tomato_leaves", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
-        self.assertEqual(tasks[1]["datasets"], ["rdd2020_japan"])
+        self.assertEqual(tasks[1]["datasets"], ["rdd2020_japan", "geoset_ennea"])
         self.assertEqual(tasks[2]["datasets"], ["lefood_set"])
         teacher_tasks = datasets.list_tasks(audience="teacher", include_preview=True)
         self.assertEqual(
@@ -562,7 +562,7 @@ class ReleaseTests(unittest.TestCase):
     def test_info_without_id_returns_catalog(self):
         catalog = datasets.info()
         self.assertIsInstance(catalog, list)
-        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "road_traversing_knowledge", "rdd2020_japan", "lefood_set", "indoor_plant_varieties"})
+        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "road_traversing_knowledge", "rdd2020_japan", "lefood_set", "indoor_plant_varieties", "geoset_ennea"})
 
     def test_preview_dataset_is_not_in_formal_catalog(self):
         self.assertNotIn("fashion_mnist", {item["id"] for item in datasets.list_available()})
