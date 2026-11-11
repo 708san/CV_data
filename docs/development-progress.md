@@ -19,6 +19,12 @@
 - `CV_data_artifacts` PR #36をマージし、固定Release asset `chakmalipi-v0.1.0`を公開。公開URLから再取得した99,131,569 bytesのSHA-256が成果ZIPと一致しました。CV_data PR #49で取得API登録を審査中です。
 - 詳細：[ChakmaLipī説明](datasets/chakmalipi.md)、[候補精査状況](catalog-review.md)。
 
+## 2026-11-11：Recyclable Wasteを生徒APIから除外
+
+- 整形済みの`recyclable-waste-v0.1.1` Release assetは公開済みですが、包装上の肖像写真らしき画像と商品・ブランド表示の第三者権利審査が未完了です。
+- 候補台帳では公開保留だった一方、実装では生徒向けAPIに表示されていたため、`published=False`へ戻し、一覧・取得API・READMEから外す変更をPR化します。
+- APIの生徒向け件数は、ChakmaLipī追加後16件から本変更後15件になります。目標20件まであと5件です。
+
 ## 2026-11-11：GeoSetEnneaを整備・固定Release公開
 
 - Mendeley Data v1の固定source manifestに対し、966枚・8,253注釈を全量技術監査。拡張画像、画面キャプチャ、未対応画像、同じ撮影元の別表現を除外し、136枚・1,188矩形注釈を共通形式化しました。

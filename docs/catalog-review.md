@@ -13,15 +13,15 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 
 | 区分 | 件数 | ライブラリでの扱い |
 | --- | ---: | --- |
-| main APIで利用できる生徒向けデータ | 16 | `rdd2020_japan`、`lefood_set`、`tomato_leaves`、`bangladeshi_ewaste_image`、`recyclable_waste`、`pust_cafeteria_food`、`fashion_mnist`、`geoset_ennea`、`road_traversing_knowledge`、`fruitseg30`、`fresh_rotten_fruits`、`food_waste_bangladesh`、`smallfishbd`、`pistachio_image_dataset`、`indoor_plant_varieties`、`chakmalipi` |
+| main APIで利用できる生徒向けデータ | 15 | `rdd2020_japan`、`lefood_set`、`tomato_leaves`、`bangladeshi_ewaste_image`、`pust_cafeteria_food`、`fashion_mnist`、`geoset_ennea`、`road_traversing_knowledge`、`fruitseg30`、`fresh_rotten_fruits`、`food_waste_bangladesh`、`smallfishbd`、`pistachio_image_dataset`、`indoor_plant_varieties`、`chakmalipi` |
 | 教師向けLoRA素材 | 1 | `festival_icons`。公開許可のみ確認済み。改変・商用利用・再配布許諾は未確認 |
-| 固定取得条件または公開条件で保留 | 2 | `kuzushiji_mnist`、`fruits_360`。Kuzushiji-MNISTはCC BY-SA 4.0表記を確認済みだが、配布データの固定版とSHA-256を確定できず保留。Fruits-360には固定タグReleaseがなく、実体取得は未開始 |
+| 固定取得条件または公開条件で保留 | 3 | `kuzushiji_mnist`、`fruits_360`、`recyclable_waste`。Kuzushiji-MNISTはCC BY-SA 4.0表記を確認済みだが、配布データの固定版とSHA-256を確定できず保留。Fruits-360には固定タグReleaseがなく、実体取得は未開始。Recyclable Wasteは第三者の肖像・商標審査が未完了のため生徒APIから除外 |
 | 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
 | 公式ページのライセンス表記を再確認した候補 | 7 | `geosetennea`、`indian_origin_flowers`、`fresh_rotten_fruits`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 32 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-候補台帳53件の現状は、`student_enabled` 10件、`candidate` 32件、`hold` 11件です。台帳に含まれないデータも含め、main APIで生徒が取得できるデータは16件です。目標20件まであと4件です。審査・固定版・実体確認が終わる前の候補はこの数に含めません。
+候補台帳53件の現状は、`student_enabled` 10件、`candidate` 32件、`hold` 11件です。台帳に含まれないデータも含め、今回の変更後にmain APIで生徒が取得できるデータは15件です。目標20件まであと5件です。審査・固定版・実体確認が終わる前の候補はこの数に含めません。
 
 ## 課題別の候補
 
@@ -88,7 +88,7 @@ Image Dataset of Indian Coinsは固定ZIPの中央ディレクトリで6,680画�
 
 RGB-D Time-Series Dataset of White Button Mushroom Growthは公式ページでCC BY 4.0と129時点のRGB・深度・COCOインスタンスマスクを説明しています。一方、固定版v1の公式APIが返すのはREADME 1件のみで、画像・注釈ファイルがありません。READMEのSHA-256は照合しましたが、教材用データとして実体確認できないため公開保留です（[データ別説明](datasets/rgb_d_button_mushroom_growth.md)）。
 
-Recyclable Wasteの公開API調査で、ページ記載の1,000枚とAPI一覧の989画像が一致しないことが分かりました。詳細は[データ別説明](datasets/recyclable_waste.md)に記録し、公開状態を保留にしています。
+Recyclable Wasteの公開API調査で、ページ記載の1,000枚とAPI一覧の989画像が一致しないことが分かりました。第三者の肖像・商標審査が終わっていないため、整形済みRelease assetは残したままライブラリの生徒向けAPIから除外しています。詳細は[データ別説明](datasets/recyclable_waste.md)に記録しています。
 
 GeoSetEnneaは公式Mendeley Data v1のCC BY 4.0表示と著者撮影説明を確認しました。元画像966枚・8,253注釈を全量技術監査し、拡張画像・画面キャプチャ・同一撮影元の別表現を除いた136枚・1,188注釈を整備。撮影元グループが分割をまたがないtrain 84 / validation 22 / test 30で固定Release v0.1.0を公開し、再取得SHA-256を照合しました。商品名・ロゴは一部に付随的に写るため、出典・変更・非推奨表示を含めています。ライブラリAPIへの登録はPR #46で反映します（[データ別説明](datasets/geoset_ennea.md)）。
 
@@ -111,7 +111,7 @@ datasets.list_tasks(audience="teacher", include_preview=True)
 
 未審査候補は台帳に残しますが、`list_available()`、`list_tasks()`、Notebookの取得例には出しません。候補を追加するときは、固定URL・SHA-256・画像検査・ライセンス証拠・高校生向けの注意書き・共通アダプタ・ネットワーク不要テストを一つの変更としてそろえます。
 
-Recyclable Wasteは公式v1の公開989画像を全件取得・SHA-256照合・デコードし、完全一致重複12枚を除いた977画像の共通artifactを準備しました。GPS情報を持つ104枚のEXIF等を出力から除き、長辺512px以下へ縮小しました。著者自身の撮影というページ説明とCC BY 4.0を確認しましたが、全画像の人手によるプライバシー確認を終えていないためAPI・Releaseは保留です（[データ別説明](datasets/recyclable_waste.md)）。
+Recyclable Wasteは公式v1の公開989画像を全件取得・SHA-256照合・デコードし、完全一致重複12枚を除いた977画像の共通artifactを準備しました。GPS情報を持つ104枚のEXIF等を出力から除き、長辺512px以下へ縮小しました。著者自身の撮影というページ説明とCC BY 4.0を確認しましたが、全画像の第三者権利審査が終わっていないため、生徒向けAPIから除外しています。整形済みRelease assetはすでに公開済みです（[データ別説明](datasets/recyclable_waste.md)）。
 
 Fruits-360公式repoはCC BY-SA 4.0を表示しますが、更新中ブランチ以外に固定タグReleaseを確認できません。source pinningの条件を満たすまで取得しません（[データ別説明](datasets/fruits_360.md)）。
 
