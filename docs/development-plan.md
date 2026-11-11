@@ -43,11 +43,11 @@
 
 ## 2. 現在地（2026-11-11）
 
-- main APIの生徒向けデータは11件です。今回のcatalog PRで、公開済みの廃棄物品・リサイクル素材・PUST食堂料理・Fashion-MNISTを登録し、マージ後に15件となる予定です。教師向けLoRA素材は`festival_icons`1件です。
-- 最低目標の生徒向けデータ15件に届くcatalog PRを準備中です。未審査候補は件数に含めず、公開済み固定Releaseと監査記録を優先します。
+- main APIの生徒向けデータは16件です。目標20件まであと4件です。教師向けLoRA素材は`festival_icons`1件です。
+- ChakmaLipī v6を権利確認・全量デコードし、完全一致重複を除いた36,258枚を共通形式化しました。固定Release assetを公開し、再取得時のサイズ・SHA-256一致を確認。CV_dataの公開API登録はPR #49で審査中です。
 - `tomato_leaves`：7,209枚、破損0、完全一致重複0、ラベル不一致0。標準化後はtrain 5,191 / val 577 / test 1,441。
 - `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。承認済み学習済みLoRA重みは0件。
-- 候補台帳は53件。状態は`candidate` 33件、`hold` 11件、`student_enabled` 8件、`prepared_artifact_pending_release_asset` 1件。候補台帳外の追加採用データもあるため、正式一覧件数と台帳状態件数は別に集計します。
+- 候補台帳は53件。状態は`candidate` 32件、`hold` 11件、`student_enabled` 10件。候補台帳外の追加採用データもあるため、正式一覧件数と台帳状態件数は別に集計します。
 - `CV_data_artifacts` mainにはsource manifest 15件、artifact registry掲載8件があります。PUSTのRelease assetは存在しますが、artifact registryへの登録が見当たらず、別途台帳を整合させます。
 - 候補台帳の全項目を一括で`list_available()`へ加えません。選定・権利確認・固定Releaseが済んだデータだけを個別に公開します。
 - 既存Notebook、`CV_sample_data`、そのRelease、タグ、配布ファイルは変更しない。
@@ -223,7 +223,7 @@ LLM講座のNotebookを改修せず、CV用に別ディレクトリと別ファ�
 ### M1：データ・LoRA選択基盤（基盤実装済み）
 
 - 既存のトマトの葉で共通分類APIを安定化する。
-- Fashion-MNISTの教師向けプレビューを、正式提供と混同しない状態で管理する。
+- 公開済みFashion-MNISTは生徒向け正式APIで提供し、Kuzushiji-MNISTは固定配布物とSHA-256が確定するまで保留する。
 - LoRA素材のメタデータ管理APIを作り、権利未確認の素材を生徒向け一覧から除外する。
 - 課題タイプから候補を選べるカタログ表示を実装する。
 

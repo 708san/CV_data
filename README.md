@@ -80,8 +80,13 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [LeFood-Set](docs/datasets/lefood_set.md) | 食前・食後の料理画像524組、実測重量と見た目評価 | `lefood-set-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [Fresh and Rotten Fruits](docs/datasets/fresh_rotten_fruits.md) | 果物8種類のfresh／rotten画像3,193枚、16クラス | `fresh-rotten-fruits-v0.1.0` | CC BY 4.0、出典・変更表示が必要。食品安全の判定には使わない |
 | [RDD2020 Japan](docs/datasets/rdd2020_japan.md) | 道路損傷4種類、画像7,900枚・bbox 16,469個 | `rdd2020-japan-v0.1.0` | CC BY-NC 3.0、非商用教育利用のみ。出典・変更表示が必要 |
-| [観葉植物の種類](docs/datasets/indoor_plant_varieties.md) | 観葉植物7種類、重複除外後1,162枚 | `indoor-plant-varieties-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |\n| [リサイクル素材](docs/datasets/recyclable_waste.md) | 紙・ガラスなど5種類、画像976枚 | `recyclable-waste-v0.1.1` | CC BY 4.0、出典・変更表示が必要 |\n| [廃棄物品](docs/datasets/bangladeshi_ewaste_image.md) | 廃棄物品12種類、画像2,157枚・位置注釈 | `bangladeshi-ewaste-v0.1.0` | CC BY 4.0、実際の分別判断には使わない |\n| [大学食堂の料理](docs/datasets/pust_cafeteria_food.md) | 料理16種類、画像691枚・位置注釈 | `pust-cafeteria-food-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |\n| [Fashion-MNIST](docs/datasets/fashion_mnist.md) | 衣類等10種類、28×28画素の画像70,000枚 | `fashion-mnist-v0.1.0` | MIT、出典・変更表示を収録 |
+| [観葉植物の種類](docs/datasets/indoor_plant_varieties.md) | 観葉植物7種類、重複除外後1,162枚 | `indoor-plant-varieties-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
+| [リサイクル素材](docs/datasets/recyclable_waste.md) | 紙・ガラスなど5種類、画像976枚 | `recyclable-waste-v0.1.1` | CC BY 4.0、出典・変更表示が必要 |
+| [廃棄物品](docs/datasets/bangladeshi_ewaste_image.md) | 廃棄物品12種類、画像2,157枚・位置注釈 | `bangladeshi-ewaste-v0.1.0` | CC BY 4.0、実際の分別判断には使わない |
+| [大学食堂の料理](docs/datasets/pust_cafeteria_food.md) | 料理16種類、画像691枚・位置注釈 | `pust-cafeteria-food-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
+| [Fashion-MNIST](docs/datasets/fashion_mnist.md) | 衣類等10種類、28×28画素の画像70,000枚 | `fashion-mnist-v0.1.0` | MIT、出典・変更表示を収録 |
 | [GeoSetEnnea](docs/datasets/geoset_ennea.md) | 製図用具9種類、画像136枚・位置注釈1,188件 | `geoset-ennea-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
+| [ChakmaLipī](docs/datasets/chakmalipi.md) | チャクマ文字38種類・数字10種類、手書き画像36,258枚 | `chakmalipi-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [文化祭アイコン](docs/datasets/festival_icons.md) | アイコン168枚、画像と説明文 | `festival-v1.0.0` | 公開許可あり。改変・商用利用・再配布は要確認 |
 
 トマトの葉と文化祭アイコンは固定Releaseを全量監査済みです。実測値は[トマトの監査レポート](reports/tomato-leaves-v1.2.0.json)と[文化祭アイコンの監査レポート](reports/festival-icons-v1.0.0.json)に保存しています。これは権利の承認を意味しません。
@@ -96,7 +101,7 @@ Road Traversing Knowledgeは701組の画像・画素IDマスクを含む領域�
 
 許諾済みデータの原本・派生データ・manifestは、コードとは分離した[CV_data_artifacts](https://github.com/708san/CV_data_artifacts)で管理します。PyPIとこのリポジトリには画像・LoRA・学習済み重みを収録しません。データを追加する際は、出典・ライセンス・固定版・SHA-256・変換履歴・監査結果をそろえてから、データ専用リポジトリのRelease assetとして公開します。
 
-Fashion-MNISTは固定コミットとファイル整合性を確認した教師向けプレビューですが、教材公開・再配布の最終確認中です。正式一覧には含めず、開発者が明示した場合だけ`datasets.get("fashion_mnist", allow_preview=True)`で取得できます。Kuzushiji-MNISTは公式データファイルの固定版が確定していないため保留中です。
+Fashion-MNISTは固定Releaseから取得できる生徒向けデータです。Kuzushiji-MNISTはCC BY-SA 4.0の表示を確認しましたが、公式配布物の固定版とSHA-256を確定できないため保留中です。取得元が動的な状態では固定版取得の安全条件を満たせません。
 
 `datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。画像分類では食品・植物・リサイクル素材・衣類等を扱えます。物体検出では道路損傷、製図用具、廃棄物品、大学食堂の料理を扱えます。RDD2020 Japanは約642 MBで、展開後は約646 MBのキャッシュ容量が必要です。CC BY-NC 3.0のため非商用の教育利用に限られます。モデルだけで道路の安全性や修繕順位を決めないでください。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
 

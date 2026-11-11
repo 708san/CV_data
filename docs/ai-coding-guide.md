@@ -24,7 +24,7 @@
 | `data.masks_dir` | 領域分割のマスク保存先を参照する |
 | `datasets.get("festival_icons")` | LoRA用画像と説明文を取得する |
 
-Fashion-MNISTは教師向けプレビューです。権利確認中なので、生徒向けコードでは使わず、開発者が必要な場合だけ `datasets.get("fashion_mnist", allow_preview=True)` を使います。Kuzushiji-MNISTは固定版未確定のため、まだ取得APIを提供していません。
+Fashion-MNISTは固定Releaseから取得できる生徒向けデータです。Kuzushiji-MNISTは公式配布物の固定版とSHA-256を確定できていないため、取得APIには登録していません。
 
 `list_available()`の`task`は`classification`、`detection`、`regression`、`segmentation`、`lora`のいずれかです。正式APIに表示されない候補は、台帳上の調査候補であり、取得可能・教材利用可能とは限りません。`include_preview=True`は教師が確認するときだけ指定します。
 

@@ -4,7 +4,7 @@
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
     "as_of": "2026-11-11",
     "original_record_count": 53,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。"
+        "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。"
   },
   "records": [
     {
@@ -1338,7 +1338,7 @@
         "technical_status": "full_archive_and_annotation_audit_passed",
         "files_examined": 4317,
         "inspection_status": "full_sha_crc_pair_label_and_image_decode_passed",
-        "publication_status": "prepared_artifact_pending_release_asset",
+        "publication_status": "student_enabled",
         "last_desk_review": "2026-11-06",
         "evidence_grade": "official_fixed_archive_full_content_check",
         "notes": "固定ZIP SHA-256一致。画像2157枚とラベル2157件が全件対応し、CRC・全画像デコード成功、同一画像重複0。YOLO bbox 752件とpolygon 1407件（計2159件）、空ラベル4件、形式・座標エラー0。polygonを外接矩形へ変換したartifact v0.1.0をローカル生成し、manifest照合に成功。"
@@ -2271,28 +2271,29 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/rzjphbvz9f/6",
-        "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution_CC_BY_4.0_with_attribution_and_change_notice"
       },
       "claims": {
         "quantity": "37,708枚",
         "labels": "チャクマ文字48種類（38字・10数字）",
         "formats": "PNG 40×40・RGB",
         "structure": "48クラス別ディレクトリ",
-        "notes": "日本語の文字とは別体系"
+        "notes": "日本語の文字とは別体系。手書き文字のデジタル保存や文字画像分類の課題に使える。48クラスの独立文字画像のみで、ページOCRや書き手をまたぐ評価には使えない。"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "full_decode_deduplicated_and_artifact_validated",
+        "files_examined": 37708,
+        "inspection_status": "full_image_decode_and_representative_visual_review",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-11",
+        "evidence_grade": "fixed_source_sha_full_decode_dedup_and_sampled_visual_review",
+        "notes": "Mendeley v6固定ZIP 103,184,395 bytes / SHA-256照合。37,708枚を全量デコード、40x40 RGB PNG。完全一致重複1,450枚（数字クラス内のみ）を除外し、36,258枚をseed 42でクラス別70/15/15分割。全48クラスから各4枚の見本を目視。共通artifact ZIP 99,131,569 bytes / SHA-256 d9ef73e59c084492939b1d7b23d3ffde0fa865f76f132a29c5cba7c12cb19759を作成し、CRC・全画像ハッシュ・ラベル・manifest照合済み。"
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": [],
-        "adapter": "unassigned_classification",
+        "implemented_levels": ["shared_layout", "labels_csv", "metadata_jsonl", "classes_json", "stratified_train_val_test"],
+        "adapter": "classification_v1",
         "target_colab": true
       },
       "pedagogy": {
