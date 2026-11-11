@@ -70,23 +70,24 @@
       "rights": {
         "license_claim": "MIT",
         "evidence_url": "https://github.com/zalandoresearch/fashion-mnist/blob/b2617bb6d3ffa2e429640350f613e3291e10b141/LICENSE",
-        "redistribution_reviewed": false,
-        "rights_status": "under_review"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
       },
       "claims": {
         "quantity": "70,000枚、28×28グレースケール",
         "labels": "衣類10クラス",
         "formats": "IDX gzip（画素配列・ラベル別）",
         "structure": "学習60,000／テスト10,000；画像・ラベル別gzip",
-        "notes": "写真の状況が統一された低解像度画像。固定コミットの4ファイルを検査し、正式一覧には未掲載。"
+        "notes": "写真の状況が統一された低解像度画像。固定コミットの4ファイルを検査。公式リポジトリは画像データを配布対象に含めてMITを表示し、Keras公式実装もデータの著作権者・MIT適用を明記。"
       },
       "audit": {
         "technical_status": "metadata_checked",
         "files_examined": 70000,
         "inspection_status": "completed",
-        "publication_status": "hold",
-        "last_desk_review": "2026-11-05",
-        "evidence_grade": "files_inspected"
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-11",
+        "evidence_grade": "independent_primary_check",
+        "notes": "固定コミット b2617bb6d3ffa2e429640350f613e3291e10b141 の公式READMEは本データをZalando商品画像と説明し、リポジトリ内に配布ファイルを収録。固定コミットのLICENSEはMIT。Keras公式データ実装も著作権をZalando SEとしFashion-MNISTにMITを適用すると明記。出典・MIT全文を同梱した整形artifactを配布可能と判断。"
       },
       "preparation": {
         "planned_level": "1",
