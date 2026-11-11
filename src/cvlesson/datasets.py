@@ -1393,7 +1393,7 @@ def _extract_verified(archive_path: Path, destination: Path, src: ReleaseSource)
             # ZIP内パスは上で検証済み。ファイルは直接展開せずチャンクコピー。
             with archive.open(entry) as reader, member.open("xb") as writer:
                 shutil.copyfileobj(reader, writer, length=1024 * 1024)
-    root = destination / src.case_id if src.archive_root_folder else destination
+    root = destination / (src.archive_root_name or src.case_id) if src.archive_root_folder else destination
     _validate_case(root, src)
     return root
 
