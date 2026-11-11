@@ -14,6 +14,7 @@
 | `datasets.get("tomato_leaves")` | 固定Releaseを取得し、検証して展開する |
 | `datasets.get("pistachio_image_dataset")` | CC BY 4.0のピスタチオ画像2,148枚を取得する。出典・変更・指定論文2件を表示する |
 | `datasets.get("indoor_plant_varieties")` | CC BY 4.0の観葉植物7種類・1,162枚を取得する。出典・変更内容を表示する |
+| `datasets.get("geoset_ennea")` | CC BY 4.0の製図用具画像と物体位置注釈を取得する |
 | `datasets.get("トマトの葉")` | 登録済みの日本語名で取得する（曖昧検索はしない） |
 | `datasets.cache_info()` | checkout外にあるデータキャッシュの容量を確認する |
 | `datasets.clear_cache("tomato_leaves")` | 指定データのキャッシュを削除する。引数なしなら登録済みデータをまとめて削除 |
@@ -38,6 +39,8 @@ Road Traversing Knowledgeは多クラス領域分割です。`data.classes`の13
 ピスタチオ画像v0.1.0はKirmizi種・Siirt種の2,148枚です。Mendeley DataのCC BY 4.0表示と画像作成者に関する論文記載を確認し、指定された2論文も引用しています。`datasets.get("pistachio_image_dataset")`で取得し、`data.to_df()`からクラス・分割を確認できます。撮影背景が黒に統一されているため、一般の食品写真での識別性能を保証しません。食品の品質・鮮度・安全性は判定しません。
 
 観葉植物の画像1,162枚は`datasets.get("indoor_plant_varieties")`で取得できます。`data.to_df()`でクラスと分割を見たり、`data.show_examples(8)`で画像を確認したりできます。完全一致重複を10枚除き、長辺512px以下へ縮小し、GPS等のEXIFを取り除いています。植物名を調べる学習用であり、有毒性・食用・病気・育て方・安全性は判断しません。
+
+GeoSetEnneaは`datasets.get("geoset_ennea")`で136枚の画像と9クラスの物体位置注釈を取得できます。撮影場所はバングラデシュで、日本の文具や教室を代表しません。文具の商品名・ロゴは付随的に写ります。
 
 SmallFishBD v0.1.1は魚10種類、1,697枚の分類データです。固定ReleaseとSHA-256を確認済みで、`datasets.get("smallfishbd")`で取得できます。`data.to_df()`で画像・魚種ラベル・train/validation/test分割を確認できます。青系背景の画像に偏るため、自然環境の魚種判定には使わないでください。
 

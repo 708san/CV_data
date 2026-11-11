@@ -10,6 +10,15 @@
 
 # 開発進捗
 
+## 2026-11-11：GeoSetEnneaを整備・固定Release公開
+
+- Mendeley Data v1の固定source manifestに対し、966枚・8,253注釈を全量技術監査。拡張画像、画面キャプチャ、未対応画像、同じ撮影元の別表現を除外し、136枚・1,188矩形注釈を共通形式化しました。
+- 80撮影元グループをtrain 84 / validation 22 / test 30へ分け、近似重複が分割をまたがないことを記録。選定画像は全件デコードし、代表27枚でクラス・写り込みを目視確認しました。
+- CC BY 4.0表示、著者撮影の説明、指定出典・変更表示を確認。一部の文具ブランド表示は付随的に写り、推薦を意味しないことを明記しました。
+- `CV_data_artifacts` Release `geoset-ennea-v0.1.0`を公開。asset 7,531,941 bytes、SHA-256 `6185c0f8e631ec36913b6c229d4fbd51463d2a4fea1084f3c3e8021244ecd6e3`を再取得して照合しました。manifest・source transform・監査資料はartifacts PR #28、ライブラリ登録はCV_data PR #46で反映します。
+- 新規候補の一次情報を並行調査。CLICK Trashは課題価値が高い一方、掲載説明の引用がVersion 1を指し「GitHub and license: to be added」と記すため公開条件の整合を確認するまで保留。DeepWeedsは豪州固有種中心で高校生の身近な課題との接続が弱いため採用しません。
+
+
 ## 2026-11-10：Indoor Plant Varieties v0.1.0をライブラリへ統合
 
 - Mendeley Data v1（CC BY 4.0）の1,172画像を全量デコードし、10枚の完全一致重複を除外。残る1,162枚からEXIF/GPSを除去し、長辺512px以下の分類データを整備しました。

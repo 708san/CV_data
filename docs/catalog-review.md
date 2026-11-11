@@ -13,8 +13,9 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 
 | 区分 | 件数 | ライブラリでの扱い |
 | --- | ---: | --- |
-| 固定Releaseの正式データ | 7 | `tomato_leaves`、`fruitseg30`、`smallfishbd`、`pistachio_image_dataset`、`food_waste_bangladesh`、`indoor_plant_varieties`は生徒向け、`festival_icons`は教師向けLoRA素材 |
-| Release asset公開・API反映待ち | 1 | `road_traversing_knowledge`。701組を全量技術監査し、CC BY 4.0・出典・第三者権利物の注意を記録。固定Releaseを公開・再取得SHA照合済み |
+| main APIで利用できる生徒向けデータ | 10 | トマトの葉、FruitSeg30、SmallFishBD、Pistachio、Food Waste Bangladesh、Road Traversing Knowledge、Fresh and Rotten Fruits、RDD2020 Japan、LeFood-Set、Indoor Plant Varieties |
+| Release公開済み・ライブラリAPI反映待ち | 1 | GeoSetEnnea v0.1.0。固定Release assetと監査記録を公開済み、CV_data PR #46待ち |
+| 教師向けLoRA素材 | 1 | `festival_icons`。公開許可のみ確認済み。改変・商用利用・再配布許諾は未確認 |
 | 教師向けプレビュー | 1 | `fashion_mnist`。固定コミット・4ファイル・件数・IDX形式を検査済み。権利の最終確認中 |
 | 固定取得条件または公開条件で保留 | 3 | `fashion_mnist`、`kuzushiji_mnist`、`fruits_360`。Fruits-360には固定タグReleaseがなく、実体取得は未開始 |
 | artifact準備済み・Release asset/API待ち | 2 | `bangladeshi_e_waste_image`、`recyclable_waste`。共通形式化済み。正式公開条件はデータ別説明を参照 |
@@ -23,7 +24,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 32 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-候補台帳53件の現状は、`student_enabled` 4件、`candidate` 34件、`hold` 13件、Release asset準備待ち1件、Release公開・API反映待ち1件です。`road_traversing_knowledge`は公式PNG 1,402枚を全件デコードし、701画像・マスク組の一致を確認。固定Release assetを公開し、GitHub上のSHA-256と再取得したZIPを照合しました。CV_dataのAPI反映PRは作成中です。main APIでは現時点で生徒向け5件が利用できます。
+候補台帳53件の現状は、`student_enabled` 8件、`candidate` 33件、`hold` 11件、Release asset準備待ち1件です。台帳に含まれないトマトの葉・RDD2020 Japan・LeFood-Setを加え、生徒向けデータはRelease公開済み11件、main APIで利用可能10件です。ユーザー目標は最低15件、目標20件です。
 
 ## 課題別の候補
 
@@ -90,7 +91,7 @@ RGB-D Time-Series Dataset of White Button Mushroom Growthは公式ページでCC
 
 Recyclable Wasteの公開API調査で、ページ記載の1,000枚とAPI一覧の989画像が一致しないことが分かりました。詳細は[データ別説明](datasets/recyclable_waste.md)に記録し、公開状態を保留にしています。
 
-GeoSetEnneaは公式公開APIのフォルダ一覧をメタデータだけ確認しました。分割済みの画像966件と対応するYOLOラベル966件は確認できましたが、augmented/rawの別フォルダもあり、公開用の単一固定アーカイブと全量監査は未確定です。物体検出の教材候補としては有望ですが、現時点では公開保留です（[データ別説明](datasets/geoset_ennea.md)）。
+GeoSetEnneaは公式Mendeley Data v1のCC BY 4.0表示と著者撮影説明を確認しました。元画像966枚・8,253注釈を全量技術監査し、拡張画像・画面キャプチャ・同一撮影元の別表現を除いた136枚・1,188注釈を整備。撮影元グループが分割をまたがないtrain 84 / validation 22 / test 30で固定Release v0.1.0を公開し、再取得SHA-256を照合しました。商品名・ロゴは一部に付随的に写るため、出典・変更・非推奨表示を含めています。ライブラリAPIへの登録はPR #46で反映します（[データ別説明](datasets/geoset_ennea.md)）。
 
 Custom Bangladeshi E-Waste Image Dataset v1は公式ページとアーカイブ内READMEのCC BY 4.0表記を確認しました。固定ZIPのSHA-256照合後、全画像2,157枚のデコード、同名ラベルとの対応、12クラスを確認しました。全画像の目視では各ラベルの物品がおおむね一致しましたが、紙・有機物・医療ごみなども含む廃棄物品全般の画像で、電子ごみだけではありません。画像は主に緑色の布上に物品を置いて撮影されています。YOLO矩形752件とpolygon 1,407件が混在するため、共通形式ではpolygonを外接矩形へ変換し、輪郭情報が失われることを記録しています。共通artifact v0.1.0のローカル生成・manifest検証とライブラリ側の読み込み実装は通りました。公開Release assetがまだ作成されていないため、正式一覧と取得APIは未公開のままです（[データ別説明](datasets/bangladeshi_ewaste_image.md)）。
 
