@@ -88,6 +88,7 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [FabricSpotDefect](docs/datasets/fabricspotdefect.md) | 衣類の汚れなど1クラス、元画像1,014枚・位置注釈3,288件 | `fabricspotdefect-v0.1.0` | CC BY 4.0、出典・変更表示が必要。着用可否・安全性の判定には使わない |
 | [BDRoadSigns](docs/datasets/bdroadsigns.md) | バングラデシュの道路標識18種類、画像5,136枚 | `bdroadsigns-v0.1.0` | CC BY 4.0、出典・変更表示が必要。日本の交通規則・実際の安全判断には使わない |
 | [Orange Fruit](docs/datasets/orange_fruit.md) | オレンジの見た目5カテゴリ、画像15,000枚 | `orange-fruit-v0.1.0` | CC BY 4.0、出典・変更表示が必要。鮮度・食用可否・食品安全・病気の判定には使わない |
+| [日本語レシートOCR（詳細版）](docs/datasets/japanese_receipts_detailed.md) | レシート画像100枚、領域ラベル2,005件・文字転記1,802件 | `japanese_receipts_detailed-v0.1.0` | CC BY-NC 4.0、非商用のみ。個人情報の黒塗りは一部 |
 | [ChakmaLipī](docs/datasets/chakmalipi.md) | チャクマ文字38種類・数字10種類、手書き画像36,258枚 | `chakmalipi-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [文化祭アイコン](docs/datasets/festival_icons.md) | アイコン168枚、画像と説明文 | `festival-v1.0.0` | 公開許可あり。改変・商用利用・再配布は要確認 |
 
