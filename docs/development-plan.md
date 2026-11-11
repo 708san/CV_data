@@ -43,12 +43,12 @@
 
 ## 2. 現在地（2026-11-11）
 
-- 生徒向けAPIは17件です。FabricSpotDefectに続き、BDRoadSignsを公式CC BY 4.0、固定版、学生課題との適合を確認して追加しました。目標20件まであと3件です。教師向けLoRA素材は`festival_icons`1件です。
+- 生徒向けAPIは18件です。FabricSpotDefect、BDRoadSigns、Orange Fruitを公式ライセンス・固定版・学生課題との適合確認後に追加しました。目標20件まであと2件です。教師向けLoRA素材は`festival_icons`1件です。
 - ChakmaLipī v6を権利確認・全量デコードし、完全一致重複を除いた36,258枚を共通形式化しました。固定Release assetを公開し、再取得時のサイズ・SHA-256一致を確認。CV_data PR #49はmainへ統合済みです。
 - `tomato_leaves`：7,209枚、破損0、完全一致重複0、ラベル不一致0。標準化後はtrain 5,191 / val 577 / test 1,441。
 - `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。承認済み学習済みLoRA重みは0件。
-- 候補台帳は53件。2026-11-11時点で`candidate` 30件、`hold` 10件、`student_enabled` 13件。候補台帳外の追加採用データもあるため、正式一覧件数と台帳状態件数は別に集計します。
-- `CV_data_artifacts` mainにはsource manifest 16件、artifact registry掲載10件があります。FabricSpotDefectとBDRoadSignsのsource manifest・registry登録を追加しました。PUSTのRelease assetは存在しますが、artifact registryへの登録が見当たらず、別途台帳を整合させます。
+- 候補台帳は54件。2026-11-11時点で`candidate` 30件、`hold` 10件、`student_enabled` 14件。候補台帳外の追加採用データもあるため、正式一覧件数と台帳状態件数は別に集計します。
+- `CV_data_artifacts` mainにはsource manifest 17件、artifact registry掲載11件があります。FabricSpotDefect、BDRoadSigns、Orange Fruitのsource manifest・registry登録を追加しました。PUSTのRelease assetは存在しますが、artifact registryへの登録が見当たらず、別途台帳を整合させます。
 - 候補台帳の全項目を一括で`list_available()`へ加えません。選定・権利確認・固定Releaseが済んだデータだけを個別に公開します。
 - 既存Notebook、`CV_sample_data`、そのRelease、タグ、配布ファイルは変更しない。
 - データ本体は`CV_data`、`CV_data_artifacts`のGit履歴、PyPIへ収録しない。GitHub Release assetまたは、権利上ミラーしない大容量原本の固定された公式配布元を利用する。実際のRelease公開は許諾と明示承認後に限る。

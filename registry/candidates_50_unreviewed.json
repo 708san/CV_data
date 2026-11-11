@@ -880,7 +880,7 @@
         "publication_status": "hold",
         "last_desk_review": "2026-11-06",
         "evidence_grade": "independent_primary_check",
-        "notes": "固定ZIPの中央ディレクトリから6,680画像と7額面を確認。7枚の代表画像をCRC・JPEG検査。全量デコード、重複・記念デザイン単位の分割、元画像権利は未完了。"
+        "notes": "固定ZIPの中央ディレクトリから6,680画像と7額面を確認。7枚の代表画像をCRC・JPEG検査。全量デコード、重複・記念デザイン単位の分割、元画像権利は未完了。インド硬貨の識別は日本の高校生の身近な課題とのつながりが弱いため、今回の採用対象外。"
       },
       "preparation": {
         "planned_level": "1",
@@ -2534,6 +2534,53 @@
           "source_split_preserved"
         ],
         "adapter": "segmentation_multiclass_v1",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-154",
+      "api_id": "orange_fruit",
+      "name": "Orange Fruit Image Dataset for Classification",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/zk4hzhtcdd/2",
+        "provider": "mendeley",
+        "provider_dataset_id": "zk4hzhtcdd",
+        "version": "2",
+        "content_origin_claim": "公式説明ではバングラデシュでスマートフォン撮影",
+        "reference_url": "https://doi.org/10.17632/zk4hzhtcdd.2"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/zk4hzhtcdd/2",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution_with_attribution"
+      },
+      "claims": {
+        "quantity": "15,000枚、5クラス各3,000枚",
+        "labels": "blackspotted, cankered, fresh, green, rottenの画像カテゴリ",
+        "formats": "224×224 RGB JPEG",
+        "structure": "Mendeley Data v2固定ZIP。共通形式でクラス別seed 42、train/val/test 70/15/15分割",
+        "notes": "画像の見た目カテゴリを食品ロス課題の試作に使う。鮮度・食用可否・食品安全・病気の判定には使わない。撮影地域はバングラデシュ。"
+      },
+      "audit": {
+        "technical_status": "full_archive_and_image_decode_passed",
+        "files_examined": 15000,
+        "inspection_status": "one_sample_per_class_reviewed",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-11",
+        "evidence_grade": "primary_source_and_full_image_decode",
+        "notes": "固定v2の外側ZIP 110,185,722 bytes / SHA-256照合、内側ZIP 112,489,867 bytes / SHA-256照合。ZIP CRC・安全パス検査に成功。15,000枚全件を224×224でデコード、完全一致重複0。5クラス各1枚を目視し、フォルダ分類と概ね一致。画像・背景の全件目視ではない。"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": ["classification_v1.0.0", "labels_csv", "metadata_jsonl", "seed_42_splits"],
+        "adapter": "classification_v1",
         "target_colab": true
       },
       "pedagogy": {
