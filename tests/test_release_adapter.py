@@ -53,7 +53,7 @@ def make_zip(case="festival-icons", *, corrupt=False, unsafe=False, symlink=Fals
     return output.getvalue()
 
 
-def make_detection_zip(case="bangladeshi_ewaste_image", *, corrupt_label=False, root_folder=True, unsafe=False) -> bytes:
+def make_detection_zip(case="bangladeshi_ewaste", *, corrupt_label=False, root_folder=True, unsafe=False) -> bytes:
     image = "images/train/one.png"
     label = "labels/train/one.txt"
     annotation = {
