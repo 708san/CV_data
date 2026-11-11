@@ -13,15 +13,17 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 
 | 区分 | 件数 | ライブラリでの扱い |
 | --- | ---: | --- |
-| main APIで利用できる生徒向けデータ | 15 | `rdd2020_japan`、`lefood_set`、`tomato_leaves`、`bangladeshi_ewaste_image`、`pust_cafeteria_food`、`fashion_mnist`、`geoset_ennea`、`road_traversing_knowledge`、`fruitseg30`、`fresh_rotten_fruits`、`food_waste_bangladesh`、`smallfishbd`、`pistachio_image_dataset`、`indoor_plant_varieties`、`chakmalipi` |
+| main APIで利用できる生徒向けデータ | 16 | `fabricspotdefect`、`rdd2020_japan`、`lefood_set`、`tomato_leaves`、`bangladeshi_ewaste_image`、`pust_cafeteria_food`、`fashion_mnist`、`geoset_ennea`、`road_traversing_knowledge`、`fruitseg30`、`fresh_rotten_fruits`、`food_waste_bangladesh`、`smallfishbd`、`pistachio_image_dataset`、`indoor_plant_varieties`、`chakmalipi` |
 | 教師向けLoRA素材 | 1 | `festival_icons`。公開許可のみ確認済み。改変・商用利用・再配布許諾は未確認 |
 | 固定取得条件または公開条件で保留 | 3 | `kuzushiji_mnist`、`fruits_360`、`recyclable_waste`。Kuzushiji-MNISTはCC BY-SA 4.0表記を確認済みだが、配布データの固定版とSHA-256を確定できず保留。Fruits-360には固定タグReleaseがなく、実体取得は未開始。Recyclable Wasteは第三者の肖像・商標審査が未完了のため生徒APIから除外 |
 | 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
 | 公式ページのライセンス表記を再確認した候補 | 6 | `geosetennea`、`indian_origin_flowers`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
-| その他の未審査候補 | 32 | 取得APIへ追加しない。画像を収録・再配布しない |
+| その他の未審査候補 | 31 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-候補台帳53件の現状は、`student_enabled` 11件、`candidate` 32件、`hold` 10件です。Fashion-MNISTは固定コミットの公式リポジトリでMITを確認し、公式Keras実装もデータへのMIT適用を明記するため、権利審査を承認済みに更新しました。台帳に含まれないデータも含め、main APIで生徒が取得できるデータは15件です。目標20件まであと5件です。審査・固定版・実体確認が終わる前の候補はこの数に含めません。
+候補台帳53件の現状は、`student_enabled` 12件、`candidate` 31件、`hold` 10件です。Fashion-MNISTは固定コミットの公式リポジトリでMITを確認し、公式Keras実装もデータへのMIT適用を明記するため、権利審査を承認済みに更新しました。FabricSpotDefectはCC BY 4.0の固定v1を全量監査・整形し、Release assetを照合して生徒向けAPIへ追加しました。main APIで生徒が取得できるデータは16件、目標20件まであと4件です。
+
+FabricSpotDefectはMendeley Data v1のCC BY 4.0表示と、著者による家庭の布の撮影説明を確認しました。洗濯前に衣類の目立つ汚れを見つける補助という生徒課題に合わせ、柄布も含む元画像1,014枚・注釈3,288件を共通形式化しました。増強画像は除き、元画像は変更せず、0.5ピクセル以下の端のはみ出しがある矩形29件だけを補正しました。帰属・変更表示を同梱したartifactを固定Release `fabricspotdefect-v0.1.0`として公開し、掲載サイズとSHA-256を照合して生徒向けAPIへ登録しました（[監査記録](../reports/fabricspotdefect-v1-audit.json)、[データ別説明](datasets/fabricspotdefect.md)）。
 
 ## 課題別の候補
 
@@ -39,7 +41,7 @@ FruitSeg30 v3は公式固定版の全3,938ファイルを取得し、サイズ�
 
 ### 物体検出
 
-候補：`geosetennea`、`strawberry_ds`、`indian_coin_currency_dataset`、`concrete_column_detection`、`uav_weed_crop_dataset`、`trash_detection_dataset_pavel_kan`、`fabricspotdefect`、`bangladeshi_e_waste_image`。
+候補：`geosetennea`、`strawberry_ds`、`indian_coin_currency_dataset`、`concrete_column_detection`、`uav_weed_crop_dataset`、`trash_detection_dataset_pavel_kan`、`bangladeshi_e_waste_image`。
 
 「画像の中のどこに何があるか」を扱う課題に向きます。画像とアノテーションの対応、座標形式、境界外座標、学習・テストの分離を全量または明示範囲で確認できるまで、検出APIへ追加しません。UAV画像は撮影場所や第三者の写り込み、構造物の欠陥・廃棄物の判定は実社会の判断へ直結し得るため、教材では実験用の予測として扱います。
 

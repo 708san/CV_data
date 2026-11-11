@@ -15,6 +15,7 @@
 | `datasets.get("pistachio_image_dataset")` | CC BY 4.0のピスタチオ画像2,148枚を取得する。出典・変更・指定論文2件を表示する |
 | `datasets.get("indoor_plant_varieties")` | CC BY 4.0の観葉植物7種類・1,162枚を取得する。出典・変更内容を表示する |
 | `datasets.get("geoset_ennea")` | CC BY 4.0の製図用具画像と物体位置注釈を取得する |
+| `datasets.get("fabricspotdefect")` | CC BY 4.0の布画像と汚れなどの位置注釈1,014枚を取得する |
 | `datasets.get("トマトの葉")` | 登録済みの日本語名で取得する（曖昧検索はしない） |
 | `datasets.cache_info()` | checkout外にあるデータキャッシュの容量を確認する |
 | `datasets.clear_cache("tomato_leaves")` | 指定データのキャッシュを削除する。引数なしなら登録済みデータをまとめて削除 |
@@ -72,3 +73,5 @@ LoRA素材は`from cvlesson import loras`から管理します。`loras.list_ava
 ## AIにデータの検査結果を説明してもらう
 
 開発者・教員は `python -m cvlesson.audit festival_icons --check-images --check-similar --report report.json` で検査できます。生成された `report.json` をAIに渡し、「検査に失敗した項目と、類似画像候補を説明して」と依頼できます。類似候補は目視確認用で、自動削除や重複確定は行いません。画像や配布元の変更、権利上の利用判断はこの操作に含まれません。
+
+FabricSpotDefectは`datasets.get("fabricspotdefect")`で布の画像1,014枚とspot位置注釈を取得できます。洗濯前に汚れを見つける補助を試作し、柄や照明による見え方を比べる課題に使えます。衣類の清潔さ、着用可否、安全性や汚れ落ちを判定するものではありません。

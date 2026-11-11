@@ -4,7 +4,7 @@
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
     "as_of": "2026-11-11",
     "original_record_count": 53,
-        "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。"
+        "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。FabricSpotDefectを権利・課題審査、全量監査、固定Release公開後にstudent_enabledへ更新。"
   },
   "records": [
     {
@@ -2034,28 +2034,29 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/6574nhzm8x/1",
-        "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
       },
       "claims": {
-        "quantity": "原1,014→増強2,300",
+        "quantity": "固定Mendeley v1：元画像1,014枚、COCO注釈3,288件（掲載説明は3,286件と記載）",
         "labels": "布の汚れ・油染み等の位置",
-        "formats": "JPG 416×416＋位置ラベル（実形式未記載）",
+        "formats": "元JPEG＋COCO bbox；共通形式artifactはYOLO正規化bbox・JSONL",
         "structure": "original/augmented＋train/validation/test",
-        "notes": "原本と増強画像の漏洩を防ぐ"
+        "notes": "権利と課題適合を取得前に確認。CC BY 4.0、著者による日常の布の撮影説明。生徒課題は洗濯前の汚れの見落としを減らす補助。柄布も対象に含め、柄があること自体は除外理由にしない。"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "full_archive_and_image_decode",
+        "files_examined": 1014,
+        "inspection_status": "sample_review_completed",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-11",
+        "evidence_grade": "primary_source_and_full_archive_check",
+        "notes": "固定v1 ZIP（941,581,889 bytes、SHA-256 2e4fd58488734fe3b888c0c3633ca4d68da76f3a96f1e9bba08ec710645d6ab2）を取得・照合。危険パス/symlinkなし、CRC正常。元画像1,014枚をデコード、重複0。train 643 / valid 219 / test 152。アーカイブCOCO注釈は3,288件。29 bboxは最大0.5pxの境界超過で、整形時にclip。整形artifact準備済み（744,311,786 bytes、SHA-256 b40dca04e3879e92533face725d4e12bbfe9ba85e41b1c7ef59e290f1421943d）。CC BY 4.0帰属・変更表示同梱。GitHub Release asset fabricspotdefect-v0.1.0を公開し、GitHub掲載SHA-256を照合。"
       },
       "preparation": {
-        "planned_level": "to_be_determined",
-        "implemented_levels": [],
-        "adapter": "unassigned_detection",
+        "planned_level": "1",
+        "implemented_levels": ["1"],
+        "adapter": "detection",
         "target_colab": true
       },
       "pedagogy": {
