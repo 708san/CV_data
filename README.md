@@ -87,6 +87,7 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [GeoSetEnnea](docs/datasets/geoset_ennea.md) | 製図用具9種類、画像136枚・位置注釈1,188件 | `geoset-ennea-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [FabricSpotDefect](docs/datasets/fabricspotdefect.md) | 衣類の汚れなど1クラス、元画像1,014枚・位置注釈3,288件 | `fabricspotdefect-v0.1.0` | CC BY 4.0、出典・変更表示が必要。着用可否・安全性の判定には使わない |
 | [BDRoadSigns](docs/datasets/bdroadsigns.md) | バングラデシュの道路標識18種類、画像5,136枚 | `bdroadsigns-v0.1.0` | CC BY 4.0、出典・変更表示が必要。日本の交通規則・実際の安全判断には使わない |
+| [Orange Fruit](docs/datasets/orange_fruit.md) | オレンジの見た目5カテゴリ、画像15,000枚 | `orange-fruit-v0.1.0` | CC BY 4.0、出典・変更表示が必要。鮮度・食用可否・食品安全・病気の判定には使わない |
 | [ChakmaLipī](docs/datasets/chakmalipi.md) | チャクマ文字38種類・数字10種類、手書き画像36,258枚 | `chakmalipi-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [文化祭アイコン](docs/datasets/festival_icons.md) | アイコン168枚、画像と説明文 | `festival-v1.0.0` | 公開許可あり。改変・商用利用・再配布は要確認 |
 
@@ -106,7 +107,7 @@ Road Traversing Knowledgeは701組の画像・画素IDマスクを含む領域�
 
 Fashion-MNISTは固定Releaseから取得できる生徒向けデータです。Kuzushiji-MNISTはCC BY-SA 4.0の表示を確認しましたが、公式配布物の固定版とSHA-256を確定できないため保留中です。取得元が動的な状態では固定版取得の安全条件を満たせません。
 
-`datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。画像分類では食品・植物・衣類等を扱えます。物体検出では道路損傷、製図用具、廃棄物品、大学食堂の料理、洗濯前の衣類の汚れ探しを扱えます。FabricSpotDefectは約744 MBで、展開後は約744 MBのキャッシュ容量が必要です。衣類の清潔さ・着用可否・安全性や汚れ落ちは判定しません。RDD2020 Japanは約642 MBで、展開後は約646 MBのキャッシュ容量が必要です。CC BY-NC 3.0のため非商用の教育利用に限られます。モデルだけで道路の安全性や修繕順位を決めないでください。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
+`datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。画像分類では食品・植物・衣類・交通標識・オレンジの見た目カテゴリ等を扱えます。Orange Fruitは約113 MBで、外観カテゴリや背景・照明の影響を調べる食品ロス課題の試作に使えます。鮮度・食用可否・食品安全・病気の判定には使いません。物体検出では道路損傷、製図用具、廃棄物品、大学食堂の料理、洗濯前の衣類の汚れ探しを扱えます。FabricSpotDefectは約744 MBで、展開後は約744 MBのキャッシュ容量が必要です。衣類の清潔さ・着用可否・安全性や汚れ落ちは判定しません。RDD2020 Japanは約642 MBで、展開後は約646 MBのキャッシュ容量が必要です。CC BY-NC 3.0のため非商用の教育利用に限られます。モデルだけで道路の安全性や修繕順位を決めないでください。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
 
 LeFood-Setは`datasets.get("lefood_set")`で食前・食後画像524組を取得し、`to_df()`で実測重量や見た目評価を確認できます。日本の学校給食を代表するデータではなく、健康・栄養判断には使いません。
 
