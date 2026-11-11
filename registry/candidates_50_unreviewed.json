@@ -319,8 +319,8 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/h5pxbsdz4m/1",
-        "redistribution_reviewed": true,
-        "rights_status": "approved_for_redistribution"
+        "redistribution_reviewed": false,
+        "rights_status": "under_review"
       },
       "claims": {
         "quantity": "1,000枚",

@@ -26,7 +26,7 @@ ZIPは93,564,328 bytes、SHA-256 `71d71622b65c44d2748e296ff23e8ed49c2f3e4e788301
 
 ## 公開状態
 
-MendeleyのCC BY 4.0表示と、公開分が著者自身の収集画像だという説明を確認しました。全977枚の縮小一覧による内容・写り込み確認は完了しましたが、第三者の画像権利、肖像、商品表示の扱いを含む再配布審査は未完了です。そのため候補とartifactは準備済みですが、正式APIと課題一覧に登録し、固定Releaseから取得できます。
+MendeleyのCC BY 4.0表示と、公開分が著者自身の収集画像だという説明を確認しました。全977枚の縮小一覧による内容・写り込み確認は完了しましたが、第三者の画像権利、肖像、商品表示の扱いを含む再配布審査は未完了です。整形済みの固定Release assetは公開されていますが、権利審査が終わるまで`cvlesson`の取得APIと生徒向け一覧からは非公開です。
 
 ## 2026-11-09 権利・成果物再確認
 
@@ -37,4 +37,4 @@ ZIPを再照合し、982ファイルすべてのmanifestサイズ・SHA-256一�
 
 ## 公開版
 
-[CV_data_artifactsのRelease](https://github.com/708san/CV_data_artifacts/releases/tag/recyclable-waste-v0.1.1)から、画像976枚を取得できます。
+[CV_data_artifactsのRelease](https://github.com/708san/CV_data_artifacts/releases/tag/recyclable-waste-v0.1.1)には画像976枚の整形データがあります。第三者の肖像・商品表示の審査が完了するまでは、教材での利用を推奨しません。

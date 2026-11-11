@@ -630,7 +630,7 @@ _SOURCES: dict[str, ReleaseSource] = {
                      "url": "https://data.mendeley.com/datasets/h5pxbsdz4m/1", "doi": "10.17632/h5pxbsdz4m.1",
                      "release_repository": "https://github.com/708san/CV_data_artifacts", "release_tag": "recyclable-waste-v0.1.1"},
         file_urls={"artifact": "https://github.com/708san/CV_data_artifacts/releases/download/recyclable-waste-v0.1.1/recyclable_waste-v0.1.1.zip"},
-        published=True,
+        published=False,
     ),
     "pust_cafeteria_food": ReleaseSource(
         id="pust_cafeteria_food", case_id="pust_cafeteria_food", tag="pust-cafeteria-food-v0.1.0",
