@@ -533,33 +533,33 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/rnkd74xdtr/1",
-        "redistribution_reviewed": false,
-        "rights_status": "unreviewed"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_with_attribution"
       },
       "claims": {
-        "quantity": "約5千枚（各クラス内訳記載）",
+        "quantity": "Compress Dataset 5,136枚（Raw Datasetとは別 variant）",
         "labels": "道路標識18種",
         "formats": "JPG、480×640",
-        "structure": "分類ラベルあり・位置枠なし；フォルダ実体未確認",
-        "notes": "日本の道路標識と同一とは限らない"
+        "structure": "18クラス分類、元画像画素を維持、seed 42でtrain/val/test分割",
+        "notes": "Mendeleyページの総数5,135とCompress DatasetのRoundAbout 1枚差を記録。日本の交通規則や実際の安全判断には使わない"
       },
       "audit": {
-        "technical_status": "not_tested",
-        "files_examined": 0,
-        "inspection_status": "not_started",
-        "publication_status": "candidate",
-        "last_desk_review": "2026-11-04",
-        "evidence_grade": "imported_previous_research"
+        "technical_status": "full_archive_and_image_audit_passed",
+        "files_examined": 5136,
+        "inspection_status": "sample_visual_review_passed",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-11",
+        "evidence_grade": "primary_source_and_full_archive_audit"
       },
       "preparation": {
         "planned_level": "1",
         "implemented_levels": [],
-        "adapter": "unassigned_classification",
+        "adapter": "classification_v1.0.0",
         "target_colab": true
       },
       "pedagogy": {
         "presentation_mode": "A",
-        "publish_student_example": false
+        "publish_student_example": true
       }
     },
     {

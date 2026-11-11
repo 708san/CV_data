@@ -57,6 +57,7 @@ LoRA素材は`from cvlesson import loras`から管理します。`loras.list_ava
 - `datasets.get("bangladeshi_ewaste_image")`：12種類の廃棄物品の物体検出。緑色の布上で撮影され、polygon注釈の一部を外接矩形に変換しています。現実のごみ分別や医療廃棄物の処理には使いません。
 - `datasets.get("pust_cafeteria_food")`：バングラデシュの大学食堂で撮影された料理の物体検出。日本の食堂メニューを代表せず、栄養・アレルギー・衛生・価格の判断には使いません。
 - `datasets.get("fashion_mnist")`：10種類の28×28白黒画像。画像分類の練習用で、実際の衣類の状態やブランドは判断できません。
+- `datasets.get("bdroadsigns")`：バングラデシュの交通標識18種類。標識の見分けやすさを調べる課題に使えますが、日本の交通規則や実際の交通安全判断には使えません。
 
 いずれも初回取得時に固定版ZIPをダウンロードし、サイズとSHA-256を照合します。利用条件と変換内容は各データの説明を確認してください。
 
@@ -75,3 +76,5 @@ LoRA素材は`from cvlesson import loras`から管理します。`loras.list_ava
 開発者・教員は `python -m cvlesson.audit festival_icons --check-images --check-similar --report report.json` で検査できます。生成された `report.json` をAIに渡し、「検査に失敗した項目と、類似画像候補を説明して」と依頼できます。類似候補は目視確認用で、自動削除や重複確定は行いません。画像や配布元の変更、権利上の利用判断はこの操作に含まれません。
 
 FabricSpotDefectは`datasets.get("fabricspotdefect")`で布の画像1,014枚とspot位置注釈を取得できます。洗濯前に汚れを見つける補助を試作し、柄や照明による見え方を比べる課題に使えます。衣類の清潔さ、着用可否、安全性や汚れ落ちを判定するものではありません。
+
+BDRoadSignsは`datasets.get("bdroadsigns")`でバングラデシュの道路標識18種類を取得できます。見分けやすさを比べるクイズの試作に使えます。背景の道路風景も含まれます。日本の交通規則や実際の安全判断には使わないでください。

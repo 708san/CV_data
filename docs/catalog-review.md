@@ -13,15 +13,15 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 
 | 区分 | 件数 | ライブラリでの扱い |
 | --- | ---: | --- |
-| main APIで利用できる生徒向けデータ | 16 | `fabricspotdefect`、`rdd2020_japan`、`lefood_set`、`tomato_leaves`、`bangladeshi_ewaste_image`、`pust_cafeteria_food`、`fashion_mnist`、`geoset_ennea`、`road_traversing_knowledge`、`fruitseg30`、`fresh_rotten_fruits`、`food_waste_bangladesh`、`smallfishbd`、`pistachio_image_dataset`、`indoor_plant_varieties`、`chakmalipi` |
+| main APIで利用できる生徒向けデータ | 17 | `fabricspotdefect`、`bdroadsigns`、`rdd2020_japan`、`lefood_set`、`tomato_leaves`、`bangladeshi_ewaste_image`、`pust_cafeteria_food`、`fashion_mnist`、`geoset_ennea`、`road_traversing_knowledge`、`fruitseg30`、`fresh_rotten_fruits`、`food_waste_bangladesh`、`smallfishbd`、`pistachio_image_dataset`、`indoor_plant_varieties`、`chakmalipi` |
 | 教師向けLoRA素材 | 1 | `festival_icons`。公開許可のみ確認済み。改変・商用利用・再配布許諾は未確認 |
 | 固定取得条件または公開条件で保留 | 3 | `kuzushiji_mnist`、`fruits_360`、`recyclable_waste`。Kuzushiji-MNISTはCC BY-SA 4.0表記を確認済みだが、配布データの固定版とSHA-256を確定できず保留。Fruits-360には固定タグReleaseがなく、実体取得は未開始。Recyclable Wasteは第三者の肖像・商標審査が未完了のため生徒APIから除外 |
 | 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
 | 公式ページのライセンス表記を再確認した候補 | 6 | `geosetennea`、`indian_origin_flowers`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
-| その他の未審査候補 | 31 | 取得APIへ追加しない。画像を収録・再配布しない |
+| その他の未審査候補 | 30 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-候補台帳53件の現状は、`student_enabled` 12件、`candidate` 31件、`hold` 10件です。Fashion-MNISTは固定コミットの公式リポジトリでMITを確認し、公式Keras実装もデータへのMIT適用を明記するため、権利審査を承認済みに更新しました。FabricSpotDefectはCC BY 4.0の固定v1を全量監査・整形し、Release assetを照合して生徒向けAPIへ追加しました。main APIで生徒が取得できるデータは16件、目標20件まであと4件です。
+候補台帳53件の現状は、`student_enabled` 13件、`candidate` 30件、`hold` 10件です。Fashion-MNISTは固定コミットの公式リポジトリでMITを確認し、公式Keras実装もデータへのMIT適用を明記するため、権利審査を承認済みに更新しました。FabricSpotDefectとBDRoadSignsは公式CC BY 4.0、固定版、整形済みReleaseを確認して生徒向けAPIへ追加しました。BDRoadSignsは交通標識の見分けやすさを調べる課題に使えますが、日本の交通規則や実際の安全判断には使いません。main APIで生徒が取得できるデータは17件、目標20件まであと3件です。
 
 FabricSpotDefectはMendeley Data v1のCC BY 4.0表示と、著者による家庭の布の撮影説明を確認しました。洗濯前に衣類の目立つ汚れを見つける補助という生徒課題に合わせ、柄布も含む元画像1,014枚・注釈3,288件を共通形式化しました。増強画像は除き、元画像は変更せず、0.5ピクセル以下の端のはみ出しがある矩形29件だけを補正しました。帰属・変更表示を同梱したartifactを固定Release `fabricspotdefect-v0.1.0`として公開し、掲載サイズとSHA-256を照合して生徒向けAPIへ登録しました（[監査記録](../reports/fabricspotdefect-v1-audit.json)、[データ別説明](datasets/fabricspotdefect.md)）。
 
@@ -35,7 +35,9 @@ FruitSeg30 v3は公式固定版の全3,938ファイルを取得し、サイズ�
 
 ### 画像分類
 
-候補：`quickdraw`、`kuzushiji_mnist`、`kuzushiji_49`、`fruits_360`、`recyclable_waste`、`indian_origin_flowers`、`food_waste_bangladesh`、`bdroadsigns`、`mushroom_disease_dataset`、`fishnet`、`smallfishbd`、`cds_cricket`、`thermal_visible_fruits_and_vegetables`、`image_dataset_of_indian_coins`、`vehicle_make_model_images`、`banana_and_guava_quality`、`dry_fruit_image_dataset`、`fresh_and_rotten_fruits`、`indian_medicinal_flower_imfi`、`fruitnet_indian_fruits`、`signalphaset`、`asl_fingerspelling_original_keypoints`、`tangerines`、`clearlens`、`surface_water_floating_waste`、`ghana_currency_gc3558`、`hgm_4_hand_gestures`、`kathakali_mudras`、`growth_stage_flower`、`chakmalipi`、`egg_variety_and_freshness`。
+採用済み：`bdroadsigns`。バングラデシュの道路標識18種類を使い、標識の見分けやすさを試すクイズを作れます。地域の違いを前提にし、日本の道路規則や実際の交通安全判断には使いません。
+
+候補：`quickdraw`、`kuzushiji_mnist`、`kuzushiji_49`、`fruits_360`、`recyclable_waste`、`indian_origin_flowers`、`food_waste_bangladesh`、`mushroom_disease_dataset`、`fishnet`、`smallfishbd`、`cds_cricket`、`thermal_visible_fruits_and_vegetables`、`image_dataset_of_indian_coins`、`vehicle_make_model_images`、`banana_and_guava_quality`、`dry_fruit_image_dataset`、`fresh_and_rotten_fruits`、`indian_medicinal_flower_imfi`、`fruitnet_indian_fruits`、`signalphaset`、`asl_fingerspelling_original_keypoints`、`tangerines`、`clearlens`、`surface_water_floating_waste`、`ghana_currency_gc3558`、`hgm_4_hand_gestures`、`kathakali_mudras`、`growth_stage_flower`、`chakmalipi`、`egg_variety_and_freshness`。
 
 高校生の課題には、まず「画像全体を種類に分け、誤分類を調べる」課題が対応します。植物・果物・リサイクル・手の形・文字などは身近な問いにしやすい一方、病気・鮮度・医療に見える名称は、確定診断や安全判断に使わない注意書きを必須にします。人物の手や道路標識などは、撮影者・第三者画像・地域性・個人情報を確認してから扱います。
 
