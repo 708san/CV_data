@@ -78,6 +78,7 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [ピスタチオ2品種](docs/datasets/pistachio_image_dataset.md) | Kirmizi種・Siirt種、画像2,148枚 | `pistachio_image_dataset-v0.1.0` | CC BY 4.0、出典・変更・指定論文の表示が必要 |
 | [Food Waste Bangladesh](docs/datasets/food_waste_bangladesh.md) | 食品廃棄の撮影場面5カテゴリ、画像633枚 | `food-waste-bangladesh-v0.1.1` | CC BY 4.0、出典・変更表示が必要 |
 | [Fresh and Rotten Fruits](docs/datasets/fresh_rotten_fruits.md) | 果物8種類のfresh／rotten画像3,193枚、16クラス | `fresh-rotten-fruits-v0.1.0` | CC BY 4.0、出典・変更表示が必要。食品安全の判定には使わない |
+| [RDD2020 Japan](docs/datasets/rdd2020_japan.md) | 道路損傷4種類、画像7,900枚・bbox 16,469個 | `rdd2020-japan-v0.1.0` | CC BY-NC 3.0、非商用教育利用のみ。出典・変更表示が必要 |
 | [文化祭アイコン](docs/datasets/festival_icons.md) | アイコン168枚、画像と説明文 | `festival-v1.0.0` | 公開許可あり。改変・商用利用・再配布は要確認 |
 
 トマトの葉と文化祭アイコンは固定Releaseを全量監査済みです。実測値は[トマトの監査レポート](reports/tomato-leaves-v1.2.0.json)と[文化祭アイコンの監査レポート](reports/festival-icons-v1.0.0.json)に保存しています。これは権利の承認を意味しません。
@@ -92,7 +93,7 @@ Road Traversing Knowledgeは701組の画像・画素IDマスクを含む領域�
 
 Fashion-MNISTは固定コミットとファイル整合性を確認した教師向けプレビューですが、教材公開・再配布の最終確認中です。正式一覧には含めず、開発者が明示した場合だけ`datasets.get("fashion_mnist", allow_preview=True)`で取得できます。Kuzushiji-MNISTは公式データファイルの固定版が確定していないため保留中です。
 
-`datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。現在の正式一覧には画像分類と領域分割が表示されます。画像分類にはFresh and Rotten Fruitsが含まれます。物体検出は固定データReleaseが未公開のため課題一覧には表示しません。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
+`datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。画像分類にはFresh and Rotten Fruitsが含まれ、物体検出ではRDD2020 Japanを固定Releaseから取得できます。RDD2020 Japanは約642 MBで、展開後は約646 MBのキャッシュ容量が必要です。CC BY-NC 3.0のため非商用の教育利用に限られます。モデルだけで道路の安全性や修繕順位を決めないでください。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
 
 LoRA素材は画像・キャプション・トリガーワード・利用条件を管理します。モデル重みは再配布しません。生徒向けに承認された素材がない場合、`loras.list_available()`は空になります。
 
