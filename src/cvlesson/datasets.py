@@ -1698,3 +1698,4 @@ def get(dataset_id: str, *, cache_dir: str | Path | None = None,
             raise DatasetError("既存のキャッシュが不正です。別のcache_dirを指定してください。")
         shutil.move(str(new_root), extracted)
     manifest = _validate_case(extracted, src)
+    return DatasetBundle(src.id, src.kind, extracted, manifest, src.url, src.tag, src.rights_note)
