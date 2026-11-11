@@ -10,6 +10,14 @@
 
 # 開発進捗
 
+## 2026-11-11：BDRoadSignsを権利・課題確認後に追加
+
+- 取得前にMendeley Data v1のCC BY 4.0と、標識の見分けやすさを調べるクイズ課題への適合を確認。
+- `Compress Dataset`の5,136枚を共通形式へ整備。元画像画素を保ち、18クラス別seed 42でtrain 3,592 / validation 766 / test 778に分割。
+- バングラデシュの標識は日本の交通規則と同一とは限らず、安全判断には使わないと明記。背景の道路風景は除外条件にせず、課題上の注意として記載。
+- 固定Release `bdroadsigns-v0.1.0`を公開し、assetのサイズ・SHA-256を照合。CV_data_artifacts PR #38でmanifest・ファイルハッシュ・ライセンス・監査報告を登録済み。
+- 生徒向けAPIを17件に更新。目標20件まであと3件。詳細は[データ説明](datasets/bdroadsigns.md)と[監査JSON](../reports/bdroadsigns-v1-audit.json)。
+
 ## 2026-11-11：FabricSpotDefectを権利確認・整形・公開
 
 - Mendeley Data v1のCC BY 4.0表示と、著者が日常の家庭用布をスマートフォン撮影したという説明を先に確認。洗濯前に衣類の目立つ汚れを探す補助という生徒課題に適合するため採用しました。柄布も含むデータで、柄の存在は除外理由にしていません。
