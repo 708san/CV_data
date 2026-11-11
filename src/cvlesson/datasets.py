@@ -1,6 +1,6 @@
-"""公開済みCV_sample_data Releaseを読み取り専用で取得する最小実装。
+"""固定タグの公開Releaseから画像データを読み取り専用で取得する最小実装。
 
-このモジュールは配布元を変更しない。既存Releaseの固定URLとSHA-256を照合する。
+配布元は変更せず、固定URL・サイズ・SHA-256を照合して安全に展開する。
 """
 from __future__ import annotations
 
@@ -66,6 +66,10 @@ class ReleaseSource:
     file_urls: dict[str, str] = field(default_factory=dict)
     file_sha256: dict[str, str] = field(default_factory=dict)
     file_sizes: dict[str, int] = field(default_factory=dict)
+    max_archive_bytes: int = MAX_ARCHIVE_BYTES
+    max_unpacked_bytes: int = MAX_UNPACKED_BYTES
+    max_files: int = MAX_FILES
+    archive_root_folder: bool = True
 
     @property
     def url(self) -> str:
@@ -400,6 +404,45 @@ class DatasetBundle:
 
 
 _SOURCES: dict[str, ReleaseSource] = {
+    "rdd2020_japan": ReleaseSource(
+        id="rdd2020_japan", case_id="rdd2020_japan", tag="rdd2020-japan-v0.1.0",
+        sha256="f787feead7fd3b0d63f42c7cfb8e3db6f114e57c83b3b928d5f7c58bcb411955",
+        archive_size=641_514_873, image_count=7900,
+        kind="detection", name_ja="RDD2020 日本の道路損傷",
+        rights_note=(
+            "CC BY-NC 3.0。非商用の教育目的に限って利用できます。出典・変更内容を表示してください。"
+            "商用利用はできません。2020年頃の道路画像で、現在の安全性や修繕順位は判断できません。"
+        ),
+        aliases_ja=("RDD2020", "日本の道路損傷", "道路のひび・穴"),
+        task="detection", audiences=("student", "teacher"), difficulty="intermediate",
+        use_cases_ja=(
+            "通学路や地域道路のひび・穴を画像から探し、道路管理者へ相談する資料を作る",
+            "検出結果と画像を照らし合わせ、見落としや誤検出を調べる",
+        ),
+        input_description_ja="日本の道路を車載スマートフォンで撮影した画像",
+        output_description_ja="縦ひび・横ひび・亀甲ひび・ポットホールの位置と種類",
+        download_size_mb=641.5, audit_status="full_source_image_and_annotation_audit_sample_visual_review",
+        audit_report="docs/datasets/rdd2020_japan.md",
+        classes=("D00", "D10", "D20", "D40"),
+        class_names_ja=("縦ひび", "横ひび", "亀甲ひび", "ポットホール"),
+        license_info={
+            "name": "CC BY-NC 3.0",
+            "url": "https://creativecommons.org/licenses/by-nc/3.0/",
+            "rights_review": "Mendeley Data固定v2の表示を確認。非商用の教育利用に限定し、帰属・変更表示が必要。",
+        },
+        source_info={
+            "dataset_name": "RDD2020: An Image Dataset for Smartphone-based Road Damage Detection and Classification",
+            "provider": "Deeksha Arya et al. (2021)",
+            "url": "https://doi.org/10.17632/5ty2wb6gvg.2",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "rdd2020-japan-v0.1.0",
+        },
+        file_urls={
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/rdd2020-japan-v0.1.0/rdd2020-japan-v0.1.0.zip",
+        },
+        max_archive_bytes=700_000_000, max_unpacked_bytes=700_000_000,
+        max_files=20_000, archive_root_folder=False,
+    ),
     "tomato_leaves": ReleaseSource(
         id="tomato_leaves", case_id="tomato-leaves", tag="tomato-v1.2.0",
         sha256="506560a5ce57394fd739fa73ac3b997a2646f87ea04257334dacb54497e0e1fa",
@@ -1198,7 +1241,7 @@ def _download(url: str, destination: Path, *, max_bytes: int) -> None:
 
 def _archive_entries(archive: zipfile.ZipFile, src: ReleaseSource) -> list[zipfile.ZipInfo]:
     entries = archive.infolist()
-    if len(entries) > MAX_FILES:
+    if len(entries) > src.max_files:
         raise DatasetError("ZIPのファイル数が上限を超えています。")
     total = 0
     seen: set[str] = set()
@@ -1206,9 +1249,14 @@ def _archive_entries(archive: zipfile.ZipFile, src: ReleaseSource) -> list[zipfi
     for entry in entries:
         name = entry.filename
         path = PurePosixPath(name)
-        is_root_directory = name.rstrip("/") == root and name.endswith("/")
+        is_root_directory = src.archive_root_folder and name.rstrip("/") == root and name.endswith("/")
         if (not name or "\\" in name or "\x00" in name or path.is_absolute()
-                or len(path.parts) < 2 and not is_root_directory or path.parts[0] != root
+                or len(path.parts) < (2 if src.archive_root_folder else 1) and not is_root_directory
+                or src.archive_root_folder and path.parts[0] != root
+                or not src.archive_root_folder and path.parts[0] not in {
+                    "LICENSE.md", "README.md", "annotations.jsonl", "classes.json",
+                    "metadata.jsonl", "manifest.json", "images", "labels",
+                }
                 or any(part in {"", ".", ".."} for part in path.parts)
                 or re.match(r"^[A-Za-z]:", name)):
             raise DatasetError(f"安全でないZIP内のパスです: {name}")
@@ -1219,7 +1267,7 @@ def _archive_entries(archive: zipfile.ZipFile, src: ReleaseSource) -> list[zipfi
         if stat.S_ISLNK(mode):
             raise DatasetError(f"ZIPにシンボリックリンクが含まれています: {name}")
         total += entry.file_size
-        if total > MAX_UNPACKED_BYTES:
+        if total > src.max_unpacked_bytes:
             raise DatasetError("ZIPの展開後サイズが上限を超えています。")
     return entries
 
@@ -1237,7 +1285,7 @@ def _extract_verified(archive_path: Path, destination: Path, src: ReleaseSource)
             # ZIP内パスは上で検証済み。ファイルは直接展開せずチャンクコピー。
             with archive.open(entry) as reader, member.open("xb") as writer:
                 shutil.copyfileobj(reader, writer, length=1024 * 1024)
-    root = destination / src.case_id
+    root = destination / src.case_id if src.archive_root_folder else destination
     _validate_case(root, src)
     return root
 
@@ -1607,7 +1655,7 @@ def _get_idx_preview(src: ReleaseSource, *, cache_dir: str | Path | None,
 
 def get(dataset_id: str, *, cache_dir: str | Path | None = None,
         allow_download: bool = True, allow_preview: bool = False) -> DatasetBundle:
-    """既存の固定Releaseを取得する。CV_sample_dataへの書込みは一切行わない。"""
+    """固定Releaseのデータを取得する。配布元へ書き込みは行わない。"""
     src = _source(dataset_id)
     if not src.published:
         raise DatasetError("データartifactは準備済みですが、公開Releaseがまだありません。公開後に再度お試しください。")
@@ -1635,7 +1683,7 @@ def get(dataset_id: str, *, cache_dir: str | Path | None = None,
     with tempfile.TemporaryDirectory(prefix="cvlesson-", dir=base) as work:
         workspace = Path(work)
         archive = workspace / f"{src.case_id}.zip"
-        _download(src.url, archive, max_bytes=MAX_ARCHIVE_BYTES)
+        _download(src.url, archive, max_bytes=src.max_archive_bytes)
         if archive.stat().st_size != src.archive_size:
             raise DatasetError("ZIPのサイズが固定Releaseの登録値と異なります。")
         if _sha256(archive) != src.sha256:
@@ -1650,4 +1698,3 @@ def get(dataset_id: str, *, cache_dir: str | Path | None = None,
             raise DatasetError("既存のキャッシュが不正です。別のcache_dirを指定してください。")
         shutil.move(str(new_root), extracted)
     manifest = _validate_case(extracted, src)
-    return DatasetBundle(src.id, src.kind, extracted, manifest, src.url, src.tag, src.rights_note)
