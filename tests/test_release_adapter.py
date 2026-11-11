@@ -251,7 +251,7 @@ class ReleaseTests(unittest.TestCase):
 
     def test_catalog_can_filter_by_task_and_audience(self):
         student = datasets.list_available(task="classification", audience="student")
-        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties", "recyclable_waste", "fashion_mnist"])
+        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "recyclable_waste", "fashion_mnist", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
         self.assertEqual(student[0]["publication_status"], "student_enabled")
         self.assertEqual(datasets.list_available(task="lora", audience="student"), [])
         teacher = datasets.list_available(task="lora", audience="teacher")
@@ -264,7 +264,7 @@ class ReleaseTests(unittest.TestCase):
         teacher = datasets.list_available(
             task="classification", audience="teacher", include_preview=True,
         )
-        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties", "recyclable_waste", "fashion_mnist"])
+        self.assertEqual([item["id"] for item in student], ["tomato_leaves", "recyclable_waste", "fashion_mnist", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
         self.assertEqual({item["id"] for item in teacher}, {"tomato_leaves", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties", "recyclable_waste", "fashion_mnist", "bangladeshi_ewaste_image", "pust_cafeteria_food"})
         fashion = next(item for item in teacher if item["id"] == "fashion_mnist")
         self.assertEqual(fashion["publication_status"], "student_enabled")
@@ -272,7 +272,7 @@ class ReleaseTests(unittest.TestCase):
     def test_task_catalog_only_shows_usable_choices(self):
         tasks = datasets.list_tasks()
         self.assertEqual([item["task"] for item in tasks], ["classification", "detection", "regression", "segmentation"])
-        self.assertEqual(tasks[0]["datasets"], ["tomato_leaves", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties", "recyclable_waste", "fashion_mnist"])
+        self.assertEqual(tasks[0]["datasets"], ["tomato_leaves", "recyclable_waste", "fashion_mnist", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "indoor_plant_varieties"])
         self.assertEqual(tasks[1]["datasets"], ["rdd2020_japan", "bangladeshi_ewaste_image", "pust_cafeteria_food", "geoset_ennea"])
         self.assertEqual(tasks[2]["datasets"], ["lefood_set"])
         teacher_tasks = datasets.list_tasks(audience="teacher", include_preview=True)
