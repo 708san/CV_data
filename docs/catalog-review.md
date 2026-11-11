@@ -17,7 +17,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 | 教師向けLoRA素材 | 1 | `festival_icons`。公開許可のみ確認済み。改変・商用利用・再配布許諾は未確認 |
 | 固定取得条件または公開条件で保留 | 3 | `kuzushiji_mnist`、`fruits_360`、`recyclable_waste`。Kuzushiji-MNISTはCC BY-SA 4.0表記を確認済みだが、配布データの固定版とSHA-256を確定できず保留。Fruits-360には固定タグReleaseがなく、実体取得は未開始。Recyclable Wasteは第三者の肖像・商標審査が未完了のため生徒APIから除外 |
 | 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
-| 公式ページのライセンス表記を再確認した候補 | 7 | `geosetennea`、`indian_origin_flowers`、`fresh_rotten_fruits`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
+| 公式ページのライセンス表記を再確認した候補 | 6 | `geosetennea`、`indian_origin_flowers`、`banana_guava_quality`、`tangerines`、`image_dataset_of_indian_coins`、`rgb_d_button_mushroom_growth`。実体検査と再配布審査が未完了 |
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 32 | 取得APIへ追加しない。画像を収録・再配布しない |
 
@@ -74,7 +74,7 @@ Indian Origin Flowersは公式APIの8,098画像・10クラスを固定し、各�
 
 Pistachio Image Datasetは固定ZIPをSHA-256検証後に安全展開し、画像2,148枚を全量デコードしました。破損0、完全一致重複0で教材分類候補として有望ですが、元画像の権利、クレジット、非画像ファイルの扱い、再配布条件が未完了のため公開保留です（[データ別説明](datasets/pistachio_image_dataset.md)）。
 
-Fresh and Rotten Fruitsは公式v1のCC BY 4.0表示と著者撮影説明を確認し、原画像3,200枚を全量デコード・完全一致重複監査しました。7枚を除く3,193枚を整形し、64枚を代表目視。固定artifactと取得API案を作成済みで、Release asset公開後に生徒向け一覧へ有効化します（[データ別説明](datasets/fresh_rotten_fruits.md)）。
+Fresh and Rotten Fruitsは公式v1のCC BY 4.0表示と、著者が青果店・実地で撮影したという説明を確認しました。原画像3,200枚を全量デコード・完全一致重複監査し、7枚を除く3,193枚を整形。64枚を代表目視し、変更・帰属表示を含むartifactを固定Releaseで公開、取得後のサイズ・SHA-256を確認済みです。見た目のラベルは食品安全・可食判定に使用できません（[データ別説明](datasets/fresh_rotten_fruits.md)）。
 
 Banana and Guava Qualityは固定ZIPの1,748画像・6グループを確認し、各グループ代表6枚のCRC・JPEGデコードに成功しました。公式説明の1,738枚との差、ラベル定義、全量監査、元画像権利が未完了のため公開保留です（[データ別説明](datasets/banana_guava_quality.md)）。
 

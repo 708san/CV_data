@@ -1614,27 +1614,24 @@
       "rights": {
         "license_claim": "CC BY 4.0",
         "evidence_url": "https://data.mendeley.com/datasets/bdd69gyhv8/1",
-        "redistribution_reviewed": false,
-        "rights_status": "under_review"
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
       },
       "claims": {
         "quantity": "原画像3,200／増強12,335",
         "labels": "8果物×新鮮／腐敗＝16分類",
-        "formats": "画像形式未記載",
-        "structure": "原画像＋データ拡張画像",
-        "notes": "同じ画像の増強版をテストに混ぜない"
+        "formats": "共通形式JPEG",
+        "structure": "原画像のみを重複除外し、クラス別にtrain／validation／testへ分割。拡張画像は収録しない",
+        "notes": "整形後3,193枚。元3,200枚を全量デコードし、完全一致重複7枚を除外。64枚を代表目視。見た目ラベルを食品安全・可食判定に使わない。"
       },
       "audit": {
-        "technical_status": "metadata_and_sample_checked",
-        "files_examined": 2,
-        "sample_files_examined": 16,
-        "sample_zip_crc_check": "passed",
-        "sample_image_decode": "passed",
+        "technical_status": "full_pass",
+        "files_examined": 3200,
         "inspection_status": "completed",
         "publication_status": "student_enabled",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "independent_primary_check",
-        "notes": "Original/Augmentedの固定ZIP2本、中央ディレクトリ、Original各クラス代表16枚を検査。全量デコード・重複・分割漏洩・元画像権利は未解決。"
+        "notes": "Mendeley v1固定ZIPのSHA-256を照合し、原画像3,200枚を全量デコード・完全一致重複監査。重複7枚を除外し3,193枚を整備。64枚を代表目視し、人物・ロゴ・無関係画像は見つからず。CC BY 4.0、著者による青果店・実地での撮影、農業機関専門家の助言によるラベル付けを確認。整形artifactは出典・変更表示とライセンスを含め、公開Release assetの再取得サイズ・SHA-256を照合済み。食品安全・可食判定は禁止。"
       },
       "preparation": {
         "planned_level": "1",
