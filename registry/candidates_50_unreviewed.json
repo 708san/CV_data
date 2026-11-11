@@ -4,7 +4,7 @@
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
     "as_of": "2026-11-11",
     "original_record_count": 53,
-        "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。FabricSpotDefectを権利・課題審査、全量監査、固定Release公開後にstudent_enabledへ更新。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。FabricSpotDefectを権利・課題審査、全量監査、固定Release公開後にstudent_enabledへ更新。"
   },
   "records": [
     {
@@ -880,7 +880,7 @@
         "publication_status": "hold",
         "last_desk_review": "2026-11-06",
         "evidence_grade": "independent_primary_check",
-        "notes": "固定ZIPの中央ディレクトリから6,680画像と7額面を確認。7枚の代表画像をCRC・JPEG検査。全量デコード、重複・記念デザイン単位の分割、元画像権利は未完了。インド硬貨の識別は日本の高校生の身近な課題とのつながりが弱いため、今回の採用対象外。"
+        "notes": "固定ZIPの中央ディレクトリから6,680画像と7額面を確認。7枚の代表画像をCRC・JPEG検査。全量デコード、重複・記念デザイン単位の分割、元画像権利は未完了。インド硬貨の識別は日本の高校生の身近な課題とのつながりが弱いため、今回の採用対象外。 今回の採用基準では、日本の高校生に身近な課題とのつながりが弱いため対象外。"
       },
       "preparation": {
         "planned_level": "1",
@@ -2055,7 +2055,9 @@
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": ["1"],
+        "implemented_levels": [
+          "1"
+        ],
         "adapter": "detection",
         "target_colab": true
       },
@@ -2291,7 +2293,13 @@
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": ["shared_layout", "labels_csv", "metadata_jsonl", "classes_json", "stratified_train_val_test"],
+        "implemented_levels": [
+          "shared_layout",
+          "labels_csv",
+          "metadata_jsonl",
+          "classes_json",
+          "stratified_train_val_test"
+        ],
         "adapter": "classification_v1",
         "target_colab": true
       },
@@ -2579,8 +2587,62 @@
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": ["classification_v1.0.0", "labels_csv", "metadata_jsonl", "seed_42_splits"],
+        "implemented_levels": [
+          "classification_v1.0.0",
+          "labels_csv",
+          "metadata_jsonl",
+          "seed_42_splits"
+        ],
         "adapter": "classification_v1",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-155",
+      "api_id": "japan_ocr_receipts",
+      "name": "Japan OCR Mini Benchmark Alpha10",
+      "task": "ocr",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://huggingface.co/datasets/K10124/japan-ocr-mini-benchmark",
+        "provider": "huggingface",
+        "provider_dataset_id": "K10124/japan-ocr-mini-benchmark",
+        "version": "fixed revision c82efda5b823494424e6bc6e9ae7577396ded908; Alpha10 only",
+        "content_origin_claim": "10枚の合成日本語レシート。実在する店舗・取引・個人・ブランドの複製を意図しない。",
+        "reference_url": "https://huggingface.co/datasets/K10124/japan-ocr-mini-benchmark/commit/c82efda5b823494424e6bc6e9ae7577396ded908"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0 (Alpha10 approved payload only)",
+        "evidence_url": "https://huggingface.co/datasets/K10124/japan-ocr-mini-benchmark/blob/c82efda5b823494424e6bc6e9ae7577396ded908/alpha10/ALPHA10_LICENSE_FINAL_CONFIRMATION.md",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "合成レシート10枚",
+        "labels": "画像ごとの品目・数量・金額・合計額などの構造化見本。全文転記はなし。",
+        "formats": "PNG、CSV、JSONL",
+        "structure": "OCR項目抽出を試す評価用見本。画像画素は未変更。",
+        "notes": "文化祭・部活動の支出整理ツールの試作に使える。個人情報のある実レシートを共有しない。"
+      },
+      "audit": {
+        "technical_status": "sample_pass",
+        "files_examined": 20,
+        "inspection_status": "completed",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-11",
+        "evidence_grade": "independent_primary_check",
+        "notes": "固定revisionから画像10枚と対応source JSON10件を取得し、ファイルSHA-256照合。全画像を開いて視覚確認。CC BY 4.0のAlpha10限定承認と合成データ注意を確認。artifact SHA-256 0c9739f12f11ea22c44afa5f2a5a151bf389badb9bc6ce4534dc956b9a8b8f4d。OCR全文の正解文字列はなく、構造化項目照合用の小規模見本。"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "ocr_structured_record",
         "target_colab": true
       },
       "pedagogy": {

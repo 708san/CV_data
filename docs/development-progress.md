@@ -10,6 +10,14 @@
 
 # 開発進捗
 
+## 2026-11-11：合成日本語レシートOCR候補を整形
+
+- 取得前にAlpha10限定CC BY 4.0の許諾、合成データであること、文化祭・部活動の支出整理への適合を確認。日本の高校生の課題に結び付かないインド硬貨は採用対象外と台帳に記録。
+- 固定revision `c82efda5b823494424e6bc6e9ae7577396ded908`の画像10枚と公開source JSON10件をSHA-256照合し、全画像を視覚確認。元画像の画素は保持。品目・数量・金額・合計額を共通CSV/JSONLへ整理。
+- OCR全文の正解文字列はないため、文字誤り率の評価データとは呼ばず、構造化項目の照合見本として記録。個人情報相当のsource metadataは共通artifactへ含めない。
+- 整形artifactは860,275 bytes、SHA-256 `0c9739f12f11ea22c44afa5f2a5a151bf389badb9bc6ce4534dc956b9a8b8f4d`。manifest・source inventory・権利記録・変換スクリプトを準備。Release asset未公開のため、生徒向けAPIは18件のまま。
+- 詳細：[候補説明](datasets/japan_ocr_receipts.md)。artifact側はPR準備中。
+
 ## 2026-11-11：Orange Fruitを権利確認・整形・公開
 
 - 取得前にMendeley Data v2のCC BY 4.0と、外観カテゴリを使った分類・食品ロス課題の試作への適合を確認。鮮度・食用可否・食品安全・病気の判定には使わない条件を設定。

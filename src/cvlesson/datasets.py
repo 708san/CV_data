@@ -226,6 +226,16 @@ class DatasetBundle:
                     "split": row["split"],
                 })
             return pd.DataFrame(records)
+        if self.kind == "ocr":
+            records = []
+            for row in _read_rows(self.labels_csv):
+                records.append({
+                    "image_path": str((self.root / row["image"]).resolve()),
+                    "ground_truth": json.loads(row["record_json"]),
+                    "split": row["split"],
+                    "sample_id": row["sample_id"],
+                })
+            return pd.DataFrame(records, columns=["image_path", "ground_truth", "split", "sample_id"])
         rows = _read_rows(self.labels_csv)
         if self.kind != "classification":
             return pd.DataFrame([
@@ -883,6 +893,42 @@ _SOURCES: dict[str, ReleaseSource] = {
         max_archive_bytes=150_000_000, max_unpacked_bytes=150_000_000,
         max_files=20_000, published=True,
     ),
+    "japan_ocr_receipts": ReleaseSource(
+        id="japan_ocr_receipts", case_id="japan_ocr_receipts", tag="japan_ocr_receipts-v0.1.0",
+        sha256="0c9739f12f11ea22c44afa5f2a5a151bf389badb9bc6ce4534dc956b9a8b8f4d",
+        archive_size=860_275, image_count=10, sample_count=10,
+        kind="ocr", task="ocr", name_ja="合成レシートでOCR・支出整理",
+        rights_note="CC BY 4.0。Alpha10承認済みデータのみを使用しています。合成レシート10枚の小規模見本で、実際の取引・店舗・個人を表しません。全文OCR正解はありません。",
+        aliases_ja=("日本語レシートOCR", "文化祭の支出整理", "Japan OCR Mini Benchmark Alpha10"),
+        audiences=("student", "teacher"), difficulty="introductory",
+        use_cases_ja=(
+            "文化祭などの支出整理ツールを試作し、OCRで読んだ品目・金額を見本と照合する",
+            "文字の大きさやレイアウトによる読み取り間違いを調べる",
+        ),
+        input_description_ja="店舗・取引・個人を模した架空の日本語レシート画像10枚",
+        output_description_ja="品目・数量・金額・合計額などの構造化見本。全文の文字起こしではありません。",
+        download_size_mb=0.86, audit_status="all_images_sha256_checked_and_visually_reviewed",
+        audit_report="docs/datasets/japan_ocr_receipts.md",
+        license_info={
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+            "rights_review": "固定revisionのAlpha10に限定したCC BY 4.0承認、公開ライセンス通知、合成データ注意を確認。",
+        },
+        source_info={
+            "dataset_name": "Japan OCR Mini Benchmark (Alpha10)",
+            "provider": "K10124",
+            "url": "https://huggingface.co/datasets/K10124/japan-ocr-mini-benchmark/tree/c82efda5b823494424e6bc6e9ae7577396ded908/alpha10",
+            "revision": "c82efda5b823494424e6bc6e9ae7577396ded908",
+            "source_inventory_sha256": "57102d17d35d4a6c8dbc67a59004189b0593b39e1db86c74b623f8959b45ccd3",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "japan_ocr_receipts-v0.1.0",
+        },
+        file_urls={
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/japan_ocr_receipts-v0.1.0/japan_ocr_receipts-v0.1.0.zip",
+        },
+        max_archive_bytes=2_000_000, max_unpacked_bytes=2_000_000,
+        max_files=40, published=False,
+    ),
     "fruitseg30": ReleaseSource(
         id="fruitseg30", case_id="fruitseg30", tag="fruitseg30-v0.1.0",
         sha256="129384a6e9599b0b9eb756ec93abda25a90bdd70a514fd04f905a2ff2e8c5ba5",
@@ -1310,6 +1356,10 @@ class _TorchSegmentationDataset:
 
 
 _TASKS: dict[str, dict[str, str]] = {
+    "ocr": {
+        "name_ja": "文字認識・情報整理（OCR）",
+        "description_ja": "画像の文字を読み取り、必要な項目を整理する課題。",
+    },
     "classification": {
         "name_ja": "画像分類",
         "description_ja": "画像全体を、決めた種類のどれかに分ける課題。",
@@ -1765,7 +1815,12 @@ def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
         return _validate_detection_case(root, src, manifest)
     with (root / "labels.csv").open(encoding="utf-8-sig", newline="") as stream:
         reader = csv.DictReader(stream)
-        required_cols = {"image", "label", "split"} if src.kind == "classification" else {"image", "caption"}
+        if src.kind == "classification":
+            required_cols = {"image", "label", "split"}
+        elif src.kind == "ocr":
+            required_cols = {"image", "record_json", "split", "sample_id"}
+        else:
+            required_cols = {"image", "caption"}
         if not required_cols.issubset(set(reader.fieldnames or [])):
             raise DatasetError("labels.csvの列名が期待と異なります。")
         rows = list(reader)
@@ -1788,6 +1843,16 @@ def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
             if parts[:3] != ("images", split, label):
                 raise DatasetError(f"画像配置とラベルが一致しません: {image}")
             expected_metadata[image] = {"label": label, "split": split}
+        elif src.kind == "ocr":
+            try:
+                record = json.loads(row["record_json"])
+            except (TypeError, json.JSONDecodeError) as exc:
+                raise DatasetError(f"構造化見本のJSONが不正です: {image}") from exc
+            split, sample_id = row["split"], row["sample_id"]
+            if (not isinstance(record, dict) or split != "eval" or not sample_id
+                    or parts[:2] != ("images", split)):
+                raise DatasetError(f"OCR見本または画像配置に誤りがあります: {image}")
+            expected_metadata[image] = {"record": record, "split": split, "sample_id": sample_id}
         else:
             caption = row["caption"]
             if not caption.strip():
@@ -1803,8 +1868,12 @@ def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
             name = item["file_name"]
             if name in actual_metadata:
                 raise DatasetError(f"metadata.jsonlに重複があります: {name}")
-            actual_metadata[name] = ({"label": item["label"], "split": item["split"]}
-                                     if src.kind == "classification" else {"text": item["text"]})
+            if src.kind == "classification":
+                actual_metadata[name] = {"label": item["label"], "split": item["split"]}
+            elif src.kind == "ocr":
+                actual_metadata[name] = {"record": item["record"], "split": item["split"], "sample_id": item["sample_id"]}
+            else:
+                actual_metadata[name] = {"text": item["text"]}
     if actual_metadata != expected_metadata:
         raise DatasetError("metadata.jsonlとlabels.csvが一致しません。")
     return manifest
