@@ -4,7 +4,7 @@
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
     "as_of": "2026-11-12",
     "original_record_count": 53,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。FabricSpotDefectを権利・課題審査、全量監査、固定Release公開後にstudent_enabledへ更新。 2026-11-12にIndoor Waste Image、WasteSegCluster、Fire Recognition、AgriFreshNETの固定版権利・全量技術監査・artifact Releaseを記録しstudent_enabledへ更新。 2026-11-12にJapanese Receipt Detailedの固定revision・実画像/注釈監査・非商用条件を再確認し、取得API PRに含めた。 2026-11-12にCracks and Potholes in Road Images v3のCC BY 4.0、固定SHA、2,235画像・POTHOLEマスクを監査しstudent_enabledへ追加。DIU-HandGesture31はCC BY 4.0と撮影同意表記を確認したが、画像内の文字ラベル混入を目視しhold。 2026-11-12にObstacles Avoidance Assistance v1のCC BY 4.0、固定SHA、画像・bbox全量対応を確認しstudent_enabledへ追加。配布元説明は公開Roboflow画像を選定したとするが、上流ID・個別ライセンス一覧がないことを記録。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。FabricSpotDefectを権利・課題審査、全量監査、固定Release公開後にstudent_enabledへ更新。 2026-11-12にIndoor Waste Image、WasteSegCluster、Fire Recognition、AgriFreshNETの固定版権利・全量技術監査・artifact Releaseを記録しstudent_enabledへ更新。 2026-11-12にJapanese Receipt Detailedの固定revision・実画像/注釈監査・非商用条件を再確認し、取得API PRに含めた。 2026-11-12にCracks and Potholes in Road Images v3のCC BY 4.0、固定SHA、2,235画像・POTHOLEマスクを監査しstudent_enabledへ追加。DIU-HandGesture31はCC BY 4.0と撮影同意表記を確認したが、画像内の文字ラベル混入を目視しhold。 2026-11-12にObstacles Avoidance Assistance v1のCC BY 4.0、固定SHA、画像・bbox全量対応を確認しstudent_enabledへ追加。配布元説明は公開Roboflow画像を選定したとするが、上流ID・個別ライセンス一覧がないことを記録。 2026-11-12に高校生の身近な課題との接続が弱い7項目（Fashion-MNIST、BDRoadSigns、SmallFishBD、Pistachio、ChakmaLipī、Food Waste Bangladesh、PUST Cafeteria Food）を生徒向けAPIから除外。元データ・監査・固定Releaseは保持。"
   },
   "records": [
     {
@@ -78,13 +78,13 @@
         "labels": "衣類10クラス",
         "formats": "IDX gzip（画素配列・ラベル別）",
         "structure": "学習60,000／テスト10,000；画像・ラベル別gzip",
-        "notes": "写真の状況が統一された低解像度画像。固定コミットの4ファイルを検査。公式リポジトリは画像データを配布対象に含めてMITを表示し、Keras公式実装もデータの著作権者・MIT適用を明記。"
+        "notes": "写真の状況が統一された低解像度画像。固定コミットの4ファイルを検査。公式リポジトリは画像データを配布対象に含めてMITを表示し、Keras公式実装もデータの著作権者・MIT適用を明記。 生徒向け課題適性を再評価し、身近な困りごととモデル出力後の行動を結び付けられないため、2026-11-12に生徒向けカタログから除外。"
       },
       "audit": {
         "technical_status": "metadata_checked",
         "files_examined": 70000,
         "inspection_status": "completed",
-        "publication_status": "student_enabled",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "independent_primary_check",
         "notes": "固定コミット b2617bb6d3ffa2e429640350f613e3291e10b141 の公式READMEは本データをZalando商品画像と説明し、リポジトリ内に配布ファイルを収録。固定コミットのLICENSEはMIT。Keras公式データ実装も著作権をZalando SEとしFashion-MNISTにMITを適用すると明記。出典・MIT全文を同梱した整形artifactを配布可能と判断。"
@@ -99,7 +99,9 @@
       },
       "pedagogy": {
         "presentation_mode": "A",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "decision_date": "2026-11-12",
+        "decision_note": "高校生の身近な困りごととモデル出力後の具体的行動を明確に結び付けられないため、生徒向けカタログから除外。データ・監査記録は保持。"
       }
     },
     {
@@ -436,7 +438,7 @@
         "labels": "Kirmizi／Siirtの2種",
         "formats": "JPEG（600×600、RGB）／ZIP内に特徴量・説明ファイルあり",
         "structure": "画像2フォルダ（Kirmizi 1,232／Siirt 916）、公式ZIP内に非画像ファイルあり",
-        "notes": "固定ZIPを全量検査済み。教材artifactでは画像だけを使い、seed 42でtrain/val/testを作成"
+        "notes": "固定ZIPを全量検査済み。教材artifactでは画像だけを使い、seed 42でtrain/val/testを作成 生徒向け課題適性を再評価し、身近な困りごととモデル出力後の行動を結び付けられないため、2026-11-12に生徒向けカタログから除外。"
       },
       "audit": {
         "technical_status": "full_image_audit",
@@ -445,7 +447,7 @@
         "decode_errors": 0,
         "duplicate_sha_groups": 0,
         "inspection_status": "full_technical_audit_sample_visual_review",
-        "publication_status": "student_enabled",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "independent_primary_check",
         "notes": "公式Mendeley v1のCC BY 4.0表示と固定ZIPを確認。全2,148画像を600x600 RGB JPEGとしてデコード、完全一致重複0。論文は高解像度カメラで試料を撮影したと説明。4画像を目視。画像以外の特徴量表等10ファイルはartifactから除外。2021論文自身のCC BY-NC 4.0表示とMendeleyデータのCC BY 4.0表示を混同せず、dataset image rights holder/third-party rightsを公開前に追加確認するためhold。共通artifact v0.1.0準備済みだがRelease/API未公開. Mendeley CC BY 4.0と研究者作成画像の論文記載を照合し、指定論文引用付きで再配布承認。固定Releaseと取得APIを2026-11-09に公開。",
@@ -464,7 +466,9 @@
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "decision_date": "2026-11-12",
+        "decision_note": "高校生の身近な困りごととモデル出力後の具体的行動を明確に結び付けられないため、生徒向けカタログから除外。データ・監査記録は保持。"
       }
     },
     {
@@ -492,13 +496,13 @@
         "labels": "撮影場面5分類",
         "formats": "JPEG、640×480が644枚・678×768が1枚",
         "structure": "固定v1 ZIP、5フォルダ",
-        "notes": "撮影場面ラベルで、食品廃棄量を表さない。人物の一部が写る11枚とQR風表示1枚を除外。商品表示は一部残り、推薦を意味しない。"
+        "notes": "撮影場面ラベルで、食品廃棄量を表さない。人物の一部が写る11枚とQR風表示1枚を除外。商品表示は一部残り、推薦を意味しない。 生徒向け課題適性を再評価し、身近な困りごととモデル出力後の行動を結び付けられないため、2026-11-12に生徒向けカタログから除外。"
       },
       "audit": {
         "technical_status": "full_archive_audit_and_artifact_validation_passed",
         "files_examined": 645,
         "inspection_status": "full_decode_contact_sheet_review_and_rights_review_passed",
-        "publication_status": "student_enabled",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "official_metadata_pinned_archive_full_visual_review_and_release",
         "notes": "固定v1 Root.zipを既知SHA-256照合後に安全展開。645枚すべてをデコードしコンタクトシートで確認。部分的に人物が写る11枚とQR風表示1枚を除外。残る633枚でCC BY 4.0帰属・変更表示を含む共通artifact v0.1.1を整備し、固定Releaseを公開。表記された商品表示は推薦・承認を意味しない。ラベルは撮影場面で食品廃棄量を示さない。"
@@ -513,7 +517,9 @@
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "decision_date": "2026-11-12",
+        "decision_note": "高校生の身近な困りごととモデル出力後の具体的行動を明確に結び付けられないため、生徒向けカタログから除外。データ・監査記録は保持。"
       }
     },
     {
@@ -541,13 +547,13 @@
         "labels": "道路標識18種",
         "formats": "JPG、480×640",
         "structure": "18クラス分類、元画像画素を維持、seed 42でtrain/val/test分割",
-        "notes": "Mendeleyページの総数5,135とCompress DatasetのRoundAbout 1枚差を記録。日本の交通規則や実際の安全判断には使わない"
+        "notes": "Mendeleyページの総数5,135とCompress DatasetのRoundAbout 1枚差を記録。日本の交通規則や実際の安全判断には使わない 生徒向け課題適性を再評価し、身近な困りごととモデル出力後の行動を結び付けられないため、2026-11-12に生徒向けカタログから除外。"
       },
       "audit": {
         "technical_status": "full_archive_and_image_audit_passed",
         "files_examined": 5136,
         "inspection_status": "sample_visual_review_passed",
-        "publication_status": "student_enabled",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "primary_source_and_full_archive_audit"
       },
@@ -559,7 +565,9 @@
       },
       "pedagogy": {
         "presentation_mode": "A",
-        "publish_student_example": true
+        "publish_student_example": false,
+        "decision_date": "2026-11-12",
+        "decision_note": "高校生の身近な困りごととモデル出力後の具体的行動を明確に結び付けられないため、生徒向けカタログから除外。データ・監査記録は保持。"
       }
     },
     {
@@ -679,13 +687,13 @@
         "labels": "バングラデシュの魚10種類",
         "formats": "JPEG、320×320",
         "structure": "固定v2元画像ZIP、魚種別フォルダ",
-        "notes": "完全一致重複3枚を除外。青系背景への偏りを確認。増強画像との全対応検査は未実施"
+        "notes": "完全一致重複3枚を除外。青系背景への偏りを確認。増強画像との全対応検査は未実施 生徒向け課題適性を再評価し、身近な困りごととモデル出力後の行動を結び付けられないため、2026-11-12に生徒向けカタログから除外。"
       },
       "audit": {
         "technical_status": "full_archive_audit_passed",
         "files_examined": 1700,
         "inspection_status": "full_automated_image_audit_passed_sample_visual_review",
-        "publication_status": "student_enabled",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "official_metadata_and_full_archive_sha_verified",
         "notes": "固定v2 SmallFishBD.zip（29,802,305 bytes、SHA-256 2d97368d351f4c5940b7b54f19eec2b771a7d76421dbe5ad66977cf3003eafbb）を照合後に安全展開し、1,700枚全量を監査。完全一致重複3枚を除き1,697枚を共通artifact v0.1.1へ収録。CC BY 4.0の出典・contributorsと全画像視覚レビューを確認し、帰属・変更表示条件付きで再配布可と判断。Release smallfishbd-v0.1.1は29,799,609 bytes、SHA-256 367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547。増強画像は含めない。 Synchronized with the formal student catalog and fixed Release asset on 2026-11-09."
@@ -700,7 +708,9 @@
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "decision_date": "2026-11-12",
+        "decision_note": "高校生の身近な困りごととモデル出力後の具体的行動を明確に結び付けられないため、生徒向けカタログから除外。データ・監査記録は保持。"
       }
     },
     {
@@ -2280,13 +2290,13 @@
         "labels": "チャクマ文字48種類（38字・10数字）",
         "formats": "PNG 40×40・RGB",
         "structure": "48クラス別ディレクトリ",
-        "notes": "日本語の文字とは別体系。手書き文字のデジタル保存や文字画像分類の課題に使える。48クラスの独立文字画像のみで、ページOCRや書き手をまたぐ評価には使えない。"
+        "notes": "日本語の文字とは別体系。手書き文字のデジタル保存や文字画像分類の課題に使える。48クラスの独立文字画像のみで、ページOCRや書き手をまたぐ評価には使えない。 生徒向け課題適性を再評価し、身近な困りごととモデル出力後の行動を結び付けられないため、2026-11-12に生徒向けカタログから除外。"
       },
       "audit": {
         "technical_status": "full_decode_deduplicated_and_artifact_validated",
         "files_examined": 37708,
         "inspection_status": "full_image_decode_and_representative_visual_review",
-        "publication_status": "student_enabled",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "fixed_source_sha_full_decode_dedup_and_sampled_visual_review",
         "notes": "Mendeley v6固定ZIP 103,184,395 bytes / SHA-256照合。37,708枚を全量デコード、40x40 RGB PNG。完全一致重複1,450枚（数字クラス内のみ）を除外し、36,258枚をseed 42でクラス別70/15/15分割。全48クラスから各4枚の見本を目視。共通artifact ZIP 99,131,569 bytes / SHA-256 d9ef73e59c084492939b1d7b23d3ffde0fa865f76f132a29c5cba7c12cb19759を作成し、CRC・全画像ハッシュ・ラベル・manifest照合済み。"
@@ -2305,7 +2315,9 @@
       },
       "pedagogy": {
         "presentation_mode": "C",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "decision_date": "2026-11-12",
+        "decision_note": "高校生の身近な困りごととモデル出力後の具体的行動を明確に結び付けられないため、生徒向けカタログから除外。データ・監査記録は保持。"
       }
     },
     {
