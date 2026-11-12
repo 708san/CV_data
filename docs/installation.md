@@ -20,6 +20,7 @@ PyPI公開前の開発版です。次の依存構成は機能単位で分けて�
 | 画像表示・監査 | `display` | NumPy、Pillow、Matplotlib | 画像を開いて表示・検査するときに必要 |
 | ResNet分類・回帰 | `torch` | NumPy、Pillow、PyTorch、Torchvision | ResNet重みは初回利用時に別途取得。TorchとTorchvisionは公式の対応組み合わせで導入する |
 | 日本語OCR | `ocr` | PaddleOCR 3.1.0、Hugging Face Hub | PaddlePaddle本体はCPU/GPU環境に合わせ別途導入。OCR専用環境を推奨 |
+| 物体検出・領域分割 | `vision` | NumPy、Pillow、Transformers、Hugging Face Hub | PyTorchを先に導入。初回の明示読み込み時にDETR約167 MBまたはSAMの重み約375 MBを取得 |
 | SDXL生成・画像変換 | `diffusion` | Pillow、Diffusers（Torch extraを含む）、Transformers、Hugging Face Hub | 初回利用時に基盤モデルと選択LoRAを取得。数GBの空き容量が必要 |
 
 Hugging Face系の役割は分かれています。**Hugging Face Hub**はモデル・LoRAの取得とキャッシュ、**Transformers**はモデル構成や関連部品、**Diffusers**は画像生成パイプラインを担当します。Hub用パッケージだけ、または3つ全部を基本依存へ入れる構成にはしません。
@@ -31,8 +32,11 @@ python -m pip install -e '.[dataframe]'
 python -m pip install -e '.[display]'
 python -m pip install -e '.[torch]'
 python -m pip install -e '.[ocr]'
+python -m pip install -e '.[vision]'
 python -m pip install -e '.[diffusion]'
 ```
+
+`vision` extraはPyTorch本体を含みません。まず[PyTorch公式インストーラー](https://pytorch.org/get-started/locally/)からCPU/GPU環境に合うPyTorchを導入し、その後にextraを追加してください。モデル取得先は固定revisionです。既定モデル・ライセンス表示・使える範囲は[検出と領域分割](vision.md)を確認してください。
 
 ### OCR用の環境
 
@@ -82,7 +86,7 @@ print("MPS:", torch.backends.mps.is_available())
 ## 現在の制限
 
 - OCR APIと機能別extraは実装済みですが、PaddlePaddleの組み合わせごとの実機インストール、CPU推論、Colab GPU推論は未確認です。動作確認済みとは案内しません。
-- 検出・領域分割の推論依存も、採用モデルを決めた後に追加します。
+- 検出・領域分割のAPIと依存extraは実装済みですが、DETR/SAMのモデル実取得、CPU/GPU推論、Colab T4での確認は未実施です。
 - OCRがPaddlePaddleなど別の深層学習基盤を必要とする場合、PyTorch系との同一環境での併用は未確認です。競合しないと確認できるまでは、専用仮想環境へ分ける導入例を優先します。機能を全部入れる`all` extraは設けません。
 - 依存範囲の実環境チェックは開発中です。ResNetの既存CPU動作確認はPyTorch 2.2.2/Torchvision 0.17.2で行ったため、更新した推奨下限（PyTorch 2.6/Torchvision 0.21）での再確認が残っています。
 

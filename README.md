@@ -69,6 +69,23 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 
 日本語OCRの推論は、別のOCR用環境にPaddlePaddleを導入してから使います。モデルは明示的な`ocr.load()`時に取得し、CPUを既定にします。GPUを使う場合は利用可否を確認して明示指定します。導入方法と返却形式は[OCRの使い方](docs/ocr.md)をご覧ください。
 
+物体検出・領域分割は`from cvlesson import vision`から使います。PyTorchを環境に合わせて導入した後、`vision` extraを追加します。固定版のDETR（COCO 80カテゴリ検出）とSAM（枠・点からのマスク生成）を利用できます。機能範囲・容量・限界・実環境の検証状況は[検出と領域分割の使い方](docs/vision.md)を確認してください。
+
+```python
+from cvlesson import vision
+
+detector = vision.load_detector()  # CPUが既定
+objects = detector.predict("street.jpg", threshold=0.6)
+for item in objects:
+    print(item.label, item.box)
+
+# 枠から対象の形をマスクにする（SAM自体は名前を付けない）
+segmenter = vision.load_segmenter()
+if objects:
+    mask = segmenter.predict("street.jpg", box=objects[0].box)
+    print(mask.mask.shape)
+```
+
 ## データの説明
 
 | データ | 内容 | 取得元 | 利用条件 |

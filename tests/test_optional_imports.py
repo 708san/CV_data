@@ -20,7 +20,7 @@ import sys
 import cvlesson
 optional = (
     'torch', 'torchvision', 'pandas', 'PIL', 'matplotlib',
-    'diffusers', 'transformers', 'huggingface_hub', 'paddle', 'paddleocr',
+    'diffusers', 'transformers', 'huggingface_hub', 'paddle', 'paddleocr', 'numpy',
 )
 loaded = sorted(name for name in optional if name in sys.modules)
 if loaded:

@@ -27,6 +27,7 @@ dataframe = ["pandas>=1.5,<4"]
 display = ["numpy>=1.23,<3", "Pillow>=9,<14", "matplotlib>=3.6,<4"]
 torch = ["numpy>=1.23,<3", "Pillow>=9,<14", "torch>=2.6,<3", "torchvision>=0.21,<1"]
 ocr = ["paddleocr==3.1.0", "huggingface_hub>=0.23,<1"]
+vision = ["numpy>=1.23,<3", "Pillow>=9,<14", "transformers>=4.41,<6", "huggingface_hub>=0.23,<1"]
 diffusion = [
     "Pillow>=9,<14",
     "diffusers[torch]>=0.30,<1",

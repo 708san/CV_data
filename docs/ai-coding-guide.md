@@ -28,10 +28,14 @@
 | `models.ResNetClassifier()` | ResNet18の特徴と学習する出力層で画像を分類する |
 | `models.ResNetRegressor()` | ResNet18の特徴と学習する出力層で数値を予測する |
 | `ocr.load()`、`reader.predict("image.jpg")` | 固定版PP-OCRv5で画像の文字・信頼度・位置を読む。CPUが既定 |
+| `vision.load_detector()`、`detector.predict("image.jpg")` | COCO 80カテゴリの位置とラベルを検出する。CPUが既定 |
+| `vision.load_segmenter()`、`segmenter.predict("image.jpg", box=(x1,y1,x2,y2))` | 指定した枠や点に沿ってマスクを作る。SAM自体は対象名を返さない |
 | `generation.load()` | SDXLで画像を生成・変換する。モデルは明示時に取得 |
 | `datasets.get("festival_icons")` | LoRA用画像と説明文を取得する |
 
 `list_available()`の`task`は`ocr`、`classification`、`detection`、`regression`、`segmentation`、`lora`のいずれかです。正式APIに表示されない候補は、台帳上の調査候補であり、取得可能・教材利用可能とは限りません。`include_preview=True`は教師が確認するときだけ指定します。OCRの合成レシート候補は準備中で、Release公開までは一覧にも取得例にも出ません。
+
+検出と領域分割の基盤モデルは[使い方と限界](vision.md)を参照してください。COCO外の物体や意味領域分割を扱えるとは限りません。モデルの初回取得には数百MBの通信・保存容量が必要です。
 
 RDD2020 Japanは`datasets.get("rdd2020_japan")`で取得できます。日本の道路画像7,900枚を使い、縦ひび・横ひび・亀甲ひび・ポットホールを囲みます。約642 MBのダウンロードが必要です。CC BY-NC 3.0に従って非商用の教育目的で使い、出典・変更内容を表示してください。2020年頃の画像なので、現在の道路状態・安全性・修繕順位の判断には使いません。
 
