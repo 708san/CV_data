@@ -21,7 +21,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 30 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-候補台帳55件の現状は、`student_enabled` 14件、`candidate` 31件、`hold` 10件です。Fashion-MNISTは固定コミットの公式リポジトリでMITを確認し、公式Keras実装もデータへのMIT適用を明記するため、権利審査を承認済みに更新しました。FabricSpotDefect、BDRoadSigns、Orange Fruitは公式CC BY 4.0、固定版、整形済みReleaseを確認して生徒向けAPIへ追加しました。合成レシートAlpha10はCC BY 4.0の固定payloadと高校生の支出整理課題への適合を確認して整形しましたが、Release未公開のため利用可能件数には数えていません。インド硬貨は日本の高校生の身近な課題とのつながりが弱いため採用対象外です。生徒向けAPIで取得できるデータは18件、目標20件まであと2件です。
+候補台帳60件の現状は、`student_enabled` 19件、`candidate` 31件、`hold` 10件です。Fashion-MNISTは固定コミットの公式リポジトリでMITを確認し、公式Keras実装もデータへのMIT適用を明記するため、権利審査を承認済みに更新しました。FabricSpotDefect、BDRoadSigns、Orange Fruitは公式CC BY 4.0、固定版、整形済みReleaseを確認して生徒向けAPIへ追加しました。合成レシートAlpha10はCC BY 4.0の固定payloadと高校生の支出整理課題への適合を確認して整形しましたが、Release未公開のため利用可能件数には数えていません。インド硬貨は日本の高校生の身近な課題とのつながりが弱いため採用対象外です。4データのRelease公開・API登録により、レシートOCRと4件のRelease公開・API登録により、生徒向けAPIで取得できるデータは23件となり、20件の目標を超えました。
 
 FabricSpotDefectはMendeley Data v1のCC BY 4.0表示と、著者による家庭の布の撮影説明を確認しました。洗濯前に衣類の目立つ汚れを見つける補助という生徒課題に合わせ、柄布も含む元画像1,014枚・注釈3,288件を共通形式化しました。増強画像は除き、元画像は変更せず、0.5ピクセル以下の端のはみ出しがある矩形29件だけを補正しました。帰属・変更表示を同梱したartifactを固定Release `fabricspotdefect-v0.1.0`として公開し、掲載サイズとSHA-256を照合して生徒向けAPIへ登録しました（[監査記録](../reports/fabricspotdefect-v1-audit.json)、[データ別説明](datasets/fabricspotdefect.md)）。
 
@@ -121,3 +121,8 @@ Fruits-360公式repoはCC BY-SA 4.0を表示しますが、更新中ブランチ
 
 
 Pistachio Image Dataset v1は固定ZIP・全2,148画像・CC BY 4.0表示・引用条件を確認し、画像だけの共通artifact v0.1.0を準備しました。関連する2021論文自体のCC BY-NC表示とデータセットのCC BY 4.0表示を別々に記録し、画像権利者・第三者権利を追加確認するためRelease/APIは保留です（[データ別説明](datasets/pistachio_image_dataset.md)）。
+
+
+### 2026-11-12：生徒向けデータ4件の公開
+
+Indoor Waste Image Dataset（4,000枚・6,968 bbox）、WasteSegCluster v4（1,947枚・3,900 bbox）、Fire Recognition v4（元画像1,112枚）、AgriFreshNET v1（重複・ラベル競合を除いた14,084枚）を確認・整形し、CC BY 4.0の固定Releaseへ公開しました。出典archive SHA-256、画像全数デコード、ラベル・split検査、共通ライブラリ形式の検証、課題利用上の限界を記録しています。取得API登録は本PRで行います。これにより生徒向け公開データは22件になります。

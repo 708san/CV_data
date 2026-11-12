@@ -81,3 +81,11 @@ FabricSpotDefectは`datasets.get("fabricspotdefect")`で布の画像1,014枚とs
 BDRoadSignsは`datasets.get("bdroadsigns")`でバングラデシュの道路標識18種類を取得できます。見分けやすさを比べるクイズの試作に使えます。背景の道路風景も含まれます。日本の交通規則や実際の安全判断には使わないでください。
 
 Orange Fruitは`datasets.get("orange_fruit")`でオレンジの見た目5カテゴリを取得できます。分類の試作や、背景・照明で結果がどう変わるかの比較に使えます。ラベルは画像カテゴリであり、食べられるかや食品の安全を決めるものではありません。
+
+
+## 新しく追加した課題データ
+
+- `datasets.get("indoor_waste_image")`：屋内の紙・プラスチック・キャップ等を検出し、清掃箇所の確認を補助します。地域の分別ルールは別に確認します。
+- `datasets.get("wastesegcluster")`：ダッカ周辺の水辺ごみを検出します。日本の水辺の状態や水質には一般化しません。
+- `datasets.get("fire_recognition_image")`：火・煙の教材画像を分類します。元ラベルは実場面の安全を示さず、警報・避難判断には使いません。
+- `datasets.get("agrifreshnet")`：青果の見た目を24カテゴリに分類します。元ラベルの日数は期限ではなく、可食性・食品安全を判断しません。
