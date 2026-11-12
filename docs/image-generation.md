@@ -59,4 +59,4 @@ result.save("park_icon.png")
 
 ## Colabで動作を試す
 
-[画像生成・LoRAの確認Notebook](../notebooks/colab/generation_smoke_test.ipynb)は、固定commitのライブラリを使い、T4 GPU上で登録済み4件を順に試します。初回はSDXL本体と4つの重みを取得するため数GBの空き容量が必要です。NotebookはColab上で実行するまで実環境テスト済みではありません。
+[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。固定commitのライブラリを使い、登録済み4件を順に試します。初回はSDXL本体と4つの重みを取得するため数GBの空き容量が必要です。4件すべて成功すると最後に成功メッセージが出ます。Colab上で実行するまでは実環境テスト済みではありません。
