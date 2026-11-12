@@ -336,3 +336,12 @@
 - 固定Release `lefood-set-v0.1.0`を利用し、524組の食前・食後画像、実測重量、派生値を検証して取得するAPIを追加。
 - パス逸脱、ペア重複、manifest件数、数値・導出列、画像ファイル集合を検証し、pair単位splitを維持。
 - CC BY 4.0の帰属・変更表示と、インドネシアの病院食データを日本の給食や健康判断へ一般化しない説明を追加。
+
+
+## 2026-11-12：生徒向け画像データ4件のRelease・API登録
+
+- Indoor Waste Image Dataset、WasteSegCluster v4、Fire Recognition v4、AgriFreshNET v1の出典ページでCC BY 4.0を確認。具体的な清掃確認、地域環境学習、防災画像分類、青果の先行確認課題に用途を限定。
+- 画像全数と注釈・クラス・splitを監査し、manifest・ライセンス・監査レポートをCV_data_artifactsへ登録。各Release assetのサイズとGitHub SHA-256を照合。
+- AgriFreshNETは同じSHA-256の重複・異なる鮮度ラベルの競合を含む76ファイルを除外し、14,084枚を収録。
+- 4件ともZIPのパス安全性、manifest・ラベル構造をライブラリ検証器で確認。Japanese Receipt Detailedを含め、生徒向け公開データは23件となる。火災の「Safe_Fire」は実際の安全を意味せず、青果の見た目分類は可食性を判定しない。
+- Artifact PR #44 merged。固定Release: `wastesegcluster-v0.1.0`, `indoor-waste-image-v0.1.0`, `fire-recognition-image-v0.1.0`, `agrifreshnet-v0.1.0`。

@@ -2,9 +2,9 @@
   "schema_version": "1.0.0",
   "source_inventory": {
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
-    "as_of": "2026-11-11",
+    "as_of": "2026-11-12",
     "original_record_count": 53,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。FabricSpotDefectを権利・課題審査、全量監査、固定Release公開後にstudent_enabledへ更新。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。FabricSpotDefectを権利・課題審査、全量監査、固定Release公開後にstudent_enabledへ更新。 2026-11-12にIndoor Waste Image、WasteSegCluster、Fire Recognition、AgriFreshNETの固定版権利・全量技術監査・artifact Releaseを記録しstudent_enabledへ更新。 2026-11-12にJapanese Receipt Detailedの固定revision・実画像/注釈監査・非商用条件を再確認し、取得API PRに含めた。"
   },
   "records": [
     {
@@ -2643,6 +2643,244 @@
           "1"
         ],
         "adapter": "ocr_structured_record",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-156",
+      "api_id": "japanese_receipts_detailed",
+      "name": "Japanese Receipt Image Dataset (Detailed Annotations)",
+      "task": "ocr",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://huggingface.co/datasets/IngCrowd/japanese-receipts-detailed",
+        "provider": "huggingface",
+        "provider_dataset_id": "IngCrowd/japanese-receipts-detailed",
+        "version": "fixed Hugging Face revision e679e42ba2a408038d4151ced36eb6f32589422c (2026-10-20)",
+        "content_origin_claim": "日本国内の協力者が撮影したレシート画像100枚と領域・文字注釈",
+        "reference_url": "https://huggingface.co/datasets/IngCrowd/japanese-receipts-detailed"
+      },
+      "rights": {
+        "license_claim": "CC BY-NC 4.0",
+        "evidence_url": "https://huggingface.co/datasets/IngCrowd/japanese-receipts-detailed",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution_noncommercial"
+      },
+      "claims": {
+        "quantity": "100枚、2,005注釈領域、1,802転記",
+        "labels": "店舗・日時・品目行・小計・税・合計等",
+        "formats": "JPEG、JSON annotation",
+        "structure": "画像内領域とテキストの組",
+        "notes": "文化祭・部活動の会計入力を補助。固定Hugging Face revisionを使用し、100画像・2,005領域・1,802転記を監査。CC BY-NC 4.0の非商用条件を表示。選択的PIIマスクのみでQR等が残る可能性がある。"
+      },
+      "audit": {
+        "technical_status": "full_image_annotation_ocr_audit_and_artifact_validation",
+        "files_examined": 100,
+        "inspection_status": "full_image_visual_annotation_review",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "fixed_revision_source_license_and_full_artifact_audit"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "ocr_detection_and_text",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-158",
+      "api_id": "fire_recognition_image",
+      "name": "Fire Recognition Image Dataset v4",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/7jk6xh7h6w/4",
+        "provider": "mendeley",
+        "provider_dataset_id": "7jk6xh7h6w",
+        "version": "4",
+        "content_origin_claim": "火・煙・安全な火・人工火の画像データ",
+        "reference_url": "https://data.mendeley.com/datasets/7jk6xh7h6w/4"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/7jk6xh7h6w/4",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "原画像1,112枚（4クラス）と増強画像",
+        "labels": "Fire、Smoke、No Fire/Safe Fire、Artificial Fire",
+        "formats": "CV_data_artifacts fixed Release v0.1.0; common classification/detection format",
+        "structure": "分類クラス別",
+        "notes": "火・煙候補を知らせ、人が既存の警報・避難手順を確認する補助。安全設備を置き換えない。増強画像を原画像と区別する。"
+      },
+      "audit": {
+        "technical_status": "full_decode_annotation_group_audit_and_library_validation",
+        "files_examined": 1112,
+        "inspection_status": "full_image_decode_sample_visual_review",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "primary_source_fixed_archive_and_full_audit"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-160",
+      "api_id": "agrifreshnet",
+      "name": "AgriFreshNET Freshness and Shelf-Life Image Dataset",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/42m5tb7yv9/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "42m5tb7yv9",
+        "version": "1",
+        "content_origin_claim": "市場・スーパー・家庭・農場等で撮影した青果画像",
+        "reference_url": "https://data.mendeley.com/datasets/42m5tb7yv9/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/42m5tb7yv9/1",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "重複・クラス競合76ファイルを除いた14,084枚、24クラス",
+        "labels": "Fresh/Semi-Fresh/Rottenと概算残存期間",
+        "formats": "RGB画像と24クラス分類ラベル、グループsplit",
+        "structure": "青果カテゴリ・鮮度段階別",
+        "notes": "家庭・学食で先に現物を確認する青果候補を考える補助。元ラベルの日数は実測期限でなく、可食性・食品安全を判定しない。"
+      },
+      "audit": {
+        "technical_status": "full_decode_annotation_group_audit_and_library_validation",
+        "files_examined": 14160,
+        "inspection_status": "full_image_decode_sample_visual_review",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "primary_source_fixed_archive_and_full_audit"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-161",
+      "api_id": "indoor_waste_image",
+      "name": "Indoor Waste Image Dataset",
+      "task": "detection",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/dy7smxr93r/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "dy7smxr93r",
+        "version": "1",
+        "content_origin_claim": "公共屋内環境で撮影したごみ画像",
+        "reference_url": "https://data.mendeley.com/datasets/dy7smxr93r/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/dy7smxr93r/1",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "4,000枚、1280×720",
+        "labels": "紙、プラスチック、キャップ、貝殻の4種",
+        "formats": "CV_data_artifacts fixed Release v0.1.0; common classification/detection format",
+        "structure": "屋内画像中のごみ検出",
+        "notes": "学校行事後の清掃でごみの位置を見つける補助。現地の分別規則はモデル出力と分けて案内する。"
+      },
+      "audit": {
+        "technical_status": "full_decode_annotation_group_audit_and_library_validation",
+        "files_examined": 4000,
+        "inspection_status": "full_image_decode_sample_visual_review",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "primary_source_fixed_archive_and_full_audit"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-162",
+      "api_id": "wastesegcluster",
+      "name": "WasteSegCluster: Annotated Waste from Urban Water Bodies",
+      "task": "detection",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/3wnf3n242s/4",
+        "provider": "mendeley",
+        "provider_dataset_id": "3wnf3n242s",
+        "version": "4",
+        "content_origin_claim": "ダッカの水路・池・水辺で撮影したごみ画像",
+        "reference_url": "https://data.mendeley.com/datasets/3wnf3n242s/4"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/3wnf3n242s/4",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "1,947枚、約3,900注釈物体",
+        "labels": "複合ゴム/布、有機物、紙、プラスチック",
+        "formats": "Source COCO polygon/bbox; prepared bbox detection artifact",
+        "structure": "水辺のごみを物体検出",
+        "notes": "COCO bboxをYOLOへ変換。教材用途は水辺清掃の位置記録・活動計画の補助。ダッカの画像を日本の水辺や水質へ一般化しない。1画像は元注釈なし。"
+      },
+      "audit": {
+        "technical_status": "full_decode_annotation_group_audit_and_library_validation",
+        "files_examined": 1947,
+        "inspection_status": "full_image_decode_sample_visual_review",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "primary_source_fixed_archive_and_full_audit"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "detection",
         "target_colab": true
       },
       "pedagogy": {
