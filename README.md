@@ -74,19 +74,13 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [トマトの葉](docs/datasets/tomato_leaves.md) | トマトの葉7,209枚、5種類のラベル | `tomato-v1.2.0` | 元データ：CC0 1.0 |
 | [FruitSeg30](docs/datasets/fruitseg30.md) | 果物29クラス、画像・マスク1,914組 | `fruitseg30-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [Road Traversing Knowledge](docs/datasets/road_traversing_knowledge.md) | 道路環境の13画素クラス、画像・マスク701組 | `road-traversing-knowledge-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
-| [SmallFishBD](docs/datasets/smallfishbd.md) | 魚10種類、画像1,697枚 | `smallfishbd-v0.1.1` | CC BY 4.0、出典・変更表示が必要 |
-| [ピスタチオ2品種](docs/datasets/pistachio_image_dataset.md) | Kirmizi種・Siirt種、画像2,148枚 | `pistachio_image_dataset-v0.1.0` | CC BY 4.0、出典・変更・指定論文の表示が必要 |
-| [Food Waste Bangladesh](docs/datasets/food_waste_bangladesh.md) | 食品廃棄の撮影場面5カテゴリ、画像633枚 | `food-waste-bangladesh-v0.1.1` | CC BY 4.0、出典・変更表示が必要 |
 | [LeFood-Set](docs/datasets/lefood_set.md) | 食前・食後の料理画像524組、実測重量と見た目評価 | `lefood-set-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [Fresh and Rotten Fruits](docs/datasets/fresh_rotten_fruits.md) | 果物8種類のfresh／rotten画像3,193枚、16クラス | `fresh-rotten-fruits-v0.1.0` | CC BY 4.0、出典・変更表示が必要。食品安全の判定には使わない |
 | [RDD2020 Japan](docs/datasets/rdd2020_japan.md) | 道路損傷4種類、画像7,900枚・bbox 16,469個 | `rdd2020-japan-v0.1.0` | CC BY-NC 3.0、非商用教育利用のみ。出典・変更表示が必要 |
 | [観葉植物の種類](docs/datasets/indoor_plant_varieties.md) | 観葉植物7種類、重複除外後1,162枚 | `indoor-plant-varieties-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [廃棄物品](docs/datasets/bangladeshi_ewaste_image.md) | 廃棄物品12種類、画像2,157枚・位置注釈 | `bangladeshi-ewaste-v0.1.0` | CC BY 4.0、実際の分別判断には使わない |
-| [大学食堂の料理](docs/datasets/pust_cafeteria_food.md) | 料理16種類、画像691枚・位置注釈 | `pust-cafeteria-food-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
-| [Fashion-MNIST](docs/datasets/fashion_mnist.md) | 衣類等10種類、28×28画素の画像70,000枚 | `fashion-mnist-v0.1.0` | MIT、出典・変更表示を収録 |
 | [GeoSetEnnea](docs/datasets/geoset_ennea.md) | 製図用具9種類、画像136枚・位置注釈1,188件 | `geoset-ennea-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [FabricSpotDefect](docs/datasets/fabricspotdefect.md) | 衣類の汚れなど1クラス、元画像1,014枚・位置注釈3,288件 | `fabricspotdefect-v0.1.0` | CC BY 4.0、出典・変更表示が必要。着用可否・安全性の判定には使わない |
-| [BDRoadSigns](docs/datasets/bdroadsigns.md) | バングラデシュの道路標識18種類、画像5,136枚 | `bdroadsigns-v0.1.0` | CC BY 4.0、出典・変更表示が必要。日本の交通規則・実際の安全判断には使わない |
 | [Orange Fruit](docs/datasets/orange_fruit.md) | オレンジの見た目5カテゴリ、画像15,000枚 | `orange-fruit-v0.1.0` | CC BY 4.0、出典・変更表示が必要。鮮度・食用可否・食品安全・病気の判定には使わない |
 | [日本語レシートOCR（詳細版）](docs/datasets/japanese_receipts_detailed.md) | レシート画像100枚、領域ラベル2,005件・文字転記1,802件 | `japanese_receipts_detailed-v0.1.0` | CC BY-NC 4.0、非商用のみ。個人情報の黒塗りは一部 |
 | [屋内に残ったごみの位置](docs/datasets/indoor_waste_image.md) | 屋内ごみ4種類、4,000画像・6,968枠 | `indoor-waste-image-v0.1.0` | CC BY 4.0、地域の分別は別に確認 |
@@ -96,12 +90,11 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [道路の穴の領域分割](docs/datasets/brazil_road_potholes.md) | ブラジルの道路画像2,235枚・穴マスク2,235枚 | `brazil-road-potholes-v0.1.0` | CC BY 4.0、現地・現在の道路安全性は判定しない |
 | [CLICK Trash Dataset](docs/datasets/click_trash.md) | 屋外ごみ1,126枚・位置注釈2,213件 | `click-trash-v0.1.0` | CC BY 4.0、インド撮影。日本の地域や分別ルールを代表しない |
 | [歩道上の物体候補](docs/datasets/obstacles_assistance.md) | 4種類、画像1,250枚・bbox 1,627件 | `obstacles-assistance-v0.1.0` | CC BY 4.0。歩道の通行障害や安全の判定には使わない |
-| [ChakmaLipī](docs/datasets/chakmalipi.md) | チャクマ文字38種類・数字10種類、手書き画像36,258枚 | `chakmalipi-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [文化祭アイコン](docs/datasets/festival_icons.md) | アイコン168枚、画像と説明文 | `festival-v1.0.0` | 公開許可あり。改変・商用利用・再配布は要確認 |
 
 トマトの葉と文化祭アイコンは固定Releaseを全量監査済みです。実測値は[トマトの監査レポート](reports/tomato-leaves-v1.2.0.json)と[文化祭アイコンの監査レポート](reports/festival-icons-v1.0.0.json)に保存しています。これは権利の承認を意味しません。
 
-SmallFishBDは全画像レビューと帰属・変更表示条件を確認し、固定Release v0.1.1を公開済みです。ピスタチオ画像はMendeleyのCC BY 4.0表示と、研究者自身が画像を作成したという論文記載を照合し、指定論文2件の引用条件付きで固定Release v0.1.0を公開しています。廃棄物品・大学食堂の料理・Fashion-MNISTを固定Releaseから取得できます。各題材の地域性・撮影条件・ラベル上の限界は、データ別説明を確認してください。
+生徒向け一覧には、家庭・学校・地域の課題に使う道筋を説明できるデータだけを掲載しています。取り下げたデータの出典・監査記録・固定Releaseは履歴として保持します。
 
 Recyclable Waste v0.1.1の整形済みRelease assetは公開されていますが、包装上の肖像写真や商品表示を含む第三者権利審査が未完了のため、生徒向けAPIから外しています（[審査記録](docs/datasets/recyclable_waste.md)）。
 
@@ -119,9 +112,9 @@ Obstacles Avoidance Assistanceは段差・柵・穴・ポールを囲むbboxを�
 
 許諾済みデータの原本・派生データ・manifestは、コードとは分離した[CV_data_artifacts](https://github.com/708san/CV_data_artifacts)で管理します。PyPIとこのリポジトリには画像・LoRA・学習済み重みを収録しません。データを追加する際は、出典・ライセンス・固定版・SHA-256・変換履歴・監査結果をそろえてから、データ専用リポジトリのRelease assetとして公開します。
 
-Fashion-MNISTは固定Releaseから取得できる生徒向けデータです。Kuzushiji-MNISTはCC BY-SA 4.0の表示を確認しましたが、公式配布物の固定版とSHA-256を確定できないため保留中です。取得元が動的な状態では固定版取得の安全条件を満たせません。
+Kuzushiji-MNISTはCC BY-SA 4.0の表示を確認しましたが、公式配布物の固定版とSHA-256を確定できないため保留中です。取得元が動的な状態では固定版取得の安全条件を満たせません。
 
-`datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。画像分類では食品・植物・衣類・交通標識・オレンジの見た目カテゴリ等を扱えます。Orange Fruitは約113 MBで、外観カテゴリや背景・照明の影響を調べる食品ロス課題の試作に使えます。鮮度・食用可否・食品安全・病気の判定には使いません。物体検出では道路損傷、製図用具、廃棄物品、大学食堂の料理、洗濯前の衣類の汚れ探しを扱えます。FabricSpotDefectは約744 MBで、展開後は約744 MBのキャッシュ容量が必要です。衣類の清潔さ・着用可否・安全性や汚れ落ちは判定しません。RDD2020 Japanは約642 MBで、展開後は約646 MBのキャッシュ容量が必要です。CC BY-NC 3.0のため非商用の教育利用に限られます。モデルだけで道路の安全性や修繕順位を決めないでください。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
+`datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。画像分類では家庭菜園の葉や青果など、身近な観察課題を扱えます。Orange Fruitは約113 MBで、外観カテゴリや背景・照明の影響を調べる食品ロス課題の試作に使えます。鮮度・食用可否・食品安全・病気の判定には使いません。物体検出では道路損傷、清掃活動、製図用具、洗濯前の衣類の汚れ探しを扱えます。FabricSpotDefectは約744 MBで、展開後は約744 MBのキャッシュ容量が必要です。衣類の清潔さ・着用可否・安全性や汚れ落ちは判定しません。RDD2020 Japanは約642 MBで、展開後は約646 MBのキャッシュ容量が必要です。CC BY-NC 3.0のため非商用の教育利用に限られます。モデルだけで道路の安全性や修繕順位を決めないでください。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
 
 LeFood-Setは`datasets.get("lefood_set")`で食前・食後画像524組を取得し、`to_df()`で実測重量や見た目評価を確認できます。日本の学校給食を代表するデータではなく、健康・栄養判断には使いません。
 

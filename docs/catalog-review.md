@@ -13,7 +13,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 
 | 区分 | 件数 | ライブラリでの扱い |
 | --- | ---: | --- |
-| main APIで利用できる生徒向けデータ | 26 | `rdd2020_japan`、`lefood_set`、`tomato_leaves`、`bangladeshi_ewaste_image`、`pust_cafeteria_food`、`fashion_mnist`、`geoset_ennea`、`road_traversing_knowledge`、`fabricspotdefect`、`bdroadsigns`、`orange_fruit`、`japanese_receipts_detailed`、`fruitseg30`、`fresh_rotten_fruits`、`food_waste_bangladesh`、`smallfishbd`、`pistachio_image_dataset`、`indoor_plant_varieties`、`chakmalipi`、`indoor_waste_image`、`wastesegcluster`、`fire_recognition_image`、`agrifreshnet`、`brazil_road_potholes`、`click_trash`、`obstacles_assistance` |
+| main APIで利用できる生徒向けデータ | 19 | `rdd2020_japan`、`lefood_set`、`tomato_leaves`、`bangladeshi_ewaste_image`、`geoset_ennea`、`road_traversing_knowledge`、`fabricspotdefect`、`orange_fruit`、`japanese_receipts_detailed`、`fruitseg30`、`fresh_rotten_fruits`、`indoor_plant_varieties`、`indoor_waste_image`、`wastesegcluster`、`fire_recognition_image`、`agrifreshnet`、`brazil_road_potholes`、`click_trash`、`obstacles_assistance` |
 | 教師向けLoRA素材 | 1 | `festival_icons`。公開許可のみ確認済み。改変・商用利用・再配布許諾は未確認 |
 | 固定取得条件または公開条件で保留 | 3 | `kuzushiji_mnist`、`fruits_360`、`recyclable_waste`。Kuzushiji-MNISTはCC BY-SA 4.0表記を確認済みだが、配布データの固定版とSHA-256を確定できず保留。Fruits-360には固定タグReleaseがなく、実体取得は未開始。Recyclable Wasteは第三者の肖像・商標審査が未完了のため生徒APIから除外 |
 | 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
@@ -21,7 +21,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 30 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-候補台帳64件の現状は、`student_enabled` 22件、`candidate` 31件、`hold` 11件です。APIにある26件のうち4件は台帳外で個別に審査・追加したデータです。CLICK Trash v2はMendeleyのCC BY 4.0表示、固定アーカイブSHA-256、single-class bboxと高校生の清掃活動記録の課題適合を確認し、固定Releaseを公開しました。Obstacles Avoidance AssistanceはMendeley v1のCC BY 4.0表示と画像・bboxを確認し、歩道上の物体候補を人が確かめる地図の試作に限定しました。配布元説明にあるRoboflow画像の個別ID・ライセンスは列挙されていないため、記録に明示しています。柵やポールを見つけること自体を通行障害の判定とは扱いません。日本の地域環境を代表しないデータは現地画像による確認が必要です。個々の権利・固定版・課題の限界はデータ別説明と監査報告を参照してください。生徒向けAPIで取得できるデータは26件で、20件の目標を超えています。
+候補台帳64件の現状は、`student_enabled` 16件、`candidate` 31件、`hold` 17件です。生徒向けAPIは19件で、そのうち3件は候補台帳外で個別に審査・追加したデータです。CLICK Trash v2はMendeleyのCC BY 4.0表示、固定アーカイブSHA-256、single-class bboxと高校生の清掃活動記録の課題適合を確認し、固定Releaseを公開しました。Obstacles Avoidance AssistanceはMendeley v1のCC BY 4.0表示と画像・bboxを確認し、歩道上の物体候補を人が確かめる地図の試作に限定しました。配布元説明にあるRoboflow画像の個別ID・ライセンスは列挙されていないため、記録に明示しています。柵やポールを見つけること自体を通行障害の判定とは扱いません。日本の地域環境を代表しないデータは現地画像による確認が必要です。個々の権利・固定版・課題の限界はデータ別説明と監査報告を参照してください。生徒向けAPIで取得できるデータは19件です。今回、身近な困りごととの接続が弱い7件を生徒向けカタログから取り下げました。
 
 FabricSpotDefectはMendeley Data v1のCC BY 4.0表示と、著者による家庭の布の撮影説明を確認しました。洗濯前に衣類の目立つ汚れを見つける補助という生徒課題に合わせ、柄布も含む元画像1,014枚・注釈3,288件を共通形式化しました。増強画像は除き、元画像は変更せず、0.5ピクセル以下の端のはみ出しがある矩形29件だけを補正しました。帰属・変更表示を同梱したartifactを固定Release `fabricspotdefect-v0.1.0`として公開し、掲載サイズとSHA-256を照合して生徒向けAPIへ登録しました（[監査記録](../reports/fabricspotdefect-v1-audit.json)、[データ別説明](datasets/fabricspotdefect.md)）。
 
@@ -122,6 +122,11 @@ Fruits-360公式repoはCC BY-SA 4.0を表示しますが、更新中ブランチ
 
 Pistachio Image Dataset v1は固定ZIP・全2,148画像・CC BY 4.0表示・引用条件を確認し、画像だけの共通artifact v0.1.0を準備しました。関連する2021論文自体のCC BY-NC表示とデータセットのCC BY 4.0表示を別々に記録し、画像権利者・第三者権利を追加確認するためRelease/APIは保留です（[データ別説明](datasets/pistachio_image_dataset.md)）。
 
+
+
+### 2026-11-12：課題接続が弱い7件を生徒向けカタログから除外
+
+`fashion_mnist`、`bdroadsigns`、`smallfishbd`、`pistachio_image_dataset`、`chakmalipi`、`food_waste_bangladesh`、`pust_cafeteria_food`を生徒向け一覧・取得APIから取り下げました。いずれも配布元のライセンス確認記録は保持しますが、現在の課題説明では、生徒の身近な困りごととモデル出力後の具体的な行動が弱い、または地域・題材が遠いと判断しました。バイナリやReleaseは削除せず、監査資料・候補台帳も履歴として保持します。候補台帳にある6件は`excluded_from_student_catalog`へ更新し、PUST Cafeteria Foodは台帳外の個別追加記録としてここに記録します。
 
 ### 2026-11-12：生徒向けデータ4件の公開
 

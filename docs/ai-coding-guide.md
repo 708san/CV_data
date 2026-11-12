@@ -12,7 +12,6 @@
 | `datasets.list_preview()` | 権利確認中の教師向けプレビューを一覧表示する。正式提供ではない |
 | `datasets.info("tomato_leaves")` | データの内容と出典を調べる。引数なしなら一覧を返す |
 | `datasets.get("tomato_leaves")` | 固定Releaseを取得し、検証して展開する |
-| `datasets.get("pistachio_image_dataset")` | CC BY 4.0のピスタチオ画像2,148枚を取得する。出典・変更・指定論文2件を表示する |
 | `datasets.get("indoor_plant_varieties")` | CC BY 4.0の観葉植物7種類・1,162枚を取得する。出典・変更内容を表示する |
 | `datasets.get("geoset_ennea")` | CC BY 4.0の製図用具画像と物体位置注釈を取得する |
 | `datasets.get("fabricspotdefect")` | CC BY 4.0の布画像と汚れなどの位置注釈1,014枚を取得する |
@@ -25,8 +24,6 @@
 | `data.masks_dir` | 領域分割のマスク保存先を参照する |
 | `datasets.get("festival_icons")` | LoRA用画像と説明文を取得する |
 
-Fashion-MNISTは固定Releaseから取得できる生徒向けデータです。Kuzushiji-MNISTは公式配布物の固定版とSHA-256を確定できていないため、取得APIには登録していません。
-
 `list_available()`の`task`は`ocr`、`classification`、`detection`、`regression`、`segmentation`、`lora`のいずれかです。正式APIに表示されない候補は、台帳上の調査候補であり、取得可能・教材利用可能とは限りません。`include_preview=True`は教師が確認するときだけ指定します。OCRの合成レシート候補は準備中で、Release公開までは一覧にも取得例にも出ません。
 
 RDD2020 Japanは`datasets.get("rdd2020_japan")`で取得できます。日本の道路画像7,900枚を使い、縦ひび・横ひび・亀甲ひび・ポットホールを囲みます。約642 MBのダウンロードが必要です。CC BY-NC 3.0に従って非商用の教育目的で使い、出典・変更内容を表示してください。2020年頃の画像なので、現在の道路状態・安全性・修繕順位の判断には使いません。
@@ -37,13 +34,9 @@ FruitSeg30は領域分割向けの29クラスartifactを固定Releaseで公開�
 
 Road Traversing Knowledgeは多クラス領域分割です。`data.classes`の13クラス（背景を含む）に対応し、`to_torch_dataset()`はクラスIDを保った`torch.long`マスクを返します。各画素のIDをクラス番号として扱い、二値マスク用の損失関数へそのまま渡さないでください。クラス8は一覧にはありますが、元の全マスクで未出現です。データは公式train/validationのみで、test splitはありません。
 
-ピスタチオ画像v0.1.0はKirmizi種・Siirt種の2,148枚です。Mendeley DataのCC BY 4.0表示と画像作成者に関する論文記載を確認し、指定された2論文も引用しています。`datasets.get("pistachio_image_dataset")`で取得し、`data.to_df()`からクラス・分割を確認できます。撮影背景が黒に統一されているため、一般の食品写真での識別性能を保証しません。食品の品質・鮮度・安全性は判定しません。
-
 観葉植物の画像1,162枚は`datasets.get("indoor_plant_varieties")`で取得できます。`data.to_df()`でクラスと分割を見たり、`data.show_examples(8)`で画像を確認したりできます。完全一致重複を10枚除き、長辺512px以下へ縮小し、GPS等のEXIFを取り除いています。植物名を調べる学習用であり、有毒性・食用・病気・育て方・安全性は判断しません。
 
 GeoSetEnneaは`datasets.get("geoset_ennea")`で136枚の画像と9クラスの物体位置注釈を取得できます。撮影場所はバングラデシュで、日本の文具や教室を代表しません。文具の商品名・ロゴは付随的に写ります。
-
-SmallFishBD v0.1.1は魚10種類、1,697枚の分類データです。固定ReleaseとSHA-256を確認済みで、`datasets.get("smallfishbd")`で取得できます。`data.to_df()`で画像・魚種ラベル・train/validation/test分割を確認できます。青系背景の画像に偏るため、自然環境の魚種判定には使わないでください。
 
 LoRA素材は`from cvlesson import loras`から管理します。`loras.list_available()`は生徒向けに承認された素材だけを返し、権利確認中の文化祭アイコンは`loras.list_preview()`で確認できます。重みは配布せず、必要な場合は`loras.get("festival_icon_style", allow_preview=True).get_data(allow_preview=True)`で画像・キャプション素材だけを取得します。
 
@@ -55,9 +48,6 @@ LoRA素材は`from cvlesson import loras`から管理します。`loras.list_ava
 
 - `datasets.get("recyclable_waste")`：リサイクル素材の画像分類。ポルトガルで撮影され、現地の分別規則を示すものではありません。
 - `datasets.get("bangladeshi_ewaste_image")`：12種類の廃棄物品の物体検出。緑色の布上で撮影され、polygon注釈の一部を外接矩形に変換しています。現実のごみ分別や医療廃棄物の処理には使いません。
-- `datasets.get("pust_cafeteria_food")`：バングラデシュの大学食堂で撮影された料理の物体検出。日本の食堂メニューを代表せず、栄養・アレルギー・衛生・価格の判断には使いません。
-- `datasets.get("fashion_mnist")`：10種類の28×28白黒画像。画像分類の練習用で、実際の衣類の状態やブランドは判断できません。
-- `datasets.get("bdroadsigns")`：バングラデシュの交通標識18種類。標識の見分けやすさを調べる課題に使えますが、日本の交通規則や実際の交通安全判断には使えません。
 - `datasets.get("orange_fruit")`：オレンジの見た目5カテゴリを使った分類。背景・照明の影響を調べる食品ロス課題の試作に使えますが、鮮度・食用可否・食品安全・病気の判定には使えません。
 
 いずれも初回取得時に固定版ZIPをダウンロードし、サイズとSHA-256を照合します。利用条件と変換内容は各データの説明を確認してください。
@@ -77,8 +67,6 @@ LoRA素材は`from cvlesson import loras`から管理します。`loras.list_ava
 開発者・教員は `python -m cvlesson.audit festival_icons --check-images --check-similar --report report.json` で検査できます。生成された `report.json` をAIに渡し、「検査に失敗した項目と、類似画像候補を説明して」と依頼できます。類似候補は目視確認用で、自動削除や重複確定は行いません。画像や配布元の変更、権利上の利用判断はこの操作に含まれません。
 
 FabricSpotDefectは`datasets.get("fabricspotdefect")`で布の画像1,014枚とspot位置注釈を取得できます。洗濯前に汚れを見つける補助を試作し、柄や照明による見え方を比べる課題に使えます。衣類の清潔さ、着用可否、安全性や汚れ落ちを判定するものではありません。
-
-BDRoadSignsは`datasets.get("bdroadsigns")`でバングラデシュの道路標識18種類を取得できます。見分けやすさを比べるクイズの試作に使えます。背景の道路風景も含まれます。日本の交通規則や実際の安全判断には使わないでください。
 
 Orange Fruitは`datasets.get("orange_fruit")`でオレンジの見た目5カテゴリを取得できます。分類の試作や、背景・照明で結果がどう変わるかの比較に使えます。ラベルは画像カテゴリであり、食べられるかや食品の安全を決めるものではありません。
 
