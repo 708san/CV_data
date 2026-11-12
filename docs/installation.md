@@ -1,0 +1,95 @@
+# インストールと依存関係
+
+更新日：2026-11-13
+
+PyPI公開前の開発版です。次の依存構成は機能単位で分けています。基本のデータ一覧・説明・固定Release取得には追加パッケージを使いません。データ本体・モデル重みもインストール時には取得しません。
+
+## Python
+
+パッケージメタデータ上の対象はPython 3.11〜3.13です。3.10はDiffusersなど一部AI依存の現在の対応範囲と揃いにくいため、初期公開では対象外にします。3.14以降は依存組み合わせの確認後に追加します。
+
+## 機能別インストール
+
+リポジトリを取得した開発者は、以下の`pip install -e`を使います。PyPI公開後は`-e .`を`cv-data-lesson`へ置き換える予定です。
+
+| 使う機能 | 追加指定 | 主な追加パッケージ | 注意 |
+| --- | --- | --- | --- |
+| 開発テスト | `test` | pandas、Pillow | 開発・CI専用。PyTorchなど大容量依存は含めない |
+| データ一覧・説明・取得 | なし | なし（Python標準ライブラリ） | `import cvlesson`や一覧表示だけではデータ・モデルを取得しない |
+| DataFrame | `dataframe` | pandas | `to_df()`を使うときだけ必要 |
+| 画像表示・監査 | `display` | NumPy、Pillow、Matplotlib | 画像を開いて表示・検査するときに必要 |
+| ResNet分類・回帰 | `torch` | NumPy、Pillow、PyTorch、Torchvision | ResNet重みは初回利用時に別途取得。TorchとTorchvisionは公式の対応組み合わせで導入する |
+| 日本語OCR | `ocr` | PaddleOCR 3.1.0、Hugging Face Hub | PaddlePaddle本体はCPU/GPU環境に合わせ別途導入。OCR専用環境を推奨 |
+| SDXL生成・画像変換 | `diffusion` | Pillow、Diffusers（Torch extraを含む）、Transformers、Hugging Face Hub | 初回利用時に基盤モデルと選択LoRAを取得。数GBの空き容量が必要 |
+
+Hugging Face系の役割は分かれています。**Hugging Face Hub**はモデル・LoRAの取得とキャッシュ、**Transformers**はモデル構成や関連部品、**Diffusers**は画像生成パイプラインを担当します。Hub用パッケージだけ、または3つ全部を基本依存へ入れる構成にはしません。
+
+```bash
+python -m pip install -e .
+python -m pip install -e '.[test]'
+python -m pip install -e '.[dataframe]'
+python -m pip install -e '.[display]'
+python -m pip install -e '.[torch]'
+python -m pip install -e '.[ocr]'
+python -m pip install -e '.[diffusion]'
+```
+
+### OCR用の環境
+
+OCRはPaddlePaddleを使います。ResNet・SDXLのPyTorchとは別の仮想環境に分けると、深層学習基盤の依存競合を避けやすくなります。まず[PaddlePaddle公式インストール案内](https://www.paddlepaddle.org.cn/install/quick)でOS・Python・CPU/GPU・CUDAに合うPaddlePaddleを導入し、次にこのライブラリの`ocr` extraを入れます。
+
+```bash
+python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+python -m pip install -e '.[ocr]'
+```
+
+上記はCPU環境の例です。GPU環境では公式インストーラーで対応するCUDA版を選び、Colabでも現在のCUDA環境に一致するコマンドを選んでください。`ocr.load()`の既定はCPUです。GPUを使うときは`device="gpu:0"`を指定し、`ocr.available_devices()`で利用可否を先に確認します。
+
+OCRモデルは`ocr.load()`を呼んだ時に、Apache-2.0表示のPP-OCRv5 mobile検出・認識モデルを固定Hugging Face revisionから取得します。2モデルで約22 MBです。モデルカードの条件は各配布元で確認できます：[検出モデル](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_det)、[認識モデル](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_rec)。推論はローカルで実行し、読み取り結果は`text`と行ごとの`confidence`、画像上の四点`polygon`で返します。
+
+## PyTorchとCPU/GPU
+
+PyTorchとTorchvisionは機能上対応する版の組み合わせを使います。PyPI extrasはCUDA版を選べないため、GPU利用者は先に[PyTorch公式インストーラー](https://pytorch.org/get-started/locally/)でOS・Python・CUDAまたはCPUを選んでPyTorchとTorchvisionを導入し、その後に`.[torch]`または`.[diffusion]`を追加します。extrasのインストールは既に満たされたPyTorchを再選択しない前提です。GPUの有無はライブラリ側でも明示的に確認し、GPUへ自動切替しません。
+
+現行の公式対応表に基づく最小候補は次のとおりです。`pyproject.toml`の下限は2.6/0.21とし、Python 3.13ではresolverが対応する新しい組を選べるようにします。これはwheelを各OS/GPUで実行確認済みという意味ではありません。
+
+| Python | PyTorch/Torchvision最小候補 | 状態 |
+| --- | --- | --- |
+| 3.11 | 2.6 / 0.21 | 公式対応表に記載。CPU動作確認は未実施 |
+| 3.12 | 2.6 / 0.21 | 公式対応表に記載。CPU動作確認は未実施 |
+| 3.13 | 2.7 / 0.22 | 公式対応表に記載。依存resolverとCPU動作確認は未実施 |
+
+```bash
+# 先にPyTorch公式サイトで選んだコマンドを実行
+python -m pip install -e '.[torch]'
+```
+
+インストール済みPyTorchの版、CPU/CUDA/MPSの認識を確認します。
+
+```python
+import torch
+import torchvision
+
+print(torch.__version__, torchvision.__version__)
+print("CUDA:", torch.cuda.is_available())
+print("MPS:", torch.backends.mps.is_available())
+```
+
+## バージョン・動作確認の範囲
+
+`pyproject.toml`には依存の許容範囲を記載しますが、これは全組み合わせの実機検証を意味しません。開発時は確認したバージョン組み合わせを別途記録します。重量級パッケージの解決・実行は別計算機のCI runnerまたはColabで行います。別計算機を使えない場合は保留します。同じPC上の一時仮想環境はパッケージを分けるだけで、CPU・メモリ・ディスクを分離しません。CUDA/T4など実GPUが必要な確認はColabで行い、GPU未確認の機能をGPU動作確認済みとは案内しません。
+
+## 現在の制限
+
+- OCR APIと機能別extraは実装済みですが、PaddlePaddleの組み合わせごとの実機インストール、CPU推論、Colab GPU推論は未確認です。動作確認済みとは案内しません。
+- 検出・領域分割の推論依存も、採用モデルを決めた後に追加します。
+- OCRがPaddlePaddleなど別の深層学習基盤を必要とする場合、PyTorch系との同一環境での併用は未確認です。競合しないと確認できるまでは、専用仮想環境へ分ける導入例を優先します。機能を全部入れる`all` extraは設けません。
+- 依存範囲の実環境チェックは開発中です。ResNetの既存CPU動作確認はPyTorch 2.2.2/Torchvision 0.17.2で行ったため、更新した推奨下限（PyTorch 2.6/Torchvision 0.21）での再確認が残っています。
+
+## 公式情報
+
+- [PyTorchのインストール選択](https://pytorch.org/get-started/locally/)
+- [PyTorchとTorchvisionの対応版](https://github.com/pytorch/vision#installation)
+- [Diffusersのインストール条件](https://huggingface.co/docs/diffusers/installation)
+- [PaddleOCR 3.1.0の推論インストール](https://www.paddleocr.ai/v3.1.0/en/version3.x/installation.html)
+- [PaddleOCR 3.1.0 OCR推論API](https://www.paddleocr.ai/v3.1.0/en/version3.x/pipeline_usage/OCR.html)

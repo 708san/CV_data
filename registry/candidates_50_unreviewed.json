@@ -2,9 +2,9 @@
   "schema_version": "1.0.0",
   "source_inventory": {
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
-    "as_of": "2026-11-11",
+    "as_of": "2026-11-12",
     "original_record_count": 53,
-        "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。FabricSpotDefectを権利・課題審査、全量監査、固定Release公開後にstudent_enabledへ更新。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。FabricSpotDefectを権利・課題審査、全量監査、固定Release公開後にstudent_enabledへ更新。 2026-11-12にIndoor Waste Image、WasteSegCluster、Fire Recognition、AgriFreshNETの固定版権利・全量技術監査・artifact Releaseを記録しstudent_enabledへ更新。 2026-11-12にJapanese Receipt Detailedの固定revision・実画像/注釈監査・非商用条件を再確認し、取得API PRに含めた。 2026-11-12にCracks and Potholes in Road Images v3のCC BY 4.0、固定SHA、2,235画像・POTHOLEマスクを監査しstudent_enabledへ追加。DIU-HandGesture31はCC BY 4.0と撮影同意表記を確認したが、画像内の文字ラベル混入を目視しhold。 2026-11-12にObstacles Avoidance Assistance v1のCC BY 4.0、固定SHA、画像・bbox全量対応を確認しstudent_enabledへ追加。配布元説明は公開Roboflow画像を選定したとするが、上流ID・個別ライセンス一覧がないことを記録。 2026-11-12に高校生の身近な課題との接続が弱い7項目（Fashion-MNIST、BDRoadSigns、SmallFishBD、Pistachio、ChakmaLipī、Food Waste Bangladesh、PUST Cafeteria Food）を生徒向けAPIから除外。元データ・監査・固定Releaseは保持。"
   },
   "records": [
     {
@@ -78,13 +78,13 @@
         "labels": "衣類10クラス",
         "formats": "IDX gzip（画素配列・ラベル別）",
         "structure": "学習60,000／テスト10,000；画像・ラベル別gzip",
-        "notes": "写真の状況が統一された低解像度画像。固定コミットの4ファイルを検査。公式リポジトリは画像データを配布対象に含めてMITを表示し、Keras公式実装もデータの著作権者・MIT適用を明記。"
+        "notes": "写真の状況が統一された低解像度画像。固定コミットの4ファイルを検査。公式リポジトリは画像データを配布対象に含めてMITを表示し、Keras公式実装もデータの著作権者・MIT適用を明記。 生徒向け課題適性を再評価し、身近な困りごととモデル出力後の行動を結び付けられないため、2026-11-12に生徒向けカタログから除外。"
       },
       "audit": {
         "technical_status": "metadata_checked",
         "files_examined": 70000,
         "inspection_status": "completed",
-        "publication_status": "student_enabled",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "independent_primary_check",
         "notes": "固定コミット b2617bb6d3ffa2e429640350f613e3291e10b141 の公式READMEは本データをZalando商品画像と説明し、リポジトリ内に配布ファイルを収録。固定コミットのLICENSEはMIT。Keras公式データ実装も著作権をZalando SEとしFashion-MNISTにMITを適用すると明記。出典・MIT全文を同梱した整形artifactを配布可能と判断。"
@@ -99,7 +99,9 @@
       },
       "pedagogy": {
         "presentation_mode": "A",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "decision_date": "2026-11-12",
+        "decision_note": "高校生の身近な困りごととモデル出力後の具体的行動を明確に結び付けられないため、生徒向けカタログから除外。データ・監査記録は保持。"
       }
     },
     {
@@ -436,7 +438,7 @@
         "labels": "Kirmizi／Siirtの2種",
         "formats": "JPEG（600×600、RGB）／ZIP内に特徴量・説明ファイルあり",
         "structure": "画像2フォルダ（Kirmizi 1,232／Siirt 916）、公式ZIP内に非画像ファイルあり",
-        "notes": "固定ZIPを全量検査済み。教材artifactでは画像だけを使い、seed 42でtrain/val/testを作成"
+        "notes": "固定ZIPを全量検査済み。教材artifactでは画像だけを使い、seed 42でtrain/val/testを作成 生徒向け課題適性を再評価し、身近な困りごととモデル出力後の行動を結び付けられないため、2026-11-12に生徒向けカタログから除外。"
       },
       "audit": {
         "technical_status": "full_image_audit",
@@ -445,7 +447,7 @@
         "decode_errors": 0,
         "duplicate_sha_groups": 0,
         "inspection_status": "full_technical_audit_sample_visual_review",
-        "publication_status": "student_enabled",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "independent_primary_check",
         "notes": "公式Mendeley v1のCC BY 4.0表示と固定ZIPを確認。全2,148画像を600x600 RGB JPEGとしてデコード、完全一致重複0。論文は高解像度カメラで試料を撮影したと説明。4画像を目視。画像以外の特徴量表等10ファイルはartifactから除外。2021論文自身のCC BY-NC 4.0表示とMendeleyデータのCC BY 4.0表示を混同せず、dataset image rights holder/third-party rightsを公開前に追加確認するためhold。共通artifact v0.1.0準備済みだがRelease/API未公開. Mendeley CC BY 4.0と研究者作成画像の論文記載を照合し、指定論文引用付きで再配布承認。固定Releaseと取得APIを2026-11-09に公開。",
@@ -464,7 +466,9 @@
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "decision_date": "2026-11-12",
+        "decision_note": "高校生の身近な困りごととモデル出力後の具体的行動を明確に結び付けられないため、生徒向けカタログから除外。データ・監査記録は保持。"
       }
     },
     {
@@ -492,13 +496,13 @@
         "labels": "撮影場面5分類",
         "formats": "JPEG、640×480が644枚・678×768が1枚",
         "structure": "固定v1 ZIP、5フォルダ",
-        "notes": "撮影場面ラベルで、食品廃棄量を表さない。人物の一部が写る11枚とQR風表示1枚を除外。商品表示は一部残り、推薦を意味しない。"
+        "notes": "撮影場面ラベルで、食品廃棄量を表さない。人物の一部が写る11枚とQR風表示1枚を除外。商品表示は一部残り、推薦を意味しない。 生徒向け課題適性を再評価し、身近な困りごととモデル出力後の行動を結び付けられないため、2026-11-12に生徒向けカタログから除外。"
       },
       "audit": {
         "technical_status": "full_archive_audit_and_artifact_validation_passed",
         "files_examined": 645,
         "inspection_status": "full_decode_contact_sheet_review_and_rights_review_passed",
-        "publication_status": "student_enabled",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "official_metadata_pinned_archive_full_visual_review_and_release",
         "notes": "固定v1 Root.zipを既知SHA-256照合後に安全展開。645枚すべてをデコードしコンタクトシートで確認。部分的に人物が写る11枚とQR風表示1枚を除外。残る633枚でCC BY 4.0帰属・変更表示を含む共通artifact v0.1.1を整備し、固定Releaseを公開。表記された商品表示は推薦・承認を意味しない。ラベルは撮影場面で食品廃棄量を示さない。"
@@ -513,7 +517,9 @@
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "decision_date": "2026-11-12",
+        "decision_note": "高校生の身近な困りごととモデル出力後の具体的行動を明確に結び付けられないため、生徒向けカタログから除外。データ・監査記録は保持。"
       }
     },
     {
@@ -541,13 +547,13 @@
         "labels": "道路標識18種",
         "formats": "JPG、480×640",
         "structure": "18クラス分類、元画像画素を維持、seed 42でtrain/val/test分割",
-        "notes": "Mendeleyページの総数5,135とCompress DatasetのRoundAbout 1枚差を記録。日本の交通規則や実際の安全判断には使わない"
+        "notes": "Mendeleyページの総数5,135とCompress DatasetのRoundAbout 1枚差を記録。日本の交通規則や実際の安全判断には使わない 生徒向け課題適性を再評価し、身近な困りごととモデル出力後の行動を結び付けられないため、2026-11-12に生徒向けカタログから除外。"
       },
       "audit": {
         "technical_status": "full_archive_and_image_audit_passed",
         "files_examined": 5136,
         "inspection_status": "sample_visual_review_passed",
-        "publication_status": "student_enabled",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "primary_source_and_full_archive_audit"
       },
@@ -559,7 +565,9 @@
       },
       "pedagogy": {
         "presentation_mode": "A",
-        "publish_student_example": true
+        "publish_student_example": false,
+        "decision_date": "2026-11-12",
+        "decision_note": "高校生の身近な困りごととモデル出力後の具体的行動を明確に結び付けられないため、生徒向けカタログから除外。データ・監査記録は保持。"
       }
     },
     {
@@ -679,13 +687,13 @@
         "labels": "バングラデシュの魚10種類",
         "formats": "JPEG、320×320",
         "structure": "固定v2元画像ZIP、魚種別フォルダ",
-        "notes": "完全一致重複3枚を除外。青系背景への偏りを確認。増強画像との全対応検査は未実施"
+        "notes": "完全一致重複3枚を除外。青系背景への偏りを確認。増強画像との全対応検査は未実施 生徒向け課題適性を再評価し、身近な困りごととモデル出力後の行動を結び付けられないため、2026-11-12に生徒向けカタログから除外。"
       },
       "audit": {
         "technical_status": "full_archive_audit_passed",
         "files_examined": 1700,
         "inspection_status": "full_automated_image_audit_passed_sample_visual_review",
-        "publication_status": "student_enabled",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "official_metadata_and_full_archive_sha_verified",
         "notes": "固定v2 SmallFishBD.zip（29,802,305 bytes、SHA-256 2d97368d351f4c5940b7b54f19eec2b771a7d76421dbe5ad66977cf3003eafbb）を照合後に安全展開し、1,700枚全量を監査。完全一致重複3枚を除き1,697枚を共通artifact v0.1.1へ収録。CC BY 4.0の出典・contributorsと全画像視覚レビューを確認し、帰属・変更表示条件付きで再配布可と判断。Release smallfishbd-v0.1.1は29,799,609 bytes、SHA-256 367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547。増強画像は含めない。 Synchronized with the formal student catalog and fixed Release asset on 2026-11-09."
@@ -700,7 +708,9 @@
       },
       "pedagogy": {
         "presentation_mode": "B",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "decision_date": "2026-11-12",
+        "decision_note": "高校生の身近な困りごととモデル出力後の具体的行動を明確に結び付けられないため、生徒向けカタログから除外。データ・監査記録は保持。"
       }
     },
     {
@@ -880,7 +890,7 @@
         "publication_status": "hold",
         "last_desk_review": "2026-11-06",
         "evidence_grade": "independent_primary_check",
-        "notes": "固定ZIPの中央ディレクトリから6,680画像と7額面を確認。7枚の代表画像をCRC・JPEG検査。全量デコード、重複・記念デザイン単位の分割、元画像権利は未完了。インド硬貨の識別は日本の高校生の身近な課題とのつながりが弱いため、今回の採用対象外。"
+        "notes": "固定ZIPの中央ディレクトリから6,680画像と7額面を確認。7枚の代表画像をCRC・JPEG検査。全量デコード、重複・記念デザイン単位の分割、元画像権利は未完了。インド硬貨の識別は日本の高校生の身近な課題とのつながりが弱いため、今回の採用対象外。 今回の採用基準では、日本の高校生に身近な課題とのつながりが弱いため対象外。"
       },
       "preparation": {
         "planned_level": "1",
@@ -2055,7 +2065,9 @@
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": ["1"],
+        "implemented_levels": [
+          "1"
+        ],
         "adapter": "detection",
         "target_colab": true
       },
@@ -2278,26 +2290,34 @@
         "labels": "チャクマ文字48種類（38字・10数字）",
         "formats": "PNG 40×40・RGB",
         "structure": "48クラス別ディレクトリ",
-        "notes": "日本語の文字とは別体系。手書き文字のデジタル保存や文字画像分類の課題に使える。48クラスの独立文字画像のみで、ページOCRや書き手をまたぐ評価には使えない。"
+        "notes": "日本語の文字とは別体系。手書き文字のデジタル保存や文字画像分類の課題に使える。48クラスの独立文字画像のみで、ページOCRや書き手をまたぐ評価には使えない。 生徒向け課題適性を再評価し、身近な困りごととモデル出力後の行動を結び付けられないため、2026-11-12に生徒向けカタログから除外。"
       },
       "audit": {
         "technical_status": "full_decode_deduplicated_and_artifact_validated",
         "files_examined": 37708,
         "inspection_status": "full_image_decode_and_representative_visual_review",
-        "publication_status": "student_enabled",
+        "publication_status": "hold",
         "last_desk_review": "2026-11-11",
         "evidence_grade": "fixed_source_sha_full_decode_dedup_and_sampled_visual_review",
         "notes": "Mendeley v6固定ZIP 103,184,395 bytes / SHA-256照合。37,708枚を全量デコード、40x40 RGB PNG。完全一致重複1,450枚（数字クラス内のみ）を除外し、36,258枚をseed 42でクラス別70/15/15分割。全48クラスから各4枚の見本を目視。共通artifact ZIP 99,131,569 bytes / SHA-256 d9ef73e59c084492939b1d7b23d3ffde0fa865f76f132a29c5cba7c12cb19759を作成し、CRC・全画像ハッシュ・ラベル・manifest照合済み。"
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": ["shared_layout", "labels_csv", "metadata_jsonl", "classes_json", "stratified_train_val_test"],
+        "implemented_levels": [
+          "shared_layout",
+          "labels_csv",
+          "metadata_jsonl",
+          "classes_json",
+          "stratified_train_val_test"
+        ],
         "adapter": "classification_v1",
         "target_colab": true
       },
       "pedagogy": {
         "presentation_mode": "C",
-        "publish_student_example": false
+        "publish_student_example": false,
+        "decision_date": "2026-11-12",
+        "decision_note": "高校生の身近な困りごととモデル出力後の具体的行動を明確に結び付けられないため、生徒向けカタログから除外。データ・監査記録は保持。"
       }
     },
     {
@@ -2579,8 +2599,494 @@
       },
       "preparation": {
         "planned_level": "1",
-        "implemented_levels": ["classification_v1.0.0", "labels_csv", "metadata_jsonl", "seed_42_splits"],
+        "implemented_levels": [
+          "classification_v1.0.0",
+          "labels_csv",
+          "metadata_jsonl",
+          "seed_42_splits"
+        ],
         "adapter": "classification_v1",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-155",
+      "api_id": "japan_ocr_receipts",
+      "name": "Japan OCR Mini Benchmark Alpha10",
+      "task": "ocr",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://huggingface.co/datasets/K10124/japan-ocr-mini-benchmark",
+        "provider": "huggingface",
+        "provider_dataset_id": "K10124/japan-ocr-mini-benchmark",
+        "version": "fixed revision c82efda5b823494424e6bc6e9ae7577396ded908; Alpha10 only",
+        "content_origin_claim": "10枚の合成日本語レシート。実在する店舗・取引・個人・ブランドの複製を意図しない。",
+        "reference_url": "https://huggingface.co/datasets/K10124/japan-ocr-mini-benchmark/commit/c82efda5b823494424e6bc6e9ae7577396ded908"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0 (Alpha10 approved payload only)",
+        "evidence_url": "https://huggingface.co/datasets/K10124/japan-ocr-mini-benchmark/blob/c82efda5b823494424e6bc6e9ae7577396ded908/alpha10/ALPHA10_LICENSE_FINAL_CONFIRMATION.md",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "合成レシート10枚",
+        "labels": "画像ごとの品目・数量・金額・合計額などの構造化見本。全文転記はなし。",
+        "formats": "PNG、CSV、JSONL",
+        "structure": "OCR項目抽出を試す評価用見本。画像画素は未変更。",
+        "notes": "文化祭・部活動の支出整理ツールの試作に使える。個人情報のある実レシートを共有しない。"
+      },
+      "audit": {
+        "technical_status": "sample_pass",
+        "files_examined": 20,
+        "inspection_status": "completed",
+        "publication_status": "candidate",
+        "last_desk_review": "2026-11-11",
+        "evidence_grade": "independent_primary_check",
+        "notes": "固定revisionから画像10枚と対応source JSON10件を取得し、ファイルSHA-256照合。全画像を開いて視覚確認。CC BY 4.0のAlpha10限定承認と合成データ注意を確認。artifact SHA-256 0c9739f12f11ea22c44afa5f2a5a151bf389badb9bc6ce4534dc956b9a8b8f4d。OCR全文の正解文字列はなく、構造化項目照合用の小規模見本。"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "ocr_structured_record",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-156",
+      "api_id": "japanese_receipts_detailed",
+      "name": "Japanese Receipt Image Dataset (Detailed Annotations)",
+      "task": "ocr",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://huggingface.co/datasets/IngCrowd/japanese-receipts-detailed",
+        "provider": "huggingface",
+        "provider_dataset_id": "IngCrowd/japanese-receipts-detailed",
+        "version": "fixed Hugging Face revision e679e42ba2a408038d4151ced36eb6f32589422c (2026-10-20)",
+        "content_origin_claim": "日本国内の協力者が撮影したレシート画像100枚と領域・文字注釈",
+        "reference_url": "https://huggingface.co/datasets/IngCrowd/japanese-receipts-detailed"
+      },
+      "rights": {
+        "license_claim": "CC BY-NC 4.0",
+        "evidence_url": "https://huggingface.co/datasets/IngCrowd/japanese-receipts-detailed",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution_noncommercial"
+      },
+      "claims": {
+        "quantity": "100枚、2,005注釈領域、1,802転記",
+        "labels": "店舗・日時・品目行・小計・税・合計等",
+        "formats": "JPEG、JSON annotation",
+        "structure": "画像内領域とテキストの組",
+        "notes": "文化祭・部活動の会計入力を補助。固定Hugging Face revisionを使用し、100画像・2,005領域・1,802転記を監査。CC BY-NC 4.0の非商用条件を表示。選択的PIIマスクのみでQR等が残る可能性がある。"
+      },
+      "audit": {
+        "technical_status": "full_image_annotation_ocr_audit_and_artifact_validation",
+        "files_examined": 100,
+        "inspection_status": "full_image_visual_annotation_review",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "fixed_revision_source_license_and_full_artifact_audit"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "ocr_detection_and_text",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-158",
+      "api_id": "fire_recognition_image",
+      "name": "Fire Recognition Image Dataset v4",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/7jk6xh7h6w/4",
+        "provider": "mendeley",
+        "provider_dataset_id": "7jk6xh7h6w",
+        "version": "4",
+        "content_origin_claim": "火・煙・安全な火・人工火の画像データ",
+        "reference_url": "https://data.mendeley.com/datasets/7jk6xh7h6w/4"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/7jk6xh7h6w/4",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "原画像1,112枚（4クラス）と増強画像",
+        "labels": "Fire、Smoke、No Fire/Safe Fire、Artificial Fire",
+        "formats": "CV_data_artifacts fixed Release v0.1.0; common classification/detection format",
+        "structure": "分類クラス別",
+        "notes": "火・煙候補を知らせ、人が既存の警報・避難手順を確認する補助。安全設備を置き換えない。増強画像を原画像と区別する。"
+      },
+      "audit": {
+        "technical_status": "full_decode_annotation_group_audit_and_library_validation",
+        "files_examined": 1112,
+        "inspection_status": "full_image_decode_sample_visual_review",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "primary_source_fixed_archive_and_full_audit"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-160",
+      "api_id": "agrifreshnet",
+      "name": "AgriFreshNET Freshness and Shelf-Life Image Dataset",
+      "task": "classification",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/42m5tb7yv9/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "42m5tb7yv9",
+        "version": "1",
+        "content_origin_claim": "市場・スーパー・家庭・農場等で撮影した青果画像",
+        "reference_url": "https://data.mendeley.com/datasets/42m5tb7yv9/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/42m5tb7yv9/1",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "重複・クラス競合76ファイルを除いた14,084枚、24クラス",
+        "labels": "Fresh/Semi-Fresh/Rottenと概算残存期間",
+        "formats": "RGB画像と24クラス分類ラベル、グループsplit",
+        "structure": "青果カテゴリ・鮮度段階別",
+        "notes": "家庭・学食で先に現物を確認する青果候補を考える補助。元ラベルの日数は実測期限でなく、可食性・食品安全を判定しない。"
+      },
+      "audit": {
+        "technical_status": "full_decode_annotation_group_audit_and_library_validation",
+        "files_examined": 14160,
+        "inspection_status": "full_image_decode_sample_visual_review",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "primary_source_fixed_archive_and_full_audit"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-161",
+      "api_id": "indoor_waste_image",
+      "name": "Indoor Waste Image Dataset",
+      "task": "detection",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/dy7smxr93r/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "dy7smxr93r",
+        "version": "1",
+        "content_origin_claim": "公共屋内環境で撮影したごみ画像",
+        "reference_url": "https://data.mendeley.com/datasets/dy7smxr93r/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/dy7smxr93r/1",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "4,000枚、1280×720",
+        "labels": "紙、プラスチック、キャップ、貝殻の4種",
+        "formats": "CV_data_artifacts fixed Release v0.1.0; common classification/detection format",
+        "structure": "屋内画像中のごみ検出",
+        "notes": "学校行事後の清掃でごみの位置を見つける補助。現地の分別規則はモデル出力と分けて案内する。"
+      },
+      "audit": {
+        "technical_status": "full_decode_annotation_group_audit_and_library_validation",
+        "files_examined": 4000,
+        "inspection_status": "full_image_decode_sample_visual_review",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "primary_source_fixed_archive_and_full_audit"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-162",
+      "api_id": "wastesegcluster",
+      "name": "WasteSegCluster: Annotated Waste from Urban Water Bodies",
+      "task": "detection",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/3wnf3n242s/4",
+        "provider": "mendeley",
+        "provider_dataset_id": "3wnf3n242s",
+        "version": "4",
+        "content_origin_claim": "ダッカの水路・池・水辺で撮影したごみ画像",
+        "reference_url": "https://data.mendeley.com/datasets/3wnf3n242s/4"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/3wnf3n242s/4",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "1,947枚、約3,900注釈物体",
+        "labels": "複合ゴム/布、有機物、紙、プラスチック",
+        "formats": "Source COCO polygon/bbox; prepared bbox detection artifact",
+        "structure": "水辺のごみを物体検出",
+        "notes": "COCO bboxをYOLOへ変換。教材用途は水辺清掃の位置記録・活動計画の補助。ダッカの画像を日本の水辺や水質へ一般化しない。1画像は元注釈なし。"
+      },
+      "audit": {
+        "technical_status": "full_decode_annotation_group_audit_and_library_validation",
+        "files_examined": 1947,
+        "inspection_status": "full_image_decode_sample_visual_review",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "primary_source_fixed_archive_and_full_audit"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-163",
+      "api_id": "brazil_road_potholes",
+      "name": "Cracks and Potholes in Road Images (pothole-mask subset)",
+      "task": "segmentation",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/t576ydh9v8/3",
+        "provider": "mendeley",
+        "provider_dataset_id": "t576ydh9v8",
+        "version": "3",
+        "content_origin_claim": "ブラジルの幹線道路画像。Mendeley説明ではDNITから情報公開請求経由で提供",
+        "reference_url": "https://data.mendeley.com/datasets/t576ydh9v8/3"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/t576ydh9v8/3",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "画像2,235枚。各画像に道路・ひび・穴のマスク",
+        "labels": "路面、ひび、ポットホールの個別マスク",
+        "formats": "JPEG画像、PNGマスク",
+        "structure": "画像とポットホール二値マスクの領域分割",
+        "notes": "ブラジルの道路写真。DNIT透かしを含む元画像とポットホールマスクを画素変更せず採用。区間単位split。高校生の地域道路の穴を記録し修繕要望へ添える試作に適するが、地元の現況・安全性は示さない。"
+      },
+      "audit": {
+        "technical_status": "full_pass",
+        "files_examined": 4470,
+        "inspection_status": "completed",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "independent_primary_check"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "segmentation",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-164",
+      "api_id": "diu_handgesture31",
+      "name": "DIU-HandGesture31",
+      "task": "classification",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/yby56bk2wm/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "yby56bk2wm",
+        "version": "1",
+        "content_origin_claim": "31種の手の形。参加者は研究目的の撮影・共有に同意と記載",
+        "reference_url": "https://data.mendeley.com/datasets/yby56bk2wm/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/yby56bk2wm/1",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "原画像5,389枚、augmented版を含む大容量構成あり",
+        "labels": "31種の手のジェスチャー",
+        "formats": "JPEG画像、クラス別フォルダ",
+        "structure": "手の形の画像分類",
+        "notes": "授業のタッチレス操作に利用できる可能性。実画像標本で一部クラスの文字ラベルが画像に焼き込まれており、手形でなく文字を学習する漏洩があるため現状は保留。"
+      },
+      "audit": {
+        "technical_status": "sample_pass",
+        "files_examined": 31,
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "independent_primary_check"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "classification",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-165",
+      "api_id": "click_trash",
+      "name": "CLICK Trash Dataset",
+      "task": "detection",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/htcvvz6fm2/2",
+        "provider": "mendeley",
+        "provider_dataset_id": "htcvvz6fm2",
+        "version": "2",
+        "content_origin_claim": "作者が携帯電話で撮影した屋外のごみ画像。土・落ち葉・草・砂利・道を含むと説明。",
+        "reference_url": "https://data.mendeley.com/datasets/htcvvz6fm2/2"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/htcvvz6fm2/2",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "1,126画像、2,213個のごみbbox。train 901 / val 113 / test 112。",
+        "labels": "single-class trash。13クラス版もあるが、極端なクラス偏りがあるため採用しない。",
+        "formats": "JPEG画像、YOLO bbox、COCO polygon。artifactにはsingle-class YOLO bboxだけを含む。",
+        "structure": "train/val/testに分かれた屋外画像と物体検出ラベル。空画像4枚を含む。",
+        "notes": "学校・地域の清掃活動でごみの位置を示し、活動記録や清掃場所の共有を補助する試作に適する。撮影地はインドで、日本の地域環境を代表しない。"
+      },
+      "audit": {
+        "technical_status": "full_pass",
+        "files_examined": 1126,
+        "inspection_status": "completed",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "files_inspected"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "detection_yolo_normalized",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-166",
+      "api_id": "obstacles_assistance",
+      "name": "Obstacles Avoidance Assistance for Visually Impaired",
+      "task": "detection",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/xwhnp82rhk/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "xwhnp82rhk",
+        "version": "1",
+        "content_origin_claim": "公開Roboflowデータセットから画像を選定し、手作業でYOLO bbox注釈したとの説明。上流ID・個別ライセンスの一覧はない。",
+        "reference_url": "https://data.mendeley.com/datasets/xwhnp82rhk/1",
+        "archive_url": "https://data.mendeley.com/public-api/zip/xwhnp82rhk/download/1",
+        "archive_size_bytes": 84945675,
+        "archive_sha256": "cc68e314ef6e8aaab3a7b37fe7897528ec7850ca06f0761206dcd4ddf202515a"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/xwhnp82rhk/1",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution",
+        "notes": "Mendeley v1ページのライセンス表示を根拠とする。説明にある元Roboflowデータの個別ID・ライセンス一覧はページにないため、利用者向け記録に明記。"
+      },
+      "claims": {
+        "quantity": "640x640画像1,250枚、YOLO bbox 1,627件。train 1,000 / valid 250。",
+        "labels": "bump 479、fence 368、hole 419、pole 361。",
+        "formats": "JPEG画像、正規化YOLO bbox。",
+        "structure": "train/validの物体検出データ。配布元ページにtest splitなし。",
+        "notes": "歩道上の物体候補を人が確認する通りやすさ記録地図の試作に使える。物体の存在のみで通行障害・アクセシビリティを決めない。"
+      },
+      "audit": {
+        "technical_status": "full_pass",
+        "files_examined": 1250,
+        "inspection_status": "completed",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "files_inspected"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "detection_yolo_normalized",
         "target_colab": true
       },
       "pedagogy": {

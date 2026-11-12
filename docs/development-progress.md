@@ -10,6 +10,24 @@
 
 # 開発進捗
 
+## 2026-11-13：PP-OCRv5日本語OCR APIを追加
+
+- 仕様0.4でOCRの既定モデル、固定取得revision、日本語設定、CPU既定・GPU明示選択、共通結果形式、PaddlePaddle別導入を決定しました。
+- `cvlesson.ocr.load()`がPP-OCRv5 mobile検出・認識モデルをHugging Faceの固定revisionから明示取得し、`OCR.predict()`が行テキスト・信頼度・四点座標を返す実装を追加しました。別モデルはローカルディレクトリを指定します。
+- OCR用optional extra、CPU/GPU導入案内、初心者向け利用例とモデルカード・ライセンス情報を記載しました。モデル重みはGit/PyPIへ含めません。
+- fake backendによる固定revision・結果変換・GPU拒否・基本importのテストを追加。Python 3.11、3.12、3.13で58テスト成功、各7件は未導入optional依存が理由でskipです。
+- Python 3.11でwheelを構築して一時targetへインストールし、データ一覧の表示とOCR/Paddle/Hugging Face依存を読まない基本importを確認しました。wheelにモデル・画像バイナリがなく、古い`build/`から混入した未追跡`weights.py`もクリーンビルドで除外されることを確認しました。
+- OCR実モデルのダウンロード・CPU推論・Colab T4/GPU推論は未実施です。PaddleOCR/PaddlePaddleの各OS・Python・CUDA組み合わせも実機未確認です。
+- 仕様・使い方：[仕様書](specification.md)、[OCRの使い方](ocr.md)、[依存関係と導入](installation.md)。
+
+## 2026-11-11：合成日本語レシートOCR候補を整形
+
+- 取得前にAlpha10限定CC BY 4.0の許諾、合成データであること、文化祭・部活動の支出整理への適合を確認。日本の高校生の課題に結び付かないインド硬貨は採用対象外と台帳に記録。
+- 固定revision `c82efda5b823494424e6bc6e9ae7577396ded908`の画像10枚と公開source JSON10件をSHA-256照合し、全画像を視覚確認。元画像の画素は保持。品目・数量・金額・合計額を共通CSV/JSONLへ整理。
+- OCR全文の正解文字列はないため、文字誤り率の評価データとは呼ばず、構造化項目の照合見本として記録。個人情報相当のsource metadataは共通artifactへ含めない。
+- 整形artifactは860,275 bytes、SHA-256 `0c9739f12f11ea22c44afa5f2a5a151bf389badb9bc6ce4534dc956b9a8b8f4d`。manifest・source inventory・権利記録・変換スクリプトを準備。Release asset未公開のため、生徒向けAPIは18件のまま。
+- 詳細：[候補説明](datasets/japan_ocr_receipts.md)。artifact側はPR準備中。
+
 ## 2026-11-11：Orange Fruitを権利確認・整形・公開
 
 - 取得前にMendeley Data v2のCC BY 4.0と、外観カテゴリを使った分類・食品ロス課題の試作への適合を確認。鮮度・食用可否・食品安全・病気の判定には使わない条件を設定。
@@ -328,3 +346,49 @@
 - 固定Release `lefood-set-v0.1.0`を利用し、524組の食前・食後画像、実測重量、派生値を検証して取得するAPIを追加。
 - パス逸脱、ペア重複、manifest件数、数値・導出列、画像ファイル集合を検証し、pair単位splitを維持。
 - CC BY 4.0の帰属・変更表示と、インドネシアの病院食データを日本の給食や健康判断へ一般化しない説明を追加。
+
+
+## 2026-11-12：生徒向け画像データ4件のRelease・API登録
+
+- Indoor Waste Image Dataset、WasteSegCluster v4、Fire Recognition v4、AgriFreshNET v1の出典ページでCC BY 4.0を確認。具体的な清掃確認、地域環境学習、防災画像分類、青果の先行確認課題に用途を限定。
+- 画像全数と注釈・クラス・splitを監査し、manifest・ライセンス・監査レポートをCV_data_artifactsへ登録。各Release assetのサイズとGitHub SHA-256を照合。
+- AgriFreshNETは同じSHA-256の重複・異なる鮮度ラベルの競合を含む76ファイルを除外し、14,084枚を収録。
+- 4件ともZIPのパス安全性、manifest・ラベル構造をライブラリ検証器で確認。Japanese Receipt Detailedを含め、生徒向け公開データは23件となる。火災の「Safe_Fire」は実際の安全を意味せず、青果の見た目分類は可食性を判定しない。
+- Artifact PR #44 merged。固定Release: `wastesegcluster-v0.1.0`, `indoor-waste-image-v0.1.0`, `fire-recognition-image-v0.1.0`, `agrifreshnet-v0.1.0`。
+
+
+## 2026-11-12：道路の穴マスク付きデータを準備
+
+- Mendeley Data v3の固定スナップショットでCC BY 4.0とDOIを確認。元ZIP 231,728,698 bytesのSHA-256 `e59bb8d771e18f059ab78d88e640e83869fc8c8fd808697a0c2c48e16eec4f76`を照合し、安全なZIP目録とCRCを確認しました。
+- 元画像2,235枚、道路・ひび・穴の各マスクを確認し、道路の穴の課題に絞って元画像とPOTHOLEマスク2,235組を画素変更なしで整備。ブラジル旧道路画像のため、地元の現況や安全判定には使いません。
+- 同一道路区間をまたがないtrain/val/test splitを作成。artifact ZIP 207,450,159 bytes、SHA-256 `3c5999c01f7dbac64cdf3e7a7ee5467b62b471142dc8fab78cb9f35527ed5eb7`。manifestに4,476ファイルのハッシュを記録。
+- DIU-HandGesture31はCC BY 4.0と参加者の画像共有同意を確認しましたが、実画像にクラス名文字の焼き込みがあることを見つけ、分類学習への漏洩があるため公開対象から除外して台帳で保留しました。
+- 生徒向けAPIへの登録後は24件になります。
+
+
+## 2026-11-12：CLICK Trash Datasetの固定ReleaseとAPI追加
+
+- Mendeley Data v2のCC BY 4.0表示、DOI、固定アーカイブSHA-256を確認。ZIP全3,404エントリーのパス・symlink・重複名・CRCを監査し、画像1,126枚を全件デコード。
+- single-class `trash`を選び、元のbbox 2,213件とtrain/val/test splitを維持。長辺1,024px以下へ再書き出し、EXIF/GPS/カメラ機器メタデータを除去。4枚の背景画像は空ラベルで保持。
+- 代表画像を各splitから1枚ずつ確認。落ち葉・土・草地にある包装ごみを確認し、包装文字・商標は一部に残る旨と非推薦の注記を記録。撮影地はインドで、日本の地域環境を代表しない。
+- 共通artifact ZIPは668,588,437 bytes、SHA-256 `5a97374493c341aac6fe9a6b7a65dcd4437eddb3071085238c2237e9aaff023e`。manifest・bbox・画像/ラベル対応検証に成功。
+- CV_data_artifacts PR #46をマージし、`click-trash-v0.1.0` ReleaseにZIPを登録。GitHub API上のサイズ・SHA-256がローカル値と一致。
+- `click_trash`を取得API、課題カタログ、データ説明、候補台帳へ追加。生徒向けAPIは25件。
+
+
+## 2026-11-12：歩道上の物体候補データを整備
+
+- Mendeley Data v1の公式ページでCC BY 4.0とDOIを確認。元ZIP 84,945,675 bytesの固定URL・SHA-256を記録し、展開前に照合。全2,501エントリーのパスとsymlink、重複名、CRCを監査しました。
+- 全1,250画像をデコードし、640×640、train 1,000 / valid 250、bbox 1,627件を確認。クラス別件数はbump 479 / fence 368 / hole 419 / pole 361。画像・ラベル欠落、座標範囲外、完全重複はありません。
+- 元JPEGのSHA-256と正規化bboxを保持して共通物体検出形式へ整理。ZIPは84,776,089 bytes、SHA-256 `fb95637824d7470ec7da5f890b48af24a9cbda291b07d5074ef684f95ac17b7a`。ファイルmanifest、パス、CRCを照合。
+- 配布元は公開Roboflowデータから画像を選んだと説明していますが、元データセットごとのID・ライセンスは列挙していません。配布元ページのCC BY 4.0表示を記録し、この出所の限界を利用条件に明記しました。
+- 課題用途は歩道上の段差・穴・柵・ポール候補を人が確かめる記録地図の試作。物体の存在を通行障害や安全性の判定に使わないよう説明しました。
+- CV_data_artifacts PRと固定Release、CV_dataの取得API・日本語説明・候補台帳を更新。生徒向けAPIは26件になります。
+
+## 2026-11-12：身近な課題向けデータ3件を監査・共通形式化
+
+- TrashNetは固定コミットのMIT Licenseと著者らの収集説明を確認。2,527画像の素材分類で、白背景と地域分別ルールの限界を明記。
+- ViFoodLabel v2はCC BY-NC 4.0、実物パッケージを自ら撮影した説明、600画像と9項目のJSON正解を確認。商用不可、項目別OCR評価として扱い、文字単位教師データとは呼ばない。
+- 電力量計v1はCC0 1.0とCOCO注釈を確認。全体写真からラベル付き数字bbox 977件を切り出し、元画像単位でsplit。配布物には数字切り出しのみを収録。
+- 3件の固定Release用ZIPを作成し、manifest・CRC・共通artifact構造を検証。ZIPはTrashNet 42,765,280 bytes（train 1,762 / val 382 / test 383）、ViFoodLabel 187,378,509 bytes、電力量計数字 11,516,398 bytes。
+- 3件の固定Release assetを公開し、公開URLから再取得した全ZIPのSHA-256一致を確認。APIの生徒向け件数を22件に更新しました。

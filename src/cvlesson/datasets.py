@@ -172,7 +172,10 @@ class DatasetBundle:
         try:
             import pandas as pd
         except ImportError as exc:
-            raise DatasetError("DataFrame変換にはpandasが必要です。pip install pandas を実行してください。") from exc
+            raise DatasetError(
+                "DataFrame変換にはpandasが必要です。"
+                "開発版ではpip install -e '.[dataframe]'、PyPI版ではpip install 'cv-data-lesson[dataframe]'を実行してください。"
+            ) from exc
         if self.kind == "detection":
             names = self.classes
             records = []
@@ -226,6 +229,16 @@ class DatasetBundle:
                     "split": row["split"],
                 })
             return pd.DataFrame(records)
+        if self.kind == "ocr":
+            records = []
+            for row in _read_rows(self.labels_csv):
+                records.append({
+                    "image_path": str((self.root / row["image"]).resolve()),
+                    "ground_truth": json.loads(row["record_json"]),
+                    "split": row["split"],
+                    "sample_id": row["sample_id"],
+                })
+            return pd.DataFrame(records, columns=["image_path", "ground_truth", "split", "sample_id"])
         rows = _read_rows(self.labels_csv)
         if self.kind != "classification":
             return pd.DataFrame([
@@ -311,7 +324,11 @@ class DatasetBundle:
             import numpy as np
             from PIL import Image
         except ImportError as exc:
-            raise DatasetError("画像表示にはPillowとmatplotlibが必要です。") from exc
+            raise DatasetError(
+                "画像表示にはPillowとmatplotlibが必要です。"
+                "開発版ではpip install -e '.[display,dataframe]'、PyPI版では"
+                "pip install 'cv-data-lesson[display,dataframe]'を実行してください。"
+            ) from exc
         frame = self.to_df(seed=seed)
         if self.kind == "regression":
             if split == "val":
@@ -411,7 +428,10 @@ class DatasetBundle:
         try:
             import torch
         except ImportError as exc:
-            raise DatasetError("PyTorch変換にはtorchが必要です。") from exc
+            raise DatasetError(
+                "PyTorch変換にはPyTorchが必要です。"
+                "開発版ではpip install -e '.[torch]'、PyPI版ではpip install 'cv-data-lesson[torch]'を実行してください。"
+            ) from exc
         all_records = (self._segmentation_records() if self.kind == "segmentation"
                        else self._classification_records(val_fraction=val_fraction, seed=seed))
         records = [record for record in all_records if record["split"] == split]
@@ -632,55 +652,6 @@ _SOURCES: dict[str, ReleaseSource] = {
         file_urls={"artifact": "https://github.com/708san/CV_data_artifacts/releases/download/recyclable-waste-v0.1.1/recyclable_waste-v0.1.1.zip"},
         published=False,
     ),
-    "pust_cafeteria_food": ReleaseSource(
-        id="pust_cafeteria_food", case_id="pust_cafeteria_food", tag="pust-cafeteria-food-v0.1.0",
-        sha256="97def37fae5a2368f4d0ea7bc4cffc0d299173b7581f49ad97bb43d08f496b4f",
-        archive_size=36_085_147, image_count=691, kind="detection",
-        name_ja="大学食堂の料理画像（16種類）",
-        rights_note="CC BY 4.0。作者・出典・polygonから枠への変更を表示してください。栄養・アレルギー・衛生・価格は判定しません。",
-        aliases_ja=("大学食堂の料理検出", "食堂メニュー画像", "料理の物体検出"),
-        task="detection", audiences=("student", "teacher"), difficulty="intermediate",
-        use_cases_ja=("料理画像の中から料理を見つけて囲む", "食堂で見かける料理の種類を画像から数える"),
-        input_description_ja="バングラデシュの大学食堂で撮影された料理画像",
-        output_description_ja="16種類の料理ラベルと物体位置の枠",
-        download_size_mb=34.4, audit_status="full_image_and_annotation_audit",
-        audit_report="docs/datasets/pust_cafeteria_food.md",
-        classes=("chaa", "chola", "chop", "daal", "egg", "fish", "mashed_potato", "matha",
-                 "meat", "puri", "rice", "ruti", "salad", "singara", "vegetable", "vegetable_roll"),
-        class_names_ja=("チャー", "ひよこ豆料理", "揚げ物", "豆料理", "卵", "魚", "マッシュポテト", "マータ",
-                        "肉料理", "プリ", "ごはん", "ロティ", "サラダ", "シンガラ", "野菜料理", "野菜ロール"),
-        license_info={"name": "CC BY 4.0", "url": "https://creativecommons.org/licenses/by/4.0/",
-                      "rights_review": "Mendeley Data v2のCC BY 4.0表示を確認。出典・変更表示を収録。"},
-        source_info={"dataset_name": "PUST Cafeteria Food Dataset", "provider": "Marufa Yeasmin; Md. Razu Ahmed; Protiva Rani Kundu; Jannatul Mauya; Md. Shamim Reza",
-                     "url": "https://data.mendeley.com/datasets/fn6yhzjz83/2", "doi": "10.17632/fn6yhzjz83.2", 
-                     "release_repository": "https://github.com/708san/CV_data_artifacts", "release_tag": "pust-cafeteria-food-v0.1.0"},
-        file_urls={"artifact": "https://github.com/708san/CV_data_artifacts/releases/download/pust-cafeteria-food-v0.1.0/pust_cafeteria_food-v0.1.0.zip"},
-        published=True,
-    ),
-    "fashion_mnist": ReleaseSource(
-        id="fashion_mnist", case_id="fashion_mnist", tag="fashion-mnist-v0.1.0",
-        sha256="7b62741950bb9784980c9703806df874a1f1c3930dcc8a84477e2c6b5c6e871f",
-        archive_size=45_813_814, image_count=70_000, kind="classification",
-        name_ja="Fashion-MNIST（衣類画像10種類）",
-        rights_note="元データはMIT License表記です。提供元・出典を確認し、低解像度の教材用データとして扱ってください。",
-        aliases_ja=("ファッションMNIST", "衣類MNIST"),
-        task="classification", audiences=("student", "teacher"), difficulty="introductory",
-        use_cases_ja=("衣類画像を10種類に分類する", "正解率とクラス別の間違いを比べる"),
-        input_description_ja="28×28画素の白黒衣類画像",
-        output_description_ja="10種類の衣類・靴・バッグのラベル",
-        download_size_mb=43.7, audit_status="full_image_and_annotation_audit",
-        audit_report="docs/datasets/fashion_mnist.md",
-        classes=("T-shirt_top", "Trouser", "Pullover", "Dress", "Coat", "Sandal", "Shirt", "Sneaker", "Bag", "Ankle_boot"),
-        class_names_ja=("Tシャツ・トップス", "ズボン", "プルオーバー", "ワンピース", "コート", "サンダル", "シャツ", "スニーカー", "バッグ", "アンクルブーツ"),
-        license_info={"name": "MIT License", "url": "https://github.com/zalandoresearch/fashion-mnist/blob/b2617bb6d3ffa2e429640350f613e3291e10b141/LICENSE",
-                      "rights_review": "公式リポジトリの固定コミットにあるMIT表記を確認。整形済みデータの出典と変更内容を収録。"},
-        source_info={"dataset_name": "Fashion-MNIST", "provider": "Zalando Research",
-                     "url": "https://github.com/zalandoresearch/fashion-mnist/tree/b2617bb6d3ffa2e429640350f613e3291e10b141",
-                     "commit": "b2617bb6d3ffa2e429640350f613e3291e10b141",
-                     "release_repository": "https://github.com/708san/CV_data_artifacts", "release_tag": "fashion-mnist-v0.1.0"},
-        file_urls={"artifact": "https://github.com/708san/CV_data_artifacts/releases/download/fashion-mnist-v0.1.0/fashion_mnist-v0.1.0.zip"},
-        max_files=75_000, max_unpacked_bytes=450_000_000, published=True,
-    ),
     "geoset_ennea": ReleaseSource(
         id="geoset_ennea", case_id="geoset_ennea", tag="geoset-ennea-v0.1.0",
         sha256="6185c0f8e631ec36913b6c229d4fbd51463d2a4fea1084f3c3e8021244ecd6e3",
@@ -800,52 +771,6 @@ _SOURCES: dict[str, ReleaseSource] = {
         max_archive_bytes=800_000_000, max_unpacked_bytes=800_000_000,
         max_files=5000, published=True,
     ),
-    "bdroadsigns": ReleaseSource(
-        id="bdroadsigns", case_id="bdroadsigns", tag="bdroadsigns-v0.1.0",
-        sha256="33ab933d0a4f2e93104330ba0a22890ff47576e1a88e16810660c1afa146a20a",
-        archive_size=191_037_362, image_count=5136,
-        kind="classification", name_ja="バングラデシュの交通標識18種類",
-        rights_note="CC BY 4.0。出典・変更表示が必要です。バングラデシュの標識画像を使う学習用で、日本の交通標識や実際の交通判断には使えません。",
-        aliases_ja=("BDRoadSigns", "バングラデシュの道路標識"),
-        task="classification", audiences=("student", "teacher"), difficulty="intermediate",
-        use_cases_ja=("交通標識の見分けやすさを調べるクイズを試作する", "標識の図柄や背景によって伝わりやすさが変わるか比較する"),
-        input_description_ja="バングラデシュで撮影された480×640ピクセルの道路標識画像",
-        output_description_ja="道路標識18種類のカテゴリ名",
-        download_size_mb=191.0, audit_status="full_image_decode_annotation_and_sample_visual_review",
-        audit_report="reports/bdroadsigns-v1-audit.json",
-        classes=(
-            "college_front", "cross_road", "drop_off_or_pick_up", "height_limit_5_8m",
-            "left_side_road", "market_front", "pass_either_side", "pedestrian_crossing",
-            "pedestrian_crossing_ahead", "rail_crossing", "rickshaw_restricted", "right_turn",
-            "roundabout", "side_road_left", "speed_limit_40km", "turn_left", "turn_right", "u_turn",
-        ),
-        class_names_ja=(
-            "学校付近", "交差点", "乗降場所", "高さ制限5.8m", "左側支路", "市場付近",
-            "左右どちらか通行", "横断歩道", "前方横断歩道", "踏切", "人力車通行禁止",
-            "右カーブ", "環状交差点", "左側道", "最高速度40km/h", "左折", "右折", "Uターン",
-        ),
-        license_info={
-            "name": "CC BY 4.0",
-            "url": "https://creativecommons.org/licenses/by/4.0/",
-            "rights_review": "Mendeley Data v1のCC BY 4.0表示と著者によるスマートフォン撮影の説明を確認。帰属・変更表示を同梱。",
-        },
-        source_info={
-            "dataset_name": "BDRoadSigns: An Image-Based Dataset of Bangladeshi Traffic Signs for Supervised Classification Models",
-            "provider": "Tawhid Ahmed Komol; Pulak Deb Nath; Rinvi Jaman Riti",
-            "url": "https://data.mendeley.com/datasets/rnkd74xdtr/1",
-            "doi": "10.17632/rnkd74xdtr.1",
-            "source_file": "Traffic Dataset.zip; Compress Dataset subset",
-            "source_sha256": "72efd61218343b6869b9bd415537137c978b9bfa3a91872e71e565fb8999f087",
-            "inner_zip_sha256": "9e60702e9da73e9c1296ab1687f36036543e66813210929ed8ae06da21f3430b",
-            "release_repository": "https://github.com/708san/CV_data_artifacts",
-            "release_tag": "bdroadsigns-v0.1.0",
-        },
-        file_urls={
-            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/bdroadsigns-v0.1.0/bdroadsigns-v0.1.0.zip",
-        },
-        max_archive_bytes=250_000_000, max_unpacked_bytes=250_000_000,
-        max_files=6000, published=True,
-    ),
     "orange_fruit": ReleaseSource(
         id="orange_fruit", case_id="orange_fruit", tag="orange-fruit-v0.1.0",
         sha256="69408ee9184638215c1f0e459b1a5e11a9ec853b4ce815ac6071a174294f8115",
@@ -882,6 +807,78 @@ _SOURCES: dict[str, ReleaseSource] = {
         },
         max_archive_bytes=150_000_000, max_unpacked_bytes=150_000_000,
         max_files=20_000, published=True,
+    ),
+    "japan_ocr_receipts": ReleaseSource(
+        id="japan_ocr_receipts", case_id="japan_ocr_receipts", tag="japan_ocr_receipts-v0.1.0",
+        sha256="0c9739f12f11ea22c44afa5f2a5a151bf389badb9bc6ce4534dc956b9a8b8f4d",
+        archive_size=860_275, image_count=10, sample_count=10,
+        kind="ocr", task="ocr", name_ja="合成レシートでOCR・支出整理",
+        rights_note="CC BY 4.0。Alpha10承認済みデータのみを使用しています。合成レシート10枚の小規模見本で、実際の取引・店舗・個人を表しません。全文OCR正解はありません。",
+        aliases_ja=("日本語レシートOCR", "文化祭の支出整理", "Japan OCR Mini Benchmark Alpha10"),
+        audiences=("student", "teacher"), difficulty="introductory",
+        use_cases_ja=(
+            "文化祭などの支出整理ツールを試作し、OCRで読んだ品目・金額を見本と照合する",
+            "文字の大きさやレイアウトによる読み取り間違いを調べる",
+        ),
+        input_description_ja="店舗・取引・個人を模した架空の日本語レシート画像10枚",
+        output_description_ja="品目・数量・金額・合計額などの構造化見本。全文の文字起こしではありません。",
+        download_size_mb=0.86, audit_status="all_images_sha256_checked_and_visually_reviewed",
+        audit_report="docs/datasets/japan_ocr_receipts.md",
+        license_info={
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+            "rights_review": "固定revisionのAlpha10に限定したCC BY 4.0承認、公開ライセンス通知、合成データ注意を確認。",
+        },
+        source_info={
+            "dataset_name": "Japan OCR Mini Benchmark (Alpha10)",
+            "provider": "K10124",
+            "url": "https://huggingface.co/datasets/K10124/japan-ocr-mini-benchmark/tree/c82efda5b823494424e6bc6e9ae7577396ded908/alpha10",
+            "revision": "c82efda5b823494424e6bc6e9ae7577396ded908",
+            "source_inventory_sha256": "57102d17d35d4a6c8dbc67a59004189b0593b39e1db86c74b623f8959b45ccd3",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "japan_ocr_receipts-v0.1.0",
+        },
+        file_urls={
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/japan_ocr_receipts-v0.1.0/japan_ocr_receipts-v0.1.0.zip",
+        },
+        max_archive_bytes=2_000_000, max_unpacked_bytes=2_000_000,
+        max_files=40, published=False,
+    ),
+    "japanese_receipts_detailed": ReleaseSource(
+        id="japanese_receipts_detailed", case_id="japanese_receipts_detailed", tag="japanese_receipts_detailed-v0.1.0",
+        sha256="4f3a480f09eeacfda9f9ca4d84dd01ad8aefa49cce776ec06a7d64f5f25dfb5a",
+        archive_size=130_013_467, image_count=100, sample_count=100,
+        kind="ocr", task="ocr", name_ja="日本語レシートOCR（詳細版）",
+        rights_note="CC BY-NC 4.0。非商用利用のみ。黒塗りは一部で、店舗情報・QRコード・取引番号が残る場合があります。OCR結果は人が原票と照合してください。",
+        aliases_ja=("日本語レシートOCR（詳細版）", "Japanese Receipt Image Dataset Detailed", "レシートOCR"),
+        audiences=("student", "teacher"), difficulty="introductory",
+        use_cases_ja=(
+            "文化祭や部活動の会計入力を補助するOCRを試作し、日付・明細・合計の候補を原票と照合する",
+            "選択領域の正解を使い、日本語レシートの文字認識の得意・不得意を調べる",
+        ),
+        input_description_ja="日本の実レシート画像100枚。全画像は評価用です。",
+        output_description_ja="選択された2,005領域のラベルと1,802件の文字転記。全文OCRの正解ではありません。",
+        download_size_mb=130.0, audit_status="full_image_decode_annotation_and_visual_review",
+        audit_report="reports/japanese_receipts_detailed-v1-full-audit.json",
+        license_info={
+            "name": "CC BY-NC 4.0",
+            "url": "https://creativecommons.org/licenses/by-nc/4.0/",
+            "rights_review": "配布元の固定revisionが表示するCC BY-NC 4.0を確認。再配布は非商用条件に限定。配布元の個人情報マスクは選択的で、完全な匿名化ではない。",
+        },
+        source_info={
+            "dataset_name": "Japanese Receipt Image Dataset (Detailed Annotations)",
+            "provider": "IngCrowd Inc.",
+            "url": "https://huggingface.co/datasets/IngCrowd/japanese-receipts-detailed",
+            "revision": "e679e42ba2a408038d4151ced36eb6f32589422c",
+            "source_inventory_sha256": "72ed2708c57927730ede820b388f4e84bc65d1112198288b0b193b0dbf93db4e",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "japanese_receipts_detailed-v0.1.0",
+        },
+        file_urls={
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/japanese_receipts_detailed-v0.1.0/japanese_receipts_detailed-v0.1.0.zip",
+        },
+        max_archive_bytes=150_000_000, max_unpacked_bytes=150_000_000,
+        max_files=200, published=True,
     ),
     "fruitseg30": ReleaseSource(
         id="fruitseg30", case_id="fruitseg30", tag="fruitseg30-v0.1.0",
@@ -975,110 +972,6 @@ _SOURCES: dict[str, ReleaseSource] = {
         },
         published=True,
     ),
-    "food_waste_bangladesh": ReleaseSource(
-        id="food_waste_bangladesh", case_id="food_waste_bangladesh",
-        tag="food-waste-bangladesh-v0.1.1",
-        sha256="bcbd7fe1f2b8d37a1b86952d59987b1067cdc55c0099199eee0217a4f805c57d",
-        archive_size=30_760_217, image_count=633,
-        kind="classification", name_ja="バングラデシュの食品廃棄画像（撮影場面）",
-        rights_note="CC BY 4.0。作者・出典・変更の表示が必要。フォルダは撮影カテゴリで、食品廃棄量を表しません。",
-        aliases_ja=("食品廃棄画像", "Food Waste Bangladesh"),
-        task="classification", audiences=("student", "teacher"), difficulty="introductory",
-        use_cases_ja=("画像を撮影場面ごとに分類する", "クラス数の偏りが分類結果に与える影響を調べる"),
-        input_description_ja="食べ残しなどを撮影した画像",
-        output_description_ja="ビュッフェ・一般・レストラン・野菜・婚礼の5カテゴリ",
-        download_size_mb=30.8, audit_status="full_image_audit_redistribution_reviewed",
-        audit_report="reports/food_waste_bangladesh-v0.1.1-full-audit.json",
-        class_names_ja=("ビュッフェ", "一般", "レストラン", "野菜", "婚礼"),
-        label_names_ja={
-            "Buffet Food waste": "ビュッフェ",
-            "Food waste (General)": "一般",
-            "Restaurant food waste": "レストラン",
-            "Vegetables waste": "野菜",
-            "Wedding Food waste": "婚礼",
-        },
-        license_info={
-            "name": "CC BY 4.0",
-            "url": "https://creativecommons.org/licenses/by/4.0/",
-            "rights_review": "固定v1のCC BY 4.0表示と撮影説明を確認。人物の一部が写る11枚とQR風表示1枚を除外。残る商品表示はブランドの推薦・承認を示しません。出典・変更表示が必要。",
-        },
-        source_info={
-            "dataset_name": "An image dataset for food waste in Bangladesh",
-            "provider": "Mohammad Manzurul Islam; Saifur Rahman; Fatema Tahsin; Zarif Syndeed Sikder",
-            "url": "https://doi.org/10.17632/w68f9w6jmm.1",
-            "release_repository": "https://github.com/708san/CV_data_artifacts",
-            "release_tag": "food-waste-bangladesh-v0.1.1",
-        },
-        file_urls={
-            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/food-waste-bangladesh-v0.1.1/food_waste_bangladesh-v0.1.1.zip",
-        },
-        published=True,
-    ),
-    "smallfishbd": ReleaseSource(
-        id="smallfishbd", case_id="smallfishbd", tag="smallfishbd-v0.1.1",
-        sha256="367b332bc0da479e9a708449f45cf7aa10eb190267a6bc1f1a87e5a38ce8f547",
-        archive_size=29_799_609, image_count=1697,
-        kind="classification", name_ja="バングラデシュの小魚10種",
-        rights_note="CC BY 4.0。作者・出典・変更の表示が必要。青い背景に偏るため、実環境での魚種判定には使いません。",
-        aliases_ja=("小魚10種", "SmallFishBD"),
-        task="classification", audiences=("student", "teacher"), difficulty="introductory",
-        use_cases_ja=("魚の画像を10種類に分類する", "背景や見た目の似た魚種による誤分類を調べる"),
-        input_description_ja="青系の背景で撮影された320×320の魚画像",
-        output_description_ja="バングラデシュの市場で使われる魚名10種類",
-        download_size_mb=29.8, audit_status="full_image_audit_redistribution_reviewed",
-        audit_report="reports/smallfishbd-v0.1.1-preparation-2026-11-09.json",
-        class_names_ja=("ベレ", "チェラ", "グチ", "カチキ", "カタ・ファサ", "モラ", "ナマ・チャンダ", "パブダ", "プティ", "テングラ"),
-        license_info={
-            "name": "CC BY 4.0",
-            "url": "https://creativecommons.org/licenses/by/4.0/",
-            "rights_review": "CC BY 4.0。全画像の視覚レビューを含む再配布審査を完了。出典・変更表示が必要。増強画像は含めません。",
-        },
-        source_info={
-            "dataset_name": "SmallFishBD: A Comprehensive Image Dataset of Common Small Fish Varieties in Bangladesh for Species Identification and Classification",
-            "provider": "Md Hasanul Ferdaus et al. (11 contributors)",
-            "url": "https://doi.org/10.17632/8jvxtvz52x.2",
-            "release_repository": "https://github.com/708san/CV_data_artifacts",
-            "release_tag": "smallfishbd-v0.1.1",
-        },
-        file_urls={
-            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/smallfishbd-v0.1.1/smallfishbd-v0.1.1.zip",
-        },
-        published=True,
-    ),
-    "pistachio_image_dataset": ReleaseSource(
-        id="pistachio_image_dataset", case_id="pistachio_image_dataset",
-        tag="pistachio_image_dataset-v0.1.0",
-        sha256="32bc15c4788052207e3dd52d4450cc15fec9efade3df169d59bb94556d715f24",
-        archive_size=25_875_554, image_count=2148,
-        kind="classification", name_ja="ピスタチオ2品種の画像",
-        rights_note="CC BY 4.0。Murat Koklu氏・データ出典・変更と指定2論文を表示してください。品質・鮮度・食品安全の判定には使いません。",
-        aliases_ja=("ピスタチオ2品種", "ピスタチオ画像"),
-        task="classification", audiences=("student", "teacher"), difficulty="introductory",
-        use_cases_ja=("ピスタチオ2品種を画像で分類する", "背景が固定された画像で誤分類を調べる"),
-        input_description_ja="黒い背景上で撮影された600×600のピスタチオ試料画像",
-        output_description_ja="Kirmizi種またはSiirt種のラベル",
-        download_size_mb=24.7, audit_status="full_image_audit",
-        audit_report="reports/pistachio_image_dataset-v1-full-audit.json",
-        classes=("Kirmizi_Pistachio", "Siirt_Pistachio"),
-        class_names_ja=("Kirmizi種", "Siirt種"),
-        license_info={
-            "name": "CC BY 4.0",
-            "url": "https://creativecommons.org/licenses/by/4.0/",
-            "rights_review": "Mendeley v1のCC BY 4.0表示と、研究者自身が試料を集めて画像を作成したとの論文記載を確認。Murat Koklu氏、出典、変更、指定2論文の引用が必要。",
-        },
-        source_info={
-            "dataset_name": "Pistachio Image Dataset",
-            "provider": "Murat Koklu (Mendeley Data contributor)",
-            "url": "https://data.mendeley.com/datasets/h7pf57cgg9/1",
-            "doi": "10.17632/h7pf57cgg9.1",
-            "release_repository": "https://github.com/708san/CV_data_artifacts",
-            "release_tag": "pistachio_image_dataset-v0.1.0",
-        },
-        file_urls={
-            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/pistachio_image_dataset-v0.1.0/pistachio_image_dataset-v0.1.0.zip",
-        },
-        published=True,
-    ),
     "indoor_plant_varieties": ReleaseSource(
         id="indoor_plant_varieties", case_id="indoor_plant_varieties",
         tag="indoor-plant-varieties-v0.1.0",
@@ -1113,54 +1006,232 @@ _SOURCES: dict[str, ReleaseSource] = {
         },
         published=True,
     ),
-    "chakmalipi": ReleaseSource(
-        id="chakmalipi", case_id="chakmalipi", tag="chakmalipi-v0.1.0",
-        sha256="d9ef73e59c084492939b1d7b23d3ffde0fa865f76f132a29c5cba7c12cb19759",
-        archive_size=99_131_569, image_count=36_258,
-        kind="classification", name_ja="チャクマ文字・数字の手書き画像",
-        rights_note="CC BY 4.0。作者・出典・変更内容を表示してください。これは文字画像の分類用で、文書OCRや書き手の識別には使えません。",
-        aliases_ja=("チャクマ文字", "ChakmaLipī", "チャクマ文字画像"),
+    "indoor_waste_image": ReleaseSource(
+        id="indoor_waste_image", case_id="indoor_waste_image", tag="indoor-waste-image-v0.1.0",
+        sha256="44a754d2fd7b00ed9b910d84aff5fb45ba5a1bcf1c033d58e2bfd19ff2bcccb7",
+        archive_size=107_068_558, image_count=4000,
+        kind="detection", name_ja="屋内に残ったごみの位置",
+        rights_note="CC BY 4.0。出典・変更表示が必要です。屋内床面の画像で、日本の分別ルールは別に確認してください。",
+        aliases_ja=("屋内ごみ検出", "Indoor Waste Image Dataset"),
+        task="detection", audiences=("student", "teacher"), difficulty="intermediate",
+        use_cases_ja=("学校行事後などに床に残ったごみの位置を示し、清掃箇所の確認を補助する",),
+        input_description_ja="屋内の床面を撮影した画像",
+        output_description_ja="紙・プラスチック・キャップ・殻の位置",
+        download_size_mb=107.1, audit_status="full_image_annotation_audit_and_library_validation",
+        audit_report="https://github.com/708san/CV_data_artifacts/blob/main/reports/indoor_waste_image-v0.1.0-audit.json",
+        classes=("paper", "plastic", "cap", "shell"),
+        class_names_ja=("紙ごみ", "プラスチック", "キャップ", "殻"),
+        license_info={"name":"CC BY 4.0","url":"https://creativecommons.org/licenses/by/4.0/","rights_review":"Mendeley Data v1のライセンス表記を確認。画像画素を保ち、注釈変換・動画単位splitを記録。代表画像50枚を目視。"},
+        source_info={"dataset_name":"Indoor Waste Image Dataset","provider":"Yangke L","url":"https://data.mendeley.com/datasets/dy7smxr93r/1","doi":"10.17632/dy7smxr93r.1","release_repository":"https://github.com/708san/CV_data_artifacts","release_tag":"indoor-waste-image-v0.1.0"},
+        file_urls={"artifact":"https://github.com/708san/CV_data_artifacts/releases/download/indoor-waste-image-v0.1.0/indoor_waste_image-v0.1.0.zip"},
+    ),
+    "trashnet": ReleaseSource(
+        id="trashnet", case_id="trashnet", tag="trashnet-v0.1.0",
+        sha256="ce35f986308784e280bc7c757c5346043d4b5514818ce8260df9534a85417eea",
+        archive_size=42_765_280, image_count=2527, sample_count=2527,
+        kind="classification", task="classification", name_ja="家庭ごみの素材分類（TrashNet）",
+        rights_note="MIT License。Gary ThungとMindy Yangの出典表示を同梱。白背景で撮影された素材分類です。自治体ごとの分別可否は判定しません。",
+        aliases_ja=("TrashNet", "家庭ごみ分類", "ごみ素材分類"),
+        audiences=("student", "teacher"), difficulty="introductory",
+        use_cases_ja=("家庭から出る包装・容器を素材別に分ける試作を行い、白背景と自宅写真の違いを比べる",),
+        input_description_ja="白い背景で撮影された段ボール・ガラス・金属・紙・プラスチック・その他ごみの画像",
+        output_description_ja="6種類の画像ラベル。素材の見た目を表し、地域の分別ルールではありません。",
+        download_size_mb=42.8, audit_status="all_files_hash_checked_archive_crc_checked_and_sample_visually_reviewed",
+        audit_report="reports/trashnet-v0.1.0-audit.json",
+        classes=("cardboard", "glass", "metal", "paper", "plastic", "trash"),
+        class_names_ja=("段ボール", "ガラス", "金属", "紙", "プラスチック", "その他ごみ"),
+        license_info={"name":"MIT License","url":"https://github.com/garythung/trashnet/blob/6fa2b878c6c1b4304b91109070ce0edf9279bb31/LICENSE","rights_review":"固定コミットのLICENSE全文と、著者らが自ら収集したとするREADMEを確認。"},
+        source_info={"dataset_name":"TrashNet","provider":"Gary Thung and Mindy Yang","url":"https://github.com/garythung/trashnet/tree/6fa2b878c6c1b4304b91109070ce0edf9279bb31","revision":"6fa2b878c6c1b4304b91109070ce0edf9279bb31","source_archive_sha256":"0bf472790f8b20e5c950d5b5012a9d38af0d3392efd65f8ce171334fc16b07c2","release_repository":"https://github.com/708san/CV_data_artifacts","release_tag":"trashnet-v0.1.0"},
+        file_urls={"artifact":"https://github.com/708san/CV_data_artifacts/releases/download/trashnet-v0.1.0/trashnet-v0.1.0.zip"},
+        max_archive_bytes=60_000_000, max_unpacked_bytes=60_000_000, max_files=3000,
+        published=True,
+    ),
+    "vifoodlabel": ReleaseSource(
+        id="vifoodlabel", case_id="vifoodlabel", tag="vifoodlabel-v0.1.0",
+        sha256="3845c8794b74c80deabe52dd6c1dcfd4b33a1af9d385cc3188ea4d357d43fff6",
+        archive_size=187_378_509, image_count=600, sample_count=600,
+        kind="ocr", task="ocr", name_ja="食品包装の表示を項目別に読む（ViFoodLabel）",
+        rights_note="CC BY-NC 4.0、非商用利用のみ。商品画像600枚と構造化された項目別正解です。文字単位の転記・文字枠注釈ではありません。",
+        aliases_ja=("ViFoodLabel", "食品表示OCR", "食品包装OCR"),
+        audiences=("student", "teacher"), difficulty="intermediate",
+        use_cases_ja=("外国語を含む食品包装から原材料・注意書き・期限等を整理する補助を試作し、項目別の読み取り誤りを確認する",),
+        input_description_ja="ベトナム語を中心とする多言語の食品包装画像600枚",
+        output_description_ja="商品名・原材料・注意・栄養表示・期限等9項目の構造化正解。表示内容は原包装で確認してください。",
+        download_size_mb=187.4, audit_status="all_image_and_json_files_checked_archive_crc_and_sample_visual_review",
+        audit_report="reports/vifoodlabel-v0.1.0-audit.json",
+        license_info={"name":"CC BY-NC 4.0","url":"https://creativecommons.org/licenses/by-nc/4.0/","rights_review":"Mendeley Data v2のライセンス表示、著者・撮影方法・画像とJSONの対応を確認。非商用条件を維持。"},
+        source_info={"dataset_name":"ViFoodLabel: A Vietnamese Food Product Label Dataset for Key Information Extraction","provider":"Dung Huynh Thi Cam et al.","url":"https://data.mendeley.com/datasets/v97x4ys84h/2","doi":"10.17632/v97x4ys84h.2","source_archive_sha256":"81686c12ac9ec32580d7fa712d33fbf1dfb4bacf0ddd6f9ab55edfaccbb027f5","release_repository":"https://github.com/708san/CV_data_artifacts","release_tag":"vifoodlabel-v0.1.0"},
+        file_urls={"artifact":"https://github.com/708san/CV_data_artifacts/releases/download/vifoodlabel-v0.1.0/vifoodlabel-v0.1.0.zip"},
+        max_archive_bytes=220_000_000, max_unpacked_bytes=240_000_000, max_files=1500,
+        published=True,
+    ),
+    "energy_meter_digits": ReleaseSource(
+        id="energy_meter_digits", case_id="energy_meter_digits", tag="energy-meter-digits-v0.1.0",
+        sha256="e1e44c6666f4dbb13e0eed67cb3433f783b0e5bfbadf054c92814f566f7e599f",
+        archive_size=11_516_398, image_count=977, sample_count=977,
+        kind="classification", task="classification", name_ja="電力量計の数字画像（OCRの基礎）",
+        rights_note="CC0 1.0。数字の切り出し画像だけを配布します。数字分類だけではメーター全体の値や小数点位置は読めません。",
+        aliases_ja=("電力量計OCR", "7セグ数字", "メーター数字"),
+        audiences=("student", "teacher"), difficulty="intermediate",
+        use_cases_ja=("電力量計の記録を補助するOCRの第一段階として数字認識を試し、撮影条件による誤りを調べる",),
+        input_description_ja="電力量計画像からCOCO枠で切り出した0〜9の数字画像977枚",
+        output_description_ja="数字0〜9の分類ラベル。全文の電力量読み取り結果ではありません。",
+        download_size_mb=11.5, audit_status="all_digit_crops_checked_archive_crc_and_sample_visually_reviewed",
+        audit_report="reports/energy_meter_digits-v0.1.0-audit.json",
+        classes=("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"),
+        class_names_ja=("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"),
+        license_info={"name":"CC0 1.0","url":"https://creativecommons.org/publicdomain/zero/1.0/","rights_review":"Mendeley Data v1のCC0 1.0表示とCOCO数字bboxの対応を確認。"},
+        source_info={"dataset_name":"Data for: Text detection and Recognition in Raw Image Dataset of Seven Segment Digital Energy Meter Display","provider":"KARTHICK K and Kavaskar S","url":"https://data.mendeley.com/datasets/fnn44p4mj8/1","doi":"10.17632/fnn44p4mj8.1","source_archive_sha256":"98318ccf2cbf4ba51bf27805e1dd3f85634e3ce345400ce443dac62a953cd2c0","release_repository":"https://github.com/708san/CV_data_artifacts","release_tag":"energy-meter-digits-v0.1.0"},
+        file_urls={"artifact":"https://github.com/708san/CV_data_artifacts/releases/download/energy-meter-digits-v0.1.0/energy_meter_digits-v0.1.0.zip"},
+        max_archive_bytes=20_000_000, max_unpacked_bytes=20_000_000, max_files=1200,
+        published=True,
+    ),
+    "wastesegcluster": ReleaseSource(
+        id="wastesegcluster", case_id="wastesegcluster", tag="wastesegcluster-v0.1.0",
+        sha256="e5724fb933bc00fc5f8e5a0e987200cbc88d03e7aba6e68c2cceeedd9ccb6b5e",
+        archive_size=100_808_464, image_count=1947,
+        kind="detection", name_ja="水辺のごみ位置",
+        rights_note="CC BY 4.0。出典・変更表示が必要です。ダッカ周辺の画像で、日本の水辺の状態・水質を表しません。",
+        aliases_ja=("水辺ごみ検出", "WasteSegCluster"),
+        task="detection", audiences=("student", "teacher"), difficulty="intermediate",
+        use_cases_ja=("水辺に見えるごみの位置を記録し、清掃場所や活動計画の確認を補助する",),
+        input_description_ja="バングラデシュ・ダッカ周辺の水路や水辺を撮影した画像",
+        output_description_ja="複合材・ゴム・繊維、有機物、紙、プラスチックの位置",
+        download_size_mb=100.8, audit_status="full_image_annotation_audit_and_library_validation",
+        audit_report="https://github.com/708san/CV_data_artifacts/blob/main/reports/wastesegcluster-v0.1.0-audit.json",
+        classes=("Composite_Rubber_Textile", "Organic", "Paper", "Plastic"),
+        class_names_ja=("複合材・ゴム・繊維", "有機物", "紙", "プラスチック"),
+        license_info={"name":"CC BY 4.0","url":"https://creativecommons.org/licenses/by/4.0/","rights_review":"Mendeley Data v4のページとCOCOメタデータのCC BY 4.0表示を確認。50枚を目視し、元COCO bboxをYOLO形式へ変換。"},
+        source_info={"dataset_name":"WasteSegCluster: dataset of annotated waste images from urban water bodies in Bangladesh","provider":"Ratul et al.","url":"https://data.mendeley.com/datasets/3wnf3n242s/4","doi":"10.17632/3wnf3n242s.4","release_repository":"https://github.com/708san/CV_data_artifacts","release_tag":"wastesegcluster-v0.1.0"},
+        file_urls={"artifact":"https://github.com/708san/CV_data_artifacts/releases/download/wastesegcluster-v0.1.0/wastesegcluster-v0.1.0.zip"},
+    ),
+    "fire_recognition_image": ReleaseSource(
+        id="fire_recognition_image", case_id="fire_recognition_image", tag="fire-recognition-image-v0.1.0",
+        sha256="df561876b5945592077b3ba1f5ec29ad11c4ad1cfb4f36695a26005cdf73bb9c",
+        archive_size=286_615_690, image_count=1112,
+        kind="classification", name_ja="火・煙の教材画像",
+        rights_note="CC BY 4.0。出典・変更表示が必要です。元ラベルは実場面の安全性を示しません。警報・避難判断には使わないでください。",
+        aliases_ja=("火災画像分類", "Fire Recognition Image Dataset"),
         task="classification", audiences=("student", "teacher"), difficulty="introductory",
-        use_cases_ja=("手書き文字のデジタル保存や文字分類を考える", "文字の書き方の違いが画像分類に与える影響を調べる"),
-        input_description_ja="40×40画素のRGB手書き文字・数字画像",
-        output_description_ja="チャクマ文字38種類とチャクマ数字10種類の48クラス",
-        download_size_mb=94.6, audit_status="full_image_audit",
-        audit_report="https://github.com/708san/CV_data_artifacts/blob/main/reports/chakmalipi-v0.1.0-audit.json",
-        classes=tuple([f"Character_{i}" for i in range(1, 39)] + [f"digit_{i}" for i in range(1, 11)]),
-        class_names_ja=(
-            "チャクマ文字 𑄇（Kaa）", "チャクマ文字 𑄈（Khaa）", "チャクマ文字 𑄉（Gaa）", "チャクマ文字 𑄊（Ghaa）",
-            "チャクマ文字 𑄋（Ngaa）", "チャクマ文字 𑄌（Caa）", "チャクマ文字 𑄍（Chaa）", "チャクマ文字 𑄎（Jaa）",
-            "チャクマ文字 𑄏（Jhaa）", "チャクマ文字 𑄐（Nyaa）", "チャクマ文字 𑄑（Ttaa）", "チャクマ文字 𑄒（Tthaa）",
-            "チャクマ文字 𑄓（Ddaa）", "チャクマ文字 𑄔（Ddhaa）", "チャクマ文字 𑄕（Nnaa）", "チャクマ文字 𑄖（Taa）",
-            "チャクマ文字 𑄗（Thaa）", "チャクマ文字 𑄘（Daa）", "チャクマ文字 𑄙（Dhaa）", "チャクマ文字 𑄚（Naa）",
-            "チャクマ文字 𑄛（Paa）", "チャクマ文字 𑄜（Phaa）", "チャクマ文字 𑄝（Baa）", "チャクマ文字 𑄞（Bhaa）",
-            "チャクマ文字 𑄟（Maa）", "チャクマ文字 𑄡（Yaa）", "チャクマ文字 𑄢（Raa）", "チャクマ文字 𑄣（Laa）",
-            "チャクマ文字 𑄤（Waa）", "チャクマ文字 𑄥（Saa）", "チャクマ文字 𑄦（Haa）", "チャクマ文字 𑄠（Yyaa）",
-            "チャクマ文字 𑄃（Aa）", "チャクマ文字 𑄆（E）", "チャクマ文字 𑄄（別形）（I（別形））", "チャクマ文字 𑄄（I）",
-            "チャクマ文字 𑄅（U）", "チャクマ文字 𑅄（Lhaa）",
-            "チャクマ数字 0（𑄶）", "チャクマ数字 1（𑄷）", "チャクマ数字 2（𑄸）", "チャクマ数字 3（𑄹）",
-            "チャクマ数字 4（𑄺）", "チャクマ数字 5（𑄻）", "チャクマ数字 6（𑄼）", "チャクマ数字 7（𑄽）",
-            "チャクマ数字 8（𑄾）", "チャクマ数字 9（𑄿）",
-        ),
+        use_cases_ja=("火・煙などの例を分類し、周囲の人が確認する手順を考える",),
+        input_description_ja="火・煙や火を扱う場面の400×400画像",
+        output_description_ja="Fire、Smoke、Safe_Fire、Artificial_Fireの原作者カテゴリ",
+        download_size_mb=286.6, audit_status="full_image_decode_duplicate_audit_sample_visual_review",
+        audit_report="https://github.com/708san/CV_data_artifacts/blob/main/reports/fire_recognition_image-v0.1.0-audit.json",
+        classes=("Artificial_Fire", "Fire", "Safe_Fire", "Smoke"),
+        class_names_ja=("人工・装飾の火", "火", "火を扱う場面（原ラベル）", "煙"),
+        license_info={"name":"CC BY 4.0","url":"https://creativecommons.org/licenses/by/4.0/","rights_review":"Mendeley Data v4のCC BY 4.0表示を確認。原画像1,112枚のみ収録し、代表48枚を目視。"},
+        source_info={"dataset_name":"Fire Recognition Image Dataset","provider":"Snigdha Saha; Hridoy Sutradhar; Md Anwarul Islam; Md Mafiul Hasan Matin","url":"https://data.mendeley.com/datasets/7jk6xh7h6w/4","doi":"10.17632/7jk6xh7h6w.4","release_repository":"https://github.com/708san/CV_data_artifacts","release_tag":"fire-recognition-image-v0.1.0"},
+        file_urls={"artifact":"https://github.com/708san/CV_data_artifacts/releases/download/fire-recognition-image-v0.1.0/fire_recognition_image-v0.1.0.zip"},
+        max_archive_bytes=320_000_000, max_unpacked_bytes=320_000_000, max_files=2_000,
+    ),
+    "agrifreshnet": ReleaseSource(
+        id="agrifreshnet", case_id="agrifreshnet", tag="agrifreshnet-v0.1.0",
+        sha256="203ad9dd6a27971ee38b9f3751b50a27f04fae7202c6902d56709bba1c045ea4",
+        archive_size=345_815_200, image_count=14084,
+        kind="classification", name_ja="青果の見た目の段階",
+        rights_note="CC BY 4.0。出典・変更表示が必要です。括弧内の日数は元ラベルで、残存日数・可食性・食品安全を示しません。",
+        aliases_ja=("青果の見た目分類", "AgriFreshNET"),
+        task="classification", audiences=("student", "teacher"), difficulty="introductory",
+        use_cases_ja=("家庭や学食で先に現物を確認する青果の候補を考え、食品ロス削減を補助する",),
+        input_description_ja="家庭・市場・農場などで撮影された青果画像",
+        output_description_ja="8種類の青果についてFresh・Semi-Fresh・Rottenに対応する24原作者カテゴリ",
+        download_size_mb=345.8, audit_status="full_image_duplicate_group_audit_sample_visual_review",
+        audit_report="https://github.com/708san/CV_data_artifacts/blob/main/reports/agrifreshnet-v0.1.0-audit.json",
+        classes=("Fresh Banana(1-4)","Fresh Bittermelon(1-3)","Fresh Cucumber(1-6)","Fresh eggplant(1-4)","Fresh Orange(1-9)","Fresh Papaya(1-4)","Fresh pineapple(1-15)","Fresh Tomato(1-10)","Rotten banana(7-13)","Rotten Bittermelon(5-8)","Rotten Cucumber(12-20)","Rotten eggplant(8-15)","Rotten Orange(20-35)","Rotten Papaya(7-12)","Rotten Pineapple(25-35)","Rotten Tomato(24-35)","Semi fresh banana(4-7)","Semi Fresh Bittermelon ( 3-5)","Semi Fresh Cucumber(6-12)","Semi fresh Orange(9-20)","Semi Fresh Papaya(4-7)","Semi fresh Pineapple (15-25)","Semi fresh Tomato(10-24)","Semi_Fresh eggplant(4-8)"),
+        class_names_ja=("新鮮なバナナ","新鮮なゴーヤ","新鮮なキュウリ","新鮮なナス","新鮮なオレンジ","新鮮なパパイヤ","新鮮なパイナップル","新鮮なトマト","傷みのあるバナナ","傷みのあるゴーヤ","傷みのあるキュウリ","傷みのあるナス","傷みのあるオレンジ","傷みのあるパパイヤ","傷みのあるパイナップル","傷みのあるトマト","中間段階のバナナ","中間段階のゴーヤ","中間段階のキュウリ","中間段階のオレンジ","中間段階のパパイヤ","中間段階のパイナップル","中間段階のトマト","中間段階のナス"),
+        license_info={"name":"CC BY 4.0","url":"https://creativecommons.org/licenses/by/4.0/","rights_review":"Mendeley Data v1のCC BY 4.0表示を確認。完全一致画像・ラベル競合に関わる76ファイルを除外し、出典・変更を同梱。"},
+        source_info={"dataset_name":"AgriFreshNET Freshness and Shelf-Life Image Dataset","provider":"Fouzia Risdin; Hafsha Salauddin; Tasniya aziza tufa; Md Jakir Hossain","url":"https://data.mendeley.com/datasets/42m5tb7yv9/1","doi":"10.17632/42m5tb7yv9.1","release_repository":"https://github.com/708san/CV_data_artifacts","release_tag":"agrifreshnet-v0.1.0"},
+        file_urls={"artifact":"https://github.com/708san/CV_data_artifacts/releases/download/agrifreshnet-v0.1.0/agrifreshnet-v0.1.0.zip"},
+        max_archive_bytes=400_000_000, max_unpacked_bytes=400_000_000, max_files=20_000,
+    ),
+    "brazil_road_potholes": ReleaseSource(
+        id="brazil_road_potholes", case_id="brazil_road_potholes", tag="brazil-road-potholes-v0.1.0",
+        sha256="3c5999c01f7dbac64cdf3e7a7ee5467b62b471142dc8fab78cb9f35527ed5eb7",
+        archive_size=207_450_159, image_count=2235,
+        kind="segmentation", name_ja="道路の穴の領域分割",
+        rights_note="CC BY 4.0。出典・変更表示が必要です。ブラジルの2014〜2017年の道路画像で、現在の日本の道路状態・安全性を示しません。",
+        aliases_ja=("道路の穴", "ポットホールの領域分割", "Brazil Road Potholes"),
+        task="segmentation", audiences=("student", "teacher"), difficulty="intermediate",
+        use_cases_ja=("通学路や地域の道路の穴を記録し、修繕要望に添える画像を作る試作をする",),
+        input_description_ja="ブラジルの道路を撮影した1024×640画像",
+        output_description_ja="元データのポットホール領域を示す白黒マスク",
+        download_size_mb=207.5, audit_status="full_archive_crc_pair_manifest_and_sample_visual_review",
+        audit_report="https://github.com/708san/CV_data_artifacts/blob/main/reports/brazil_road_potholes-v0.1.0-audit.json",
+        classes=("pothole",), class_names_ja=("道路の穴",),
         license_info={
-            "name": "CC BY 4.0",
-            "url": "https://creativecommons.org/licenses/by/4.0/",
-            "rights_review": "Mendeley Data v6のCC BY 4.0表示、論文の収集・同意・倫理審査の説明を確認。1,450枚の完全一致重複を除外し、作者・出典・変更の表示が必要。",
+            "name": "CC BY 4.0", "url": "https://creativecommons.org/licenses/by/4.0/",
+            "rights_review": "Mendeley Data v3の固定スナップショットでCC BY 4.0を確認。元画像とポットホールマスクは画素を変更せず、出典・変更表示を同梱。DNITロゴは元画像に残る。",
         },
         source_info={
-            "dataset_name": "ChakmaLipī Dataset",
-            "provider": "Jannatul Ferdeous; Md. Abdul Kayum; Ahmed Islam; Md Roman Nihal; ASM Shihavuddin; Muhammad Hasan",
-            "url": "https://data.mendeley.com/datasets/rzjphbvz9f/6",
-            "doi": "10.17632/rzjphbvz9f.6",
-            "article_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13136726/",
+            "dataset_name": "Cracks and Potholes in Road Images",
+            "provider": "Bianka T. Passos; Mateus J. Cassaniga; Anita M. R. Fernandes; Kátya B. Medeiros; Eros Comunello",
+            "url": "https://data.mendeley.com/datasets/t576ydh9v8/3", "doi": "10.17632/t576ydh9v8.3",
             "release_repository": "https://github.com/708san/CV_data_artifacts",
-            "release_tag": "chakmalipi-v0.1.0",
+            "release_tag": "brazil-road-potholes-v0.1.0",
         },
-        file_urls={
-            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/chakmalipi-v0.1.0/chakmalipi-v0.1.0.zip",
+        file_urls={"artifact": "https://github.com/708san/CV_data_artifacts/releases/download/brazil-road-potholes-v0.1.0/brazil_road_potholes-v0.1.0.zip"},
+        max_archive_bytes=250_000_000, max_unpacked_bytes=250_000_000, max_files=5_000,
+    ),
+    "click_trash": ReleaseSource(
+        id="click_trash", case_id="click_trash", tag="click-trash-v0.1.0",
+        sha256="5a97374493c341aac6fe9a6b7a65dcd4437eddb3071085238c2237e9aaff023e",
+        archive_size=668_588_437, image_count=1126,
+        kind="detection", name_ja="屋外のごみの位置",
+        rights_note="CC BY 4.0。出典・変更表示が必要です。インドで撮影された画像で、日本の地域環境や分別ルールを示しません。",
+        aliases_ja=("道ばたのごみ", "屋外ごみ検出", "CLICK Trash Dataset"),
+        task="detection", audiences=("student", "teacher"), difficulty="intermediate",
+        use_cases_ja=("学校や地域の清掃活動でごみの位置を画像に示し、活動記録や清掃場所の共有を補助する",),
+        input_description_ja="インドの土・落ち葉・草地などに捨てられたごみの画像",
+        output_description_ja="ごみの位置を示すbbox。分別方法や危険性は判定しません",
+        download_size_mb=668.6, audit_status="full_archive_image_label_and_sample_visual_audit",
+        audit_report="https://github.com/708san/CV_data_artifacts/blob/main/reports/click_trash-v0.1.0-audit.json",
+        classes=("trash",), class_names_ja=("ごみ",),
+        license_info={
+            "name": "CC BY 4.0", "url": "https://creativecommons.org/licenses/by/4.0/",
+            "rights_review": "Mendeley Data v2のページでCC BY 4.0を確認。作者撮影の写真をsingle-class bbox形式に整理。長辺1024px以下へ縮小し、元のEXIF/GPS/撮影機器情報を除去。出典と変更内容を同梱。",
         },
-        archive_root_name="chakmalipi", max_files=40_000,
-        published=True,
+        source_info={
+            "dataset_name": "CLICK Trash Dataset", "provider": "Manjit Baishya",
+            "url": "https://data.mendeley.com/datasets/htcvvz6fm2/2", "doi": "10.17632/htcvvz6fm2.2",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "click-trash-v0.1.0",
+        },
+        file_urls={"artifact": "https://github.com/708san/CV_data_artifacts/releases/download/click-trash-v0.1.0/click_trash-v0.1.0.zip"},
+        max_archive_bytes=800_000_000, max_unpacked_bytes=800_000_000, max_files=5_000,
+    ),
+    "obstacles_assistance": ReleaseSource(
+        id="obstacles_assistance", case_id="obstacles_assistance", tag="obstacles-assistance-v0.1.0",
+        sha256="fb95637824d7470ec7da5f890b48af24a9cbda291b07d5074ef684f95ac17b7a",
+        archive_size=84_776_089, image_count=1250,
+        kind="detection", name_ja="歩道上の物体候補",
+        rights_note="CC BY 4.0。配布元は公開Roboflow画像を選定したと説明していますが、個別の元データセットID・ライセンスはページに記載されていません。物体が写ることだけで通行障害とは判定しません。",
+        aliases_ja=("歩道の障害物候補", "歩行支援の物体検出", "Obstacles Avoidance Assistance"),
+        task="detection", audiences=("student", "teacher"), difficulty="intermediate",
+        use_cases_ja=("歩道の通りにくさを記録する地図を試作し、段差・穴・柵・ポールの位置候補を人が確認する",),
+        input_description_ja="歩道や道路脇を写した640×640画像",
+        output_description_ja="段差・柵・穴・ポールを囲むbbox。通行障害やアクセシビリティは人が判断します",
+        download_size_mb=84.8, audit_status="full_image_label_archive_and_sample_visual_audit",
+        audit_report="https://github.com/708san/CV_data_artifacts/blob/main/reports/obstacles_assistance-v0.1.0-audit.json",
+        classes=("bump", "fence", "hole", "pole"),
+        class_names_ja=("段差", "柵", "穴", "ポール"),
+        license_info={
+            "name": "CC BY 4.0", "url": "https://creativecommons.org/licenses/by/4.0/",
+            "rights_review": "Mendeley Data v1ページに表示されたCC BY 4.0を確認。説明は画像を公開Roboflowデータセットから選定したとしていますが、各元データセットID・ライセンスは列挙していないため、この出所の限界を説明と監査記録に明記。元JPEGのSHA-256とbbox座標を保持。",
+        },
+        source_info={
+            "dataset_name": "Obstacles Avoidance Assistance for Visually Impaired",
+            "provider": "Yi Xian Wang",
+            "url": "https://data.mendeley.com/datasets/xwhnp82rhk/1",
+            "doi": "10.17632/xwhnp82rhk.1",
+            "source_archive_url": "https://data.mendeley.com/public-api/zip/xwhnp82rhk/download/1",
+            "source_archive_size": 84_945_675,
+            "source_sha256": "cc68e314ef6e8aaab3a7b37fe7897528ec7850ca06f0761206dcd4ddf202515a",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "obstacles-assistance-v0.1.0",
+        },
+        file_urls={"artifact": "https://github.com/708san/CV_data_artifacts/releases/download/obstacles-assistance-v0.1.0/obstacles_assistance-v0.1.0.zip"},
+        max_archive_bytes=100_000_000, max_unpacked_bytes=110_000_000, max_files=3_000, archive_root_folder=False,
     ),
     "festival_icons": ReleaseSource(
         id="festival_icons", case_id="festival-icons", tag="festival-v1.0.0",
@@ -1310,6 +1381,10 @@ class _TorchSegmentationDataset:
 
 
 _TASKS: dict[str, dict[str, str]] = {
+    "ocr": {
+        "name_ja": "文字認識・情報整理（OCR）",
+        "description_ja": "画像の文字を読み取り、必要な項目を整理する課題。",
+    },
     "classification": {
         "name_ja": "画像分類",
         "description_ja": "画像全体を、決めた種類のどれかに分ける課題。",
@@ -1765,7 +1840,12 @@ def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
         return _validate_detection_case(root, src, manifest)
     with (root / "labels.csv").open(encoding="utf-8-sig", newline="") as stream:
         reader = csv.DictReader(stream)
-        required_cols = {"image", "label", "split"} if src.kind == "classification" else {"image", "caption"}
+        if src.kind == "classification":
+            required_cols = {"image", "label", "split"}
+        elif src.kind == "ocr":
+            required_cols = {"image", "record_json", "split", "sample_id"}
+        else:
+            required_cols = {"image", "caption"}
         if not required_cols.issubset(set(reader.fieldnames or [])):
             raise DatasetError("labels.csvの列名が期待と異なります。")
         rows = list(reader)
@@ -1788,6 +1868,16 @@ def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
             if parts[:3] != ("images", split, label):
                 raise DatasetError(f"画像配置とラベルが一致しません: {image}")
             expected_metadata[image] = {"label": label, "split": split}
+        elif src.kind == "ocr":
+            try:
+                record = json.loads(row["record_json"])
+            except (TypeError, json.JSONDecodeError) as exc:
+                raise DatasetError(f"構造化見本のJSONが不正です: {image}") from exc
+            split, sample_id = row["split"], row["sample_id"]
+            if (not isinstance(record, dict) or split != "eval" or not sample_id
+                    or parts[:2] != ("images", split)):
+                raise DatasetError(f"OCR見本または画像配置に誤りがあります: {image}")
+            expected_metadata[image] = {"record": record, "split": split, "sample_id": sample_id}
         else:
             caption = row["caption"]
             if not caption.strip():
@@ -1803,8 +1893,12 @@ def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
             name = item["file_name"]
             if name in actual_metadata:
                 raise DatasetError(f"metadata.jsonlに重複があります: {name}")
-            actual_metadata[name] = ({"label": item["label"], "split": item["split"]}
-                                     if src.kind == "classification" else {"text": item["text"]})
+            if src.kind == "classification":
+                actual_metadata[name] = {"label": item["label"], "split": item["split"]}
+            elif src.kind == "ocr":
+                actual_metadata[name] = {"record": item["record"], "split": item["split"], "sample_id": item["sample_id"]}
+            else:
+                actual_metadata[name] = {"text": item["text"]}
     if actual_metadata != expected_metadata:
         raise DatasetError("metadata.jsonlとlabels.csvが一致しません。")
     return manifest

@@ -9,15 +9,30 @@ description = "日本語の高校生向けCV教材データ取得ライブラリ
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
-requires-python = ">=3.10"
+requires-python = ">=3.11,<3.14"
 authors = [{name = "CV Data project contributors"}]
 keywords = ["education", "computer-vision", "dataset", "colab", "japanese"]
-classifiers = ["Programming Language :: Python :: 3", "Natural Language :: Japanese", "Development Status :: 2 - Pre-Alpha"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Natural Language :: Japanese",
+    "Development Status :: 2 - Pre-Alpha",
+]
 
 [project.optional-dependencies]
-dataframe = ["pandas>=1.5"]
-display = ["Pillow>=9.0", "matplotlib>=3.6"]
-torch = ["numpy>=1.23", "Pillow>=9.0", "torch>=2.0"]
+test = ["pandas>=1.5,<4", "Pillow>=9,<14"]
+dataframe = ["pandas>=1.5,<4"]
+display = ["numpy>=1.23,<3", "Pillow>=9,<14", "matplotlib>=3.6,<4"]
+torch = ["numpy>=1.23,<3", "Pillow>=9,<14", "torch>=2.6,<3", "torchvision>=0.21,<1"]
+ocr = ["paddleocr==3.1.0", "huggingface_hub>=0.23,<1"]
+diffusion = [
+    "Pillow>=9,<14",
+    "diffusers[torch]>=0.30,<1",
+    "transformers>=4.41,<6",
+    "huggingface_hub>=0.23,<3",
+]
 
 [project.urls]
 Repository = "https://github.com/708san/CV_data"
