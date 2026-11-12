@@ -2981,6 +2981,54 @@
         "presentation_mode": "B",
         "publish_student_example": false
       }
+    },
+    {
+      "id": "DS-165",
+      "api_id": "click_trash",
+      "name": "CLICK Trash Dataset",
+      "task": "detection",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/htcvvz6fm2/2",
+        "provider": "mendeley",
+        "provider_dataset_id": "htcvvz6fm2",
+        "version": "2",
+        "content_origin_claim": "作者が携帯電話で撮影した屋外のごみ画像。土・落ち葉・草・砂利・道を含むと説明。",
+        "reference_url": "https://data.mendeley.com/datasets/htcvvz6fm2/2"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/htcvvz6fm2/2",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "1,126画像、2,213個のごみbbox。train 901 / val 113 / test 112。",
+        "labels": "single-class trash。13クラス版もあるが、極端なクラス偏りがあるため採用しない。",
+        "formats": "JPEG画像、YOLO bbox、COCO polygon。artifactにはsingle-class YOLO bboxだけを含む。",
+        "structure": "train/val/testに分かれた屋外画像と物体検出ラベル。空画像4枚を含む。",
+        "notes": "学校・地域の清掃活動でごみの位置を示し、活動記録や清掃場所の共有を補助する試作に適する。撮影地はインドで、日本の地域環境を代表しない。"
+      },
+      "audit": {
+        "technical_status": "full_pass",
+        "files_examined": 1126,
+        "inspection_status": "completed",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "files_inspected"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "detection_yolo_normalized",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
     }
   ]
 }
