@@ -55,7 +55,7 @@ Road Traversing Knowledgeは多クラス領域分割です。`data.classes`の13
 
 GeoSetEnneaは`datasets.get("geoset_ennea")`で136枚の画像と9クラスの物体位置注釈を取得できます。撮影場所はバングラデシュで、日本の文具や教室を代表しません。文具の商品名・ロゴは付随的に写ります。
 
-LoRA素材は`from cvlesson import loras`から管理します。`loras.list_available()`は生徒向けに承認された素材だけを返し、権利確認中の文化祭アイコンは`loras.list_preview()`で確認できます。重みは配布せず、必要な場合は`loras.get("festival_icon_style", allow_preview=True).get_data(allow_preview=True)`で画像・キャプション素材だけを取得します。
+学習済みLoRAの一覧と条件は`from cvlesson import loras`の`loras.list_models()`、または[画像生成ガイド](image-generation.md)で確認できます。使うモデルを`generation.load(lora="pixel_art_sdxl", device="cuda")`のように指定します。重みは配布せず、固定版から初回利用時に取得します。`festival_icons`は別の学習素材で、権利確認中のため生徒向け取得対象ではありません。
 
 日本語OCRは`from cvlesson import ocr`から使います。`ocr.load()`はCPUを使い、初回にPP-OCRv5 mobileの固定モデルを取得します。GPUを使う場合は、PaddlePaddleのGPU環境を確認して`ocr.load(device="gpu:0")`と明示してください。`reader.predict()`の結果に含まれる信頼度は正解を保証しないので、元画像と照合してください。詳しくは[OCRの使い方](ocr.md)を参照してください。
 

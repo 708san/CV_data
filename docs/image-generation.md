@@ -10,8 +10,10 @@
 | --- | --- | --- | --- | --- |
 | `fluent_emoji_3d` | SDXL用の丸みのある3Dアイコン・絵文字風 | MIT（モデルカード）。学習データカードもMIT表記 | [モデルページ](https://huggingface.co/klibaner/fluent-emoji-style-sdxl)、revision `7ff36ef02e53e75a4ca3bd5bd326de3f30a41fba` | `msemj style`が自動でpromptに付く。単体で中央に置く絵が得意。文字描画には使わない |
 | `watercolor_sdxl` | 写真・風景を水彩画風にする | Apache-2.0（モデルカード） | [モデルページ](https://huggingface.co/ostris/watercolor_style_lora_sdxl)、revision `0b65af0ac64347c8a35b82b4695ef5eadeffd5d7` | トリガー不要。許可を得た写真を地域課題の説明画像やポスター挿絵に使える。学習元データはモデルカードに記載なし |
+| `pixel_art_sdxl` | 単体のピクセルアート素材 | CreativeML Open RAIL++-M（SDXLから継承と配布元表示）。学習元はCC0表示 | [モデルカード](https://huggingface.co/unsupervised-abdullah/pixel-art-sdxl-lora)、revision `85565b5401663e1277c70b51fd34a8b8c2b9e3f9` | `pxlsprite`が自動で付く。ごみ分別・食品ロスを学ぶミニゲームの素材向け。1,000枚の合成スプライトで学習。正確な16×16画像ではなく背景も一定しない |
+| `thomas_cole_landscape` | 風景を19世紀の油彩画風にする | MIT（LoRA重み）。学習画像は配布元が米国でパブリックドメインと説明 | [モデルカード](https://huggingface.co/VRuins/thomas-cole-sdxl-lora)、revision `30373be8e89838dff2a4c6bfa2001d4188632695` | `tcole`が自動で付く。許可を得た風景写真を自然環境・公園紹介のポスター背景に使える。個々の学習画像の出典記録は保持されていない |
 
-モデル重みは約341MBと約12MBです。Git、PyPI、CV_data_artifactsへはコピーせず、利用者が `generation.load()` を呼んだ場合にだけ固定revisionから直接取得します。各重みは登録済みSHA-256と照合します。水彩LoRAのSHA-256は `d375ae7e68e1377305c168b0550a0fda33925421f570f87870fb19278786e9ac` です。
+モデル重みは約341MB、約12MB、約186MB、約228MBです。Git、PyPI、CV_data_artifactsへはコピーせず、利用者が `generation.load()` を呼んだ場合にだけ固定revisionから直接取得します。各重みは登録済みSHA-256と照合します。pixel artのSHA-256は `acbae146be564ea1bcbc65c233b374a30972249aea15c8a0bcf383983603c297`、Thomas Cole風のSHA-256は `6ad18bdf606c25be342c2acda1fbcd02ad669c40163f25027d886022b52bea8a` です。
 
 ## 権利確認メモ
 
@@ -20,6 +22,8 @@
 - 元リポジトリの[LICENSE](https://github.com/microsoft/fluentui-emoji/blob/main/LICENSE)もMITです。画像はMicrosoftのFluent Emojiに由来するため、モデルカードの注意に従い、Microsoftの公式・提携モデルと誤認させないでください。生成物の商標・著作権・利用先の条件は別途確認してください。
 - 基盤の[SDXL 1.0](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0)はCreativeML Open RAIL++-Mです。LoRAのMIT表記だけで基盤モデルの条件が置き換わるわけではありません。SDXLライセンスの利用制限も守ってください。
 - 水彩LoRAはモデルページにApache-2.0とSDXL 1.0対応が表示されています。[配布元カード](https://huggingface.co/ostris/watercolor_style_lora_sdxl)は学習元データを示していないため、学習データの権利・来歴までは確認できていません。LoRA重みのライセンス表示と学習画像の来歴を混同しないでください。
+- [Pixel Art SDXL LoRA](https://huggingface.co/unsupervised-abdullah/pixel-art-sdxl-lora)はモデルカードがSDXLから継承したCreativeML Open RAIL++-Mと表示し、学習データをCC0のPixel Art Atlasから選んだ合成画像1,000枚と説明しています。学習画像は合成で、キャプションは人手確認されていないと記載されています。利用時はSDXLの条件にも従ってください。
+- [Thomas Cole SDXL LoRA](https://huggingface.co/VRuins/thomas-cole-sdxl-lora)は重みをMITと表示し、約100〜110点の絵画をWikimedia CommonsとWikiArtから収集したと説明しています。配布元は米国でパブリックドメインとしていますが、画像ごとの出典一覧は保持していないと明記しています。基盤SDXLの条件は別途適用されます。
 - ここでは重みを再配布せず、各利用者がHugging Faceから直接取得します。取得元のライセンス・注意書きは利用時にも確認してください。
 
 ## 権利情報が足りず見送った候補

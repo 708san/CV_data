@@ -142,6 +142,60 @@ _MODELS: dict[str, LoraModel] = {
             "出力の著作権・肖像権・第三者権利は利用者が確認する。"
         ),
     ),
+    "pixel_art_sdxl": LoraModel(
+        id="pixel_art_sdxl",
+        name_ja="小さなピクセルアート素材",
+        repository="unsupervised-abdullah/pixel-art-sdxl-lora",
+        filename="pytorch_lora_weights.safetensors",
+        revision="85565b5401663e1277c70b51fd34a8b8c2b9e3f9",
+        sha256="acbae146be564ea1bcbc65c233b374a30972249aea15c8a0bcf383983603c297",
+        base_model="stabilityai/stable-diffusion-xl-base-1.0",
+        base_revision="cae78213d9dd74e36e0eb4c99ca83b4aeb94fb1a",
+        trigger_words=("pxlsprite",),
+        license_name="CreativeML Open RAIL++-M（SDXLから継承と配布元表示）",
+        license_url="https://huggingface.co/unsupervised-abdullah/pixel-art-sdxl-lora",
+        training_dataset="Angais/pixel-art-atlas-1.4m（1,000画像を選定）",
+        training_dataset_url="https://huggingface.co/datasets/Angais/pixel-art-atlas-1.4m",
+        training_dataset_license="CC0（モデルカードの表示）",
+        source_url="https://huggingface.co/unsupervised-abdullah/pixel-art-sdxl-lora",
+        rights_note=(
+            "モデルカードはSDXLから継承したCreativeML Open RAIL++-Mと表示。"
+            "学習元はCC0の合成ピクセル素材から選んだ1,000枚と記載。"
+            "基盤SDXLの利用条件も適用される。"
+        ),
+        use_case_ja="地域のごみ分別や食品ロスを学ぶミニゲームに使う、単体のピクセル絵素材を作る。",
+        limitations_ja=(
+            "単体の小さな物体向けで、背景や複数物体、文字は苦手。"
+            "出力は正確な16×16ドット配置ではなく、ゲーム用には目視確認と調整が必要。"
+        ),
+    ),
+    "thomas_cole_landscape": LoraModel(
+        id="thomas_cole_landscape",
+        name_ja="風景を19世紀の油彩画風にする",
+        repository="VRuins/thomas-cole-sdxl-lora",
+        filename="thomas-cole-sdxl-lora.safetensors",
+        revision="30373be8e89838dff2a4c6bfa2001d4188632695",
+        sha256="6ad18bdf606c25be342c2acda1fbcd02ad669c40163f25027d886022b52bea8a",
+        base_model="stabilityai/stable-diffusion-xl-base-1.0",
+        base_revision="cae78213d9dd74e36e0eb4c99ca83b4aeb94fb1a",
+        trigger_words=("tcole",),
+        license_name="MIT（LoRA重み。基盤モデルは別ライセンス）",
+        license_url="https://huggingface.co/VRuins/thomas-cole-sdxl-lora",
+        training_dataset="Thomas ColeとHudson River School周辺の絵画、約100〜110点",
+        training_dataset_url="https://huggingface.co/VRuins/thomas-cole-sdxl-lora",
+        training_dataset_license="パブリックドメインと配布元説明。個々の画像出典一覧は未提供",
+        source_url="https://huggingface.co/VRuins/thomas-cole-sdxl-lora",
+        rights_note=(
+            "配布元はLoRA重みをMIT、学習画像を米国でパブリックドメインと説明。"
+            "Wikimedia CommonsとWikiArt由来としていますが、画像ごとの出典記録は保持されていないとのこと。"
+            "基盤SDXLにはCreativeML Open RAIL++-Mが別途適用される。"
+        ),
+        use_case_ja="許可を得た地域の風景写真を油彩画風にし、自然環境や公園を紹介するポスターの背景に使う。",
+        limitations_ja=(
+            "Hudson River School風に寄るため地域の実景を正確に記録する用途には使わない。"
+            "画像内の文字は描けず、人物・建物などが変化することがある。"
+        ),
+    ),
 }
 
 
@@ -191,9 +245,8 @@ def model_info(model_id: str) -> dict[str, Any]:
         },
         "source_url": item.source_url,
         "rights_status": (
-            "配布元ライセンス表記あり（学習元非記載）"
-            if item.training_dataset == "モデルカードに記載なし"
-            else "配布元がMIT表記（第三者権利・生成物は利用者確認）"
+            f"モデルライセンス表記あり（{item.license_name}）。"
+            f"学習元データ: {item.training_dataset_license}"
         ),
         "rights_note": item.rights_note,
         "use_case_ja": item.use_case_ja,
