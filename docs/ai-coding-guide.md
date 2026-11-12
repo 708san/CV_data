@@ -15,6 +15,9 @@
 | `datasets.get("indoor_plant_varieties")` | CC BY 4.0の観葉植物7種類・1,162枚を取得する。出典・変更内容を表示する |
 | `datasets.get("geoset_ennea")` | CC BY 4.0の製図用具画像と物体位置注釈を取得する |
 | `datasets.get("fabricspotdefect")` | CC BY 4.0の布画像と汚れなどの位置注釈1,014枚を取得する |
+| `datasets.get("trashnet")` | MITのTrashNet 2,527枚を使い、6素材クラスと生活空間写真の違いを比べる |
+| `datasets.get("vifoodlabel")` | CC BY-NC 4.0の食品包装画像600枚から、9項目のOCR整理結果を評価する。非商用のみ |
+| `datasets.get("energy_meter_digits")` | CC0の数字切り出し977枚で0〜9分類を試す。メーター全体の値は読まない |
 | `datasets.get("トマトの葉")` | 登録済みの日本語名で取得する（曖昧検索はしない） |
 | `datasets.cache_info()` | checkout外にあるデータキャッシュの容量を確認する |
 | `datasets.clear_cache("tomato_leaves")` | 指定データのキャッシュを削除する。引数なしなら登録済みデータをまとめて削除 |
@@ -27,6 +30,12 @@
 `list_available()`の`task`は`ocr`、`classification`、`detection`、`regression`、`segmentation`、`lora`のいずれかです。正式APIに表示されない候補は、台帳上の調査候補であり、取得可能・教材利用可能とは限りません。`include_preview=True`は教師が確認するときだけ指定します。OCRの合成レシート候補は準備中で、Release公開までは一覧にも取得例にも出ません。
 
 RDD2020 Japanは`datasets.get("rdd2020_japan")`で取得できます。日本の道路画像7,900枚を使い、縦ひび・横ひび・亀甲ひび・ポットホールを囲みます。約642 MBのダウンロードが必要です。CC BY-NC 3.0に従って非商用の教育目的で使い、出典・変更内容を表示してください。2020年頃の画像なので、現在の道路状態・安全性・修繕順位の判断には使いません。
+
+TrashNet（2,527枚、MIT）は`datasets.get("trashnet")`で取得できます。6種類は素材の見た目のラベルです。白背景で撮影されたデータなので、自宅で撮った画像を追加して撮影環境の差を調べてください。日本の自治体の分別ルールは自治体の公式情報で別に確認します。
+
+ViFoodLabelは食品包装の文字をOCRで整理する課題候補です（600枚、CC BY-NC 4.0、非商用のみ）。`datasets.get("vifoodlabel")`で取得できます。JSONは9項目の構造化正解で、文字単位の全文正解ではありません。期限や注意書きはモデルだけで判断しません。
+
+電力量計データは数字枠だけを切り出した分類データ（977枚、CC0）として整形済みです。Release公開後に取得APIへ追加します。最初に0〜9を分類する課題向けで、桁・小数点を含む検針値の読み取りには追加の設計と検証が必要です。
 
 LeFood-Setは`datasets.get("lefood_set")`で食前・食後画像524組を取得できます。`to_df()`に実測重量、見た目評価、残量比とpair単位のsplitが含まれます。出典と変更を表示し、日本の給食や健康判断へ一般化しません。
 

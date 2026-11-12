@@ -84,6 +84,9 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [Orange Fruit](docs/datasets/orange_fruit.md) | オレンジの見た目5カテゴリ、画像15,000枚 | `orange-fruit-v0.1.0` | CC BY 4.0、出典・変更表示が必要。鮮度・食用可否・食品安全・病気の判定には使わない |
 | [日本語レシートOCR（詳細版）](docs/datasets/japanese_receipts_detailed.md) | レシート画像100枚、領域ラベル2,005件・文字転記1,802件 | `japanese_receipts_detailed-v0.1.0` | CC BY-NC 4.0、非商用のみ。個人情報の黒塗りは一部 |
 | [屋内に残ったごみの位置](docs/datasets/indoor_waste_image.md) | 屋内ごみ4種類、4,000画像・6,968枠 | `indoor-waste-image-v0.1.0` | CC BY 4.0、地域の分別は別に確認 |
+| [家庭ごみの素材分類（TrashNet）](docs/datasets/trashnet.md) | 6種類、2,527枚 | `trashnet-v0.1.0` | MIT。白背景で撮影。地域の分別可否は判定しない |
+| [食品包装OCR（ViFoodLabel）](docs/datasets/vifoodlabel.md) | 9項目の正解付き600枚 | `vifoodlabel-v0.1.0` | CC BY-NC 4.0、非商用のみ。項目別評価用 |
+| [電力量計の数字認識](docs/datasets/energy_meter_digits.md) | 0〜9の切り出し977枚 | `energy-meter-digits-v0.1.0` | CC0 1.0。全体の検針値は読まない |
 | [水辺のごみ位置](docs/datasets/wastesegcluster.md) | 水辺ごみ4種類、1,947画像・3,900枠 | `wastesegcluster-v0.1.0` | CC BY 4.0、ダッカ周辺の画像 |
 | [火・煙の教材画像](docs/datasets/fire_recognition_image.md) | 4カテゴリ、元画像1,112枚 | `fire-recognition-image-v0.1.0` | CC BY 4.0、「安全」判断には使わない |
 | [青果の見た目の段階](docs/datasets/agrifreshnet.md) | 24カテゴリ、重複除外後14,084枚 | `agrifreshnet-v0.1.0` | CC BY 4.0、食用可否の判定には使わない |
@@ -94,7 +97,7 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 
 トマトの葉と文化祭アイコンは固定Releaseを全量監査済みです。実測値は[トマトの監査レポート](reports/tomato-leaves-v1.2.0.json)と[文化祭アイコンの監査レポート](reports/festival-icons-v1.0.0.json)に保存しています。これは権利の承認を意味しません。
 
-生徒向け一覧には、家庭・学校・地域の課題に使う道筋を説明できるデータだけを掲載しています。取り下げたデータの出典・監査記録・固定Releaseは履歴として保持します。
+生徒向けデータは22件です。家庭のごみ素材分類、食品包装OCR、電力量計数字OCRを追加しました。取り下げたデータの出典・監査記録・固定Releaseは履歴として保持します。
 
 Recyclable Waste v0.1.1の整形済みRelease assetは公開されていますが、包装上の肖像写真や商品表示を含む第三者権利審査が未完了のため、生徒向けAPIから外しています（[審査記録](docs/datasets/recyclable_waste.md)）。
 
