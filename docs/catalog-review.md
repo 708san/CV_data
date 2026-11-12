@@ -1,6 +1,6 @@
 # カタログ候補の精査状況
 
-更新日：2026-11-11
+更新日：2026-11-12
 
 このページは`registry/candidates_50_unreviewed.json`を、ライブラリに追加する前の判断材料として整理したものです。台帳に書かれたライセンスは候補者の申告であり、ここで「CC BY 4.0」「CC0」などと書かれていても、画像そのものの権利確認や教材での再配布承認を意味しません。
 
@@ -13,7 +13,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 
 | 区分 | 件数 | ライブラリでの扱い |
 | --- | ---: | --- |
-| main APIで利用できる生徒向けデータ | 18 | `fabricspotdefect`、`bdroadsigns`、`orange_fruit`、`rdd2020_japan`、`lefood_set`、`tomato_leaves`、`bangladeshi_ewaste_image`、`pust_cafeteria_food`、`fashion_mnist`、`geoset_ennea`、`road_traversing_knowledge`、`fruitseg30`、`fresh_rotten_fruits`、`food_waste_bangladesh`、`smallfishbd`、`pistachio_image_dataset`、`indoor_plant_varieties`、`chakmalipi` |
+| main APIで利用できる生徒向けデータ | 24 | `rdd2020_japan`、`lefood_set`、`tomato_leaves`、`bangladeshi_ewaste_image`、`pust_cafeteria_food`、`fashion_mnist`、`geoset_ennea`、`road_traversing_knowledge`、`fabricspotdefect`、`bdroadsigns`、`orange_fruit`、`japanese_receipts_detailed`、`fruitseg30`、`fresh_rotten_fruits`、`food_waste_bangladesh`、`smallfishbd`、`pistachio_image_dataset`、`indoor_plant_varieties`、`chakmalipi`、`indoor_waste_image`、`wastesegcluster`、`fire_recognition_image`、`agrifreshnet`、`brazil_road_potholes` |
 | 教師向けLoRA素材 | 1 | `festival_icons`。公開許可のみ確認済み。改変・商用利用・再配布許諾は未確認 |
 | 固定取得条件または公開条件で保留 | 3 | `kuzushiji_mnist`、`fruits_360`、`recyclable_waste`。Kuzushiji-MNISTはCC BY-SA 4.0表記を確認済みだが、配布データの固定版とSHA-256を確定できず保留。Fruits-360には固定タグReleaseがなく、実体取得は未開始。Recyclable Wasteは第三者の肖像・商標審査が未完了のため生徒APIから除外 |
 | 全量技術監査済み・権利/注釈保留 | 1 | `strawberry_ds`。固定v1の247画像・YOLOラベルを検査。MendeleyのCC BY 4.0と同梱Roboflow metadataの`Private`表示の関係、および2件の境界外注釈を解決するまで変換・配布しない |
@@ -21,7 +21,7 @@ FruitSeg30、Pistachio Image Dataset、Recyclable Wasteは、公式ページのC
 | 固定版メタデータ確認・実体展開保留 | 1 | `hgm_4_hand_gestures`。CC BY表示・固定RARのSHAと安全な目録を確認したが、画像を展開・検査できず公開保留 |
 | その他の未審査候補 | 30 | 取得APIへ追加しない。画像を収録・再配布しない |
 
-候補台帳60件の現状は、`student_enabled` 19件、`candidate` 31件、`hold` 10件です。Fashion-MNISTは固定コミットの公式リポジトリでMITを確認し、公式Keras実装もデータへのMIT適用を明記するため、権利審査を承認済みに更新しました。FabricSpotDefect、BDRoadSigns、Orange Fruitは公式CC BY 4.0、固定版、整形済みReleaseを確認して生徒向けAPIへ追加しました。合成レシートAlpha10はCC BY 4.0の固定payloadと高校生の支出整理課題への適合を確認して整形しましたが、Release未公開のため利用可能件数には数えていません。インド硬貨は日本の高校生の身近な課題とのつながりが弱いため採用対象外です。4データのRelease公開・API登録により、レシートOCRと4件のRelease公開・API登録により、生徒向けAPIで取得できるデータは23件となり、20件の目標を超えました。
+候補台帳62件の現状は、`student_enabled` 20件、`candidate` 31件、`hold` 11件です。APIにある24件のうち4件は台帳外で個別に審査・追加したデータです。Fashion-MNISTは固定コミットの公式リポジトリでMITを確認し、公式Keras実装もデータへのMIT適用を明記するため、権利審査を承認済みに更新しました。FabricSpotDefect、BDRoadSigns、Orange Fruitは公式CC BY 4.0、固定版、整形済みReleaseを確認して生徒向けAPIへ追加しました。合成レシートAlpha10はCC BY 4.0の固定payloadと高校生の支出整理課題への適合を確認して整形しましたが、Release未公開のため利用可能件数には数えていません。インド硬貨は日本の高校生の身近な課題とのつながりが弱いため採用対象外です。4データのRelease公開・API登録により、レシートOCRと4件のRelease公開・API登録により、生徒向けAPIで取得できるデータは23件となり、20件の目標を超えました。
 
 FabricSpotDefectはMendeley Data v1のCC BY 4.0表示と、著者による家庭の布の撮影説明を確認しました。洗濯前に衣類の目立つ汚れを見つける補助という生徒課題に合わせ、柄布も含む元画像1,014枚・注釈3,288件を共通形式化しました。増強画像は除き、元画像は変更せず、0.5ピクセル以下の端のはみ出しがある矩形29件だけを補正しました。帰属・変更表示を同梱したartifactを固定Release `fabricspotdefect-v0.1.0`として公開し、掲載サイズとSHA-256を照合して生徒向けAPIへ登録しました（[監査記録](../reports/fabricspotdefect-v1-audit.json)、[データ別説明](datasets/fabricspotdefect.md)）。
 
@@ -126,3 +126,11 @@ Pistachio Image Dataset v1は固定ZIP・全2,148画像・CC BY 4.0表示・引�
 ### 2026-11-12：生徒向けデータ4件の公開
 
 Indoor Waste Image Dataset（4,000枚・6,968 bbox）、WasteSegCluster v4（1,947枚・3,900 bbox）、Fire Recognition v4（元画像1,112枚）、AgriFreshNET v1（重複・ラベル競合を除いた14,084枚）を確認・整形し、CC BY 4.0の固定Releaseへ公開しました。出典archive SHA-256、画像全数デコード、ラベル・split検査、共通ライブラリ形式の検証、課題利用上の限界を記録しています。取得API登録は本PRで行います。これにより生徒向け公開データは22件になります。
+
+### 2026-11-12 追加確認
+
+Cracks and Potholes in Road Images v3は配布元の固定版でCC BY 4.0を確認し、出典archive SHA-256・CRC・画像とマスクの組を照合しました。2,235枚の元画像とポットホールマスクを保持し、同一区間がsplitをまたがないよう28区間で分割して公開準備しました。ブラジルの旧道路画像で、日本の現況や安全性には使いません。DIU-HandGesture31はCC BY 4.0と参加者の撮影・共有同意表記を確認しましたが、標本画像にジェスチャー名の焼き込み文字があり、文字を手の形の代わりに覚える可能性があるため保留します。
+
+### 2026-11-12 追加確認
+
+Cracks and Potholes in Road Images v3は配布元の固定版でCC BY 4.0を確認し、出典archive SHA-256・CRC・画像とマスクの組を照合しました。2,235枚の元画像とポットホールマスクを保持し、同一区間がsplitをまたがないよう28区間で分割して公開準備しました。ブラジルの旧道路画像で、日本の現況や安全性には使いません。DIU-HandGesture31はCC BY 4.0と参加者の撮影・共有同意表記を確認しましたが、標本画像にジェスチャー名の焼き込み文字があり、文字を手の形の代わりに覚える可能性があるため保留します。

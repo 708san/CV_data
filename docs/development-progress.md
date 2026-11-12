@@ -345,3 +345,12 @@
 - AgriFreshNETは同じSHA-256の重複・異なる鮮度ラベルの競合を含む76ファイルを除外し、14,084枚を収録。
 - 4件ともZIPのパス安全性、manifest・ラベル構造をライブラリ検証器で確認。Japanese Receipt Detailedを含め、生徒向け公開データは23件となる。火災の「Safe_Fire」は実際の安全を意味せず、青果の見た目分類は可食性を判定しない。
 - Artifact PR #44 merged。固定Release: `wastesegcluster-v0.1.0`, `indoor-waste-image-v0.1.0`, `fire-recognition-image-v0.1.0`, `agrifreshnet-v0.1.0`。
+
+
+## 2026-11-12：道路の穴マスク付きデータを準備
+
+- Mendeley Data v3の固定スナップショットでCC BY 4.0とDOIを確認。元ZIP 231,728,698 bytesのSHA-256 `e59bb8d771e18f059ab78d88e640e83869fc8c8fd808697a0c2c48e16eec4f76`を照合し、安全なZIP目録とCRCを確認しました。
+- 元画像2,235枚、道路・ひび・穴の各マスクを確認し、道路の穴の課題に絞って元画像とPOTHOLEマスク2,235組を画素変更なしで整備。ブラジル旧道路画像のため、地元の現況や安全判定には使いません。
+- 同一道路区間をまたがないtrain/val/test splitを作成。artifact ZIP 207,450,159 bytes、SHA-256 `3c5999c01f7dbac64cdf3e7a7ee5467b62b471142dc8fab78cb9f35527ed5eb7`。manifestに4,476ファイルのハッシュを記録。
+- DIU-HandGesture31はCC BY 4.0と参加者の画像共有同意を確認しましたが、実画像にクラス名文字の焼き込みがあることを見つけ、分類学習への漏洩があるため公開対象から除外して台帳で保留しました。
+- 生徒向けAPIへの登録後は24件になります。
