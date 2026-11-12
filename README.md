@@ -71,6 +71,8 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 
 物体検出・領域分割は`from cvlesson import vision`から使います。PyTorchを環境に合わせて導入した後、`vision` extraを追加します。固定版のDETR（COCO 80カテゴリ検出）とSAM（枠・点からのマスク生成）を利用できます。機能範囲・容量・限界・実環境の検証状況は[検出と領域分割の使い方](docs/vision.md)を確認してください。
 
+Colabでモデルを試す場合は、[DETR・SAMのGPU確認Notebook](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/vision_smoke_test.ipynb)を開いてT4ランタイムで実行します。OCRは依存環境を分け、[日本語OCRのCPU確認Notebook](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/ocr_smoke_test.ipynb)を新しいCPUランタイムで実行します。Notebookを作成済みですが、Colab上の実行はまだです。
+
 ```python
 from cvlesson import vision
 

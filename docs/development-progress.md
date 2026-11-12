@@ -10,13 +10,20 @@
 
 # 開発進捗
 
+## 2026-11-13：Colab実モデル確認Notebookを準備
+
+- DETR/SAM用GPU Notebookと、日本語OCR用CPU Notebookを別々に作成しました。どちらもテスト画像をNotebook内で合成し、データや個人写真を取得しません。
+- ライブラリのインストール元は固定コードcommit `a7bc2c524c3ed944fdc1901b3968479dfffe1f28`です。OCR用はCPU版PaddlePaddleを別ランタイムへ導入します。
+- Notebook JSON、Pythonセル構文、固定Git依存表記を確認しました。Colabでモデル取得・推論を実行した状態ではありません。
+- [DETR・SAM Notebook](../notebooks/colab/vision_smoke_test.ipynb)、[OCR Notebook](../notebooks/colab/ocr_smoke_test.ipynb)。
+
 ## 2026-11-13：DETR検出・SAM領域分割APIを追加
 
 - 仕様0.6で既定モデルをDETR ResNet-50とSAM ViT-Bに固定し、モデルカードのApache-2.0表示、完全なrevision、容量、入力・出力範囲を記録しました。別モデルは完全な40桁revisionを必須にして指定できます。
 - `cvlesson.vision.load_detector()`と`load_segmenter()`を実装。CPUが既定で、GPUは明示指定・事前確認します。COCO英語ラベル付きbbox、元画像サイズの真偽値マスク、品質スコアを共通型で返し、DETR枠をSAMへ渡すメソッドも追加しました。
 - `vision` extra、インストール手順、初心者向けガイドを追加。モデル取得はload時のみで、重みはGit/PyPIに含めません。
 - vision APIのテストを8件追加。Python 3.11/3.12/3.13でネットワーク不要テスト66件が成功（各7件skip）。wheelを構築・一時領域へインストールし、optional依存を読み込まない軽量importとバイナリ非同梱を確認しました。
-- DETR/SAM重みの取得・CPU/GPU推論とColab T4は未実施です。PR #63のコミット`56bd58f`に対するGitHub Actionsは成功しました。実環境検証待ちとして公開準備完了とは扱いません。
+- DETR/SAM重みの取得・CPU/GPU推論とColab T4は未実施です。PR #63のコミット`56bd58f`とSAM互換修正`a7bc2c5`に対するGitHub Actionsは成功しました。実環境検証待ちとして公開準備完了とは扱いません。
 - 仕様・説明：[仕様書](specification.md)、[検出と領域分割](vision.md)、[インストール](installation.md)。
 
 ## 2026-11-13：PP-OCRv5日本語OCR APIを追加

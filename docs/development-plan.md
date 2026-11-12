@@ -58,8 +58,9 @@
 - 生徒向けデータAPIは22件です。通常一覧には教師向け`festival_icons`を含めず、教師向けを含む全体では23件です。候補数と実際に取得可能な数を混同しません。
 - `models`にResNet18の分類・回帰、`generation`にSDXLのtext-to-image / image-to-image、`ocr`にPP-OCRv5 mobile日本語OCR、`vision`にDETR検出とSAMプロンプト式領域分割の推論APIを実装しました。学習・追加学習の対象範囲は仕様書に記載しています。
 - 学習済みLoRAは2件を固定revision・SHA-256付きで登録し、SDXL生成で明示取得・適用できます。理想目標8件には未達です。
-- Python 3.11〜3.13でネットワーク不要テスト66件が成功（各7件skip）。wheelを構築して一時領域へインストールし、軽量importとモデル・画像バイナリ非同梱を確認。PR #63の今回コミット`56bd58f`もGitHub Actionsが成功しました。
+- Python 3.11〜3.13でネットワーク不要テスト66件が成功（各7件skip）。wheelを構築して一時領域へインストールし、軽量importとモデル・画像バイナリ非同梱を確認。GitHub Actionsはvision API追加の`56bd58f`とSAM互換修正の`a7bc2c5`で成功しました。
 - PaddleOCR、DETR、SAMの固定モデル実取得・CPU/GPU推論、Colab T4での実環境確認は未実施です。これらは該当環境で確認するまで「実装済み」と「実環境検証済み」を分けて扱います。
+- Colab向けのDETR/SAM T4 Notebookと、別ランタイムのOCR CPU Notebookを作成しました。Colabでの実行は未確認です。
 - 作業ブランチとレビュー提案：[PR #63](https://github.com/708san/CV_data/pull/63)。mainへは直接マージしていません。
 
 ## 3. データ保管と取得の運用
@@ -271,6 +272,8 @@ LLM講座のNotebookを改修せず、CV用に別ディレクトリと別ファ�
 
 受け入れ条件：2 NotebookがColabで開ける有効な`.ipynb`で、パッケージコード取得は完全な固定commit SHAを使う。GPU NotebookはT4がない場合にその旨を明確に表示して終了し、CPU Notebookは別ランタイムを使うよう案内する。テスト画像はNotebook内で生成し、モデル・データのバイナリや実行結果をリポジトリへ同梱しない。各推論結果と環境情報を利用者が判定できる。
 
+進捗：DETR/SAM用のT4 NotebookとOCR用のCPU Notebookを作成し、Colabメタデータ、固定コードcommit SHA、依存導入セル、合成画像、推論の出力確認を入れました。Notebook JSON・Pythonセル構文・未実行出力を確認済みです。Colab上でのモデル取得・推論は未実施です。
+
 ### 2026-11-13 OCRバックエンド実装（この作業単位）
 
 対象仕様：4.2 OCR、5.1 依存関係、5.2 バックエンド連携。日本語PP-OCRv5 mobileのCPU推論APIを追加し、固定revisionからの明示取得、共通結果型、GPU事前確認、任意依存の案内を実装する。
@@ -300,7 +303,7 @@ LLM講座のNotebookを改修せず、CV用に別ディレクトリと別ファ�
 
 受け入れ条件：`import cvlesson`でtorch/transformers/huggingface_hubを読み込まない。モデル読み込みを明示した時だけ固定revisionの重みを取得する。CPUが既定で、指定GPUの利用不可は重み取得前にエラーにする。既定モデル以外はrepository IDと完全な40桁revisionを必須にし、浮動参照を拒否する。検出結果はCOCO英語ラベル・0〜1スコア・元画像座標のxyxyを返す。SAM結果は元画像寸法の二値マスクとスコアを返し、検出との連携でラベルをSAMの意味ラベルのように扱わない。実際のモデル出力とColab T4は別途検証待ちとする。
 
-進捗：`vision` API、固定revision、利用者指定モデル、遅延依存、CPU既定/GPU明示選択、座標入力検証、結果型、検出枠からSAMへの連携、初心者向け説明を実装しました。Python 3.11/3.12/3.13で全66テスト成功（各7件skip）。Python 3.11でwheelを構築・一時領域へインストールし、基本importがtorch/Transformers/Hub/NumPy/Pillowを読み込まず、wheelにモデル・画像バイナリがないことを確認しました。GitHub Actionsも`56bd58f`で成功。実モデル取得・推論とColab T4は未確認です。
+進捗：`vision` API、固定revision、利用者指定モデル、遅延依存、CPU既定/GPU明示選択、座標入力検証、結果型、検出枠からSAMへの連携、初心者向け説明を実装しました。SAMの最新Transformers手順に合わせて、マスク後処理へ原画像サイズ・変換後サイズを渡します。Python 3.11/3.12/3.13で全66テスト成功（各7件skip）。Python 3.11でwheelを構築・一時領域へインストールし、基本importがtorch/Transformers/Hub/NumPy/Pillowを読み込まず、wheelにモデル・画像バイナリがないことを確認しました。Colab用Notebook 2本を作り、JSONとコードセル構文を確認しました。実モデル取得・推論とColab T4は未確認です。
 
 ### OCR以降の残作業
 
