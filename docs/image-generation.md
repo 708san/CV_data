@@ -56,3 +56,7 @@ result.save("park_icon.png")
 - 写真のイラスト化では、許諾を得た写真を使います。入力と出力の両方を確認し、誤解を招く用途には使いません。
 - `watercolor_sdxl`の学習元データはモデルカードに記載されていません。配布元の重みライセンスはApache-2.0ですが、学習画像の権利確認済みという意味ではありません。
 - GPUは勝手に選択されません。`available_devices()`で確認し、使う場合は `device="cuda"` を明示します。
+
+## Colabで動作を試す
+
+[画像生成・LoRAの確認Notebook](../notebooks/colab/generation_smoke_test.ipynb)は、固定commitのライブラリを使い、T4 GPU上で登録済み4件を順に試します。初回はSDXL本体と4つの重みを取得するため数GBの空き容量が必要です。NotebookはColab上で実行するまで実環境テスト済みではありません。

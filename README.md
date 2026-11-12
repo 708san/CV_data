@@ -142,7 +142,7 @@ Kuzushiji-MNISTはCC BY-SA 4.0の表示を確認しましたが、公式配布�
 
 LeFood-Setは`datasets.get("lefood_set")`で食前・食後画像524組を取得し、`to_df()`で実測重量や見た目評価を確認できます。日本の学校給食を代表するデータではなく、健康・栄養判断には使いません。
 
-画像生成ではSDXLと4種類のLoRAを使えます。`fluent_emoji_3d`はアイコン、`watercolor_sdxl`と`thomas_cole_landscape`は写真・風景のイラスト化、`pixel_art_sdxl`はごみ分別などを題材にした学習ゲームの単体素材向けです。`generation.load(lora="pixel_art_sdxl", device="cuda")`のように明示して読み込みます。重みは再配布せず、固定版から初回利用時に取得します。ライセンス、学習元データ、制約は[画像生成ガイド](docs/image-generation.md)を確認してください。LoRA学習素材は別管理で、権利確認中の文化祭アイコンは生徒向けに公開していません。
+画像生成ではSDXLと4種類のLoRAを使えます。`fluent_emoji_3d`はアイコン、`watercolor_sdxl`と`thomas_cole_landscape`は写真・風景のイラスト化、`pixel_art_sdxl`はごみ分別などを題材にした学習ゲームの単体素材向けです。`generation.load(lora="pixel_art_sdxl", device="cuda")`のように明示して読み込みます。重みは再配布せず、固定版から初回利用時に取得します。[Colab確認Notebook](notebooks/colab/generation_smoke_test.ipynb)で4件を試せます。ライセンス、学習元データ、制約は[画像生成ガイド](docs/image-generation.md)を確認してください。LoRA学習素材は別管理で、権利確認中の文化祭アイコンは生徒向けに公開していません。
 
 ## AIにプログラムを改造してもらうとき
 

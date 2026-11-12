@@ -60,7 +60,7 @@
 - 学習済みLoRAは4件を固定revision・SHA-256付きで登録し、SDXL生成で明示取得・適用できます。LoRAの実モデル推論は未確認です。
 - Python 3.11〜3.13でネットワーク不要テスト67件が成功（各7件skip）。wheelを構築して一時targetへインストールし、軽量importとモデル・画像バイナリ非同梱を確認。GitHub Actionsはvision API追加の`56bd58f`とSAM互換修正の`a7bc2c5`で成功しました。
 - PaddleOCR、DETR、SAMの固定モデル実取得・CPU/GPU推論、Colab T4での実環境確認は未実施です。これらは該当環境で確認するまで「実装済み」と「実環境検証済み」を分けて扱います。
-- Colab向けのDETR/SAM T4 Notebookと、別ランタイムのOCR CPU Notebookを作成しました。Colabでの実行は未確認です。
+- Colab向けのDETR/SAM T4 Notebook、OCR CPU Notebook、SDXL＋4 LoRAの画像生成Notebookを作成しました。Colabでの実行は未確認です。
 - 作業ブランチとレビュー提案：[PR #63](https://github.com/708san/CV_data/pull/63)。mainへは直接マージしていません。
 
 ## 3. データ保管と取得の運用
@@ -276,19 +276,20 @@ LLM講座のNotebookを改修せず、CV用に別ディレクトリと別ファ�
 
 ### 2026-11-13 Colab実モデル確認Notebook（今回の作業単位）
 
-対象仕様：4.2、4.3、5.1、5.2、7。仕様0.7に従い、利用者がColabで推論を試せるNotebookを2本作る。PyTorch/TransformersのDETR・SAM検証と、別ランタイムのPaddleOCR検証を分離する。検証用画像はNotebook内で合成し、個人画像の送信やデータartifactの追加取得を要求しない。
+対象仕様：4.2、4.3、4.4、5.1、5.2、7。仕様0.7に従い、利用者がColabで推論を試せるNotebookを3本用意する。PyTorch/TransformersのDETR・SAM検証、別ランタイムのPaddleOCR検証、SDXLと登録済みLoRA検証を分離する。画像生成の試験にはNotebook内で作る合成風景を使い、利用者の写真送信やデータartifact取得を要求しない。LoRA一覧のライセンスと学習データの注記をモデル取得前に表示する。
 
 順序：
 1. SAMの現行Transformers公式手順と照合し、マスク後処理に`original_sizes`と`reshaped_input_sizes`の両方を渡すようAPIとfake backendテストを修正する。
 2. そのコードをPRへpushし、CI成功を確認する。その固定commit SHAをNotebookのインストール元に記録する。
 3. `notebooks/colab/vision_smoke_test.ipynb`を作成する。T4確認、固定commitの`vision` extra導入、合成画像でのDETR/SAM推論、結果型・マスク形状・GPU利用を表示する。
 4. `notebooks/colab/ocr_smoke_test.ipynb`を別に作成する。CPUランタイム、PaddlePaddle公式導入、固定commitの`ocr` extra、合成テキスト画像の推論結果を確認する。
-5. Notebook JSON、コードセル構文、Markdown/リンク、固定SHA、公開可能な出力未格納をローカルで確認する。Colab実行前のNotebookを実環境検証済みと記載しない。
-6. README、インストール手順、進捗、PR本文を更新し、ユーザーが実行するセル順と成功条件を案内する。
+5. `notebooks/colab/generation_smoke_test.ipynb`を作成する。T4確認、固定commitの`diffusion` extra導入、SDXL＋登録済み4 LoRAのtext-to-image / image-to-image推論を行う。入力画像はNotebook内のPillow図形で合成し、LoRAは1件ずつ読み込んでGPUメモリを解放する。
+6. Notebook JSON、コードセル構文、Markdown/リンク、固定SHA、公開可能な出力未格納をローカルで確認する。Colab実行前のNotebookを実環境検証済みと記載しない。
+7. README、インストール手順、画像生成ガイド、進捗、PR本文を更新し、ユーザーが実行するセル順と成功条件を案内する。
 
-受け入れ条件：2 NotebookがColabで開ける有効な`.ipynb`で、パッケージコード取得は完全な固定commit SHAを使う。GPU NotebookはT4がない場合にその旨を明確に表示して終了し、CPU Notebookは別ランタイムを使うよう案内する。テスト画像はNotebook内で生成し、モデル・データのバイナリや実行結果をリポジトリへ同梱しない。各推論結果と環境情報を利用者が判定できる。
+受け入れ条件：3 NotebookがColabで開ける有効な`.ipynb`で、パッケージコード取得は完全な固定commit SHAを使う。GPU NotebookはT4がない場合にその旨を明確に表示して終了し、OCR Notebookは別ランタイムを案内する。テスト画像はNotebook内で生成し、モデル・データのバイナリや実行結果をリポジトリへ同梱しない。LoRAの権利と学習データの確認状態を重み取得前に表示し、各推論結果と環境情報を利用者が判定できる。
 
-進捗：DETR/SAM用のT4 NotebookとOCR用のCPU Notebookを作成し、Colabメタデータ、固定コードcommit SHA、依存導入セル、合成画像、推論の出力確認を入れました。Notebook JSON・Pythonセル構文・未実行出力を確認済みです。Colab上でのモデル取得・推論は未実施です。
+進捗：DETR/SAM用のT4 Notebook、OCR用のCPU Notebook、LoRAを含むSDXL生成Notebookを作成しました。Notebook JSON・Pythonセル構文・未実行出力を確認済みです。Colabでモデルを実行する前の状態を明記し、実環境の取得・生成は未確認です。
 
 ### 2026-11-13 OCRバックエンド実装（この作業単位）
 
