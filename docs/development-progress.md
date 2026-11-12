@@ -364,3 +364,13 @@
 - 共通artifact ZIPは668,588,437 bytes、SHA-256 `5a97374493c341aac6fe9a6b7a65dcd4437eddb3071085238c2237e9aaff023e`。manifest・bbox・画像/ラベル対応検証に成功。
 - CV_data_artifacts PR #46をマージし、`click-trash-v0.1.0` ReleaseにZIPを登録。GitHub API上のサイズ・SHA-256がローカル値と一致。
 - `click_trash`を取得API、課題カタログ、データ説明、候補台帳へ追加。生徒向けAPIは25件。
+
+
+## 2026-11-12：歩道上の物体候補データを整備
+
+- Mendeley Data v1の公式ページでCC BY 4.0とDOIを確認。元ZIP 84,945,675 bytesの固定URL・SHA-256を記録し、展開前に照合。全2,501エントリーのパスとsymlink、重複名、CRCを監査しました。
+- 全1,250画像をデコードし、640×640、train 1,000 / valid 250、bbox 1,627件を確認。クラス別件数はbump 479 / fence 368 / hole 419 / pole 361。画像・ラベル欠落、座標範囲外、完全重複はありません。
+- 元JPEGのSHA-256と正規化bboxを保持して共通物体検出形式へ整理。ZIPは84,776,089 bytes、SHA-256 `fb95637824d7470ec7da5f890b48af24a9cbda291b07d5074ef684f95ac17b7a`。ファイルmanifest、パス、CRCを照合。
+- 配布元は公開Roboflowデータから画像を選んだと説明していますが、元データセットごとのID・ライセンスは列挙していません。配布元ページのCC BY 4.0表示を記録し、この出所の限界を利用条件に明記しました。
+- 課題用途は歩道上の段差・穴・柵・ポール候補を人が確かめる記録地図の試作。物体の存在を通行障害や安全性の判定に使わないよう説明しました。
+- CV_data_artifacts PRと固定Release、CV_dataの取得API・日本語説明・候補台帳を更新。生徒向けAPIは26件になります。

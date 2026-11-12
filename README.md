@@ -95,6 +95,7 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [青果の見た目の段階](docs/datasets/agrifreshnet.md) | 24カテゴリ、重複除外後14,084枚 | `agrifreshnet-v0.1.0` | CC BY 4.0、食用可否の判定には使わない |
 | [道路の穴の領域分割](docs/datasets/brazil_road_potholes.md) | ブラジルの道路画像2,235枚・穴マスク2,235枚 | `brazil-road-potholes-v0.1.0` | CC BY 4.0、現地・現在の道路安全性は判定しない |
 | [CLICK Trash Dataset](docs/datasets/click_trash.md) | 屋外ごみ1,126枚・位置注釈2,213件 | `click-trash-v0.1.0` | CC BY 4.0、インド撮影。日本の地域や分別ルールを代表しない |
+| [歩道上の物体候補](docs/datasets/obstacles_assistance.md) | 4種類、画像1,250枚・bbox 1,627件 | `obstacles-assistance-v0.1.0` | CC BY 4.0。歩道の通行障害や安全の判定には使わない |
 | [ChakmaLipī](docs/datasets/chakmalipi.md) | チャクマ文字38種類・数字10種類、手書き画像36,258枚 | `chakmalipi-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [文化祭アイコン](docs/datasets/festival_icons.md) | アイコン168枚、画像と説明文 | `festival-v1.0.0` | 公開許可あり。改変・商用利用・再配布は要確認 |
 
@@ -113,6 +114,8 @@ Road Traversing Knowledgeは701組の画像・画素IDマスクを含む領域�
 Brazil Road Potholesは2,235組の道路画像・二値マスクを含みます。`data.to_torch_dataset()`は元の穴領域を0〜1の濃淡マスクとして返します。同一区間の画像をsplit間で共有しないよう区間単位で分けています。ブラジルの古い道路画像で、現在の日本の道路や安全性には一般化できません。
 
 CLICK Trashは屋外のごみ画像1,126枚と位置注釈2,213件を含みます。`datasets.get("click_trash")`で清掃活動の場所を画像上に示す試作へ使えます。インドの画像なので、日本の地域で使う前に現地画像でも確認してください。分別や危険性の判定には使いません。
+
+Obstacles Avoidance Assistanceは段差・柵・穴・ポールを囲むbboxを収録します。`datasets.get("obstacles_assistance")`で歩道上の物体候補を記録する地図を試作できます。写った物体が通行の妨げかは、通路幅・経路・利用者の状況を含めて人が確認してください。実際の移動支援には単独で使わず、地域の画像と当事者の確認が必要です。
 
 許諾済みデータの原本・派生データ・manifestは、コードとは分離した[CV_data_artifacts](https://github.com/708san/CV_data_artifacts)で管理します。PyPIとこのリポジトリには画像・LoRA・学習済み重みを収録しません。データを追加する際は、出典・ライセンス・固定版・SHA-256・変換履歴・監査結果をそろえてから、データ専用リポジトリのRelease assetとして公開します。
 

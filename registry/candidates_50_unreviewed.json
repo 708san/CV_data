@@ -4,7 +4,7 @@
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
     "as_of": "2026-11-12",
     "original_record_count": 53,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。FabricSpotDefectを権利・課題審査、全量監査、固定Release公開後にstudent_enabledへ更新。 2026-11-12にIndoor Waste Image、WasteSegCluster、Fire Recognition、AgriFreshNETの固定版権利・全量技術監査・artifact Releaseを記録しstudent_enabledへ更新。 2026-11-12にJapanese Receipt Detailedの固定revision・実画像/注釈監査・非商用条件を再確認し、取得API PRに含めた。 2026-11-12にCracks and Potholes in Road Images v3のCC BY 4.0、固定SHA、2,235画像・POTHOLEマスクを監査しstudent_enabledへ追加。DIU-HandGesture31はCC BY 4.0と撮影同意表記を確認したが、画像内の文字ラベル混入を目視しhold。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。FabricSpotDefectを権利・課題審査、全量監査、固定Release公開後にstudent_enabledへ更新。 2026-11-12にIndoor Waste Image、WasteSegCluster、Fire Recognition、AgriFreshNETの固定版権利・全量技術監査・artifact Releaseを記録しstudent_enabledへ更新。 2026-11-12にJapanese Receipt Detailedの固定revision・実画像/注釈監査・非商用条件を再確認し、取得API PRに含めた。 2026-11-12にCracks and Potholes in Road Images v3のCC BY 4.0、固定SHA、2,235画像・POTHOLEマスクを監査しstudent_enabledへ追加。DIU-HandGesture31はCC BY 4.0と撮影同意表記を確認したが、画像内の文字ラベル混入を目視しhold。 2026-11-12にObstacles Avoidance Assistance v1のCC BY 4.0、固定SHA、画像・bbox全量対応を確認しstudent_enabledへ追加。配布元説明は公開Roboflow画像を選定したとするが、上流ID・個別ライセンス一覧がないことを記録。"
   },
   "records": [
     {
@@ -3012,6 +3012,58 @@
       "audit": {
         "technical_status": "full_pass",
         "files_examined": 1126,
+        "inspection_status": "completed",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "files_inspected"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "detection_yolo_normalized",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-166",
+      "api_id": "obstacles_assistance",
+      "name": "Obstacles Avoidance Assistance for Visually Impaired",
+      "task": "detection",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/xwhnp82rhk/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "xwhnp82rhk",
+        "version": "1",
+        "content_origin_claim": "公開Roboflowデータセットから画像を選定し、手作業でYOLO bbox注釈したとの説明。上流ID・個別ライセンスの一覧はない。",
+        "reference_url": "https://data.mendeley.com/datasets/xwhnp82rhk/1",
+        "archive_url": "https://data.mendeley.com/public-api/zip/xwhnp82rhk/download/1",
+        "archive_size_bytes": 84945675,
+        "archive_sha256": "cc68e314ef6e8aaab3a7b37fe7897528ec7850ca06f0761206dcd4ddf202515a"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/xwhnp82rhk/1",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution",
+        "notes": "Mendeley v1ページのライセンス表示を根拠とする。説明にある元Roboflowデータの個別ID・ライセンス一覧はページにないため、利用者向け記録に明記。"
+      },
+      "claims": {
+        "quantity": "640x640画像1,250枚、YOLO bbox 1,627件。train 1,000 / valid 250。",
+        "labels": "bump 479、fence 368、hole 419、pole 361。",
+        "formats": "JPEG画像、正規化YOLO bbox。",
+        "structure": "train/validの物体検出データ。配布元ページにtest splitなし。",
+        "notes": "歩道上の物体候補を人が確認する通りやすさ記録地図の試作に使える。物体の存在のみで通行障害・アクセシビリティを決めない。"
+      },
+      "audit": {
+        "technical_status": "full_pass",
+        "files_examined": 1250,
         "inspection_status": "completed",
         "publication_status": "student_enabled",
         "last_desk_review": "2026-11-12",
