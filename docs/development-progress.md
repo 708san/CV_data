@@ -16,7 +16,7 @@
 - `cvlesson.vision.load_detector()`と`load_segmenter()`を実装。CPUが既定で、GPUは明示指定・事前確認します。COCO英語ラベル付きbbox、元画像サイズの真偽値マスク、品質スコアを共通型で返し、DETR枠をSAMへ渡すメソッドも追加しました。
 - `vision` extra、インストール手順、初心者向けガイドを追加。モデル取得はload時のみで、重みはGit/PyPIに含めません。
 - vision APIのテストを8件追加。Python 3.11/3.12/3.13でネットワーク不要テスト66件が成功（各7件skip）。wheelを構築・一時領域へインストールし、optional依存を読み込まない軽量importとバイナリ非同梱を確認しました。
-- DETR/SAM重みの取得・CPU/GPU推論とColab T4は未実施です。PR #63の追加変更に対するCIも未実施です。実環境検証待ちとして公開準備完了とは扱いません。
+- DETR/SAM重みの取得・CPU/GPU推論とColab T4は未実施です。PR #63のコミット`56bd58f`に対するGitHub Actionsは成功しました。実環境検証待ちとして公開準備完了とは扱いません。
 - 仕様・説明：[仕様書](specification.md)、[検出と領域分割](vision.md)、[インストール](installation.md)。
 
 ## 2026-11-13：PP-OCRv5日本語OCR APIを追加
