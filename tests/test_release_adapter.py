@@ -213,7 +213,7 @@ class ReleaseTests(unittest.TestCase):
     def test_fruitseg30_is_available_after_fixed_release_is_published(self):
         self.assertEqual(datasets.info("fruitseg30")["publication_status"], "student_enabled")
         ids = {item["id"] for item in datasets.list_available(task="segmentation", audience="student")}
-        self.assertEqual(ids, {"fruitseg30", "road_traversing_knowledge"})
+        self.assertEqual(ids, {"fruitseg30", "road_traversing_knowledge", "brazil_road_potholes"})
 
     @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
     def test_segmentation_artifact_download_cache_and_dataframe(self):
