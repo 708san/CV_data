@@ -257,6 +257,20 @@ LLM講座のNotebookを改修せず、CV用に別ディレクトリと別ファ�
 
 ## 6. 次に実施する課題
 
+### 2026-11-13 Colab実モデル確認Notebook（今回の作業単位）
+
+対象仕様：4.2、4.3、5.1、5.2、7。仕様0.7に従い、利用者がColabで推論を試せるNotebookを2本作る。PyTorch/TransformersのDETR・SAM検証と、別ランタイムのPaddleOCR検証を分離する。検証用画像はNotebook内で合成し、個人画像の送信やデータartifactの追加取得を要求しない。
+
+順序：
+1. SAMの現行Transformers公式手順と照合し、マスク後処理に`original_sizes`と`reshaped_input_sizes`の両方を渡すようAPIとfake backendテストを修正する。
+2. そのコードをPRへpushし、CI成功を確認する。その固定commit SHAをNotebookのインストール元に記録する。
+3. `notebooks/colab/vision_smoke_test.ipynb`を作成する。T4確認、固定commitの`vision` extra導入、合成画像でのDETR/SAM推論、結果型・マスク形状・GPU利用を表示する。
+4. `notebooks/colab/ocr_smoke_test.ipynb`を別に作成する。CPUランタイム、PaddlePaddle公式導入、固定commitの`ocr` extra、合成テキスト画像の推論結果を確認する。
+5. Notebook JSON、コードセル構文、Markdown/リンク、固定SHA、公開可能な出力未格納をローカルで確認する。Colab実行前のNotebookを実環境検証済みと記載しない。
+6. README、インストール手順、進捗、PR本文を更新し、ユーザーが実行するセル順と成功条件を案内する。
+
+受け入れ条件：2 NotebookがColabで開ける有効な`.ipynb`で、パッケージコード取得は完全な固定commit SHAを使う。GPU NotebookはT4がない場合にその旨を明確に表示して終了し、CPU Notebookは別ランタイムを使うよう案内する。テスト画像はNotebook内で生成し、モデル・データのバイナリや実行結果をリポジトリへ同梱しない。各推論結果と環境情報を利用者が判定できる。
+
 ### 2026-11-13 OCRバックエンド実装（この作業単位）
 
 対象仕様：4.2 OCR、5.1 依存関係、5.2 バックエンド連携。日本語PP-OCRv5 mobileのCPU推論APIを追加し、固定revisionからの明示取得、共通結果型、GPU事前確認、任意依存の案内を実装する。

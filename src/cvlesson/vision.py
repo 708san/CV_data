@@ -114,7 +114,9 @@ class PromptSegmenter:
         with self._torch.no_grad():
             outputs = self._model(**inputs)
         masks = self._processor.image_processor.post_process_masks(
-            outputs.pred_masks.cpu(), inputs["original_sizes"].cpu()
+            outputs.pred_masks.cpu(),
+            inputs["original_sizes"].cpu(),
+            inputs["reshaped_input_sizes"].cpu(),
         )[0][0]
         scores = outputs.iou_scores[0][0]
         best = int(scores.argmax().item())

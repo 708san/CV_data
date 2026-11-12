@@ -128,13 +128,16 @@ class VisionTests(unittest.TestCase):
 
         class Processor:
             image_processor = SimpleNamespace(
-                post_process_masks=lambda masks, sizes: [[[
+                post_process_masks=lambda masks, original_sizes, reshaped_input_sizes: [[[
                     CandidateMask([[0, 1], [0, 0]]), CandidateMask([[1, 1], [1, 0]])
                 ]]]
             )
 
             def __call__(self, **kwargs):
-                return {"original_sizes": SimpleNamespace(cpu=lambda: "sizes")}
+                return {
+                    "original_sizes": SimpleNamespace(cpu=lambda: "original"),
+                    "reshaped_input_sizes": SimpleNamespace(cpu=lambda: "resized"),
+                }
 
         class Scores:
             def __getitem__(self, index):
