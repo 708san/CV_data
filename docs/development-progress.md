@@ -354,3 +354,13 @@
 - 同一道路区間をまたがないtrain/val/test splitを作成。artifact ZIP 207,450,159 bytes、SHA-256 `3c5999c01f7dbac64cdf3e7a7ee5467b62b471142dc8fab78cb9f35527ed5eb7`。manifestに4,476ファイルのハッシュを記録。
 - DIU-HandGesture31はCC BY 4.0と参加者の画像共有同意を確認しましたが、実画像にクラス名文字の焼き込みがあることを見つけ、分類学習への漏洩があるため公開対象から除外して台帳で保留しました。
 - 生徒向けAPIへの登録後は24件になります。
+
+
+## 2026-11-12：CLICK Trash Datasetの固定ReleaseとAPI追加
+
+- Mendeley Data v2のCC BY 4.0表示、DOI、固定アーカイブSHA-256を確認。ZIP全3,404エントリーのパス・symlink・重複名・CRCを監査し、画像1,126枚を全件デコード。
+- single-class `trash`を選び、元のbbox 2,213件とtrain/val/test splitを維持。長辺1,024px以下へ再書き出し、EXIF/GPS/カメラ機器メタデータを除去。4枚の背景画像は空ラベルで保持。
+- 代表画像を各splitから1枚ずつ確認。落ち葉・土・草地にある包装ごみを確認し、包装文字・商標は一部に残る旨と非推薦の注記を記録。撮影地はインドで、日本の地域環境を代表しない。
+- 共通artifact ZIPは668,588,437 bytes、SHA-256 `5a97374493c341aac6fe9a6b7a65dcd4437eddb3071085238c2237e9aaff023e`。manifest・bbox・画像/ラベル対応検証に成功。
+- CV_data_artifacts PR #46をマージし、`click-trash-v0.1.0` ReleaseにZIPを登録。GitHub API上のサイズ・SHA-256がローカル値と一致。
+- `click_trash`を取得API、課題カタログ、データ説明、候補台帳へ追加。生徒向けAPIは25件。

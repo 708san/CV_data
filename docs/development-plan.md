@@ -1,6 +1,6 @@
 # CV_data 開発計画
 
-更新日：2026-11-11
+更新日：2026-11-12
 
 
 
@@ -41,13 +41,13 @@
 
 技術的に取得できることだけでは、教材で使えるとは判定しない。
 
-## 2. 現在地（2026-11-11）
+## 2. 現在地（2026-11-12）
 
-- 生徒向けAPIは18件です。FabricSpotDefect、BDRoadSigns、Orange Fruitを公式ライセンス・固定版・学生課題との適合確認後に追加しました。目標20件まであと2件です。 合成レシートOCRは許諾・課題適合を確認して整形中ですが、Release未公開のため件数に含めません。インド硬貨は日本の高校生の身近な課題との適合が弱く、採用対象から外しました。教師向けLoRA素材は`festival_icons`1件です。
+- 生徒向けAPIは25件です。目標20件を超えました。CLICK TrashはMendeley v2のCC BY 4.0、固定ファイルSHA-256、画像・bbox対応を確認し、単一クラスの屋外ごみ検出データとして固定Releaseから取得できます。長辺1,024px以下へ縮小し、元のGPS・撮影機器情報を除去しています。画像はインドで撮影され、日本の地域環境を代表しません。教師向けLoRA素材は`festival_icons`1件、承認済みLoRA重みは0件です。
 - ChakmaLipī v6を権利確認・全量デコードし、完全一致重複を除いた36,258枚を共通形式化しました。固定Release assetを公開し、再取得時のサイズ・SHA-256一致を確認。CV_data PR #49はmainへ統合済みです。
 - `tomato_leaves`：7,209枚、破損0、完全一致重複0、ラベル不一致0。標準化後はtrain 5,191 / val 577 / test 1,441。
 - `festival_icons`：168枚、破損0、キャプション欠損0、完全一致重複0。分類データではなくLoRA学習素材として管理。承認済み学習済みLoRA重みは0件。
-- 候補台帳は62件。2026-11-12時点で`candidate` 31件、`hold` 11件、`student_enabled` 20件。生徒向けAPIは24件で、そのうち4件は候補台帳外で個別審査後に追加したデータです。
+- 候補台帳は63件。2026-11-12時点で`candidate` 31件、`hold` 11件、`student_enabled` 21件。生徒向けAPIは25件で、そのうち4件は候補台帳外で個別審査後に追加したデータです。
 - `CV_data_artifacts` mainにはsource manifest 17件、artifact registry掲載11件があります。FabricSpotDefect、BDRoadSigns、Orange Fruitのsource manifest・registry登録を追加しました。PUSTのRelease assetは存在しますが、artifact registryへの登録が見当たらず、別途台帳を整合させます。
 - 候補台帳の全項目を一括で`list_available()`へ加えません。選定・権利確認・固定Releaseが済んだデータだけを個別に公開します。
 - 既存Notebook、`CV_sample_data`、そのRelease、タグ、配布ファイルは変更しない。
