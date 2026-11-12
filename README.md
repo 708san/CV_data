@@ -93,6 +93,7 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [水辺のごみ位置](docs/datasets/wastesegcluster.md) | 水辺ごみ4種類、1,947画像・3,900枠 | `wastesegcluster-v0.1.0` | CC BY 4.0、ダッカ周辺の画像 |
 | [火・煙の教材画像](docs/datasets/fire_recognition_image.md) | 4カテゴリ、元画像1,112枚 | `fire-recognition-image-v0.1.0` | CC BY 4.0、「安全」判断には使わない |
 | [青果の見た目の段階](docs/datasets/agrifreshnet.md) | 24カテゴリ、重複除外後14,084枚 | `agrifreshnet-v0.1.0` | CC BY 4.0、食用可否の判定には使わない |
+| [道路の穴の領域分割](docs/datasets/brazil_road_potholes.md) | ブラジルの道路画像2,235枚・穴マスク2,235枚 | `brazil-road-potholes-v0.1.0` | CC BY 4.0、現地・現在の道路安全性は判定しない |
 | [ChakmaLipī](docs/datasets/chakmalipi.md) | チャクマ文字38種類・数字10種類、手書き画像36,258枚 | `chakmalipi-v0.1.0` | CC BY 4.0、出典・変更表示が必要 |
 | [文化祭アイコン](docs/datasets/festival_icons.md) | アイコン168枚、画像と説明文 | `festival-v1.0.0` | 公開許可あり。改変・商用利用・再配布は要確認 |
 
@@ -107,6 +108,8 @@ Recyclable Waste v0.1.1の整形済みRelease assetは公開されています�
 FruitSeg30は全量監査後、寸法が一致しないGuavaクラスを除いた29クラス1,914組を整備し、固定Releaseを公開しました。GitHub mainブランチでは取得APIを利用できます。PyPI配布版への反映はパッケージ更新時に行います。`to_torch_dataset()`は画像と濃淡マスクを返します。
 
 Road Traversing Knowledgeは701組の画像・画素IDマスクを含む領域分割データです。`data.to_torch_dataset()`は各画素を0〜12の整数クラスIDとして保持し、マスクを`torch.long`の高さ×幅テンソルで返します。背景を含め13クラスの出力を使います。公式test splitはありません。ブラジルの道路画像を日本の通学路や安全性の判定に使わないでください。
+
+Brazil Road Potholesは2,235組の道路画像・二値マスクを含みます。`data.to_torch_dataset()`は元の穴領域を0〜1の濃淡マスクとして返します。同一区間の画像をsplit間で共有しないよう区間単位で分けています。ブラジルの古い道路画像で、現在の日本の道路や安全性には一般化できません。
 
 許諾済みデータの原本・派生データ・manifestは、コードとは分離した[CV_data_artifacts](https://github.com/708san/CV_data_artifacts)で管理します。PyPIとこのリポジトリには画像・LoRA・学習済み重みを収録しません。データを追加する際は、出典・ライセンス・固定版・SHA-256・変換履歴・監査結果をそろえてから、データ専用リポジトリのRelease assetとして公開します。
 

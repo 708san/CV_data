@@ -89,3 +89,4 @@ Orange Fruitは`datasets.get("orange_fruit")`でオレンジの見た目5カテ�
 - `datasets.get("wastesegcluster")`：ダッカ周辺の水辺ごみを検出します。日本の水辺の状態や水質には一般化しません。
 - `datasets.get("fire_recognition_image")`：火・煙の教材画像を分類します。元ラベルは実場面の安全を示さず、警報・避難判断には使いません。
 - `datasets.get("agrifreshnet")`：青果の見た目を24カテゴリに分類します。元ラベルの日数は期限ではなく、可食性・食品安全を判断しません。
+- `datasets.get("brazil_road_potholes")`：ブラジルの道路画像2,235枚と穴マスクを取得します。二値マスクを重ねて道路の穴の位置を伝える試作に使えます。日本の通学路の安全性や修繕の必要性は判定しません。

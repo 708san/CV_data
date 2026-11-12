@@ -194,7 +194,7 @@ class ReleaseTests(unittest.TestCase):
 
     def test_published_detection_and_pending_artifacts_have_correct_status(self):
         ids = {item["id"] for item in datasets.list_available()}
-        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "road_traversing_knowledge", "rdd2020_japan", "lefood_set", "indoor_plant_varieties", "geoset_ennea", "bangladeshi_ewaste_image", "pust_cafeteria_food", "fashion_mnist", "chakmalipi", "fabricspotdefect", "bdroadsigns", "orange_fruit", "japanese_receipts_detailed", "indoor_waste_image", "wastesegcluster", "fire_recognition_image", "agrifreshnet"})
+        self.assertEqual(ids, {"tomato_leaves", "festival_icons", "fruitseg30", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "road_traversing_knowledge", "rdd2020_japan", "lefood_set", "indoor_plant_varieties", "geoset_ennea", "bangladeshi_ewaste_image", "pust_cafeteria_food", "fashion_mnist", "chakmalipi", "fabricspotdefect", "bdroadsigns", "orange_fruit", "japanese_receipts_detailed", "indoor_waste_image", "wastesegcluster", "fire_recognition_image", "agrifreshnet", "brazil_road_potholes"})
         self.assertIn("festival-v1.0.0", str(datasets.info("festival_icons")))
         self.assertEqual(datasets.info("tomato_leaves")["audit_status"], "full_image_audit")
         self.assertEqual(datasets.info("festival_icons")["audit_status"], "full_image_audit")
@@ -213,7 +213,7 @@ class ReleaseTests(unittest.TestCase):
     def test_fruitseg30_is_available_after_fixed_release_is_published(self):
         self.assertEqual(datasets.info("fruitseg30")["publication_status"], "student_enabled")
         ids = {item["id"] for item in datasets.list_available(task="segmentation", audience="student")}
-        self.assertEqual(ids, {"fruitseg30", "road_traversing_knowledge"})
+        self.assertEqual(ids, {"fruitseg30", "road_traversing_knowledge", "brazil_road_potholes"})
 
     @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
     def test_segmentation_artifact_download_cache_and_dataframe(self):
@@ -561,7 +561,7 @@ class ReleaseTests(unittest.TestCase):
     def test_info_without_id_returns_catalog(self):
         catalog = datasets.info()
         self.assertIsInstance(catalog, list)
-        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "road_traversing_knowledge", "rdd2020_japan", "lefood_set", "indoor_plant_varieties", "geoset_ennea", "bangladeshi_ewaste_image", "pust_cafeteria_food", "fashion_mnist", "chakmalipi", "fabricspotdefect", "bdroadsigns", "orange_fruit", "japanese_receipts_detailed", "indoor_waste_image", "wastesegcluster", "fire_recognition_image", "agrifreshnet"})
+        self.assertEqual({item["id"] for item in catalog}, {"tomato_leaves", "festival_icons", "fruitseg30", "fresh_rotten_fruits", "food_waste_bangladesh", "smallfishbd", "pistachio_image_dataset", "road_traversing_knowledge", "rdd2020_japan", "lefood_set", "indoor_plant_varieties", "geoset_ennea", "bangladeshi_ewaste_image", "pust_cafeteria_food", "fashion_mnist", "chakmalipi", "fabricspotdefect", "bdroadsigns", "orange_fruit", "japanese_receipts_detailed", "indoor_waste_image", "wastesegcluster", "fire_recognition_image", "agrifreshnet", "brazil_road_potholes"})
 
     def test_fashion_mnist_is_in_student_catalog(self):
         self.assertIn("fashion_mnist", {item["id"] for item in datasets.list_available(audience="student")})

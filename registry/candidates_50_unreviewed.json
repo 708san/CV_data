@@ -4,7 +4,7 @@
     "filename": "CV教材_データ50件_管理レコード_20261104.json",
     "as_of": "2026-11-12",
     "original_record_count": 53,
-    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。FabricSpotDefectを権利・課題審査、全量監査、固定Release公開後にstudent_enabledへ更新。 2026-11-12にIndoor Waste Image、WasteSegCluster、Fire Recognition、AgriFreshNETの固定版権利・全量技術監査・artifact Releaseを記録しstudent_enabledへ更新。 2026-11-12にJapanese Receipt Detailedの固定revision・実画像/注釈監査・非商用条件を再確認し、取得API PRに含めた。"
+    "note": "調査用台帳。技術監査・権利審査・公開状態は各レコード別に記録し、候補全体を承認済みとは扱わない。教材利用時は正式APIと個別記録を参照する。 2026-11-09に一次情報を確認したConMetal-6 subsetを追加。 2026-11-09に公式一次情報を確認したIndoor Plant Varieties候補を追加。 Road Traversing Knowledgeの選定記録と、公開データの状態を統合。2026-11-11にGeoSetEnnea v0.1.0を監査・公開しstudent_enabledへ更新。ChakmaLipī v6のCC BY 4.0、全量技術監査、共通artifact準備を記録。FabricSpotDefectを権利・課題審査、全量監査、固定Release公開後にstudent_enabledへ更新。 2026-11-12にIndoor Waste Image、WasteSegCluster、Fire Recognition、AgriFreshNETの固定版権利・全量技術監査・artifact Releaseを記録しstudent_enabledへ更新。 2026-11-12にJapanese Receipt Detailedの固定revision・実画像/注釈監査・非商用条件を再確認し、取得API PRに含めた。 2026-11-12にCracks and Potholes in Road Images v3のCC BY 4.0、固定SHA、2,235画像・POTHOLEマスクを監査しstudent_enabledへ追加。DIU-HandGesture31はCC BY 4.0と撮影同意表記を確認したが、画像内の文字ラベル混入を目視しhold。"
   },
   "records": [
     {
@@ -2881,6 +2881,100 @@
           "1"
         ],
         "adapter": "detection",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-163",
+      "api_id": "brazil_road_potholes",
+      "name": "Cracks and Potholes in Road Images (pothole-mask subset)",
+      "task": "segmentation",
+      "priority": "priority",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/t576ydh9v8/3",
+        "provider": "mendeley",
+        "provider_dataset_id": "t576ydh9v8",
+        "version": "3",
+        "content_origin_claim": "ブラジルの幹線道路画像。Mendeley説明ではDNITから情報公開請求経由で提供",
+        "reference_url": "https://data.mendeley.com/datasets/t576ydh9v8/3"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/t576ydh9v8/3",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "画像2,235枚。各画像に道路・ひび・穴のマスク",
+        "labels": "路面、ひび、ポットホールの個別マスク",
+        "formats": "JPEG画像、PNGマスク",
+        "structure": "画像とポットホール二値マスクの領域分割",
+        "notes": "ブラジルの道路写真。DNIT透かしを含む元画像とポットホールマスクを画素変更せず採用。区間単位split。高校生の地域道路の穴を記録し修繕要望へ添える試作に適するが、地元の現況・安全性は示さない。"
+      },
+      "audit": {
+        "technical_status": "full_pass",
+        "files_examined": 4470,
+        "inspection_status": "completed",
+        "publication_status": "student_enabled",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "independent_primary_check"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [
+          "1"
+        ],
+        "adapter": "segmentation",
+        "target_colab": true
+      },
+      "pedagogy": {
+        "presentation_mode": "B",
+        "publish_student_example": false
+      }
+    },
+    {
+      "id": "DS-164",
+      "api_id": "diu_handgesture31",
+      "name": "DIU-HandGesture31",
+      "task": "classification",
+      "priority": "conditional",
+      "source": {
+        "landing_page": "https://data.mendeley.com/datasets/yby56bk2wm/1",
+        "provider": "mendeley",
+        "provider_dataset_id": "yby56bk2wm",
+        "version": "1",
+        "content_origin_claim": "31種の手の形。参加者は研究目的の撮影・共有に同意と記載",
+        "reference_url": "https://data.mendeley.com/datasets/yby56bk2wm/1"
+      },
+      "rights": {
+        "license_claim": "CC BY 4.0",
+        "evidence_url": "https://data.mendeley.com/datasets/yby56bk2wm/1",
+        "redistribution_reviewed": true,
+        "rights_status": "approved_for_redistribution"
+      },
+      "claims": {
+        "quantity": "原画像5,389枚、augmented版を含む大容量構成あり",
+        "labels": "31種の手のジェスチャー",
+        "formats": "JPEG画像、クラス別フォルダ",
+        "structure": "手の形の画像分類",
+        "notes": "授業のタッチレス操作に利用できる可能性。実画像標本で一部クラスの文字ラベルが画像に焼き込まれており、手形でなく文字を学習する漏洩があるため現状は保留。"
+      },
+      "audit": {
+        "technical_status": "sample_pass",
+        "files_examined": 31,
+        "inspection_status": "completed",
+        "publication_status": "hold",
+        "last_desk_review": "2026-11-12",
+        "evidence_grade": "independent_primary_check"
+      },
+      "preparation": {
+        "planned_level": "1",
+        "implemented_levels": [],
+        "adapter": "classification",
         "target_colab": true
       },
       "pedagogy": {
