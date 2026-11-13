@@ -26,6 +26,10 @@ print(frame.head())
 
 `get()`はデータ全体を取得してキャッシュします。`to_df()`はデータ本体ではなく、画像・ラベル・注釈ファイルへのパスとメタデータを表にします。各タスクの元splitを保ちます。分類で元データにvalidationがない場合だけ、trainからseed固定でvalidationを作ります。取得量、権利条件、キャッシュの確認には`datasets.info()`、`datasets.cache_info()`を使ってください。
 
+### 公開準備中：空画像と翌日の天気
+
+`sky_weather_next_day`は、1,000枚の全天空画像を晴れ・曇り・雨に分類し、撮影時刻・翌日の降水量・雲量なども`to_df()`から参照できる形式で整備しました。`metadata_columns`は列名と型の辞書として`datasets.info()` / `datasets.list_available()`にも表示します。現在は固定Release assetの公開待ちで、一覧・`get()`からは利用できません。1地点のERA5再解析値であり、地域天気予報の評価には使えません。詳しくは[データ説明](datasets/sky_weather_next_day.md)を確認してください。
+
 ## 登録データ一覧
 
 | タスク / 件数 | ID | `kind` | `to_df()`の主な内容 | 現行のモデル接続 |
