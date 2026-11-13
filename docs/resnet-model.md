@@ -33,6 +33,19 @@ accuracy = model.score(image_paths, labels)
 
 分類は`ResNetClassifier`、数値予測は`ResNetRegressor`を使います。回帰では単画像と画像ペアを受け取れます。必要な依存は`pip install cv-data-lesson[torch]`です。初回利用には重み取得のためネットワーク接続が必要です。
 
+学習・予測の`X`には画像パス列またはPillow Image列を指定できます。回帰のペアでは各画像をパスまたはPillow Imageにできます。DataFrameの`image_path`列も利用できます。
+
+```python
+from PIL import Image
+
+with Image.open("my_image.jpg") as opened:
+    image = opened.convert("RGB")
+prediction = model.predict(image)
+print(prediction)
+```
+
 ## 動作確認
 
 PyTorch 2.2.2、Torchvision 0.17.2のCPU環境で、公式のImageNet重み取得と小さな合成画像による分類の`fit`・`predict`・`score`を確認しました。回帰はランダム初期化重みで画像ペア入力の一連のAPIを確認しました。採用データでの学習、Colab T4、GPU実行は未確認です。
+
+実データを使う確認手順：[トマト葉のResNet分類Notebook](../notebooks/cv/classification_v1.ipynb)、[LeFood-SetのResNet回帰Notebook](../notebooks/colab/resnet_regression_smoke_test.ipynb)。両Notebookはtrain/validation/testを分けて評価します。Colabで実行するまでは、これらのデータとGPUでの動作を検証済みとは扱いません。

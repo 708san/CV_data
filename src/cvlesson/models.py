@@ -23,8 +23,8 @@ def available_devices() -> dict[str, bool]:
     }
 
 
-def _image_rows(X: Any, *, allow_pairs: bool) -> list[Path | tuple[Path, Path]]:
-    """パス列またはDataFrameを画像パスの列へ正規化する。"""
+def _image_rows(X: Any, *, allow_pairs: bool) -> list[Any]:
+    """画像パス/Pillow画像列またはDataFrameを正規化する。"""
     columns = getattr(X, "columns", ())
     if "image_path" in columns:
         X = X["image_path"].tolist()
@@ -32,13 +32,15 @@ def _image_rows(X: Any, *, allow_pairs: bool) -> list[Path | tuple[Path, Path]]:
         X = list(zip(X["image_before_path"].tolist(), X["image_after_path"].tolist()))
     elif isinstance(X, (str, Path)):
         X = [X]
+    elif _is_pillow_image(X):
+        X = [X]
     else:
         try:
             X = list(X)
         except TypeError as exc:
             raise ValueError("Xは画像パスの列またはDatasetBundle.to_df()の結果で指定してください。") from exc
 
-    rows: list[Path | tuple[Path, Path]] = []
+    rows: list[Any] = []
     expected_pair: bool | None = None
     for index, row in enumerate(X):
         is_pair = isinstance(row, (tuple, list))
@@ -47,21 +49,52 @@ def _image_rows(X: Any, *, allow_pairs: bool) -> list[Path | tuple[Path, Path]]:
                 raise ValueError("分類では各サンプルを画像パス1つで指定してください。")
             if len(row) != 2:
                 raise ValueError(f"X[{index}]は食前・食後など2つの画像パスで指定してください。")
-            paths = (Path(row[0]), Path(row[1]))
-            normalized: Path | tuple[Path, Path] = paths
+            paths = (_normalize_image_input(row[0], index), _normalize_image_input(row[1], index))
+            normalized: Any = paths
         else:
-            normalized = Path(row)
+            normalized = _normalize_image_input(row, index)
             paths = (normalized,)
         if expected_pair is not None and expected_pair != is_pair:
             raise ValueError("Xには単画像と画像ペアを混在できません。")
         expected_pair = is_pair
-        for path in paths:
-            if not path.is_file():
-                raise ValueError(f"画像ファイルが見つかりません: {path}")
         rows.append(normalized)
     if not rows:
         raise ValueError("Xに画像がありません。")
     return rows
+
+
+def _is_pillow_image(value: Any) -> bool:
+    try:
+        from PIL import Image
+    except ImportError:
+        return False
+    return isinstance(value, Image.Image)
+
+
+def _load_rgb_image(source: Any):
+    from PIL import Image
+
+    if isinstance(source, Path):
+        with Image.open(source) as opened:
+            return opened.convert("RGB")
+    return source.convert("RGB").copy()
+
+
+def _normalize_image_input(value: Any, index: int) -> Any:
+    if isinstance(value, (str, Path)):
+        path = Path(value).expanduser()
+        if not path.is_file():
+            raise ValueError(f"画像ファイルが見つかりません: {path}")
+        return path
+    try:
+        from PIL import Image
+    except ImportError as exc:
+        raise ValueError(
+            f"X[{index}]は画像パスまたはPillow Imageで指定してください。Pillowにはpip install 'cv-data-lesson[torch]'が必要です。"
+        ) from exc
+    if isinstance(value, Image.Image):
+        return value.copy()
+    raise ValueError(f"X[{index}]は画像パスまたはPillow Imageで指定してください。NumPy配列は未対応です。")
 
 
 def _target_values(y: Any) -> list[Any]:
@@ -168,7 +201,7 @@ class _ResNetEstimator:
         self._transform = transform
         self._paired = paired
 
-    def _loader(self, paths: Sequence[Path | tuple[Path, Path]], targets: Any = None, *, shuffle: bool = False):
+    def _loader(self, paths: Sequence[Any], targets: Any = None, *, shuffle: bool = False):
         torch = self._torch
         transform = self._transform
 
@@ -177,14 +210,12 @@ class _ResNetEstimator:
                 return len(paths)
 
             def __getitem__(self, index):
-                from PIL import Image
-
                 item = paths[index]
-                image_paths = item if isinstance(item, tuple) else (item,)
+                image_inputs = item if isinstance(item, tuple) else (item,)
                 tensors = []
-                for path in image_paths:
-                    with Image.open(path) as image:
-                        tensors.append(transform(image.convert("RGB")))
+                for image_input in image_inputs:
+                    image = _load_rgb_image(image_input)
+                    tensors.append(transform(image))
                 images = tuple(tensors) if len(tensors) == 2 else tensors[0]
                 if targets is None:
                     return images

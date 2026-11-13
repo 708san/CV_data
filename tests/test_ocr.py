@@ -60,6 +60,39 @@ class OCRTests(unittest.TestCase):
         self.assertEqual(len(result.lines[0].polygon), 0)
         self.assertEqual(result.to_dict()["lines"][1]["text"], "行2")
 
+    def test_predict_accepts_pillow_and_removes_temporary_image(self):
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("Pillowが必要です")
+
+        class Pipeline:
+            image_path = None
+
+            def predict(self, *, input):
+                self.image_path = Path(input)
+                self.assert_image_exists = self.image_path.is_file()
+                return [{"res": {"rec_texts": ["sample"], "rec_scores": [0.9], "rec_polys": []}}]
+
+        image = Image.new("RGBA", (12, 9), (10, 20, 30, 128))
+        pipeline = Pipeline()
+        result = ocr.OCR(pipeline, device="cpu", language="japan").predict(image)
+        self.assertEqual(result.source, "Pillow Image")
+        self.assertTrue(pipeline.assert_image_exists)
+        self.assertFalse(pipeline.image_path.exists())
+        self.assertEqual(image.mode, "RGBA")
+
+    def test_predict_rejects_unsupported_input_type(self):
+        reader = ocr.OCR(object(), device="cpu", language="japan")
+        try:
+            import PIL  # noqa: F401
+        except ImportError:
+            with self.assertRaisesRegex(ocr.OCRError, "Pillow"):
+                reader.predict([[1, 2], [3, 4]])
+            return
+        with self.assertRaisesRegex(TypeError, "Pillow Image"):
+            reader.predict([[1, 2], [3, 4]])
+
     def test_predict_rejects_missing_image(self):
         reader = ocr.OCR(object(), device="cpu", language="japan")
         with self.assertRaises(FileNotFoundError):

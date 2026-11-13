@@ -10,12 +10,38 @@
 
 # 開発進捗
 
+## 2026-11-13：分類・回帰・推論Notebookを実データ対応に更新
+
+- `notebooks/cv/classification_v1.ipynb`は独自CNNから`ResNetClassifier`に変更。固定Releaseのトマト画像でtrain/validation/testを分離し、`fit`、`score`、`predict`、`predict_proba`を実行する流れを追加。見出し・授業順・記入欄は維持。
+- `notebooks/colab/resnet_regression_smoke_test.ipynb`を追加。LeFood-Setの食前・食後画像ペアで`ResNetRegressor`を学習し、validation/testのR²と実測/予測を表示。研究データの限界、CC BY 4.0、単位を記載。
+- OCR NotebookにCC BY-NC 4.0の公開実レシート1枚の推論を追加。残存情報の可能性と非商用条件を明記し、部分注釈のため全文精度を自動計算しません。
+- DETR/SAM NotebookにFruitSeg30の固定test画像・マスクを追加。GT maskから作る矩形をSAMへ渡して1画像IoUを表示します。promptに正解情報を使うことと、全体性能評価ではないことを明記。
+- SDXL/LoRA NotebookでImage-to-Image入力を合成画像か利用者のColabアップロード画像から選べるようにしました。ライブラリが画像を別サービスへ自動送信しない旨も記載。
+- [クイックスタート](quickstart.md)に実行Notebook一覧、環境、実データ、権利・注意点を追加。
+- 全NotebookのJSONとコードセル構文を確認。Python 3.13で79テスト成功（Pillow、pandas、表示extra不足により16件skip）、`git diff --check`成功。Colabでのデータ取得、学習、モデル推論、実データIoUは未実施。
+
+## 2026-11-13：Colabで利用者自身の画像を試す手順を追加
+
+- 仕様0.12に、利用者がColabへ明示アップロードした画像をローカルパスで使う要件を追加。ライブラリは画像を外部へ自動送信せず、リポジトリにも複製しません。
+- [クイックスタート](quickstart.md)にローカルファイルとColabアップロードの両方を追加しました。以降は同じモデルAPIを使います。
+- [DETR/SAM Colab Notebook](../notebooks/colab/vision_smoke_test.ipynb)で、自分の画像をアップロードする方法と合成画像を使う方法を選べるようにしました。SAMの入力矩形は画像サイズに合わせます。
+- Notebook JSONと8コードセルのPython構文、`git diff --check`、`compileall`を確認。Python 3.13の79テストは成功し、16件はPillow/pandasがない環境のためskip。Colab上の新しいアップロード・表示API・Pillow入力での実モデル推論は未実行です。
+
+## 2026-11-13：データ形式・画像入力・汎用利用例を整理
+
+- 生徒向けデータ22件を5タスクに再集計し、`to_df()`、`to_torch_dataset()`、ResNet/OCR/DETR/SAM/SDXLの入出力を実装と照合。`docs/data-model-compatibility.md`に全ID、列形式、接続例、未対応範囲を整理しました。
+- 仕様0.10で結果描画の入出力と動作契約を追加し、`cvlesson.display.render/show/save`を実装。OCR文字枠、検出枠とラベル、SAM半透明マスク、検出＋SAMの組を合成画像にできます。Pillow Imageを返し、指定先へ保存できます。モデル本体の入力形式は変更していません。
+- 仕様0.11で画像パスとPillow Imageを共通入力に定義。ResNet、OCR、DETR、SAMにPillow Image入力を追加。OCRは内部一時PNGを推論後に削除し、OCR extraへPillow依存を追加。NumPy配列は入力対象外。
+- 課題を固定しない[クイックスタート](quickstart.md)と、目的別インストール表を追加。READMEとデータ・OCR・vision・ResNet案内を更新。
+- Python 3.13でネットワーク不要テスト79件成功（5件skip）。Pillow 13.0・NumPy 2.5.4を`/tmp/cvlesson-image-input-test-deps`だけに入れ、画像型、変換、OCR一時ファイル削除、描画・保存を確認。`git diff --check`成功。テスト後に一時依存を削除。
+- Colab上でのPillow直接入力・新しい表示API、実モデルを使った入力確認、各OSの日本語フォント表示は未確認。日本語フォントがない環境では文字列を枠に描けない場合があります。
+
 ## 2026-11-13：Colab T4でDETR成功、SAM品質スコア確認を修正
 
 - ユーザーのColab T4でDETRが`kite`を0.706で検出。SAMの重み取得と読込、マスクshape・bool型の検査も通過しました。
 - SAMの品質ヘッド値に対するNotebookの0〜1範囲assertionのみ失敗。仕様0.9.1で値は実IoU・確率ではなく範囲保証のない予測値と明記し、API説明も更新。Notebookは有限値のみ確認するよう修正しました。
 - ネットワーク不要テスト69件成功（7件skip）。0〜1を超えるSAMスコアをAPIがそのまま保持するテスト、Notebook JSON/Python構文を確認しました。
-- **更新NotebookでSAMセルを再実行する確認は未完了**です。現段階ではT4上のDETR実行とSAM部分実行を確認済みとし、全Notebook成功とは扱いません。
+- ユーザーが更新したSAMセルをColab T4で実行し、マスクの重ね合わせ画像を確認しました。DETR検出とSAMマスク生成の主要フローは確認済みです。実データの精度評価、CPU・他OS・他GPUは未確認です。
 
 ## 2026-11-13：OCR依存競合を修正し、Colab CPUで実モデル推論を確認
 

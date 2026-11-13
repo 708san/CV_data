@@ -6,6 +6,8 @@
 
 ## まず使う
 
+短い導入は[まず試す](docs/quickstart.md)、機能とOSごとの選び方は[インストール案内](docs/installation.md)を参照してください。
+
 ローカル環境では、このリポジトリのフォルダで次を実行します。
 
 ```bash
@@ -18,24 +20,26 @@ PythonまたはGoogle Colabで、次のように操作します。
 from cvlesson import datasets
 
 print(datasets.list_available())
-print(datasets.info("tomato_leaves"))
 
 # 課題と対象者から選ぶ（生徒向けには承認済みデータだけ）
 print(datasets.list_tasks(audience="student"))
-print(datasets.list_available(task="classification", audience="student"))
+choices = datasets.list_available(task="classification", audience="student")
+print(choices)
 
-# 初回は約124MBのZIPをダウンロードします。
-data = datasets.get("tomato_leaves")
+# 使うIDをchoicesから選ぶ。データ本体はget()を呼んだ時だけ取得
+dataset_id = choices[0]["id"]
+print(datasets.info(dataset_id))
+data = datasets.get(dataset_id)
 print(data.root)          # 保存先
 print(data.labels_csv)    # 正解ラベル
 print(data.train_dir)     # 学習用画像
 print(data.test_dir)      # テスト用画像
 ```
 
-日本語名も、登録済みの完全一致なら使えます。
+分類データのラベルと分割はDataFrameで確認できます。
 
 ```python
-data = datasets.get("トマトの葉")
+data = datasets.get(dataset_id)
 df = data.to_df()         # pip install -e '.[dataframe]'
 print(df[["label_ja", "split"]].head())
 print(data.splits)        # train / val / test
@@ -52,7 +56,7 @@ train_data = data.to_torch_dataset(split="train", image_size=(64, 64))  # pip in
 
 ```python
 print(datasets.cache_info())  # 登録済みデータの保存量を確認
-result = datasets.clear_cache("tomato_leaves")  # 指定データだけ削除
+result = datasets.clear_cache(dataset_id)  # 指定データだけ削除
 print(result["removed_bytes"])
 datasets.clear_cache()  # 登録済みデータのキャッシュをまとめて削除
 ```
@@ -66,6 +70,19 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 ```
 
 `datasets.get()`は固定Releaseを取得してZIPを検証し、ローカルに展開します。保存先の変更は`cache_dir`で指定できます。元の公式testは変更せず、DataFrameではtrainから再現可能なvalを作ります。画像表示には `pip install -e '.[display]'` が必要です。LoRA学習そのものやモデル重みの再配布は、このライブラリの対象外です。
+
+検出・OCR・領域分割の結果は`cvlesson.display.show()`で元画像に重ねて表示でき、`cvlesson.display.save()`で保存できます。合成画像はPillow Imageとして返るため、表示以外の処理にも渡せます。
+
+```python
+from cvlesson import display, vision
+
+print(vision.available_devices())  # GPUの利用可否を確認
+detector = vision.load_detector(device="cpu")  # GPUを使う場合は確認後にdevice="cuda:0"
+image_path = "street.jpg"
+detections = detector.predict(image_path)
+display.show(image_path, detections)
+display.save(image_path, "results/detections.png", detections)
+```
 
 日本語OCRは必要なときだけ`ocr` extraと環境に合うPaddlePaddleを導入して使います。`ocr.load()`が必要なモジュールを内部で読み込むため、利用者が`import paddle`を書く必要はありません。モデルは明示的な`ocr.load()`時に取得し、CPUを既定にします。GPUを使う場合は利用可否を確認して明示指定します。導入方法と返却形式は[OCRの使い方](docs/ocr.md)をご覧ください。
 

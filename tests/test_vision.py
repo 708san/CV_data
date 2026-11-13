@@ -51,6 +51,18 @@ class _CallableModel:
 
 
 class VisionTests(unittest.TestCase):
+    def test_open_image_accepts_pillow_and_preserves_original(self):
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("Pillowが必要です")
+        image = Image.new("RGBA", (12, 9), (255, 0, 0, 128))
+        opened = vision._open_image(image)
+        self.assertEqual(opened.mode, "RGB")
+        self.assertEqual(opened.size, image.size)
+        self.assertEqual(image.mode, "RGBA")
+        self.assertEqual(image.getpixel((0, 0)), (255, 0, 0, 128))
+
     def test_defaults_are_pinned_and_cpu(self):
         self.assertEqual(vision._DETECTOR_REVISION, "557a3b6fcdb1be415f074c22da2e16ab4f7e8265")
         self.assertEqual(vision._SEGMENTER_REVISION, "70c1a07f894ebb5b307fd9eaaee97b9dfc16068f")

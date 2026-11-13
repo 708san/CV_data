@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import tempfile
 from typing import Any
 
 
@@ -61,11 +62,27 @@ class OCR:
         self.device = device
         self.language = language
 
-    def predict(self, image: str | Path) -> OCRResult:
-        """画像ファイルを読み取り、文字・信頼度・位置を返す。"""
-        path = Path(image).expanduser()
-        if not path.is_file():
-            raise FileNotFoundError(f"画像ファイルが見つかりません: {path}")
+    def predict(self, image: Any) -> OCRResult:
+        """画像パスまたはPillow Imageを読み取り、文字・信頼度・位置を返す。"""
+        if isinstance(image, (str, Path)):
+            path = Path(image).expanduser()
+            if not path.is_file():
+                raise FileNotFoundError(f"画像ファイルが見つかりません: {path}")
+            return self._predict_path(path, str(path.resolve()))
+        try:
+            from PIL import Image
+        except ImportError as exc:
+            raise OCRError(
+                "Pillow Image入力にはPillowが必要です。pip install 'cv-data-lesson[ocr]'を確認してください。"
+            ) from exc
+        if not isinstance(image, Image.Image):
+            raise TypeError("imageには画像ファイルのパスまたはPillow Imageを指定してください。NumPy配列は未対応です。")
+        with tempfile.TemporaryDirectory(prefix="cvlesson-ocr-") as temporary_directory:
+            path = Path(temporary_directory) / "input.png"
+            image.convert("RGB").save(path, format="PNG")
+            return self._predict_path(path, "Pillow Image")
+
+    def _predict_path(self, path: Path, source: str) -> OCRResult:
         try:
             raw_results = self._pipeline.predict(input=str(path))
             if raw_results is None:
@@ -79,7 +96,7 @@ class OCR:
             raise
         except Exception as exc:
             raise OCRError(f"OCRを実行できませんでした: {exc}") from exc
-        return OCRResult(lines=tuple(lines), source=str(path.resolve()))
+        return OCRResult(lines=tuple(lines), source=source)
 
 
 def available_devices() -> dict[str, bool]:

@@ -32,6 +32,7 @@ ocr = [
     "langchain>=0.2,<1",
     "requests>=2.32.2,<2.33",
     "huggingface_hub>=0.23,<3",
+    "Pillow>=9,<14",
 ]
 vision = ["numpy>=1.23,<3", "Pillow>=9,<14", "transformers>=4.41,<6", "huggingface_hub>=0.23,<3"]
 diffusion = [

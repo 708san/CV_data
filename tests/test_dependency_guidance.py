@@ -39,7 +39,7 @@ class PackagingMetadataTests(unittest.TestCase):
             "dataframe": {"pandas"},
             "display": {"numpy", "pillow", "matplotlib"},
             "torch": {"numpy", "pillow", "torch", "torchvision"},
-            "ocr": {"paddleocr", "paddlex", "huggingface-hub"},
+            "ocr": {"paddleocr", "paddlex", "pillow", "huggingface-hub"},
             "diffusion": {"pillow", "diffusers", "transformers", "huggingface-hub"},
         }
         for extra, packages in expected.items():

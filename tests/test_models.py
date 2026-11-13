@@ -37,6 +37,22 @@ class ResNetEstimatorTests(unittest.TestCase):
         with self.assertRaisesRegex(models.ModelError, "先にfit"):
             models.ResNetClassifier().predict([self.image])
 
+    def test_pillow_image_inputs_are_copied_and_regression_pairs_are_supported(self):
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("Pillowが必要です")
+        image = Image.new("RGB", (8, 6), "red")
+        rows = models._image_rows([image], allow_pairs=False)
+        self.assertIsNot(rows[0], image)
+        self.assertEqual(rows[0].size, image.size)
+        pairs = models._image_rows([(self.image, image)], allow_pairs=True)
+        self.assertEqual(pairs[0][0], self.image)
+        self.assertIsNot(pairs[0][1], image)
+        rgb = models._load_rgb_image(rows[0])
+        self.assertEqual(rgb.mode, "RGB")
+        self.assertEqual(image.mode, "RGB")
+
     @unittest.skipIf(importlib.util.find_spec("torch"), "PyTorch導入環境では重み取得を避ける")
     def test_missing_torch_message(self):
         with self.assertRaisesRegex(models.ModelError, r"cv-data-lesson\[torch\]"):

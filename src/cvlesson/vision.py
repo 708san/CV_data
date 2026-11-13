@@ -53,8 +53,8 @@ class ObjectDetector:
         self._torch = torch
         self.device = device
 
-    def predict(self, image: str | Path, *, threshold: float = 0.5) -> list[Detection]:
-        """画像中のCOCOカテゴリを検出し、元画像座標の枠を返す。"""
+    def predict(self, image: Any, *, threshold: float = 0.5) -> list[Detection]:
+        """パスまたはPillow ImageのCOCOカテゴリを検出し、元画像座標の枠を返す。"""
         if not 0 <= threshold <= 1:
             raise ValueError("thresholdは0から1の範囲で指定してください。")
         rgb = _open_image(image)
@@ -92,7 +92,7 @@ class PromptSegmenter:
 
     def predict(
         self,
-        image: str | Path,
+        image: Any,
         *,
         box: Iterable[float] | None = None,
         point: Iterable[float] | None = None,
@@ -124,7 +124,7 @@ class PromptSegmenter:
         return Segmentation(mask=mask, score=float(scores[best].item()), prompt_type=prompt_type, prompt=prompt)
 
     def segment_detections(
-        self, image: str | Path, detections: Iterable[Detection]
+        self, image: Any, detections: Iterable[Detection]
     ) -> list[DetectedSegment]:
         """検出枠ごとにSAMを呼ぶ。検出ラベルはSAMの推論ラベルではない。"""
         results = []
@@ -225,11 +225,15 @@ def _open_image(image: str | Path):
         from PIL import Image
     except ImportError as exc:
         raise VisionError("画像処理にはPillowが必要です。pip install 'cv-data-lesson[vision]'を実行してください。") from exc
-    path = Path(image).expanduser()
-    if not path.is_file():
-        raise FileNotFoundError(f"画像ファイルが見つかりません: {path}")
-    with Image.open(path) as opened:
-        return opened.convert("RGB")
+    if isinstance(image, (str, Path)):
+        path = Path(image).expanduser()
+        if not path.is_file():
+            raise FileNotFoundError(f"画像ファイルが見つかりません: {path}")
+        with Image.open(path) as opened:
+            return opened.convert("RGB")
+    if isinstance(image, Image.Image):
+        return image.convert("RGB").copy()
+    raise TypeError("imageには画像ファイルのパスまたはPillow Imageを指定してください。NumPy配列は未対応です。")
 
 
 def _validate_box(box: Iterable[float], width: int, height: int) -> tuple[float, float, float, float]:

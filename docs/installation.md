@@ -8,6 +8,21 @@ PyPI公開前の開発版です。次の依存構成は機能単位で分けて�
 
 パッケージメタデータ上の対象はPython 3.11〜3.13です。3.10はDiffusersなど一部AI依存の現在の対応範囲と揃いにくいため、初期公開では対象外にします。3.14以降は依存組み合わせの確認後に追加します。
 
+## 目的から選ぶ
+
+PyPIにはまだ公開していません。以下のコマンドは、このリポジトリをcloneしてルートフォルダで実行する開発版向けです。PyTorchやPaddlePaddleのCPU/GPU用wheelは環境によって異なるため、該当機能のリンク先で先に選びます。
+
+| やりたいこと | 追加するもの | 手順 |
+|---|---|---|
+| データ一覧・取得 | 追加依存なし | `python -m pip install -e .` |
+| DataFrameでラベルを確認、画像や結果を表示 | `dataframe`, `display` | `python -m pip install -e '.[dataframe,display]'` |
+| ResNetで分類・回帰 | 公式PyTorch/Torchvision、`torch` | 公式サイトでCPU/GPU版を選んでから `python -m pip install -e '.[torch]'` |
+| OCR | 環境に合うPaddlePaddle、`ocr` | PaddlePaddleを先に入れてから `python -m pip install -e '.[ocr]'`。PyTorch系とは別環境を推奨 |
+| 検出・領域分割 | 公式PyTorch/Torchvision、`vision` | PyTorchを先に入れてから `python -m pip install -e '.[vision]'` |
+| SDXL画像生成・画像変換 | 公式PyTorch/Torchvision、`diffusion` | GPU環境を確認し、PyTorchを先に入れてから `python -m pip install -e '.[diffusion]'` |
+
+機能を一括で入れるextraはありません。ColabではランタイムのCPU/GPUを選んでから導入してください。GPUを使う場合も自動切替はせず、各APIの`available_devices()`で確認してから`device`を指定します。詳細なOS・CUDA・依存条件は以下の機能別案内にまとめています。
+
 ## 機能別インストール
 
 リポジトリを取得した開発者は、以下の`pip install -e`を使います。PyPI公開後は`-e .`を`cv-data-lesson`へ置き換える予定です。
@@ -19,7 +34,7 @@ PyPI公開前の開発版です。次の依存構成は機能単位で分けて�
 | DataFrame | `dataframe` | pandas | `to_df()`を使うときだけ必要 |
 | 画像表示・監査 | `display` | NumPy、Pillow、Matplotlib | 画像を開いて表示・検査するときに必要 |
 | ResNet分類・回帰 | `torch` | NumPy、Pillow、PyTorch、Torchvision | ResNet重みは初回利用時に別途取得。TorchとTorchvisionは公式の対応組み合わせで導入する |
-| 日本語OCR | `ocr` | PaddleOCR 3.1.0、PaddleX 3.1系、LangChain 1.0未満、Hugging Face Hub | PaddlePaddle本体はCPU/GPU環境に合わせ別途導入。OCR専用環境を推奨 |
+| 日本語OCR | `ocr` | PaddleOCR 3.1.0、PaddleX 3.1系、Pillow、LangChain 1.0未満、Hugging Face Hub | PaddlePaddle本体はCPU/GPU環境に合わせ別途導入。OCR専用環境を推奨 |
 | 物体検出・領域分割 | `vision` | NumPy、Pillow、Transformers、Hugging Face Hub（1.x対応） | PyTorchを先に導入。初回の明示読み込み時にDETR約167 MBまたはSAMの重み約375 MBを取得 |
 | SDXL生成・画像変換 | `diffusion` | Pillow、Diffusers（Torch extraを含む）、Transformers、Hugging Face Hub | 初回利用時に基盤モデルと選択LoRAを取得。数GBの空き容量が必要 |
 
@@ -88,8 +103,9 @@ print("MPS:", torch.backends.mps.is_available())
 ## 現在の制限
 
 - OCRはColab Python 3.13のCPUランタイムで、PaddlePaddle 3.2.0・PaddleOCR 3.1.0・PaddleX 3.1.4を導入し、合成した英数字画像の推論と共通戻り値を確認しました。日本語実画像の認識品質、GPU、他OS・他バージョンの組み合わせは未確認です。
-- 検出・領域分割のAPIと依存extraは実装済みですが、DETR/SAMのモデル実取得、CPU/GPU推論、Colab T4での確認は未実施です。
+- 検出・領域分割はColab Python 3.13のT4でDETRとSAMの固定モデルを取得・推論し、検出結果、SAMのboolマスクと重ね合わせ表示を確認しました。確認はNotebook内の合成図形画像1枚です。実データでの精度、CPU・他OS・他GPUは未確認です。
 - OCRがPaddlePaddleなど別の深層学習基盤を必要とする場合、PyTorch系との同一環境での併用は未確認です。競合しないと確認できるまでは、専用仮想環境へ分ける導入例を優先します。機能を全部入れる`all` extraは設けません。
+- ResNetの実データ分類・回帰、OCRの公開実レシート推論、SAMの実データ比較を行うColab Notebookを用意しましたが、今回追加した各フローはまだColabで実行していません。Notebookの構文確認とAPIのネットワーク不要テストだけを完了しています。
 - 依存範囲の実環境チェックは開発中です。ResNetの既存CPU動作確認はPyTorch 2.2.2/Torchvision 0.17.2で行ったため、更新した推奨下限（PyTorch 2.6/Torchvision 0.21）での再確認が残っています。
 
 ## 公式情報
