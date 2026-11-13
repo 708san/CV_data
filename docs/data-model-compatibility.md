@@ -90,15 +90,16 @@ image_path = frame.iloc[0]["image_path"]
 predictions = detector.predict(image_path)
 ```
 
-手元画像を使う場合は、ColabでアップロードしたファイルをPillow Imageとして直接渡せます。次の例では利用者が画像を選びます。
+Colab左側の「ファイル」欄から画像をアップロードし、表示されたパスを`image_path`または`SOURCE_IMAGE_PATH`へ設定してください。`files.upload()`のポップアップは使いません。Safariなどでアップロードに失敗する場合は、画像をGoogle Driveへ置き、Driveをマウントしてそのファイルパスを指定してください。手元画像はPillow Imageとして直接渡せます。
 
 ```python
-from google.colab import files
+from pathlib import Path
 from PIL import Image
 from cvlesson import display
 
-uploaded = files.upload()
-image_path = next(iter(uploaded))
+image_path = "/content/your-image.jpg"  # Colab左側の「ファイル」欄からアップロードしたパス
+if not Path(image_path).is_file():
+    raise FileNotFoundError("Colab左側の「ファイル」欄から画像をアップロードし、image_pathをそのファイル名に合わせてください。")
 with Image.open(image_path) as opened:
     image = opened.convert("RGB")
 predictions = detector.predict(image)

@@ -99,14 +99,14 @@ print("R²:", model.score(test_data[image_pair], test_data[target]))
 
 ## 自分の画像を準備する
 
-以下を一度実行すると、アップロードした画像を`image_path`でOCR・検出・領域分割へ渡せます。ローカルでは`image_path = "./自分の画像.jpg"`のようにファイルパスを指定します。
+Colab左側の「ファイル」欄から画像をアップロードし、表示されたパスを`image_path`または`SOURCE_IMAGE_PATH`へ設定してください。`files.upload()`のポップアップは使いません。Safariなどでアップロードに失敗する場合は、画像をGoogle Driveへ置き、Driveをマウントしてそのファイルパスを指定してください。 ローカルでは`image_path = "./自分の画像.jpg"`のようにファイルパスを指定します。
 
 ```python
-from google.colab import files
+from pathlib import Path
 
-uploaded = files.upload()
-image_path = next(iter(uploaded))
-print("選んだ画像:", image_path)
+image_path = "/content/your-image.jpg"  # Colab左側の「ファイル」欄からアップロードしたパス
+if not Path(image_path).is_file():
+    raise FileNotFoundError("Colab左側の「ファイル」欄から画像をアップロードし、image_pathをそのファイル名に合わせてください。")
 ```
 
 Colabへアップロードした画像は現在のランタイムで処理され、ライブラリが外部サービスへ自動送信することはありません。第三者の写真を使う場合は利用許可や写っている人の同意を確認してください。

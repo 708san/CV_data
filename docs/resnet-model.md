@@ -44,11 +44,12 @@ probability_estimates = model.predict_proba(test["image_path"])  # 分類だけ�
 学習・予測の`X`には画像パス列またはPillow Image列を指定できます。回帰のペアでは各画像をパスまたはPillow Imageにできます。DataFrameの`image_path`列も利用できます。
 
 ```python
-from google.colab import files
+from pathlib import Path
 from PIL import Image
 
-uploaded = files.upload()
-image_path = next(iter(uploaded))
+image_path = "/content/your-image.jpg"  # Colab左側の「ファイル」欄からアップロードしたパス
+if not Path(image_path).is_file():
+    raise FileNotFoundError("Colab左側の「ファイル」欄から画像をアップロードし、image_pathをそのファイル名に合わせてください。")
 with Image.open(image_path) as opened:
     image = opened.convert("RGB")
 prediction = model.predict(image)

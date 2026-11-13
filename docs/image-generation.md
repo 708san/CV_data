@@ -81,13 +81,14 @@ result = creator.generate(
 
 SDXLのImage-to-Image機能を使い、入力写真と説明文から画像を作り直します。[Diffusersの画像変換API](https://huggingface.co/docs/diffusers/using-diffusers/img2img)では入力画像・prompt・strengthを使います。`strength`は0〜1の範囲で指定し、小さい値は入力の構図を残しやすく、大きい値は変更を強めます。
 
-Colabでは次のセルで元画像を選びます。ローカルでは`image_path`に実際の画像ファイルのパスを指定してください。
+Colab左側の「ファイル」欄から画像をアップロードし、表示されたパスを`image_path`または`SOURCE_IMAGE_PATH`へ設定してください。`files.upload()`のポップアップは使いません。Safariなどでアップロードに失敗する場合は、画像をGoogle Driveへ置き、Driveをマウントしてそのファイルパスを指定してください。 ローカルでは`image_path`に実際の画像ファイルのパスを指定してください。
 
 ```python
-from google.colab import files
+from pathlib import Path
 
-uploaded = files.upload()
-image_path = next(iter(uploaded))
+image_path = "/content/your-image.jpg"  # Colab左側の「ファイル」欄からアップロードしたパス
+if not Path(image_path).is_file():
+    raise FileNotFoundError("Colab左側の「ファイル」欄から画像をアップロードし、image_pathをそのファイル名に合わせてください。")
 ```
 
 ```python
