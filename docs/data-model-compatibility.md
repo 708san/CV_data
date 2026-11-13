@@ -183,7 +183,7 @@ OCRモデルは推論専用です。`ground_truth`はデータの正解情報で
 | SAM領域分割 | 画像パスまたはPillow Imageと点または矩形 | `Segmentation`（NumPy bool mask、品質予測値、prompt情報） | NumPy画像配列は未対応 |
 | SDXL生成 | prompt。画像変換時は画像パスまたはPillow Image | Pillow Image | 画像変換ではPillow Imageも可。NumPy画像は未対応 |
 
-検出・領域分割・OCRの結果クラス自体に`show()`や`save()`はありませんが、`cvlesson.display.render(image, result)`で合成したPillow Imageを作り、`display.show(image, result)`または`display.save(image, path, result)`で確認・保存できます。`display` extraを必要時に導入します。OCR結果だけは別途`to_dict()`も持ちます。
+検出・領域分割・OCRの結果クラス自体に`show()`や`save()`はありませんが、`cvlesson.display.render(image, result)`で合成したPillow Imageを作り、`display.show(image, result)`または`display.save(image, path, result)`で確認・保存できます。OCRは`display.show_ocr(image, result)`で文字一覧と行別画像を表示し、`display.render_ocr_report(image, result)`で埋め込み用HTMLを取得できます。基本インストールで画像表示依存を利用できます。OCR結果の`to_dict()`も引き続き利用できます。
 
 ## ここから見える優先改善
 
