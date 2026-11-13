@@ -22,7 +22,7 @@
 
 受け入れ条件：学生が`datasets.get()`後に固定split、画像パス、日本語クラス名、天候の数値列を取得できる。配布物は固定URL・固定SHAで検証され、CC BY 4.0の帰属と改変表示、Open-Meteo無料APIの非商用条件が正確に説明される。データは地域予報の精度保証として説明しない。
 
-進捗：一次情報のライセンス・API条件、提供ZIP構成とSHA、ZIP安全性、CRC、画像全件デコード、ラベル規則、日付split、代表画像を確認済み。共通artifact（1,000画像・全ファイルSHA manifest）、分類追加列の型付き`to_df()`対応、カタログ・データ説明を実装しました。リリース用manifest・監査報告・権利記録はCV_data_artifactsの作業ブランチに準備中です。GitHub Release assetのアップロードはローカル`gh`認証tokenが失効しているため未完了。公開済みと誤表示しないようライブラリ側では未公開状態にしています。
+進捗：一次情報のライセンス・API条件、提供ZIP構成とSHA、ZIP安全性、CRC、全画像デコード、ラベル規則、日付split、代表画像を確認済み。共通artifact（1,000画像・全ファイルSHA manifest）、分類追加列の型付き`to_df()`対応、カタログ・データ説明を実装しました。固定Release assetを公開し、GitHubから再取得したZIPのサイズ10,014,277 bytes・SHA-256 `c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0`が一致。成果物manifest・監査・権利・変換記録とregistry、ライブラリ公開設定を各PRに反映しました。両PRは未マージのため、変更をdefault branchへ反映するレビュー・マージが残っています。Colabでの実利用確認は未実施です。
 
 ## 今回の作業単位：分類Notebookの`predict_proba()`型不一致を修正
 
