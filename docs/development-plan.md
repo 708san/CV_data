@@ -2,6 +2,27 @@
 
 更新日：2026-11-13
 
+## 今回の作業単位：空画像・翌日天気データを利用可能にし、生成Notebookの固定版ずれを修正
+
+対象仕様：3.1〜3.3、4.4、5.1、6、7。空画像・翌日天気データを成果物Release、registry、ライブラリAPIの順に統合し、SDXL/LoRA Notebookで起きた`capabilities_ja`のKeyErrorを解消する。
+
+事前確認：
+- データartifact Releaseは公開済み。GitHubから再取得したファイルは10,014,277 bytes、SHA-256 `c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0`で一致。
+- 成果物registry等はCV_data_artifacts PR #49、ライブラリ登録はCV_data PR #64に準備済み。#64はこのブランチをbaseにする。
+- 生成NotebookはCV_data固定commit `635fa30db261ae5b3d43ab87c9e5f9e66a78bd1a`をインストールしていた。この版の`loras.list_models()`は`capabilities_ja`を返さない。PR #63の現行コードcommit `940ae09babebc698563b7cf3a35bd842840388f5`では当該項目を返すことを確認した。
+
+順序：
+1. PR #49の成果物manifest・権利記録・台帳と、Release assetの固定URL/SHAを確認して成果物側を統合する。
+2. 生成Notebookのインストール参照を、`capabilities_ja`を含む完全な40桁commitへ更新する。見出し・授業順・生成コードは変更しない。
+3. NotebookのJSONとセル構文・固定参照を確認し、開発進捗へ原因と修正を記録する。SDXL実行はColab T4で行う。
+4. PR #64をこのPRのbase branchへ取り込み、成果物データ/APIとNotebook修正を同じライブラリ変更としてmain向けPR #63から公開する。
+5. 変更対象のPRレビュー状態とCI結果を確認してから統合し、最終状態を開発計画・進捗へ記録する。
+
+受け入れ条件：成果物registryとライブラリが同一固定URL・SHAを参照し、マージ後に`datasets.get("sky_weather_next_day")`で取得できる。Notebookの指定commitで`loras.list_models()`が`capabilities_ja`を含み、表示セルがKeyErrorなしで実行できる。GPU実生成を行っていない場合はColab未確認と明記する。
+
+進捗：成果物Release assetを再取得してSHA一致を確認済み。PR #49/#64はレビュー可能。Notebookの不一致commitを特定し、修正・統合はこれから。
+
+
 ## 今回の作業単位：分類Notebookの`predict_proba()`型不一致を修正
 
 対象仕様：4.1、7。`_predict_values()`はNumPy配列を返す一方、`predict_proba()`がTensorを想定する`torch.softmax()`へそのまま渡し、ColabでTypeErrorになった。既存のscikit-learn風Estimator APIの不具合として修正する。
