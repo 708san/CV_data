@@ -19,7 +19,7 @@ PyPI公開前の開発版です。次の依存構成は機能単位で分けて�
 | DataFrame | `dataframe` | pandas | `to_df()`を使うときだけ必要 |
 | 画像表示・監査 | `display` | NumPy、Pillow、Matplotlib | 画像を開いて表示・検査するときに必要 |
 | ResNet分類・回帰 | `torch` | NumPy、Pillow、PyTorch、Torchvision | ResNet重みは初回利用時に別途取得。TorchとTorchvisionは公式の対応組み合わせで導入する |
-| 日本語OCR | `ocr` | PaddleOCR 3.1.0、PaddleX 3.1系、Hugging Face Hub | PaddlePaddle本体はCPU/GPU環境に合わせ別途導入。OCR専用環境を推奨 |
+| 日本語OCR | `ocr` | PaddleOCR 3.1.0、PaddleX 3.1系、LangChain 1.0未満、Hugging Face Hub | PaddlePaddle本体はCPU/GPU環境に合わせ別途導入。OCR専用環境を推奨 |
 | 物体検出・領域分割 | `vision` | NumPy、Pillow、Transformers、Hugging Face Hub | PyTorchを先に導入。初回の明示読み込み時にDETR約167 MBまたはSAMの重み約375 MBを取得 |
 | SDXL生成・画像変換 | `diffusion` | Pillow、Diffusers（Torch extraを含む）、Transformers、Hugging Face Hub | 初回利用時に基盤モデルと選択LoRAを取得。数GBの空き容量が必要 |
 
@@ -40,7 +40,7 @@ python -m pip install -e '.[diffusion]'
 
 ### OCR用の環境
 
-OCRを使うときだけ、PaddlePaddleと`ocr` extraを導入します。ResNet・SDXLのPyTorchとは別の仮想環境に分けると、深層学習基盤の依存競合を避けやすくなります。まず[PaddlePaddle公式インストール案内](https://www.paddlepaddle.org.cn/install/quick)でOS・Python・CPU/GPU・CUDAに合うPaddlePaddleを導入し、次にこのライブラリの`ocr` extraを入れます。`ocr` extraはPaddleOCR 3.1系に合うPaddleX 3.1系を選びます。
+OCRを使うときだけ、PaddlePaddleと`ocr` extraを導入します。ResNet・SDXLのPyTorchとは別の仮想環境に分けると、深層学習基盤の依存競合を避けやすくなります。まず[PaddlePaddle公式インストール案内](https://www.paddlepaddle.org.cn/install/quick)でOS・Python・CPU/GPU・CUDAに合うPaddlePaddleを導入し、次にこのライブラリの`ocr` extraを入れます。`ocr` extraはPaddleOCR 3.1系に合うPaddleX 3.1系と、旧APIを必要とするPaddleX向けのLangChain 1.0未満を選びます。Hugging Face Hubは1.xも許容します。
 
 ```bash
 python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
@@ -50,6 +50,8 @@ python -m pip install -e '.[ocr]'
 上記はCPU環境の例です。GPU環境では公式インストーラーで対応するCUDA版を選び、Colabでも現在のCUDA環境に一致するコマンドを選んでください。PaddlePaddle本体は環境ごとにwheelが異なるため、ライブラリが実行中に自動インストールすることはありません。利用者が`import paddle`を書く必要はなく、`ocr.load()`が必要な時にライブラリ内部で読み込みます。`ocr.load()`の既定はCPUです。GPUを使うときは`device="gpu:0"`を指定し、`ocr.available_devices()`で利用可否を先に確認します。
 
 OCRモデルは`ocr.load()`を呼んだ時に、Apache-2.0表示のPP-OCRv5 mobile検出・認識モデルを固定Hugging Face revisionから取得します。2モデルで約22 MBです。モデルカードの条件は各配布元で確認できます：[検出モデル](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_det)、[認識モデル](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_rec)。推論はローカルで実行し、読み取り結果は`text`と行ごとの`confidence`、画像上の四点`polygon`で返します。
+
+Colabで以前のOCR依存を導入済みの場合は、修正版をインストールした後にランタイムを再起動してください。`No module named 'langchain.docstore'`はPaddleOCR未導入ではなく、PaddleX 3.1系とLangChain 1.xの互換性問題です。新しい`ocr` extraはLangChainを1.0未満に制約します。
 
 ## PyTorchとCPU/GPU
 

@@ -2,6 +2,21 @@
 
 更新日：2026-11-13
 
+## 今回の作業単位：OCR extraのColab依存競合と誤案内を修正
+
+対象仕様：4.2、5.1、5.2。ColabログでPaddleOCR 3.1.0がPaddleX 3.1.4とともにLangChain 1.x系を解決し、PaddleXの旧`langchain.docstore`参照でOCR importが失敗することを確認。また、OCR extraの`huggingface_hub<1`がColab既存のTransformers/Diffusersと競合し、依存不整合を報告している。
+
+順序：
+1. `ocr` extraでPaddleOCR 3.1系が要求するLangChainを1.0未満に制約し、既存のLangChain API依存との不整合を防ぐ。
+2. OCR用Hugging Face Hub上限を他のモデル機能と揃え、Colab既存パッケージのHub 1.xを不要にダウングレードしない。
+3. PaddleOCR本体の欠落と、内部依存のimport失敗を区別して、原因に合う`OCRError`を返す。
+4. OCR導入文書・Colab Notebookに、既存ランタイムでの対処と再起動手順を反映する。
+5. 依存メタデータ、遅延import、エラー表示、Notebook構文のネットワーク不要テストを実行する。
+
+受け入れ条件：`langchain.docstore`を含む内部`ModuleNotFoundError`を「paddleocr未導入」と誤表示しない。`ocr` extraの依存指定が互換LangChainとHugging Face Hub 1.xを許容する。Colab利用者が依存の再導入・ランタイム再起動を行う方法が明記される。
+
+進捗：貼付ログから、PaddleOCR 3.1.0がPaddleX 3.1.4経由でLangChain 1.xを導入し、PaddleX内の旧`langchain.docstore`参照で失敗すること、およびHub 0.xへのダウングレードがColab既存依存と競合することを確認。`ocr` extraにLangChain `<1`制約とHub `<3`を設定。OCR未導入と内部依存エラーを別の案内にし、OCR導入文書を更新。Python 3.13でOCR・依存案内の13テスト成功、`git diff --check`成功。Colabでの再確認は未実施。
+
 ## 今回の作業単位：ColabのOCR smoke testで古いcvlessonを検出・更新
 
 対象仕様：4.2、5.1、7。ユーザーのColab出力に旧版OCRコードが現れ、既定名`PP-OCRv5_server_det`とローカルのmobileモデルの不一致を確認した。新しい固定コードを確実に使い、古いimport済みモジュールを見分けられるようにする。

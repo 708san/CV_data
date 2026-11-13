@@ -119,8 +119,28 @@ def load(
 
     try:
         from paddleocr import PaddleOCR
+    except ModuleNotFoundError as exc:
+        if exc.name == "paddleocr":
+            raise OCRError(
+                "OCRにはpaddleocrが必要です。pip install 'cv-data-lesson[ocr]'を実行してください。"
+            ) from exc
+        message = f"PaddleOCRの依存モジュール {exc.name!r} を読み込めませんでした。"
+        if exc.name == "langchain.docstore":
+            message += (
+                " PaddleX 3.1系はLangChain 1.xと互換性がありません。"
+                "互換版を含むcv-data-lesson[ocr]を入れ直し、ランタイムを再起動してください。"
+            )
+        else:
+            message += (
+                " OCR用の依存関係が壊れているか、別のパッケージと競合しています。"
+                "OCR専用の新しいランタイムでcv-data-lesson[ocr]を入れ直してください。"
+            )
+        raise OCRError(message) from exc
     except ImportError as exc:
-        raise OCRError("OCRにはpaddleocrが必要です。pip install 'cv-data-lesson[ocr]'を実行してください。") from exc
+        raise OCRError(
+            f"PaddleOCRの依存関係を読み込めませんでした: {exc}。"
+            "PaddlePaddleとcv-data-lesson[ocr]の導入手順を確認してください。"
+        ) from exc
 
     if detection_model_dir is None:
         try:

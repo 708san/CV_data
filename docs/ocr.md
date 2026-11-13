@@ -14,7 +14,9 @@ PaddlePaddleはCPU/GPUとCUDAの組み合わせにより導入コマンドが異
 python -m pip install -e '.[ocr]'
 ```
 
-これはPaddleOCR 3.1.0、互換範囲を3.2未満に固定したPaddleX 3.1系、およびHugging Face Hubを導入します。PaddlePaddle本体はCPU/GPU・CUDA環境に合わせて別に導入します。OCRモデルは合計約22 MBで、次の`load()`時に固定revisionからキャッシュへ取得されます。公開モデルの取得にHugging Faceのログインや`HF_TOKEN`は不要です。ライブラリはOCRを呼んだ時だけPaddle系モジュールをimportし、実行中にpip installは行いません。
+これはPaddleOCR 3.1.0、互換範囲を3.2未満に固定したPaddleX 3.1系、LangChain 1.0未満、およびHugging Face Hubを導入します。PaddleX 3.1系がLangChain 1.xの旧APIを参照するため、LangChainの上限を指定しています。Hugging Face Hubは1.xも利用でき、Colabに入っている他のAIパッケージを古いHubへ下げません。PaddlePaddle本体はCPU/GPU・CUDA環境に合わせて別に導入します。OCRモデルは合計約22 MBで、次の`load()`時に固定revisionからキャッシュへ取得されます。公開モデルの取得にHugging Faceのログインや`HF_TOKEN`は不要です。ライブラリはOCRを呼んだ時だけPaddle系モジュールをimportし、実行中にpip installは行いません。
+
+以前のColabランタイムで`No module named 'langchain.docstore'`が出た場合は、修正済みの依存指定を入れ直してからランタイムを再起動してください。古い`cvlesson`をimportしたままでは、入れ直した依存は反映されません。
 
 ## 文字を読む
 

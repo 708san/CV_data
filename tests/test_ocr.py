@@ -104,6 +104,31 @@ class OCRTests(unittest.TestCase):
             with self.assertRaisesRegex(ocr.OCRError, "利用できません"):
                 ocr.load(device="gpu:0")
 
+    def test_load_reports_missing_paddleocr_with_install_hint(self):
+        missing = ModuleNotFoundError("No module named 'paddleocr'")
+        missing.name = "paddleocr"
+        paddleocr_module = types.ModuleType("paddleocr")
+        with patch.object(ocr, "_import_paddle", return_value=_FakePaddle), patch.dict(
+            sys.modules, {"paddleocr": None}
+        ), self.assertRaisesRegex(ocr.OCRError, r"cv-data-lesson\[ocr\]"):
+            ocr.load()
+
+    def test_load_distinguishes_nested_langchain_import_error(self):
+        missing = ModuleNotFoundError("No module named 'langchain.docstore'")
+        missing.name = "langchain.docstore"
+        paddleocr_module = types.ModuleType("paddleocr")
+
+        def fail_import(name, *args, **kwargs):
+            if name == "paddleocr":
+                raise missing
+            return original_import(name, *args, **kwargs)
+
+        original_import = __import__
+        with patch.object(ocr, "_import_paddle", return_value=_FakePaddle), patch(
+            "builtins.__import__", side_effect=fail_import
+        ), self.assertRaisesRegex(ocr.OCRError, r"LangChain 1.x"):
+            ocr.load()
+
     def test_custom_models_must_be_local_and_provided_as_a_pair(self):
         with self.assertRaisesRegex(ValueError, "両方"):
             ocr.load(detection_model_dir="./detector")
