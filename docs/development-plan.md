@@ -1,16 +1,15 @@
-# 次：公開済みalpha8でOCR全文表示をColab実測
+# 次：ColabでOCR全文表示を実測
 
-更新日：2026-11-14。対象仕様：0.24、4.2、5.3。利用者から、OCRの行が細切れで読みにくいとの報告があったため、全文を主表示し、行別の信頼度・画像切り抜きは折りたたみ詳細に移す。
+更新日：2026-11-14。対象仕様：0.24、4.2、5.3。OCRの全文優先表示は実装・main統合済み。alpha8のGitHub ReleaseとPyPI公開を完了し、Colab実機確認を残す。
 
-完了済み：OCR全文表示・後方互換テスト・ガイド・Notebookを実装。PR #99はCI全成功後にmainへ統合済み。最終コミットのGitHub Actionsは成功。パッケージ候補は0.1.0a8。
+完了済み：PR #99統合、最終CI成功、GitHub Release [v0.1.0a8](https://github.com/708san/CV_data/releases/tag/v0.1.0a8)作成、[PyPI 0.1.0a8](https://pypi.org/project/cv-data-lesson/0.1.0a8/)にwheelとsdist公開。Publish workflowのbuild・metadata・禁止バイナリ検査・Trusted Publishingが成功。PyPI JSONで両配布物とSHA-256を確認。
 
 残作業：
-1. GitHub Release v0.1.0a8を作成し、Trusted Publishingのbuild・publishを確認する。
-2. PyPIにwheelとsdistが掲載されたことを確認する。
-3. [OCR Colab確認Notebook](../notebooks/colab/ocr_smoke_test.ipynb)をa8で実行し、全文表示・折りたたみ詳細・OCR生データを確認する。
-4. Colab実測を記録し、完了状態へ更新する。
+1. [OCR Colab確認Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/ocr_smoke_test.ipynb)を実行する。
+2. 全文がひとつの枠で読めること、行詳細を開閉できること、生のresult.textとresult.to_dict()を使えることを確認する。
+3. 共有された実行結果をColab確認表・進捗へ記録する。未報告の環境情報は補完しない。
 
-受け入れ条件：OCR全文が原文の改行を保つ一つの領域として読める。行別カードは初期状態で展開されない。行の信頼度と対応画像を必要時に確認でき、OCRResult・OCRLine・to_dict()は維持される。未実行のColab確認は成功扱いしない。
+受け入れ条件：OCR全文が原文の改行を保つ一つの領域として読める。行別詳細は初期状態で閉じ、必要時に信頼度と対応画像を確認できる。OCRResult・OCRLine・to_dict()を維持する。未実行のColab確認は成功扱いしない。
 ---
 
 # 完了：ColabでのImage-to-Image確認を記録
