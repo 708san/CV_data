@@ -18,7 +18,7 @@
 - 画像を改変せず、`images/<split>/<class>/`、`labels.csv`、`metadata.jsonl`、manifestへ整形。ZIPは10,014,277 bytes、SHA-256 `c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0`。
 - `datasets.to_df()`に型付き追加列を出す実装と、`datasets.info/list_available`で型を表示する実装を追加。日本語データ説明・カタログ・モデル対応表を更新。
 - Colorado州Goldenの1地点・ERA5再解析値で日本の地域予報に使えないこと、固定MST、test側の雨比率が高いことを記載。
-- CV_data_artifactsのmanifest・監査記録等は作業中。Release assetはローカルGitHub CLI token失効のため未公開。公開状態と取り違えないよう、現時点でAPIの正式一覧と取得対象から除外。
+- 固定Release assetを公開。Releaseから再取得したファイルのサイズ10,014,277 bytesとSHA-256 `c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0`が一致し、正しいファイル名のassetのみを残した。成果物registry、manifest、監査・ライセンス・変換記録もCV_data_artifacts PR #49に登録。CV_data PR #64で取得APIを有効化し、取得可能データを23件へ更新。両PRは未マージ。Colabでの実利用確認は未実施。
 
 
 ## 2026-11-13：分類Estimatorのpredict_proba型エラーを修正
