@@ -15,7 +15,7 @@
 - Colabの`predict_proba()`がNumPy配列を`torch.softmax()`へ渡してTypeErrorになったため、softmax前にTensorへ変換する修正を追加。
 - モデル重みを取得しないテストで、Tensor変換とクラス軸ごとの確率正規化を確認。
 - ResNet分類・回帰はscikit-learn風Estimator、OCR・検出・領域分割・画像生成は用途別のload/predict/generate APIであることをクイックスタート等へ追記。PyTorchはResNet等の内部で利用し、標準の学習導線では利用者が学習ループを書く必要はありません。
-- Python 3.13で全85テスト成功（16件skip）、`git diff --check`成功。ユーザーが修正版の分類NotebookをColabで実行し、`predict_proba()`を含む分類フローを確認済み。回帰Notebookの確認が残る。
+- Python 3.13で全85テスト成功（16件skip）、`git diff --check`成功。ユーザーが修正版の分類NotebookをColabで実行し、`predict_proba()`を含む分類フローを確認済み。回帰Notebookも正常に動作したと確認済み。他機能のColab再確認は未完了。
 
 ## 2026-11-13：Colabの日本語Glyph警告に対応
 
