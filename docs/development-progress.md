@@ -1,12 +1,12 @@
 # 開発進捗
 
-## 2026-11-14：OCR全文表示alpha8をGitHub・PyPIで公開
+## 2026-11-14：OCR全文表示alpha8をColabで利用者確認
 
 - OCR全文を改行を保ったひとつの選択・コピー可能な枠で表示し、行ごとの信頼度・画像切り抜きを折りたたみ詳細へ移した。OCRResult、OCRLine、to_dict()は維持。
-- PR [#99](https://github.com/708san/CV_data/pull/99)をCI成功後にmainへ統合。公開候補の全Colab Notebookを0.1.0a8に固定。
-- GitHub Release [v0.1.0a8](https://github.com/708san/CV_data/releases/tag/v0.1.0a8)を作成し、Publish workflowが成功。wheel/sdistのビルド、metadata、データ・モデルの禁止バイナリ検査、PyPI Trusted Publishingを確認。
-- [PyPI 0.1.0a8](https://pypi.org/project/cv-data-lesson/0.1.0a8/)でwheel（71,888 bytes、SHA-256 eb358bac139094b36b98de7689b8d3839ac2cac8741bdf67b5b783cdbfc52df2）とsdist（86,823 bytes、SHA-256 c50a6fafb1707af3ed934f6a5db2e61863c36464c444268fdac7130e746cee94）を確認。
-- OCR表示変更後のColab実機確認は未実施。確認Notebookを実行し、全文・折りたたみ詳細・生データ利用を確認する。
+- PR [#99](https://github.com/708san/CV_data/pull/99)をCI成功後にmainへ統合。全Colab確認Notebookを0.1.0a8に固定。
+- GitHub Release [v0.1.0a8](https://github.com/708san/CV_data/releases/tag/v0.1.0a8)を作成。build・metadata・禁止バイナリ検査・PyPI Trusted Publishingが成功。
+- [PyPI 0.1.0a8](https://pypi.org/project/cv-data-lesson/0.1.0a8/)でwheelとsdistを確認。SHA-256はColab確認前の進捗記録を参照。
+- 利用者から公開OCR Notebookの表示確認済みとの報告あり。実行日、Python、ランタイム等は未報告。別アプリ上での表示・連携動作は未検証。
 
 ## 2026-11-14：Colab実測の利用者報告を反映
 
