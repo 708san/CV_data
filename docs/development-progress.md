@@ -550,4 +550,12 @@
 - Colab Notebookの通常例を6 steps/512pxから25 steps・guidance 7・768pxへ変更し、値をセル冒頭の設定欄で調整できるようにした。ユーザーはこれ以前の修正版NotebookでアンインストールなしにLoRAが動くことを確認済み。新しい画質設定でのT4再実行は未確認。
 - Python 3.11、3.12、3.13のunit CIとpackage-smoke CIが成功。Notebookセルの改行を保持する形式も検査で確認。
 - PEFT v0.21.3の公式tag sourceを確認。配布版にはtorchao 0.10.0を警告扱いにするPR #3989の変更が含まれていないため、Colab Notebookは固定merge commitのPEFTを引き続き使う。PyPI版PEFTの修正リリース待ち。
-- 次は`twine check dist/*`をpackage-smoke CIに加え、PyPIの配布メタデータをアップロードなしで検査する。
+- PR #72で`twine check dist/*`をpackage-smoke CIへ追加し、PyPIの配布メタデータをアップロードなしで検査。Python 3.11〜3.13のunit job、Python 3.13のwheel/sdist build・Twine・バイナリ検査・クリーンvenv importがすべて成功。
+
+
+## 2026-11-13：PyPI配布メタデータのCI検査
+
+- PR #72をmainへsquash merge（`b4aacc1e2b34ef8bf9e2aabb6846528f79183742`）。
+- package-smokeでwheel/sdistのbuild後に`twine check dist/*`を実行。build、メタデータ検査、禁止バイナリ検査、クリーンvenvへのwheel導入・importが成功。
+- Python 3.11、3.12、3.13のunit jobsもすべて成功。PyPI/TestPyPIへのアップロードは行っていない。
+- 生成設定API・説明・Notebookの更新はPR #71でmainへ反映済み。25 steps・guidance 7・768×768のColab T4出力品質とVRAMは未実測。次はColab生成Notebookでtext-to-imageとimage-to-imageを各1件確認する。
