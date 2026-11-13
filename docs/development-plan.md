@@ -2,21 +2,24 @@
 
 更新日：2026-11-13
 
-## 今回の作業単位：SDXL/LoRAの生成品質設定を使いやすく説明
+## 完了：SDXL/LoRAの生成設定を使いやすく説明
 
-対象仕様：4.4、5.5、6、7。APIにはsteps、guidance、seed、サイズ、negative prompt、Image-to-Image strength、LoRA triggerの設定が既にある。一方、Colab動作確認Notebookは6 steps・512pxで、速度優先の設定が通常品質の例に見えてしまう。実装済みAPIを増やす前に、仕様上の既定値・調整可能項目・各値の効果を明記し、Notebookとクイックスタートを品質確認に使える設定へ直す。
+対象仕様：4.4、5.5、6、7。APIにはsteps、guidance、seed、出力サイズ、negative prompt、Image-to-Image strength、LoRA triggerの指定が既にあったため、新APIは追加せず、仕様0.15・ガイド・Notebook・テストを整備。Notebookを6 steps/512pxの速度優先から25 steps、guidance 7.0、768px、seed 42を変更可能な品質比較例へ更新。PR #71をmainへマージし、Python 3.11〜3.13のユニットテストとpackage-smokeを確認。新設定でのColab画質・VRAMは未確認。
+
+## 今回の作業単位：PyPI配布メタデータ検査をCIへ追加
+
+対象仕様：5.1、7。wheel/sdist build・内容物検査・clean venv installはCIで成功済み。PyPI本番公開の前に`twine check`でREADMEを含む配布メタデータの表示適合をCIで確認する。TestPyPI/PyPIへのアップロードは行わない。
 
 順序：
-1. 仕様0.15、開発計画、`generation.py`、利用者Notebookとテストを確認する（完了）。
-2. 仕様を0.15へ更新し、既定値、サポートする調整項目、説明要件をコードより先に記録する（完了）。
-3. `generate()`の現行引数をテストで確認し、不要な新APIを加えず、既定値と明示引数の伝達を保証する。
-4. クイックスタートに短いパラメータ例と日本語の効果説明を追加する。
-5. Colab生成Notebookに編集しやすい設定ブロックを追加し、25 steps・guidance 7.0・768px・seed 42を初期値として、低stepsの旧設定を品質例から外す。Image-to-Imageではstrengthを別設定として説明する。
-6. テストとNotebook構文・セル順を確認し、Colabで再実行後に画像品質・VRAMを実測として記録する。
+1. 仕様、開発計画、CIのpackage-smoke job、pyprojectのREADME/license/classifiersを確認する。
+2. この作業と受け入れ条件を計画へ記録する（完了）。
+3. CIのpackage-smoke jobでbuild frontendとTwineを導入し、wheel/sdist build後に`twine check dist/*`を実行する。
+4. Python 3.13 package-smokeとPython 3.11〜3.13 unit jobsを実行し、結果を記録する。
+5. 配布物を公開・アップロードせずCI内で確認する。
 
-受け入れ条件：学生が変更できる項目と結果への影響を短い日本語で理解でき、コード例の変数だけを変えて比較できる。Notebookの通常設定でstepsとguidanceをAPI既定値に合わせ、解像度768とseedを明示した品質比較例にする。動作確認のためだけに極端に低いstepsを通常例として使わない。Colab再実行前はT4生成確認済みと扱わない。
+受け入れ条件：wheel/sdistのbuild、`twine check`、binary不在検査、clean venv install/importが成功し、CIのunit matrixが通る。PyPIへの公開は含めない。
 
-進捗：コード監査で基本パラメータは実装済みと確認。仕様0.15と計画を先行更新。Notebookはsteps=6・512pxだったため、通常生成設定へ変更予定。
+進捗：計画を追加。PEFT v0.21.3を確認したが、torchao旧版を警告扱いするPR #3989の変更はtagged sourceに含まれていないため、Colab Notebookの固定修正版を維持する。
 
 ## 完了：画像生成extraへLoRA実行依存PEFTを含める
 
