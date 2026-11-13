@@ -46,6 +46,8 @@ PyPI/TestPyPIへのアップロードは未実施。
 4. 画像生成ガイドと進捗へ利用者向けの条件を簡潔に記載し、Notebook JSON・全CIを確認する。
 
 受け入れ条件：stepsは正の整数、guidance_scaleは有限かつ0以上、strengthは有限な0〜1、width/heightは指定時に正の8の倍数、seedは整数かNone、negative_promptは文字列かNone、use_triggerはboolとして検査する。無効値でpipelineが一度も呼ばれず、値の直し方が分かるエラーになる。
+
+進捗：事前検査と境界値・型違いテストを追加し、クイックスタートと画像生成ガイドへ受け付ける範囲を記載。CI検証待ち。
 ## 完了：画像生成extraへLoRA実行依存PEFTを含める
 
 対象仕様：4.4、5.1、5.2、7。`diffusion` extraへ`peft>=0.21.2,<1`を追加し、依存メタデータテストと導入案内を更新。PR #68をmainへマージし、CI成功。ユーザーがColabで修正版Notebookを実行し、torchaoをアンインストールせずにLoRA生成が動作することを確認。
