@@ -65,6 +65,145 @@ _PREVIEW_MATERIALS: dict[str, LoraMaterial] = {
 }
 
 
+@dataclass(frozen=True)
+class LoraModel:
+    """配布元から利用者が直接取得する学習済みLoRA。"""
+
+    id: str
+    name_ja: str
+    repository: str
+    filename: str
+    revision: str
+    sha256: str
+    base_model: str
+    base_revision: str
+    trigger_words: tuple[str, ...]
+    license_name: str
+    license_url: str
+    training_dataset: str
+    training_dataset_url: str
+    training_dataset_license: str
+    source_url: str
+    rights_note: str
+    capabilities_ja: str
+    use_examples_ja: tuple[str, ...]
+    limitations_ja: str
+
+
+_MODELS: dict[str, LoraModel] = {
+    "fluent_emoji_3d": LoraModel(
+        id="fluent_emoji_3d",
+        name_ja="丸みのある3Dアイコン・絵文字風",
+        repository="klibaner/fluent-emoji-style-sdxl",
+        filename="microsoft-fluent-emoji-sdxl.safetensors",
+        revision="7ff36ef02e53e75a4ca3bd5bd326de3f30a41fba",
+        sha256="43689df28723d9ce4f9dbdd745cd95d6d5fa35f1ed5b774eb71e03be93da8c09",
+        base_model="stabilityai/stable-diffusion-xl-base-1.0",
+        base_revision="cae78213d9dd74e36e0eb4c99ca83b4aeb94fb1a",
+        trigger_words=("msemj style",),
+        license_name="MIT",
+        license_url="https://huggingface.co/klibaner/fluent-emoji-style-sdxl",
+        training_dataset="Norod78/microsoft-fluentui-emoji-512-whitebg",
+        training_dataset_url="https://huggingface.co/datasets/Norod78/microsoft-fluentui-emoji-512-whitebg",
+        training_dataset_license="MIT（配布元表示）",
+        source_url="https://github.com/microsoft/fluentui-emoji",
+        rights_note=(
+            "モデルカードと学習データカードはMITと表示。Microsoftの元絵を含むため、"
+            "商標・第三者権利と生成物の利用条件は利用者が確認する。Microsoft公式モデルではない。"
+        ),
+        capabilities_ja="SDXLで、丸みのある3Dアイコンや絵文字風の単体イラストを生成する。",
+        use_examples_ja=("案内用のアイコンや挿絵", "発表資料・ポスター・アプリ素材など"),
+        limitations_ja=(
+            "単体で中央に置く絵向け。画像内の文字は正確に描けない。"
+            "Microsoftの公式モデルではなく、Microsoftとの提携・承認もありません。"
+        ),
+    ),
+    "watercolor_sdxl": LoraModel(
+        id="watercolor_sdxl",
+        name_ja="写真・風景の水彩イラスト風",
+        repository="ostris/watercolor_style_lora_sdxl",
+        filename="watercolor_v1_sdxl.safetensors",
+        revision="0b65af0ac64347c8a35b82b4695ef5eadeffd5d7",
+        sha256="d375ae7e68e1377305c168b0550a0fda33925421f570f87870fb19278786e9ac",
+        base_model="stabilityai/stable-diffusion-xl-base-1.0",
+        base_revision="cae78213d9dd74e36e0eb4c99ca83b4aeb94fb1a",
+        trigger_words=(),
+        license_name="Apache-2.0",
+        license_url="https://huggingface.co/ostris/watercolor_style_lora_sdxl",
+        training_dataset="モデルカードに記載なし",
+        training_dataset_url="",
+        training_dataset_license="未記載",
+        source_url="https://huggingface.co/ostris/watercolor_style_lora_sdxl",
+        rights_note=(
+            "LoRA重みは配布元がApache-2.0と表示。SDXL 1.0用でトリガー語不要。"
+            "学習元データの出典・ライセンスはモデルカードに記載がなく、別途確認できていない。"
+        ),
+        capabilities_ja="SDXLの生成画像や入力画像を水彩画風にする。",
+        use_examples_ja=("写真の雰囲気を変えた画像", "風景の背景や説明用イラストなど"),
+        limitations_ja=(
+            "文字は正確に描けない。学習元データの来歴は未記載。"
+            "出力の著作権・肖像権・第三者権利は利用者が確認する。"
+        ),
+    ),
+    "pixel_art_sdxl": LoraModel(
+        id="pixel_art_sdxl",
+        name_ja="小さなピクセルアート素材",
+        repository="unsupervised-abdullah/pixel-art-sdxl-lora",
+        filename="pytorch_lora_weights.safetensors",
+        revision="85565b5401663e1277c70b51fd34a8b8c2b9e3f9",
+        sha256="acbae146be564ea1bcbc65c233b374a30972249aea15c8a0bcf383983603c297",
+        base_model="stabilityai/stable-diffusion-xl-base-1.0",
+        base_revision="cae78213d9dd74e36e0eb4c99ca83b4aeb94fb1a",
+        trigger_words=("pxlsprite",),
+        license_name="CreativeML Open RAIL++-M（SDXLから継承と配布元表示）",
+        license_url="https://huggingface.co/unsupervised-abdullah/pixel-art-sdxl-lora",
+        training_dataset="Angais/pixel-art-atlas-1.4m（1,000画像を選定）",
+        training_dataset_url="https://huggingface.co/datasets/Angais/pixel-art-atlas-1.4m",
+        training_dataset_license="CC0（モデルカードの表示）",
+        source_url="https://huggingface.co/unsupervised-abdullah/pixel-art-sdxl-lora",
+        rights_note=(
+            "モデルカードはSDXLから継承したCreativeML Open RAIL++-Mと表示。"
+            "学習元はCC0の合成ピクセル素材から選んだ1,000枚と記載。"
+            "基盤SDXLの利用条件も適用される。"
+        ),
+        capabilities_ja="SDXLで、単体の物体をピクセルアート風に生成する。",
+        use_examples_ja=("ゲーム用の小物やキャラクター素材", "教材・発表資料に使う図版など"),
+        limitations_ja=(
+            "単体の小さな物体向けで、背景や複数物体、文字は苦手。"
+            "出力は正確な16×16ドット配置ではなく、ゲーム用には目視確認と調整が必要。"
+        ),
+    ),
+    "thomas_cole_landscape": LoraModel(
+        id="thomas_cole_landscape",
+        name_ja="風景を19世紀の油彩画風にする",
+        repository="VRuins/thomas-cole-sdxl-lora",
+        filename="thomas-cole-sdxl-lora.safetensors",
+        revision="30373be8e89838dff2a4c6bfa2001d4188632695",
+        sha256="6ad18bdf606c25be342c2acda1fbcd02ad669c40163f25027d886022b52bea8a",
+        base_model="stabilityai/stable-diffusion-xl-base-1.0",
+        base_revision="cae78213d9dd74e36e0eb4c99ca83b4aeb94fb1a",
+        trigger_words=("tcole",),
+        license_name="MIT（LoRA重み。基盤モデルは別ライセンス）",
+        license_url="https://huggingface.co/VRuins/thomas-cole-sdxl-lora",
+        training_dataset="Thomas ColeとHudson River School周辺の絵画、約100〜110点",
+        training_dataset_url="https://huggingface.co/VRuins/thomas-cole-sdxl-lora",
+        training_dataset_license="パブリックドメインと配布元説明。個々の画像出典一覧は未提供",
+        source_url="https://huggingface.co/VRuins/thomas-cole-sdxl-lora",
+        rights_note=(
+            "配布元はLoRA重みをMIT、学習画像を米国でパブリックドメインと説明。"
+            "Wikimedia CommonsとWikiArt由来としていますが、画像ごとの出典記録は保持されていないとのこと。"
+            "基盤SDXLにはCreativeML Open RAIL++-Mが別途適用される。"
+        ),
+        capabilities_ja="SDXLの生成画像や入力画像をHudson River School風の風景油彩画にする。",
+        use_examples_ja=("風景写真のスタイル変換", "地域や自然を紹介する背景・挿絵など"),
+        limitations_ja=(
+            "Hudson River School風に寄るため地域の実景を正確に記録する用途には使わない。"
+            "画像内の文字は描けず、人物・建物などが変化することがある。"
+        ),
+    ),
+}
+
+
 def list_available(*, audience: str = "student") -> list[dict[str, Any]]:
     """承認済みのLoRA素材を一覧表示する。現在は空。"""
     if audience not in {"student", "teacher"}:
@@ -83,6 +222,59 @@ def list_preview() -> list[dict[str, Any]]:
          "rights_status": item.rights_status, "rights_note": item.rights_note}
         for item in _PREVIEW_MATERIALS.values()
     ]
+
+
+def list_models() -> list[dict[str, Any]]:
+    """利用者が配布元から取得する、権利情報を記録した学習済みLoRA一覧。"""
+    return [model_info(item.id) for item in _MODELS.values()]
+
+
+def model_info(model_id: str) -> dict[str, Any]:
+    """学習済みLoRAの出典、固定版、権利、利用上の注意を返す。"""
+    item = _model(model_id)
+    return {
+        "id": item.id,
+        "name_ja": item.name_ja,
+        "repository": item.repository,
+        "filename": item.filename,
+        "revision": item.revision,
+        "sha256": item.sha256,
+        "base_model": item.base_model,
+        "base_revision": item.base_revision,
+        "trigger_words": list(item.trigger_words),
+        "license": {"name": item.license_name, "url": item.license_url},
+        "training_dataset": {
+            "repository": item.training_dataset,
+            "url": item.training_dataset_url,
+            "license": item.training_dataset_license,
+        },
+        "source_url": item.source_url,
+        "capabilities_ja": item.capabilities_ja,
+        "use_examples_ja": list(item.use_examples_ja),
+        "rights_status": (
+            f"モデルライセンス表記あり（{item.license_name}）。"
+            f"学習元データ: {item.training_dataset_license}"
+        ),
+        "rights_note": item.rights_note,
+        "limitations_ja": item.limitations_ja,
+        "weights_included": False,
+        "download": "generation.load()を明示したときだけ配布元から取得",
+        "base_model_license": "CreativeML Open RAIL++-M（別途適用）",
+    }
+
+
+def get_model(model_id: str) -> LoraModel:
+    """学習済みLoRAの固定取得情報を返す。重みの取得は行わない。"""
+    return _model(model_id)
+
+
+def _model(model_id: str) -> LoraModel:
+    if not isinstance(model_id, str):
+        raise LoraError("学習済みLoRA IDは文字列で指定してください。")
+    try:
+        return _MODELS[model_id]
+    except KeyError as exc:
+        raise LoraError(f"未登録の学習済みLoRAです: {model_id}") from exc
 
 
 def _material(material_id: str) -> LoraMaterial:
@@ -126,4 +318,7 @@ def get(material_id: str, *, cache_dir: str | Path | None = None,
     return item
 
 
-__all__ = ["LoraError", "LoraMaterial", "get", "info", "list_available", "list_preview"]
+__all__ = [
+    "LoraError", "LoraMaterial", "LoraModel", "get", "info", "list_available",
+    "get_model", "list_models", "list_preview", "model_info",
+]

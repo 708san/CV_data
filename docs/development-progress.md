@@ -10,6 +10,117 @@
 
 # 開発進捗
 
+## 2026-11-13：空画像と翌日の天気データの準備
+
+- ユーザー提供ZIP（10,014,296 bytes、SHA-256 `c30cf675819fea9b0bad62e0d0c8cb77890b808253e92c604b39d6c97a6f5280`）を固定し、安全なZIP構造・CRC・全1,000 JPEGの224×224デコード・ラベルと画像参照を確認。5枚を代表目視。
+- 晴れ664・曇り184・雨152、train 656 / validation 161 / test 183。日付単位でsplitをまたがないこと、翌日ラベル規則、split比率の大きな差を確認。
+- データカードとOpen-Meteoのデータライセンス・サービス利用条件を区別し、CC BY 4.0帰属・変更表示と無料APIの非商用条件を記録。上流画像データの完全な固定revisionは提供ZIPに記録されていない。
+- 画像を改変せず、`images/<split>/<class>/`、`labels.csv`、`metadata.jsonl`、manifestへ整形。ZIPは10,014,277 bytes、SHA-256 `c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0`。
+- `datasets.to_df()`に型付き追加列を出す実装と、`datasets.info/list_available`で型を表示する実装を追加。日本語データ説明・カタログ・モデル対応表を更新。
+- Colorado州Goldenの1地点・ERA5再解析値で日本の地域予報に使えないこと、固定MST、test側の雨比率が高いことを記載。
+- CV_data_artifacts PR #49をmainへマージ済み。Release assetの再取得でサイズとSHA-256が一致。CV_data PR #64のAPI・説明・一覧変更はPR #63のhead branchへマージ済み。取得可能件数23件となる変更はPR #63のmainへのマージ後に通常ブランチで利用可能。データのColab実取得は未確認。
+
+
+## 2026-11-13：LoRA生成Notebookのモデル情報エラー
+
+- Colabで`model["capabilities_ja"]`がKeyErrorになった原因は、Notebookがその項目を返さない旧commit `635fa30db261ae5b3d43ab87c9e5f9e66a78bd1a`をインストールしていたことでした。
+- PR #63の固定commit `940ae09babebc698563b7cf3a35bd842840388f5`では`loras.list_models()`が`capabilities_ja`を返すことを確認し、Notebookの固定参照を更新しました。
+- Notebookのコード実行とSDXL生成はColab T4で未再確認です。
+
+
+## 2026-11-13：分類Estimatorのpredict_proba型エラーを修正
+
+- Colabの`predict_proba()`がNumPy配列を`torch.softmax()`へ渡してTypeErrorになったため、softmax前にTensorへ変換する修正を追加。
+- モデル重みを取得しないテストで、Tensor変換とクラス軸ごとの確率正規化を確認。
+- ResNet分類・回帰はscikit-learn風Estimator、OCR・検出・領域分割・画像生成は用途別のload/predict/generate APIであることをクイックスタート等へ追記。PyTorchはResNet等の内部で利用し、標準の学習導線では利用者が学習ループを書く必要はありません。
+- Python 3.13で全85テスト成功（16件skip）、`git diff --check`成功。ユーザーが修正版の分類NotebookをColabで実行し、`predict_proba()`を含む分類フローを確認済み。回帰Notebookも正常に動作したと確認済み。他機能のColab再確認は未完了。
+
+## 2026-11-13：Colabの日本語Glyph警告に対応
+
+- Colabで`japanize-matplotlib`の導入は成功したものの、`show_examples()`のタイトルが豆腐表示になり、Glyph警告が出ることを確認。
+- 日本語フォント名のrcParams設定だけに依存しないよう、IPAexGothicのフォントファイルを取得し、Matplotlibの`FontProperties`として各タイトル・検出注釈へ明示的に渡す修正を追加。フォントファイルの欠落時は理由が分かるエラーを返す。
+- フォント設定の呼び出しとフォントパス・ファミリー指定をmock testで確認。Notebook関連を含む10テスト成功。Colab上での描画再確認はこれから。
+
+## 2026-11-13：Notebook変数の静的点検と日本語Matplotlib表示
+
+- 全配布Notebookを横断点検し、分類Notebookで`frame = data.to_df()`を作っている一方、次セルが未定義の`df`を参照する問題を見つけて修正。
+- 標準ライブラリだけを使うNotebook検査を追加。JSON/Python構文、セルをまたぐグローバル変数、pip行の引用符、固定Git commit SHA、`cvlesson` importより前のインストールを検査します。アーカイブ用の`notebooks/reference`は授業用CV Notebookではないため対象外。
+- `display` extraに`japanize-matplotlib`を加え、`DatasetBundle.show_examples()`実行時に日本語フォントを自動設定。コアimport時は読み込まず、表示に必要なpandasも`display`へ含めて導入を一つにしました。
+- Python 3.13で全84テスト成功（16件skip）。Notebook検査、`git diff --check`成功。japanize-matplotlibとMatplotlibが環境にないため、実描画・日本語字形・Colabでの表示確認は未実施です。ruff/pyflakesはネットワークDNS制限で取得できなかったため、標準ライブラリの静的検査を使用。
+
+## 2026-11-13：分類Colabインストール行の引用符を修正
+
+- Colab実行ログで`classification_v1.ipynb`の`%pip install`行末に閉じ引用符がないことを確認。シェルがEOFで失敗し、続く`cvlesson` importも失敗していました。
+- PEP 508直接参照を二重引用符で囲み、全Notebookのpip install行で引用符の対を検査しました。Notebook JSON・Pythonセル構文・`git diff --check`は成功。
+- 修正をPR #63へ反映します。NotebookのセルはColabで再読み込みし、インストールから再実行してください。
+
+## 2026-11-13：分類・回帰・推論Notebookを実データ対応に更新
+
+- `notebooks/cv/classification_v1.ipynb`は独自CNNから`ResNetClassifier`に変更。固定Releaseのトマト画像でtrain/validation/testを分離し、`fit`、`score`、`predict`、`predict_proba`を実行する流れを追加。見出し・授業順・記入欄は維持。
+- `notebooks/colab/resnet_regression_smoke_test.ipynb`を追加。LeFood-Setの食前・食後画像ペアで`ResNetRegressor`を学習し、validation/testのR²と実測/予測を表示。研究データの限界、CC BY 4.0、単位を記載。
+- OCR NotebookにCC BY-NC 4.0の公開実レシート1枚の推論を追加。残存情報の可能性と非商用条件を明記し、部分注釈のため全文精度を自動計算しません。
+- DETR/SAM NotebookにFruitSeg30の固定test画像・マスクを追加。GT maskから作る矩形をSAMへ渡して1画像IoUを表示します。promptに正解情報を使うことと、全体性能評価ではないことを明記。
+- SDXL/LoRA NotebookでImage-to-Image入力を合成画像か利用者のColabアップロード画像から選べるようにしました。ライブラリが画像を別サービスへ自動送信しない旨も記載。
+- [クイックスタート](quickstart.md)に実行Notebook一覧、環境、実データ、権利・注意点を追加。
+- 全NotebookのJSONとコードセル構文を確認。Python 3.13で79テスト成功（Pillow、pandas、表示extra不足により16件skip）、`git diff --check`成功。Colabでのデータ取得、学習、モデル推論、実データIoUは未実施。
+
+## 2026-11-13：Colabで利用者自身の画像を試す手順を追加
+
+- 仕様0.12に、利用者がColabへ明示アップロードした画像をローカルパスで使う要件を追加。ライブラリは画像を外部へ自動送信せず、リポジトリにも複製しません。
+- [クイックスタート](quickstart.md)にローカルファイルとColabアップロードの両方を追加しました。以降は同じモデルAPIを使います。
+- [DETR/SAM Colab Notebook](../notebooks/colab/vision_smoke_test.ipynb)で、自分の画像をアップロードする方法と合成画像を使う方法を選べるようにしました。SAMの入力矩形は画像サイズに合わせます。
+- Notebook JSONと8コードセルのPython構文、`git diff --check`、`compileall`を確認。Python 3.13の79テストは成功し、16件はPillow/pandasがない環境のためskip。Colab上の新しいアップロード・表示API・Pillow入力での実モデル推論は未実行です。
+
+## 2026-11-13：データ形式・画像入力・汎用利用例を整理
+
+- 生徒向けデータ22件を5タスクに再集計し、`to_df()`、`to_torch_dataset()`、ResNet/OCR/DETR/SAM/SDXLの入出力を実装と照合。`docs/data-model-compatibility.md`に全ID、列形式、接続例、未対応範囲を整理しました。
+- 仕様0.10で結果描画の入出力と動作契約を追加し、`cvlesson.display.render/show/save`を実装。OCR文字枠、検出枠とラベル、SAM半透明マスク、検出＋SAMの組を合成画像にできます。Pillow Imageを返し、指定先へ保存できます。モデル本体の入力形式は変更していません。
+- 仕様0.11で画像パスとPillow Imageを共通入力に定義。ResNet、OCR、DETR、SAMにPillow Image入力を追加。OCRは内部一時PNGを推論後に削除し、OCR extraへPillow依存を追加。NumPy配列は入力対象外。
+- 課題を固定しない[クイックスタート](quickstart.md)と、目的別インストール表を追加。READMEとデータ・OCR・vision・ResNet案内を更新。
+- Python 3.13でネットワーク不要テスト79件成功（5件skip）。Pillow 13.0・NumPy 2.5.4を`/tmp/cvlesson-image-input-test-deps`だけに入れ、画像型、変換、OCR一時ファイル削除、描画・保存を確認。`git diff --check`成功。テスト後に一時依存を削除。
+- Colab上でのPillow直接入力・新しい表示API、実モデルを使った入力確認、各OSの日本語フォント表示は未確認。日本語フォントがない環境では文字列を枠に描けない場合があります。
+
+## 2026-11-13：Colab T4でDETR成功、SAM品質スコア確認を修正
+
+- ユーザーのColab T4でDETRが`kite`を0.706で検出。SAMの重み取得と読込、マスクshape・bool型の検査も通過しました。
+- SAMの品質ヘッド値に対するNotebookの0〜1範囲assertionのみ失敗。仕様0.9.1で値は実IoU・確率ではなく範囲保証のない予測値と明記し、API説明も更新。Notebookは有限値のみ確認するよう修正しました。
+- ネットワーク不要テスト69件成功（7件skip）。0〜1を超えるSAMスコアをAPIがそのまま保持するテスト、Notebook JSON/Python構文を確認しました。
+- ユーザーが更新したSAMセルをColab T4で実行し、マスクの重ね合わせ画像を確認しました。DETR検出とSAMマスク生成の主要フローは確認済みです。実データの精度評価、CPU・他OS・他GPUは未確認です。
+
+## 2026-11-13：OCR依存競合を修正し、Colab CPUで実モデル推論を確認
+
+- Colabの導入ログで、PaddleX 3.1.4がLangChain 1.xと非互換な旧APIを参照して`langchain.docstore`で失敗することを確認。OCR extraをLangChain `<1`、Hugging Face Hub `<3`、Requests `<2.33`に制約し、Colab既存依存との競合を抑えました。
+- OCRライブラリ欠落とPaddleOCR内部依存のimport失敗を異なるエラー案内にしました。Notebookと導入文書も更新しました。
+- Colab Python 3.13 CPUで実モデルを読み込み、合成英数字画像から`TOTAL 1280 JPY`を1行として認識。信頼度0.993、四点ポリゴンを含む共通結果を返すことをユーザー環境で確認しました。
+- Python 3.13のネットワーク不要テスト69件成功（7件skip）。日本語実画像の認識品質、GPU、他OSでの動作は未確認です。
+- 詳細：[OCRの使い方](ocr.md)、[インストール](installation.md)、[Colab Notebook](../notebooks/colab/ocr_smoke_test.ipynb)。
+
+## 2026-11-13：Colab実モデル確認Notebookを準備
+
+- DETR/SAM用GPU Notebookと、日本語OCR用CPU Notebookを別々に作成しました。どちらもテスト画像をNotebook内で合成し、データや個人写真を取得しません。
+- ライブラリのインストール元は固定コードcommit `a7bc2c524c3ed944fdc1901b3968479dfffe1f28`です。OCR用はCPU版PaddlePaddleを別ランタイムへ導入します。
+- Notebook JSON、Pythonセル構文、固定Git依存表記を確認しました。Colabでモデル取得・推論を実行した状態ではありません。
+- [DETR・SAM Notebook](../notebooks/colab/vision_smoke_test.ipynb)、[OCR Notebook](../notebooks/colab/ocr_smoke_test.ipynb)。
+
+## 2026-11-13：DETR検出・SAM領域分割APIを追加
+
+- 仕様0.6で既定モデルをDETR ResNet-50とSAM ViT-Bに固定し、モデルカードのApache-2.0表示、完全なrevision、容量、入力・出力範囲を記録しました。別モデルは完全な40桁revisionを必須にして指定できます。
+- `cvlesson.vision.load_detector()`と`load_segmenter()`を実装。CPUが既定で、GPUは明示指定・事前確認します。COCO英語ラベル付きbbox、元画像サイズの真偽値マスク、品質スコアを共通型で返し、DETR枠をSAMへ渡すメソッドも追加しました。
+- `vision` extra、インストール手順、初心者向けガイドを追加。モデル取得はload時のみで、重みはGit/PyPIに含めません。
+- vision APIのテストを8件追加。Python 3.11/3.12/3.13でネットワーク不要テスト66件が成功（各7件skip）。wheelを構築・一時領域へインストールし、optional依存を読み込まない軽量importとバイナリ非同梱を確認しました。
+- DETR/SAM重みの取得・CPU/GPU推論とColab T4は未実施です。PR #63のコミット`56bd58f`とSAM互換修正`a7bc2c5`に対するGitHub Actionsは成功しました。実環境検証待ちとして公開準備完了とは扱いません。
+- 仕様・説明：[仕様書](specification.md)、[検出と領域分割](vision.md)、[インストール](installation.md)。
+
+## 2026-11-13：PP-OCRv5日本語OCR APIを追加
+
+- 仕様0.4でOCRの既定モデル、固定取得revision、日本語設定、CPU既定・GPU明示選択、共通結果形式、PaddlePaddle別導入を決定しました。
+- `cvlesson.ocr.load()`がPP-OCRv5 mobile検出・認識モデルをHugging Faceの固定revisionから明示取得し、`OCR.predict()`が行テキスト・信頼度・四点座標を返す実装を追加しました。別モデルはローカルディレクトリを指定します。
+- OCR用optional extra、CPU/GPU導入案内、初心者向け利用例とモデルカード・ライセンス情報を記載しました。モデル重みはGit/PyPIへ含めません。
+- fake backendによる固定revision・結果変換・GPU拒否・基本importのテストを追加。Python 3.11、3.12、3.13で58テスト成功、各7件は未導入optional依存が理由でskipです。
+- Python 3.11でwheelを構築して一時targetへインストールし、データ一覧の表示とOCR/Paddle/Hugging Face依存を読まない基本importを確認しました。wheelにモデル・画像バイナリがなく、古い`build/`から混入した未追跡`weights.py`もクリーンビルドで除外されることを確認しました。
+- OCR実モデルのダウンロード・CPU推論・Colab T4/GPU推論は未実施です。PaddleOCR/PaddlePaddleの各OS・Python・CUDA組み合わせも実機未確認です。
+- 仕様・使い方：[仕様書](specification.md)、[OCRの使い方](ocr.md)、[依存関係と導入](installation.md)。
+
 ## 2026-11-11：合成日本語レシートOCR候補を整形
 
 - 取得前にAlpha10限定CC BY 4.0の許諾、合成データであること、文化祭・部活動の支出整理への適合を確認。日本の高校生の課題に結び付かないインド硬貨は採用対象外と台帳に記録。

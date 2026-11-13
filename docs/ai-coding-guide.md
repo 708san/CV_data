@@ -25,9 +25,19 @@
 | `data.to_torch_dataset(split="train", image_size=(64, 64))` | 遅延読み込みのPyTorch Datasetにする |
 | `data.show_examples(9)` | 画像例を表示する |
 | `data.masks_dir` | 領域分割のマスク保存先を参照する |
+| `models.ResNetClassifier()` | ResNet18の特徴と学習する出力層で画像を分類する |
+| `models.ResNetRegressor()` | ResNet18の特徴と学習する出力層で数値を予測する |
+| `model.fit(X, y)`、`predict(X)`、`score(X, y)` | 分類・回帰の学習、予測、評価をscikit-learn風に行う |
+| `classifier.predict_proba(X)` | 分類クラスごとの確率目安をNumPy配列で得る |
+| `ocr.load()`、`reader.predict("image.jpg")` | 固定版PP-OCRv5で画像の文字・信頼度・位置を読む。CPUが既定 |
+| `vision.load_detector()`、`detector.predict("image.jpg")` | COCO 80カテゴリの位置とラベルを検出する。CPUが既定 |
+| `vision.load_segmenter()`、`segmenter.predict("image.jpg", box=(x1,y1,x2,y2))` | 指定した枠や点に沿ってマスクを作る。SAM自体は対象名を返さない |
+| `generation.load()` | SDXLで画像を生成・変換する。モデルは明示時に取得 |
 | `datasets.get("festival_icons")` | LoRA用画像と説明文を取得する |
 
 `list_available()`の`task`は`ocr`、`classification`、`detection`、`regression`、`segmentation`、`lora`のいずれかです。正式APIに表示されない候補は、台帳上の調査候補であり、取得可能・教材利用可能とは限りません。`include_preview=True`は教師が確認するときだけ指定します。OCRの合成レシート候補は準備中で、Release公開までは一覧にも取得例にも出ません。
+
+検出と領域分割の基盤モデルは[使い方と限界](vision.md)を参照してください。COCO外の物体や意味領域分割を扱えるとは限りません。モデルの初回取得には数百MBの通信・保存容量が必要です。
 
 RDD2020 Japanは`datasets.get("rdd2020_japan")`で取得できます。日本の道路画像7,900枚を使い、縦ひび・横ひび・亀甲ひび・ポットホールを囲みます。約642 MBのダウンロードが必要です。CC BY-NC 3.0に従って非商用の教育目的で使い、出典・変更内容を表示してください。2020年頃の画像なので、現在の道路状態・安全性・修繕順位の判断には使いません。
 
@@ -47,7 +57,9 @@ Road Traversing Knowledgeは多クラス領域分割です。`data.classes`の13
 
 GeoSetEnneaは`datasets.get("geoset_ennea")`で136枚の画像と9クラスの物体位置注釈を取得できます。撮影場所はバングラデシュで、日本の文具や教室を代表しません。文具の商品名・ロゴは付随的に写ります。
 
-LoRA素材は`from cvlesson import loras`から管理します。`loras.list_available()`は生徒向けに承認された素材だけを返し、権利確認中の文化祭アイコンは`loras.list_preview()`で確認できます。重みは配布せず、必要な場合は`loras.get("festival_icon_style", allow_preview=True).get_data(allow_preview=True)`で画像・キャプション素材だけを取得します。
+学習済みLoRAの一覧と条件は`from cvlesson import loras`の`loras.list_models()`、または[画像生成ガイド](image-generation.md)で確認できます。使うモデルを`generation.load(lora="pixel_art_sdxl", device="cuda")`のように指定します。重みは配布せず、固定版から初回利用時に取得します。`festival_icons`は別の学習素材で、権利確認中のため生徒向け取得対象ではありません。
+
+日本語OCRは`from cvlesson import ocr`から使います。`ocr.load()`はCPUを使い、初回にPP-OCRv5 mobileの固定モデルを取得します。GPUを使う場合は、PaddlePaddleのGPU環境を確認して`ocr.load(device="gpu:0")`と明示してください。`reader.predict()`の結果に含まれる信頼度は正解を保証しないので、元画像と照合してください。詳しくは[OCRの使い方](ocr.md)を参照してください。
 
 `get()`は`DatasetBundle`を返します。`root`、`images_dir`、`labels_csv`、`metadata_jsonl`、`kind`、`task`、`manifest`、`version`、`classes`、`class_names_ja`、`splits`、`license_info`、`source_info`を参照できます。トマトの葉では`train_dir`と`test_dir`も使えます。監査状態とレポートは`datasets.info("tomato_leaves")`で確認します。
 
@@ -57,7 +69,7 @@ LoRA素材は`from cvlesson import loras`から管理します。`loras.list_ava
 
 - `datasets.get("recyclable_waste")`：リサイクル素材の画像分類。ポルトガルで撮影され、現地の分別規則を示すものではありません。
 - `datasets.get("bangladeshi_ewaste_image")`：12種類の廃棄物品の物体検出。緑色の布上で撮影され、polygon注釈の一部を外接矩形に変換しています。現実のごみ分別や医療廃棄物の処理には使いません。
-- `datasets.get("orange_fruit")`：オレンジの見た目5カテゴリを使った分類。背景・照明の影響を調べる食品ロス課題の試作に使えますが、鮮度・食用可否・食品安全・病気の判定には使えません。
+- `datasets.get("orange_fruit")`：オレンジの画像を5つの元カテゴリに分類します。分類の試作、撮影条件の比較、画像整理などに応用できます。鮮度・食用可否・食品安全・病気の判定はできません。
 
 いずれも初回取得時に固定版ZIPをダウンロードし、サイズとSHA-256を照合します。利用条件と変換内容は各データの説明を確認してください。
 
@@ -69,15 +81,15 @@ LoRA素材は`from cvlesson import loras`から管理します。`loras.list_ava
 
 > `cvlesson.datasets.get("festival_icons", allow_preview=True)`で教師向けプレビューとして取得した`labels.csv`の`image,caption`を読み、最初の5行を表にするコードを書いてください。権利確認中の素材なので、画像・説明文は変更・再配布しないでください。
 
-**注意：** このパッケージはデータの取得・標準化とPyTorch Dataset変換までを提供します。CNN学習、画像生成、LoRA学習のAPIは実装していません。AIに依頼する場合は、必要な学習処理を別のコードで作るよう指定してください。
+**注意：** `models`が提供するのはResNet18の固定特徴抽出器と出力層を学習する分類・回帰です。OCRは学習済みモデルの推論、画像生成はSDXLと登録LoRAの推論です。独自CNNの学習、OCR・検出・領域分割の追加学習、LoRA学習は提供していません。OCR・画像生成の実環境テストは未完了なので、利用前に[インストールと検証状況](installation.md)を確認してください。
 
 ## AIにデータの検査結果を説明してもらう
 
 開発者・教員は `python -m cvlesson.audit festival_icons --check-images --check-similar --report report.json` で検査できます。生成された `report.json` をAIに渡し、「検査に失敗した項目と、類似画像候補を説明して」と依頼できます。類似候補は目視確認用で、自動削除や重複確定は行いません。画像や配布元の変更、権利上の利用判断はこの操作に含まれません。
 
-FabricSpotDefectは`datasets.get("fabricspotdefect")`で布の画像1,014枚とspot位置注釈を取得できます。洗濯前に汚れを見つける補助を試作し、柄や照明による見え方を比べる課題に使えます。衣類の清潔さ、着用可否、安全性や汚れ落ちを判定するものではありません。
+FabricSpotDefectは`datasets.get("fabricspotdefect")`で布の画像1,014枚とspot位置注釈を取得できます。画像中のspotの位置を検出し、柄や照明による結果の違いを比較できます。洗濯前の確認などは使用例です。衣類の清潔さ、着用可否、安全性や汚れ落ちを判定するものではありません。
 
-Orange Fruitは`datasets.get("orange_fruit")`でオレンジの見た目5カテゴリを取得できます。分類の試作や、背景・照明で結果がどう変わるかの比較に使えます。ラベルは画像カテゴリであり、食べられるかや食品の安全を決めるものではありません。
+Orange Fruitは`datasets.get("orange_fruit")`でオレンジの見た目5カテゴリを取得できます。分類の試作、画像の整理、背景・照明で結果がどう変わるかの比較などに応用できます。ラベルは元データの画像カテゴリであり、食べられるかや食品の安全を決めるものではありません。
 
 
 ## 新しく追加した課題データ
@@ -86,6 +98,6 @@ Orange Fruitは`datasets.get("orange_fruit")`でオレンジの見た目5カテ�
 - `datasets.get("wastesegcluster")`：ダッカ周辺の水辺ごみを検出します。日本の水辺の状態や水質には一般化しません。
 - `datasets.get("fire_recognition_image")`：火・煙の教材画像を分類します。元ラベルは実場面の安全を示さず、警報・避難判断には使いません。
 - `datasets.get("agrifreshnet")`：青果の見た目を24カテゴリに分類します。元ラベルの日数は期限ではなく、可食性・食品安全を判断しません。
-- `datasets.get("brazil_road_potholes")`：ブラジルの道路画像2,235枚と穴マスクを取得します。二値マスクを重ねて道路の穴の位置を伝える試作に使えます。日本の通学路の安全性や修繕の必要性は判定しません。
-- `datasets.get("click_trash")`：屋外のごみ画像1,126枚と位置を示すbboxを取得します。清掃活動の記録や、清掃場所を共有する試作に使えます。画像はインドで撮影され、日本の街を代表しません。現地画像でも確認し、分別・危険性の判断には使わないでください。
-- `datasets.get("obstacles_assistance")`：歩道画像1,250枚から段差・柵・穴・ポール候補のbboxを取得します。通りにくさを記録する地図の試作に使えます。物体が通行を妨げるか、移動できるかはモデルだけで判断せず、地域の人・当事者が現地で確認してください。
+- `datasets.get("brazil_road_potholes")`：ブラジルの道路画像2,235枚と穴マスクを取得します。穴領域を画像上に示し、位置や面積、予測結果を比べられます。道路の記録などは使用例です。日本の通学路の安全性や修繕の必要性は判定しません。
+- `datasets.get("click_trash")`：屋外のごみ画像1,126枚と位置を示すbboxを取得します。ごみの位置検出や画像上の記録、清掃活動の共有などに応用できます。画像はインドで撮影され、日本の街を代表しません。分別・危険性は判定しません。
+- `datasets.get("obstacles_assistance")`：歩道画像1,250枚から段差・柵・穴・ポール候補のbboxを取得します。物体の位置記録や地図への表示などに応用できます。物体が通行を妨げるか、移動できるかはモデルだけで判断せず、地域の人・当事者が現地で確認してください。

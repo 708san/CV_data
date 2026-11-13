@@ -6,6 +6,8 @@
 
 ## まず使う
 
+短い導入は[まず試す](docs/quickstart.md)、機能とOSごとの選び方は[インストール案内](docs/installation.md)を参照してください。
+
 ローカル環境では、このリポジトリのフォルダで次を実行します。
 
 ```bash
@@ -18,24 +20,26 @@ PythonまたはGoogle Colabで、次のように操作します。
 from cvlesson import datasets
 
 print(datasets.list_available())
-print(datasets.info("tomato_leaves"))
 
 # 課題と対象者から選ぶ（生徒向けには承認済みデータだけ）
 print(datasets.list_tasks(audience="student"))
-print(datasets.list_available(task="classification", audience="student"))
+choices = datasets.list_available(task="classification", audience="student")
+print(choices)
 
-# 初回は約124MBのZIPをダウンロードします。
-data = datasets.get("tomato_leaves")
+# 使うIDをchoicesから選ぶ。データ本体はget()を呼んだ時だけ取得
+dataset_id = choices[0]["id"]
+print(datasets.info(dataset_id))
+data = datasets.get(dataset_id)
 print(data.root)          # 保存先
 print(data.labels_csv)    # 正解ラベル
 print(data.train_dir)     # 学習用画像
 print(data.test_dir)      # テスト用画像
 ```
 
-日本語名も、登録済みの完全一致なら使えます。
+分類データのラベルと分割はDataFrameで確認できます。
 
 ```python
-data = datasets.get("トマトの葉")
+data = datasets.get(dataset_id)
 df = data.to_df()         # pip install -e '.[dataframe]'
 print(df[["label_ja", "split"]].head())
 print(data.splits)        # train / val / test
@@ -52,7 +56,7 @@ train_data = data.to_torch_dataset(split="train", image_size=(64, 64))  # pip in
 
 ```python
 print(datasets.cache_info())  # 登録済みデータの保存量を確認
-result = datasets.clear_cache("tomato_leaves")  # 指定データだけ削除
+result = datasets.clear_cache(dataset_id)  # 指定データだけ削除
 print(result["removed_bytes"])
 datasets.clear_cache()  # 登録済みデータのキャッシュをまとめて削除
 ```
@@ -65,7 +69,41 @@ print(icons.images_dir)
 print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 ```
 
-`datasets.get()`は固定Releaseを取得してZIPを検証し、ローカルに展開します。保存先の変更は`cache_dir`で指定できます。元の公式testは変更せず、DataFrameではtrainから再現可能なvalを作ります。画像表示には `pip install -e '.[display]'` が必要です。LoRA学習そのものやモデル重みの再配布は、このライブラリの対象外です。
+`datasets.get()`は固定Releaseを取得してZIPを検証し、ローカルに展開します。保存先の変更は`cache_dir`で指定できます。元の公式testは変更せず、DataFrameではtrainから再現可能なvalを作ります。画像表示と日本語ラベル表示には `pip install -e '.[display]'` が必要です。このextraにはサンプル一覧に必要なpandasも含みます。LoRA学習そのものやモデル重みの再配布は、このライブラリの対象外です。
+
+検出・OCR・領域分割の結果は`cvlesson.display.show()`で元画像に重ねて表示でき、`cvlesson.display.save()`で保存できます。合成画像はPillow Imageとして返るため、表示以外の処理にも渡せます。
+
+```python
+from cvlesson import display, vision
+
+print(vision.available_devices())  # GPUの利用可否を確認
+detector = vision.load_detector(device="cpu")  # GPUを使う場合は確認後にdevice="cuda:0"
+image_path = "street.jpg"
+detections = detector.predict(image_path)
+display.show(image_path, detections)
+display.save(image_path, "results/detections.png", detections)
+```
+
+日本語OCRは必要なときだけ`ocr` extraと環境に合うPaddlePaddleを導入して使います。`ocr.load()`が必要なモジュールを内部で読み込むため、利用者が`import paddle`を書く必要はありません。モデルは明示的な`ocr.load()`時に取得し、CPUを既定にします。GPUを使う場合は利用可否を確認して明示指定します。導入方法と返却形式は[OCRの使い方](docs/ocr.md)をご覧ください。
+
+物体検出・領域分割は`from cvlesson import vision`から使います。PyTorchを環境に合わせて導入した後、`vision` extraを追加します。固定版のDETR（COCO 80カテゴリ検出）とSAM（枠・点からのマスク生成）を利用できます。機能範囲・容量・限界・実環境の検証状況は[検出と領域分割の使い方](docs/vision.md)を確認してください。
+
+Colabでモデルを試す場合は、[DETR・SAMのGPU確認Notebook](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/vision_smoke_test.ipynb)を開いてT4ランタイムで実行します。OCRは依存環境を分け、[日本語OCRのCPU確認Notebook](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/ocr_smoke_test.ipynb)を新しいCPUランタイムで実行します。Notebookを作成済みですが、Colab上の実行はまだです。
+
+```python
+from cvlesson import vision
+
+detector = vision.load_detector()  # CPUが既定
+objects = detector.predict("street.jpg", threshold=0.6)
+for item in objects:
+    print(item.label, item.box)
+
+# 枠から対象の形をマスクにする（SAM自体は名前を付けない）
+segmenter = vision.load_segmenter()
+if objects:
+    mask = segmenter.predict("street.jpg", box=objects[0].box)
+    print(mask.mask.shape)
+```
 
 ## データの説明
 
@@ -87,6 +125,7 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 | [家庭ごみの素材分類（TrashNet）](docs/datasets/trashnet.md) | 6種類、2,527枚 | `trashnet-v0.1.0` | MIT。白背景で撮影。地域の分別可否は判定しない |
 | [食品包装OCR（ViFoodLabel）](docs/datasets/vifoodlabel.md) | 9項目の正解付き600枚 | `vifoodlabel-v0.1.0` | CC BY-NC 4.0、非商用のみ。項目別評価用 |
 | [電力量計の数字認識](docs/datasets/energy_meter_digits.md) | 0〜9の切り出し977枚 | `energy-meter-digits-v0.1.0` | CC0 1.0。全体の検針値は読まない |
+| [空画像と翌日の天気](docs/datasets/sky_weather_next_day.md) | 全天空画像1,000枚、晴れ・曇り・雨と翌日の気象値 | `sky-weather-next-day-v0.1.0` | CC BY 4.0、Open-Meteo無料API条件は非商用。Coloradoの1地点・ERA5再解析値 |
 | [水辺のごみ位置](docs/datasets/wastesegcluster.md) | 水辺ごみ4種類、1,947画像・3,900枠 | `wastesegcluster-v0.1.0` | CC BY 4.0、ダッカ周辺の画像 |
 | [火・煙の教材画像](docs/datasets/fire_recognition_image.md) | 4カテゴリ、元画像1,112枚 | `fire-recognition-image-v0.1.0` | CC BY 4.0、「安全」判断には使わない |
 | [青果の見た目の段階](docs/datasets/agrifreshnet.md) | 24カテゴリ、重複除外後14,084枚 | `agrifreshnet-v0.1.0` | CC BY 4.0、食用可否の判定には使わない |
@@ -97,11 +136,11 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 
 トマトの葉と文化祭アイコンは固定Releaseを全量監査済みです。実測値は[トマトの監査レポート](reports/tomato-leaves-v1.2.0.json)と[文化祭アイコンの監査レポート](reports/festival-icons-v1.0.0.json)に保存しています。これは権利の承認を意味しません。
 
-生徒向けデータは22件です。家庭のごみ素材分類、食品包装OCR、電力量計数字OCRを追加しました。取り下げたデータの出典・監査記録・固定Releaseは履歴として保持します。
+生徒向けに取得可能なデータは23件です。空画像と翌日の天気データを追加しました。取り下げたデータの出典・監査記録・固定Releaseは履歴として保持します。
 
 Recyclable Waste v0.1.1の整形済みRelease assetは公開されていますが、包装上の肖像写真や商品表示を含む第三者権利審査が未完了のため、生徒向けAPIから外しています（[審査記録](docs/datasets/recyclable_waste.md)）。
 
-観葉植物データは元画像1,172枚を全量デコードし、完全一致重複10枚を除外しました。GPSを含むEXIF情報を取り除き、長辺512px以下にそろえた1,162枚を取得できます。家庭や学校で見かける植物の分類を試せますが、有毒性・食用・病気・育て方の判定には使えません。
+観葉植物データは元画像1,172枚を全量デコードし、完全一致重複10枚を除外しました。GPSを含むEXIF情報を取り除き、長辺512px以下にそろえた1,162枚を取得できます。7種類の画像分類や、撮影条件による予測の違いを調べられます。使い方の例として植物画像の整理や観察記録を作れますが、有毒性・食用・病気・育て方の判定はできません。
 
 FruitSeg30は全量監査後、寸法が一致しないGuavaクラスを除いた29クラス1,914組を整備し、固定Releaseを公開しました。GitHub mainブランチでは取得APIを利用できます。PyPI配布版への反映はパッケージ更新時に行います。`to_torch_dataset()`は画像と濃淡マスクを返します。
 
@@ -117,11 +156,11 @@ Obstacles Avoidance Assistanceは段差・柵・穴・ポールを囲むbboxを�
 
 Kuzushiji-MNISTはCC BY-SA 4.0の表示を確認しましたが、公式配布物の固定版とSHA-256を確定できないため保留中です。取得元が動的な状態では固定版取得の安全条件を満たせません。
 
-`datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。画像分類では家庭菜園の葉や青果など、身近な観察課題を扱えます。Orange Fruitは約113 MBで、外観カテゴリや背景・照明の影響を調べる食品ロス課題の試作に使えます。鮮度・食用可否・食品安全・病気の判定には使いません。物体検出では道路損傷、清掃活動、製図用具、洗濯前の衣類の汚れ探しを扱えます。FabricSpotDefectは約744 MBで、展開後は約744 MBのキャッシュ容量が必要です。衣類の清潔さ・着用可否・安全性や汚れ落ちは判定しません。RDD2020 Japanは約642 MBで、展開後は約646 MBのキャッシュ容量が必要です。CC BY-NC 3.0のため非商用の教育利用に限られます。モデルだけで道路の安全性や修繕順位を決めないでください。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
+`datasets.list_tasks(audience="student")`は、タスクとデータID、データごとの内容・形式・使用例を返します。使用例は入口の一例です。画像分類・検出・領域分割・OCR・回帰などの能力を基に、生徒が別の題材や問いへ応用できます。たとえば、画像カテゴリの比較、物体の位置記録、撮影条件の影響、画像と数値の関係などを調べられます。Orange Fruitは約113 MBです。FabricSpotDefectは約744 MBで、展開後も約744 MBのキャッシュ容量が必要です。RDD2020 Japanは約642 MBで、展開後は約646 MB必要です。RDD2020 JapanはCC BY-NC 3.0のため非商用利用に限られます。データのラベルが示さないこと（鮮度・食用可否・道路の安全性など）は確定できません。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
 
 LeFood-Setは`datasets.get("lefood_set")`で食前・食後画像524組を取得し、`to_df()`で実測重量や見た目評価を確認できます。日本の学校給食を代表するデータではなく、健康・栄養判断には使いません。
 
-LoRA素材は画像・キャプション・トリガーワード・利用条件を管理します。モデル重みは再配布しません。生徒向けに承認された素材がない場合、`loras.list_available()`は空になります。
+画像生成ではSDXLと4種類のLoRAを使えます。テキストからの画像生成や写真のスタイル変換ができ、LoRAごとに絵柄の特徴が異なります。アイコン、挿絵、ゲーム素材、風景の表現などは使用例です。目的に合わせて題材やプロンプトを考えられます。`generation.load(lora="pixel_art_sdxl", device="cuda")`のように明示して読み込みます。重みは再配布せず、固定版から初回利用時に取得します。[Colabで4件を試す](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/generation_smoke_test.ipynb)。ライセンス、学習元データ、能力・限界は[画像生成ガイド](docs/image-generation.md)を確認してください。LoRA学習素材は別管理で、権利確認中の文化祭アイコンは生徒向けに公開していません。
 
 ## AIにプログラムを改造してもらうとき
 
