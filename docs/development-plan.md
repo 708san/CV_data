@@ -1,3 +1,16 @@
+# 完了：OCR Notebookのdisplay名衝突を修正
+
+更新日：2026-11-14。対象：Colab OCR確認Notebookの表示例。今回の報告ではOCR推論・結果データは成功し、表示セルのみ`AttributeError`で停止した。
+
+作業順と受け入れ条件：
+1. IPython表示関数と`cvlesson.display`モジュールの名前衝突を確認する。
+2. Notebook内で両者を別名（`notebook_display` / `cv_display`）にし、表示コードを更新する。
+3. Notebook JSONを読み直し、表示セルの参照名とインストール版を確認する。Colabの再実行結果は別途確認し、未実施なら実機検証済みと書かない。
+
+進捗：GitHub mainのalpha6 Notebookで、IPython関数を`display`としてimportしながら`display.show(...)`を呼んでいることを確認。別名で分離する修正を作業中。
+
+---
+
 # 完了：OCR・検出・生成の実使用エラーを修正し、alpha6を公開
 
 更新日：2026-11-14。対象版：PyPI `0.1.0a6` / GitHub `v0.1.0a6`。PR #85はmainへマージ済み。Colab実機検証は未実施。
