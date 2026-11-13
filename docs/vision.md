@@ -117,8 +117,11 @@ cv_display.save(image_path, "results/detections.png", detections[:5])
 SAMのマスクは緑色の半透明で元画像に重なります。`mask_alpha`で濃さを0〜255に調整できます。検出連携では黄色いDETR枠・ラベルと緑のSAMマスクを同時に表示します。OCRでは`ocr_result`を渡すと文字枠と読み取り文字を重ねます。
 
 ```python
+from cvlesson import display as cv_display, vision
+
+segmenter = vision.load_segmenter()
 mask_result = segmenter.predict(image_path, point=(240, 180))
-display.show(image_path, mask_result)
+cv_display.show(image_path, mask_result, mask_alpha=145)
 ```
 
 画像へのマスク重ね合わせ表示は基本インストールに含まれています。
@@ -128,6 +131,8 @@ display.show(image_path, mask_result)
 ## DETRの枠をSAMに渡す
 
 ```python
+from cvlesson import display as cv_display, vision
+
 detector = vision.load_detector()
 segmenter = vision.load_segmenter()
 
