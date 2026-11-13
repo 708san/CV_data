@@ -32,6 +32,37 @@ SDXLは文章から画像を生成したり、入力画像の雰囲気を変え�
 
 `Muapi/flat-illustration`、`ramel2/emotional-flat-illustration-sdxl-lora`、ポスター風LoRAは、学習元の来歴やライセンス条件を十分に確認できなかったため登録していません。
 
+## 生成パラメータを調整する
+
+`ImageGenerator.generate()`は、パラメータを省略すると`num_inference_steps=25`、`guidance_scale=7.0`、`strength=0.65`、`use_trigger=True`を使います。`seed`は未指定ならランダム、`width`と`height`は基盤パイプライン既定のサイズを使います。
+
+| 引数 | 内容 |
+|---|---|
+| `num_inference_steps` | 生成を繰り返す回数。増やすと遅くなります。細部が整う場合がありますが、常に改善するわけではありません。 |
+| `guidance_scale` | promptへの追従の強さ。高すぎると画像が不自然になることがあります。 |
+| `negative_prompt` | 避けたい要素の文章。出力から完全に取り除く保証はありません。 |
+| `seed` | 固定値を指定して比較しやすくします。違うGPU・ライブラリ版で同一画像を保証しません。 |
+| `width`、`height` | 出力サイズ。大きいほど細部を表しやすい一方で、VRAMと時間を多く使います。8の倍数を使います。 |
+| `strength` | Image-to-Imageで元画像を残す度合い。小さいほど保持し、大きいほど変化が強くなります。 |
+| `use_trigger` | 登録LoRAのトリガー語を自動でpromptへ加えるかどうか。 |
+
+例では768×768、25 stepsを使います。T4でメモリ不足になったらサイズを512へ下げ、生成時間を短くしたい場合はstepsを下げます。同じpromptとseedを保ち、一度に一つの値だけ変えると違いを比べやすくなります。Schedulerなど現在のAPIにないDiffusers固有設定は指定できません。
+
+```python
+from cvlesson import generation
+
+creator = generation.load(task="text-to-image", lora="fluent_emoji_3d", device="cuda")
+result = creator.generate(
+    "丸みのある3Dの青い自転車アイコン",
+    num_inference_steps=25,
+    guidance_scale=7.0,
+    width=768,
+    height=768,
+    negative_prompt="blurry, low quality",
+    seed=42,
+)
+```
+
 ## 画像から画像への変換
 
 SDXLのImage-to-Image機能を使い、入力写真と説明文から画像を作り直します。[Diffusersの画像変換API](https://huggingface.co/docs/diffusers/using-diffusers/img2img)では入力画像・prompt・strengthを使います。`strength`は0〜1の範囲で指定し、小さい値は入力の構図を残しやすく、大きい値は変更を強めます。
@@ -61,4 +92,4 @@ result.save("park_icon.png")
 
 ## Colabで動作を試す
 
-[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。固定commitのライブラリを使い、登録済み4件を順に試します。Image-to-Imageでは合成画像または利用者が明示アップロードした画像を使えます。初回はSDXL本体と4つの重みを取得するため数GBの空き容量が必要です。4件すべて成功すると最後に成功メッセージが出ます。Colab上で実行するまでは実環境テスト済みではありません。
+[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。固定commitのライブラリを使い、登録済み4件を順に試します。Image-to-Imageでは合成画像または利用者が明示アップロードした画像を使えます。初回はSDXL本体と4つの重みを取得するため数GBの空き容量が必要です。4件すべて成功すると最後に成功メッセージが出ます。Colab上で実行するまでは実環境テスト済みではありません。
