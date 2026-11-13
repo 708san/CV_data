@@ -2,6 +2,21 @@
 
 更新日：2026-11-13
 
+## 今回の作業単位：分類Notebookの`predict_proba()`型不一致を修正
+
+対象仕様：4.1、7。`_predict_values()`はNumPy配列を返す一方、`predict_proba()`がTensorを想定する`torch.softmax()`へそのまま渡し、ColabでTypeErrorになった。既存のscikit-learn風Estimator APIの不具合として修正する。
+
+順序：
+1. 仕様4.1の出力層学習と`fit/predict/score`中心の呼び出し方を確認する。仕様変更は不要な不具合修正とする。
+2. `predict_proba()`へ渡す前にNumPy logitsをTorch Tensorへ変換し、返り値を既存の確率目安のNumPy配列形式で保つ。
+3. ネットワーク・モデル重みを使わず、NumPy形式のlogitsがsoftmaxに渡り、各行が正規化されるテストを追加する。
+4. 分類・回帰Estimatorと基盤モデルAPIの呼び方を、実装と説明文書から短い対比で提示する。
+5. 全ユニットテスト、Notebook検査、差分を確認する。Colab実画像で再実行していない部分は未確認と記録する。
+
+受け入れ条件：Colabログの`softmax input must be Tensor, not numpy.ndarray`を修正し、`predict_proba()`が形状`(サンプル数, クラス数)`の行ごとに正規化された確率目安を返す。既存の分類・回帰のscikit-learn風Estimator APIとOCR/vision/generationの用途別APIを混同させない。
+
+進捗：`predict_proba()`でNumPy logitsを`torch.as_tensor()`に変換してからsoftmaxへ渡す修正を実装。外部モデルを使わない型変換・確率行和のテストを追加。分類・回帰EstimatorとOCR/DETR/SAM/SDXLの呼び出し方をクイックスタートへ追記し、確率配列の形状と意味を文書化。Python 3.13で全85テスト成功（16件skip）、`git diff --check`成功。Colabでの分類Notebook再実行は未確認。
+
 ## 今回の作業単位：Notebookのケアレスミス検査とMatplotlib日本語表示
 
 対象仕様：5.1、6、7。分類Notebookのインストール行で閉じ引用符が欠けた不具合をきっかけに、全Notebookの変数・実行順・構文・インストール指定を再点検し、ライブラリ自身が作るMatplotlib図を日本語表示できるようにする。

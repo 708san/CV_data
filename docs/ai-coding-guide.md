@@ -27,6 +27,8 @@
 | `data.masks_dir` | 領域分割のマスク保存先を参照する |
 | `models.ResNetClassifier()` | ResNet18の特徴と学習する出力層で画像を分類する |
 | `models.ResNetRegressor()` | ResNet18の特徴と学習する出力層で数値を予測する |
+| `model.fit(X, y)`、`predict(X)`、`score(X, y)` | 分類・回帰の学習、予測、評価をscikit-learn風に行う |
+| `classifier.predict_proba(X)` | 分類クラスごとの確率目安をNumPy配列で得る |
 | `ocr.load()`、`reader.predict("image.jpg")` | 固定版PP-OCRv5で画像の文字・信頼度・位置を読む。CPUが既定 |
 | `vision.load_detector()`、`detector.predict("image.jpg")` | COCO 80カテゴリの位置とラベルを検出する。CPUが既定 |
 | `vision.load_segmenter()`、`segmenter.predict("image.jpg", box=(x1,y1,x2,y2))` | 指定した枠や点に沿ってマスクを作る。SAM自体は対象名を返さない |

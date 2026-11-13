@@ -29,7 +29,10 @@ model = models.ResNetClassifier(epochs=3, device="cpu")
 model.fit(image_paths, labels)
 predictions = model.predict(image_paths)
 accuracy = model.score(image_paths, labels)
+probability_estimates = model.predict_proba(image_paths)  # 分類だけで利用可能
 ```
+
+`predict_proba()`は形状`(画像数, クラス数)`のNumPy配列を返します。各行が画像1枚、列は`model.classes_`の順です。値はモデルの確率目安で、`argmax`が`predict()`のラベルになります。
 
 分類は`ResNetClassifier`、数値予測は`ResNetRegressor`を使います。回帰では単画像と画像ペアを受け取れます。必要な依存は`pip install cv-data-lesson[torch]`です。初回利用には重み取得のためネットワーク接続が必要です。
 

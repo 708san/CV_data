@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 import importlib.util
+import math
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from cvlesson import models
 
@@ -36,6 +38,43 @@ class ResNetEstimatorTests(unittest.TestCase):
     def test_predict_before_fit_has_actionable_message(self):
         with self.assertRaisesRegex(models.ModelError, "先にfit"):
             models.ResNetClassifier().predict([self.image])
+
+    def test_predict_proba_converts_logits_to_tensor_and_normalizes_rows(self):
+        class FakeTensor:
+            def __init__(self, values):
+                self.values = values
+
+            def numpy(self):
+                return self.values
+
+        class FakeTorch:
+            def as_tensor(self, values):
+                self.input = values
+                return FakeTensor(values)
+
+            def softmax(self, tensor, dim):
+                if not isinstance(tensor, FakeTensor):
+                    raise TypeError("softmax input must be a Tensor")
+                if dim != 1:
+                    raise AssertionError("softmaxはクラス軸(dim=1)へ適用してください")
+                probabilities = []
+                for row in tensor.values:
+                    peak = max(row)
+                    exponentials = [math.exp(value - peak) for value in row]
+                    total = sum(exponentials)
+                    probabilities.append([value / total for value in exponentials])
+                return FakeTensor(probabilities)
+
+        estimator = models.ResNetClassifier()
+        estimator._torch = FakeTorch()
+        logits = [[-1.0, 1.0], [2.0, 0.0]]
+        with patch.object(estimator, "_predict_values", return_value=logits):
+            probabilities = estimator.predict_proba([self.image, self.image])
+
+        self.assertIs(estimator._torch.input, logits)
+        self.assertEqual(len(probabilities), 2)
+        for row in probabilities:
+            self.assertAlmostEqual(sum(row), 1.0)
 
     def test_pillow_image_inputs_are_copied_and_regression_pairs_are_supported(self):
         try:

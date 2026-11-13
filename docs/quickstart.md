@@ -42,6 +42,21 @@ print(frame.head())
 
 画像データの列や正解注釈はtaskに合わせて異なります。[全データとモデルの対応表](data-model-compatibility.md)で、ラベル・bbox・マスク・OCR正解とモデルAPIの接続方法を確認してください。ResNet分類・回帰は学習できます。OCR・DETR・SAMは既定モデルの推論APIで、データセットの正解注釈を使った学習機能ではありません。
 
+## モデルごとの呼び出し方
+
+ResNetの分類・回帰はscikit-learn風のEstimatorです。`fit(X, y)`で出力層を学習し、`predict()`と`score()`で予測・評価します。分類は`predict_proba()`も使えます。中ではPyTorchを使いますが、通常の利用で`nn.Module`や学習ループを書く必要はありません。より低いレベルで扱いたい場合は、`data.to_torch_dataset()`を利用できます。
+
+OCR・物体検出・領域分割・画像生成は学習用Estimatorではなく、用途別の推論オブジェクトです。`load()`でモデルを読み、`predict()`または`generate()`へ画像・指示を渡します。これらの内部実装はPyTorchや各バックエンドに接続しますが、入力・結果は共通の画像型やライブラリ独自の結果型にまとめています。
+
+| 機能 | 読み込み | 主な操作 | 返り値 |
+|---|---|---|---|
+| 分類 | `ResNetClassifier(...)` | `fit(X, y)`、`predict(X)`、`predict_proba(X)`、`score(X, y)` | ラベル配列、確率目安の配列、正解率 |
+| 回帰 | `ResNetRegressor(...)` | `fit(X, y)`、`predict(X)`、`score(X, y)` | 数値配列、決定係数R² |
+| OCR | `ocr.load(...)` | `reader.predict(image)` | 読取文字・行ごとの信頼度・座標 |
+| 物体検出 | `vision.load_detector(...)` | `detector.predict(image)` | `Detection`のリスト |
+| 領域分割 | `vision.load_segmenter(...)` | `segmenter.predict(image, box=...)`または`point=...` | マスクとモデル予測品質値 |
+| 画像生成・変換 | `generation.load(task=...)` | `generator.generate(prompt, image=...)` | Pillow Image |
+
 ## 3. 手元の画像で推論する
 
 ローカルでは自分の画像ファイルのパスを指定します。

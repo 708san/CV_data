@@ -306,7 +306,9 @@ class ResNetClassifier(_ResNetEstimator):
 
     def predict_proba(self, X: Any):
         """各クラスに属する確率の目安を返す。"""
-        return self._torch.softmax(self._predict_values(X), dim=1).numpy()
+        logits = self._predict_values(X)
+        tensor = self._torch.as_tensor(logits)
+        return self._torch.softmax(tensor, dim=1).numpy()
 
     def score(self, X: Any, y: Any) -> float:
         """正解ラベルと一致した割合を返す。"""
