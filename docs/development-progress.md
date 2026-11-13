@@ -15,8 +15,10 @@
 
 - PyPI `0.1.0a3`をmacOS/Python 3.13の新規venvへ実導入。install、`from cvlesson import datasets`、一覧取得は成功。
 - `japanize-matplotlib==1.1.3`をimportすると、パッケージ内で削除済み`distutils`を参照し`ModuleNotFoundError`になることを確認。基本の`show_examples()`が影響を受ける。
-- 仕様0.19と開発計画へ、同パッケージに同梱されたIPAexGothicファイルをmatplotlibへ直接登録し、パッケージmodule importを避ける要件を追加。修正版は`0.1.0a4`候補。
-- 先行記録後に実装を更新し、`importlib.metadata`でfont package内のTTFを見つけてmatplotlib font managerへ登録するよう変更。PyPI alpha3から導入した一時venvでフォント名`IPAexGothic`を取得し、`japanize_matplotlib`が`sys.modules`へ読み込まれないことを確認。標準依存入りの全91テストがskipなしで成功。alpha4のPR/CIとfresh installは未確認。
+- 仕様0.19と開発計画へ、同パッケージに同梱されたIPAexGothicファイルをmatplotlibへ直接登録し、パッケージmodule importを避ける要件を追加。
+- `importlib.metadata`でfont package内のTTFを見つけてmatplotlib font managerへ登録するよう変更。PR #81はPython 3.11〜3.13 unit、display-smoke、package-smokeがすべて成功してmainへマージ。
+- GitHub Release `v0.1.0a4`とTrusted Publishingが成功。PyPI JSON APIでwheel/sdist・summary・metadataを確認。PyPI alpha4をmacOS/Python 3.13の新規venvへ導入し、import、一覧、合成画像データの`show_examples()`、IPAexGothicでの描画を確認。依存込み全91テストもskipなしで成功。
+- PyPI files: wheel 68,367 bytes、SHA-256 `83b19705bd9c10466558d2c3bb57f4059edb8b5d8b719e94545dc2ec497e5883`; sdist 81,279 bytes、SHA-256 `a984d0b1d2f1f279e3dd3ce52a4bf1efa18c41c4028d6af9e8734034ab0b`。
 
 ## 2026-11-13：PyPI `0.1.0a1`公開
 

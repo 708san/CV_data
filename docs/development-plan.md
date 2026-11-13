@@ -19,7 +19,7 @@
 
 更新日：2026-11-13
 
-## 今回の作業単位：Python 3.13での日本語フォント依存エラーを修正しalpha4を準備
+## 完了：Python 3.13での日本語フォント依存エラーを修正しalpha4を公開
 
 対象仕様：5.1、6、7。PyPI alpha3をPython 3.13の新規venvへ実際に導入したところ、`japanize-matplotlib==1.1.3`のimportが削除済み`distutils`を参照して失敗した。PyPI install自体・データ一覧importは通るが、日本語Matplotlib表示の利用経路で問題になる。
 
@@ -32,7 +32,7 @@
 
 受け入れ条件：macOS/Python 3.13のクリーンvenvで`python -m pip install --pre cv-data-lesson`後、`datasets.list_available()`が動き、`show_examples()`がIPAexGothicを使える。`japanize_matplotlib`のimportに依存しない。既定のColab/Linux CIでも表示smoke、unit、package smokeが通る。
 
-進捗：alpha3の実PyPI installで`distutils`問題を再現。仕様0.19と本計画を先行更新後、font packageのwheel resourceを`importlib.metadata`から解決し、matplotlibへ直接登録する実装とテストを追加。PyPI alpha3の一時venv（macOS/Python 3.13）でIPAexGothic登録とmatplotlib描画依存全体を使う91テストが成功（skipなし）。`0.1.0a4`候補を準備中。PR/CI、alpha4 wheel build、alpha4のfresh PyPI installは未確認。
+進捗：alpha3の実PyPI installで`distutils`問題を再現。仕様0.19と本計画を先行更新後、font packageのwheel resourceを`importlib.metadata`から解決し、matplotlibへ直接登録する実装とテストを追加。Python 3.11〜3.13のPR CI、display-smoke、package-smoke成功後にPR #81をmainへマージ。GitHub Release `v0.1.0a4`のTrusted Publishing成功。PyPIから新規macOS/Python 3.13 venvへ導入し、import・一覧取得・`show_examples()`でIPAexGothicを使う画像表示を確認。依存込み全91テスト成功（skipなし）。wheel 68,367 bytes、SHA-256 `83b19705bd9c10466558d2c3bb57f4059edb8b5d8b719e94545dc2ec497e5883`。sdist 81,279 bytes、SHA-256 `a984d0b1d2f1f279e3dd3ce52a4bf1efa18c41c4028d6af9e8734034ab0b`。
 
 ## 今回の作業単位：PyPIの初回利用導線を簡単にし、alpha3を準備
 
