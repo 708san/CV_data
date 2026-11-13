@@ -4,11 +4,13 @@
 
 ## 1. 必要な機能を入れる
 
-PyPIにはまだ公開していません。インストールは[目的別の手順](installation.md#目的から選ぶ)から選んでください。データ一覧だけなら追加依存なし、画像表示も使う場合は`display`を追加します。`display`には画像サンプル表示に必要なDataFrame依存も含み、`show_examples()`のMatplotlib図はライブラリが日本語フォント設定を行います。
+初回alpha候補`0.1.0a1`は現在PyPI未公開です。PyPI公開後に画像表示も使う場合は次のように導入します（公開前はインストールできません）。alpha版を選ぶため`--pre`を付けます。
 
 ```bash
-python -m pip install -e '.[display]'
+python -m pip install --pre 'cv-data-lesson[display]'
 ```
+
+リポジトリから開発する場合は、checkoutのルートで`python -m pip install -e '.[display]'`を実行します。機能別の導入方法は[インストール案内](installation.md)を参照してください。`display`には画像サンプル表示に必要なDataFrame依存も含み、`show_examples()`のMatplotlib図はライブラリが日本語フォント設定を行います。
 
 ## 2. 課題とデータを選ぶ
 

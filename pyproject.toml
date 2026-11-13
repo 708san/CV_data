@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cv-data-lesson"
-version = "0.0.1"
-description = "日本語の高校生向けCV教材データ取得ライブラリ（開発中）"
+version = "0.1.0a1"
+description = "高校生向け画像データとコンピュータビジョン学習ライブラリ"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -18,7 +18,8 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Natural Language :: Japanese",
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 3 - Alpha",
+    "Operating System :: OS Independent",
 ]
 
 [project.optional-dependencies]

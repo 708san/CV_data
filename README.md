@@ -1,18 +1,24 @@
-# CV_data — 高校生向け画像データの取得
+# CV Data Lesson — 高校生向け画像データ・CV学習ライブラリ
 
-画像分類・物体検出・領域分割・画像生成の演習で使うデータを、Google ColabやPythonから取得するためのライブラリです。
+画像データの取得と、分類・回帰・OCR・物体検出・領域分割・画像生成を簡潔に試すためのPythonライブラリです。データの利用条件や形式を日本語で確認できます。
 
-**現在は開発初期版です。PyPIにはまだ公開していません。** データ本体はコードから分離し、元の出典または許諾済みartifactの固定Releaseから取得します。既存の[CV_sample_data](https://github.com/708san/CV_sample_data)は読み取り専用です。
+**初回公開候補は`0.1.0a1`（Alpha）です。現時点ではPyPI未公開です。** コードはMITライセンスです。データとモデルは個別の利用条件で提供され、画像・マスク・LoRA重みはPyPIに含めません。データは固定Releaseから、モデルは配布元から、利用者が機能を明示的に使うときに取得します。既存の[CV_sample_data](https://github.com/708san/CV_sample_data)は読み取り専用です。
 
-## まず使う
+## インストール
 
-短い導入は[まず試す](docs/quickstart.md)、機能とOSごとの選び方は[インストール案内](docs/installation.md)を参照してください。
-
-ローカル環境では、このリポジトリのフォルダで次を実行します。
+PyPIで公開された後は、機能に応じて次のように導入できます。`display`を使う場合の例です。
 
 ```bash
-python -m pip install -e .
+python -m pip install --pre 'cv-data-lesson[display]'
 ```
+
+**このalpha版はまだ公開されていないため、現時点では上のコマンドでインストールできません。** リポジトリから開発する場合は、ルートフォルダで次を実行します。
+
+```bash
+python -m pip install -e '.[display]'
+```
+
+詳細は[まず試す](docs/quickstart.md)と[インストール案内](docs/installation.md)を参照してください。初回PyPI公開の準備状況は[PyPI公開準備](docs/pypi-release.md)にまとめています。
 
 PythonまたはGoogle Colabで、次のように操作します。
 
@@ -88,7 +94,7 @@ display.save(image_path, "results/detections.png", detections)
 
 物体検出・領域分割は`from cvlesson import vision`から使います。PyTorchを環境に合わせて導入した後、`vision` extraを追加します。固定版のDETR（COCO 80カテゴリ検出）とSAM（枠・点からのマスク生成）を利用できます。機能範囲・容量・限界・実環境の検証状況は[検出と領域分割の使い方](docs/vision.md)を確認してください。
 
-Colabでモデルを試す場合は、[DETR・SAMのGPU確認Notebook](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/vision_smoke_test.ipynb)を開いてT4ランタイムで実行します。OCRは依存環境を分け、[日本語OCRのCPU確認Notebook](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/ocr_smoke_test.ipynb)を新しいCPUランタイムで実行します。Notebookを作成済みですが、Colab上の実行はまだです。
+Colabでモデルを試す場合は、[DETR・SAMのGPU確認Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/vision_smoke_test.ipynb)を開いてT4ランタイムで実行します。OCRは依存環境を分け、[日本語OCRのCPU確認Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/ocr_smoke_test.ipynb)を新しいCPUランタイムで実行します。OCRとDETR/SAMの合成画像による推論はColabで確認済みです。実データでのモデル精度は別途検証が必要です。
 
 ```python
 from cvlesson import vision
@@ -160,7 +166,7 @@ Kuzushiji-MNISTはCC BY-SA 4.0の表示を確認しましたが、公式配布�
 
 LeFood-Setは`datasets.get("lefood_set")`で食前・食後画像524組を取得し、`to_df()`で実測重量や見た目評価を確認できます。日本の学校給食を代表するデータではなく、健康・栄養判断には使いません。
 
-画像生成ではSDXLと4種類のLoRAを使えます。テキストからの画像生成や写真のスタイル変換ができ、LoRAごとに絵柄の特徴が異なります。アイコン、挿絵、ゲーム素材、風景の表現などは使用例です。目的に合わせて題材やプロンプトを考えられます。`generation.load(lora="pixel_art_sdxl", device="cuda")`のように明示して読み込みます。重みは再配布せず、固定版から初回利用時に取得します。[Colabで4件を試す](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/generation_smoke_test.ipynb)。ライセンス、学習元データ、能力・限界は[画像生成ガイド](docs/image-generation.md)を確認してください。LoRA学習素材は別管理で、権利確認中の文化祭アイコンは生徒向けに公開していません。
+画像生成ではSDXLと4種類のLoRAを使えます。テキストからの画像生成や写真のスタイル変換ができ、LoRAごとに絵柄の特徴が異なります。アイコン、挿絵、ゲーム素材、風景の表現などは使用例です。目的に合わせて題材やプロンプトを考えられます。`generation.load(lora="pixel_art_sdxl", device="cuda")`のように明示して読み込みます。重みは再配布せず、固定版から初回利用時に取得します。[Colabで4件を試す](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)。ライセンス、学習元データ、能力・限界は[画像生成ガイド](docs/image-generation.md)を確認してください。LoRA学習素材は別管理で、権利確認中の文化祭アイコンは生徒向けに公開していません。
 
 ## AIにプログラムを改造してもらうとき
 
