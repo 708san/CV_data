@@ -48,6 +48,7 @@ class PackagingMetadataTests(unittest.TestCase):
         ocr_requirements = extras["ocr"]
         self.assertTrue(any(req.startswith("paddlex[ocr]>=3.1.0,<3.2.0") for req in ocr_requirements))
         self.assertIn("langchain>=0.2,<1", ocr_requirements)
+        self.assertIn("requests>=2.32.2,<2.33", ocr_requirements)
         self.assertIn("huggingface_hub>=0.23,<3", ocr_requirements)
 
 

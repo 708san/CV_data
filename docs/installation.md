@@ -40,7 +40,7 @@ python -m pip install -e '.[diffusion]'
 
 ### OCR用の環境
 
-OCRを使うときだけ、PaddlePaddleと`ocr` extraを導入します。ResNet・SDXLのPyTorchとは別の仮想環境に分けると、深層学習基盤の依存競合を避けやすくなります。まず[PaddlePaddle公式インストール案内](https://www.paddlepaddle.org.cn/install/quick)でOS・Python・CPU/GPU・CUDAに合うPaddlePaddleを導入し、次にこのライブラリの`ocr` extraを入れます。`ocr` extraはPaddleOCR 3.1系に合うPaddleX 3.1系と、旧APIを必要とするPaddleX向けのLangChain 1.0未満を選びます。Hugging Face Hubは1.xも許容します。
+OCRを使うときだけ、PaddlePaddleと`ocr` extraを導入します。ResNet・SDXLのPyTorchとは別の仮想環境に分けると、深層学習基盤の依存競合を避けやすくなります。まず[PaddlePaddle公式インストール案内](https://www.paddlepaddle.org.cn/install/quick)でOS・Python・CPU/GPU・CUDAに合うPaddlePaddleを導入し、次にこのライブラリの`ocr` extraを入れます。`ocr` extraはPaddleOCR 3.1系に合うPaddleX 3.1系と、旧APIを必要とするPaddleX向けのLangChain 1.0未満を選びます。Hugging Face Hubは1.xも許容し、`requests`はColabとの衝突を避ける範囲に制約します。
 
 ```bash
 python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
