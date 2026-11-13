@@ -120,6 +120,7 @@ class OptionalDependencyGuidanceTests(unittest.TestCase):
         font = _enable_japanese_matplotlib()
         self.assertTrue(font.get_name())
         self.assertEqual(Path(font.get_file()), font_path)
+
     def test_missing_japanese_font_dependency_has_install_guidance(self):
         with patch.dict(sys.modules, {"japanize_matplotlib": None}):
             with self.assertRaisesRegex(DatasetError, r"cv-data-lesson\[display\]"):
