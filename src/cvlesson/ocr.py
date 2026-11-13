@@ -73,7 +73,7 @@ class OCR:
             from PIL import Image
         except ImportError as exc:
             raise OCRError(
-                "Pillow Image入力にはPillowが必要です。pip install 'cv-data-lesson[ocr]'を確認してください。"
+                "Pillow Image入力にはPillowが必要です。python -m pip install --pre 'cv-data-lesson[ocr]'を確認してください。"
             ) from exc
         if not isinstance(image, Image.Image):
             raise TypeError("imageには画像ファイルのパスまたはPillow Imageを指定してください。NumPy配列は未対応です。")
@@ -139,7 +139,7 @@ def load(
     except ModuleNotFoundError as exc:
         if exc.name == "paddleocr":
             raise OCRError(
-                "OCRにはpaddleocrが必要です。pip install 'cv-data-lesson[ocr]'を実行してください。"
+                "OCRにはpaddleocrが必要です。python -m pip install --pre 'cv-data-lesson[ocr]'を実行してください。"
             ) from exc
         message = f"PaddleOCRの依存モジュール {exc.name!r} を読み込めませんでした。"
         if exc.name == "langchain.docstore":
@@ -164,7 +164,7 @@ def load(
             from huggingface_hub import snapshot_download
         except ImportError as exc:
             raise OCRError(
-                "既定OCRモデルの取得にはhuggingface_hubが必要です。pip install 'cv-data-lesson[ocr]'を実行してください。"
+                "既定OCRモデルの取得にはhuggingface_hubが必要です。python -m pip install --pre 'cv-data-lesson[ocr]'を実行してください。"
             ) from exc
         try:
             detection_path = snapshot_download(

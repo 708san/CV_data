@@ -45,8 +45,7 @@ def _enable_japanese_matplotlib():
     except ImportError as exc:
         raise DatasetError(
             "画像表示の日本語フォント設定にはjapanize-matplotlibが必要です。"
-            "開発版ではpip install -e '.[display]'、PyPI版では"
-            "pip install 'cv-data-lesson[display]'を実行してください。"
+            "python -m pip install --pre 'cv-data-lesson[display]'を実行してください。"
         ) from exc
     japanize_matplotlib.japanize()
     font_path = Path(japanize_matplotlib.get_font_ttf_path())
@@ -196,7 +195,7 @@ class DatasetBundle:
         except ImportError as exc:
             raise DatasetError(
                 "DataFrame変換にはpandasが必要です。"
-                "開発版ではpip install -e '.[dataframe]'、PyPI版ではpip install 'cv-data-lesson[dataframe]'を実行してください。"
+                "python -m pip install --pre 'cv-data-lesson[dataframe]'を実行してください。"
             ) from exc
         if self.kind == "detection":
             names = self.classes
@@ -363,8 +362,7 @@ class DatasetBundle:
         except ImportError as exc:
             raise DatasetError(
                 "画像表示にはPillow、NumPy、matplotlib、japanize-matplotlibが必要です。"
-                "開発版ではpip install -e '.[display]'、PyPI版では"
-                "pip install 'cv-data-lesson[display]'を実行してください。"
+                "python -m pip install --pre 'cv-data-lesson[display]'を実行してください。"
             ) from exc
         japanese_font = _enable_japanese_matplotlib()
         frame = self.to_df(seed=seed)
@@ -471,7 +469,7 @@ class DatasetBundle:
         except ImportError as exc:
             raise DatasetError(
                 "PyTorch変換にはPyTorchが必要です。"
-                "開発版ではpip install -e '.[torch]'、PyPI版ではpip install 'cv-data-lesson[torch]'を実行してください。"
+                "python -m pip install --pre 'cv-data-lesson[torch]'を実行してください。"
             ) from exc
         all_records = (self._segmentation_records() if self.kind == "segmentation"
                        else self._classification_records(val_fraction=val_fraction, seed=seed))

@@ -34,7 +34,7 @@ probability_estimates = model.predict_proba(image_paths)  # 分類だけで利�
 
 `predict_proba()`は形状`(画像数, クラス数)`のNumPy配列を返します。各行が画像1枚、列は`model.classes_`の順です。値はモデルの確率目安で、`argmax`が`predict()`のラベルになります。
 
-分類は`ResNetClassifier`、数値予測は`ResNetRegressor`を使います。回帰では単画像と画像ペアを受け取れます。必要な依存は`pip install cv-data-lesson[torch]`です。初回利用には重み取得のためネットワーク接続が必要です。
+分類は`ResNetClassifier`、数値予測は`ResNetRegressor`を使います。回帰では単画像と画像ペアを受け取れます。必要な依存は`pip install --pre cv-data-lesson[torch]`です。初回利用には重み取得のためネットワーク接続が必要です。
 
 学習・予測の`X`には画像パス列またはPillow Image列を指定できます。回帰のペアでは各画像をパスまたはPillow Imageにできます。DataFrameの`image_path`列も利用できます。
 

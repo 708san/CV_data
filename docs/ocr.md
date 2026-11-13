@@ -11,7 +11,7 @@ ColabでCPU推論を試すときは[日本語OCRのColab Notebook](https://colab
 PaddlePaddleはCPU/GPUとCUDAの組み合わせにより導入コマンドが異なります。PyTorch系ライブラリとの競合を避けるため、OCR専用の仮想環境を使う方法を勧めます。[インストール手順](installation.md#ocr用の環境)で環境に合うPaddlePaddleを導入してください。利用者が`import paddle`を書く必要はありません。`ocr.load()`を呼んだ時にライブラリが必要なモジュールを読み込みます。
 
 ```bash
-python -m pip install -e '.[ocr]'
+python -m pip install --pre 'cv-data-lesson[ocr]'
 ```
 
 これはPaddleOCR 3.1.0、互換範囲を3.2未満に固定したPaddleX 3.1系、LangChain 1.0未満、Colabの標準`requests`版を保つ範囲、およびHugging Face Hubを導入します。PaddleX 3.1系がLangChain 1.xの旧APIを参照するため、LangChainの上限を指定しています。Hugging Face Hubは1.xも利用でき、Colabに入っている他のAIパッケージを古いHubへ下げません。PaddlePaddle本体はCPU/GPU・CUDA環境に合わせて別に導入します。OCRモデルは合計約22 MBで、次の`load()`時に固定revisionからキャッシュへ取得されます。公開モデルの取得にHugging Faceのログインや`HF_TOKEN`は不要です。ライブラリはOCRを呼んだ時だけPaddle系モジュールをimportし、実行中にpip installは行いません。

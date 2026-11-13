@@ -15,7 +15,7 @@ data = datasets.get("festival_icons", allow_preview=True)
 print(data.images_dir)
 print(data.labels_csv)       # image,caption
 print(data.metadata_jsonl)   # file_name,text
-captions = data.to_df()      # pip install -e '.[dataframe]'
+captions = data.to_df()      # pip install --pre 'cv-data-lesson[dataframe]'
 print(captions.head())
 ```
 

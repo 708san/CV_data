@@ -22,12 +22,10 @@ Colab T4での動作確認には[DETR・SAMのColab Notebook](https://colab.rese
 PyTorch/TorchvisionはOS、Python、CUDAに合う公式コマンドで先に導入してください。その後、Transformers等を追加します。
 
 ```bash
-python -m pip install 'cv-data-lesson[vision]'
+python -m pip install --pre 'cv-data-lesson[vision]'
 ```
 
 この追加依存はHugging Face Hub 1.xを許容し、Colabにある新しいTransformers等が必要とするHubを古い版へ下げません。
-
-開発版の場合は`cv-data-lesson`を`-e '.[vision]'`へ置き換えます。CPUを既定にします。GPUを使う場合は、PyTorchが認識している装置を確認して明示的に選びます。
 
 ```python
 from cvlesson import vision
@@ -113,7 +111,7 @@ mask_result = segmenter.predict(image_path, point=(240, 180))
 display.show(image_path, mask_result)
 ```
 
-導入時は機能別に`display` extraを追加してください：`pip install 'cv-data-lesson[display]'`。
+導入時は機能別に`display` extraを追加してください：`python -m pip install --pre 'cv-data-lesson[display]'`。
 
 別のSAM互換モデルを指定するときも、repository IDと完全な40桁revisionを両方渡してください。指定モデルの利用条件やモデル構造を、このライブラリが自動で審査するものではありません。
 

@@ -16,9 +16,9 @@ Fashion-MNISTは、衣類・靴・バッグの28×28画素の白黒画像70,000�
 from cvlesson import datasets
 
 data = datasets.get("fashion_mnist")
-df = data.to_df()  # pip install -e '.[dataframe]'
+df = data.to_df()  # pip install --pre 'cv-data-lesson[dataframe]'
 print(df[["label", "label_ja", "split"]].head())
-data.show_examples(9)  # pip install -e '.[display]'
+data.show_examples(9)  # pip install --pre 'cv-data-lesson[display]'
 ```
 
 ## クラス

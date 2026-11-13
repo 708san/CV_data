@@ -21,7 +21,7 @@ def available_devices() -> dict[str, bool]:
     try:
         import torch
     except ImportError as exc:
-        raise GenerationError("画像生成にはtorchが必要です。pip install 'cv-data-lesson[diffusion]'を実行してください。") from exc
+        raise GenerationError("画像生成にはtorchが必要です。python -m pip install --pre 'cv-data-lesson[diffusion]'を実行してください。") from exc
     mps = getattr(getattr(torch.backends, "mps", None), "is_available", lambda: False)()
     return {"cpu": True, "cuda": bool(torch.cuda.is_available()), "mps": bool(mps)}
 
@@ -113,7 +113,7 @@ def load(
     """固定版SDXLと任意の登録済みLoRAを読み込む。
 
     GPUは自動選択しない。GPUを使う場合は利用可能か確認したうえでdevice="cuda"を明示する。
-    モデルの重みはcheckoutやPyPIに含めず、Hugging Faceのキャッシュへ取得する。
+    モデル重みはパッケージへ含めず、利用者が明示的に読み込んだ時にHugging Faceのキャッシュへ取得する。
     """
     if task not in {"text-to-image", "image-to-image"}:
         raise ValueError("taskは'text-to-image'または'image-to-image'です。")
@@ -123,7 +123,7 @@ def load(
         import torch
         from diffusers import AutoPipelineForImage2Image, AutoPipelineForText2Image
     except ImportError as exc:
-        raise GenerationError("画像生成にはdiffusion追加依存が必要です。pip install 'cv-data-lesson[diffusion]'を実行してください。") from exc
+        raise GenerationError("画像生成にはdiffusion追加依存が必要です。python -m pip install --pre 'cv-data-lesson[diffusion]'を実行してください。") from exc
 
     devices = {"cpu": True, "cuda": bool(torch.cuda.is_available())}
     devices["mps"] = bool(getattr(getattr(torch.backends, "mps", None), "is_available", lambda: False)())
@@ -240,7 +240,7 @@ def _open_rgb_image(image: Any) -> Any:
     try:
         from PIL import Image
     except ImportError as exc:
-        raise GenerationError("画像の読み込みにはPillowが必要です。pip install 'cv-data-lesson[diffusion]'を実行してください。") from exc
+        raise GenerationError("画像の読み込みにはPillowが必要です。python -m pip install --pre 'cv-data-lesson[diffusion]'を実行してください。") from exc
     if isinstance(image, (str, Path)):
         with Image.open(image) as opened:
             return opened.convert("RGB")
