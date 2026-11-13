@@ -1,12 +1,12 @@
 # 開発進捗
 
-## 2026-11-14：OCR全文優先表示を実装・main統合（alpha8公開待ち）
+## 2026-11-14：OCR全文表示alpha8をGitHub・PyPIで公開
 
-- 長文で文字が細切れに見えるという報告を受け、OCR全文を一つの選択・コピー可能な枠で表示し、OCRの改行を保持するよう改善。
-- 行別の信頼度・画像切り抜きは折りたたみ詳細へ移動。OCRResult、OCRLine、to_dict()の形式は維持し、レシートの段組みや読み順を推測して再構成しない。
-- OCRガイドとColab確認Notebookを更新し、分類・回帰・生成・検出の確認Notebookも0.1.0a8候補に統一。
-- PR [#99](https://github.com/708san/CV_data/pull/99)はCI成功後にmainへ統合済み。GitHub Release/PyPIのa8公開と、公開版を使ったColab実測は未完了。
-- 実行環境のGitHub CLI認証は現在無効。Release作成後、PyPI配布確認とOCR Colab実測を行う。
+- OCR全文を改行を保ったひとつの選択・コピー可能な枠で表示し、行ごとの信頼度・画像切り抜きを折りたたみ詳細へ移した。OCRResult、OCRLine、to_dict()は維持。
+- PR [#99](https://github.com/708san/CV_data/pull/99)をCI成功後にmainへ統合。公開候補の全Colab Notebookを0.1.0a8に固定。
+- GitHub Release [v0.1.0a8](https://github.com/708san/CV_data/releases/tag/v0.1.0a8)を作成し、Publish workflowが成功。wheel/sdistのビルド、metadata、データ・モデルの禁止バイナリ検査、PyPI Trusted Publishingを確認。
+- [PyPI 0.1.0a8](https://pypi.org/project/cv-data-lesson/0.1.0a8/)でwheel（71,888 bytes、SHA-256 eb358bac139094b36b98de7689b8d3839ac2cac8741bdf67b5b783cdbfc52df2）とsdist（86,823 bytes、SHA-256 c50a6fafb1707af3ed934f6a5db2e61863c36464c444268fdac7130e746cee94）を確認。
+- OCR表示変更後のColab実機確認は未実施。確認Notebookを実行し、全文・折りたたみ詳細・生データ利用を確認する。
 
 ## 2026-11-14：Colab実測の利用者報告を反映
 
