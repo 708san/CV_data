@@ -10,6 +10,24 @@
 
 # 開発進捗
 
+## 2026-11-13：空画像と翌日の天気データの準備
+
+- ユーザー提供ZIP（10,014,296 bytes、SHA-256 `c30cf675819fea9b0bad62e0d0c8cb77890b808253e92c604b39d6c97a6f5280`）を固定し、安全なZIP構造・CRC・全1,000 JPEGの224×224デコード・ラベルと画像参照を確認。5枚を代表目視。
+- 晴れ664・曇り184・雨152、train 656 / validation 161 / test 183。日付単位でsplitをまたがないこと、翌日ラベル規則、split比率の大きな差を確認。
+- データカードとOpen-Meteoのデータライセンス・サービス利用条件を区別し、CC BY 4.0帰属・変更表示と無料APIの非商用条件を記録。上流画像データの完全な固定revisionは提供ZIPに記録されていない。
+- 画像を改変せず、`images/<split>/<class>/`、`labels.csv`、`metadata.jsonl`、manifestへ整形。ZIPは10,014,277 bytes、SHA-256 `c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0`。
+- `datasets.to_df()`に型付き追加列を出す実装と、`datasets.info/list_available`で型を表示する実装を追加。日本語データ説明・カタログ・モデル対応表を更新。
+- Colorado州Goldenの1地点・ERA5再解析値で日本の地域予報に使えないこと、固定MST、test側の雨比率が高いことを記載。
+- CV_data_artifacts PR #49をmainへマージ済み。Release assetの再取得でサイズとSHA-256が一致。CV_data PR #64のAPI・説明・一覧変更を、PR #63へ統合する準備中。取得可能件数23件となるコードはPR #63のマージ後に通常ブランチで利用可能。データのColab実取得は未確認。
+
+
+## 2026-11-13：LoRA生成Notebookのモデル情報エラー
+
+- Colabで`model["capabilities_ja"]`がKeyErrorになった原因は、Notebookがその項目を返さない旧commit `635fa30db261ae5b3d43ab87c9e5f9e66a78bd1a`をインストールしていたことでした。
+- PR #63の固定commit `940ae09babebc698563b7cf3a35bd842840388f5`では`loras.list_models()`が`capabilities_ja`を返すことを確認し、Notebookの固定参照を更新しました。
+- Notebookのコード実行とSDXL生成はColab T4で未再確認です。
+
+
 ## 2026-11-13：分類Estimatorのpredict_proba型エラーを修正
 
 - Colabの`predict_proba()`がNumPy配列を`torch.softmax()`へ渡してTypeErrorになったため、softmax前にTensorへ変換する修正を追加。
