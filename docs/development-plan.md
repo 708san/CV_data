@@ -6,7 +6,7 @@
 
 対象仕様：4.4、5.1、5.2、7。`diffusion` extraへ`peft>=0.21.2,<1`を追加し、依存メタデータテストと導入案内を更新。PR #68をmainへマージし、CI成功。ユーザーがColabで修正版Notebookを実行し、torchaoをアンインストールせずにLoRA生成が動作することを確認。
 
-## 今回の作業単位：PyPI wheel/sdistとクリーン環境の基本導入を検証
+## 完了：PyPI wheel/sdistとクリーン環境の基本導入を検証
 
 対象仕様：5.1、5.2、7。PyPI本番公開前にwheel・sdistを作成し、内容物にPythonコード以外の画像・モデル重み・データartifactが紛れないことと、クリーン環境で軽量な基本install/importが通ることをCIで確認する。大容量依存とモデル重みを使う確認はこのCIへ含めない。
 
@@ -19,7 +19,7 @@
 
 受け入れ条件：wheelとsdistが構築でき、`cvlesson`をimport可能なPythonコードを含む。データ・LoRA・画像の大容量バイナリを含まない。クリーンvenvへのinstall/import smokeと既存テストが成功する。Diffusers/PEFTの完全な依存解決やColab生成は、別途実環境で確認した範囲だけを成功と記録する。
 
-進捗：作業計画を記録。実装・CI確認はこれから。
+進捗：PR #69をmainへマージ。CIのpackage-smoke jobでwheelとsdistを構築し、禁止バイナリ・artifactディレクトリが含まれないこと、50MB超のファイルがないことを確認。wheelを新規venvへ`--no-deps`で導入して`import cvlesson`とデータ一覧呼び出しに成功。Python 3.11、3.12、3.13の全ユニットテストも成功。PyPIへのアップロード、Diffusers/PEFTの全依存導入は未実施。
 
 ## 今回の作業単位：Colab旧TorchAO競合をLoRA環境を壊さず解決
 
