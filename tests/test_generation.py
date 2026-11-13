@@ -36,6 +36,37 @@ class GenerationTests(unittest.TestCase):
         self.assertEqual(pipeline.kwargs["generator"].seed, 42)
         self.assertNotIn("image", pipeline.kwargs)
 
+    def test_explicit_generation_settings_are_passed_to_pipeline(self):
+        pipeline = _FakePipeline()
+        generator = ImageGenerator(pipeline, "text-to-image", "cpu", _FakeTorch)
+        generator.generate(
+            "a blue bicycle",
+            negative_prompt="blurry",
+            num_inference_steps=32,
+            guidance_scale=6.5,
+            seed=7,
+            width=768,
+            height=512,
+            use_trigger=False,
+        )
+        self.assertEqual(pipeline.kwargs["prompt"], "a blue bicycle")
+        self.assertEqual(pipeline.kwargs["negative_prompt"], "blurry")
+        self.assertEqual(pipeline.kwargs["num_inference_steps"], 32)
+        self.assertEqual(pipeline.kwargs["guidance_scale"], 6.5)
+        self.assertEqual(pipeline.kwargs["width"], 768)
+        self.assertEqual(pipeline.kwargs["height"], 512)
+        self.assertEqual(pipeline.kwargs["generator"].seed, 7)
+
+    def test_default_generation_settings_are_used(self):
+        pipeline = _FakePipeline()
+        generator = ImageGenerator(pipeline, "text-to-image", "cpu", _FakeTorch)
+        generator.generate("a blue bicycle")
+        self.assertEqual(pipeline.kwargs["num_inference_steps"], 25)
+        self.assertEqual(pipeline.kwargs["guidance_scale"], 7.0)
+        self.assertNotIn("generator", pipeline.kwargs)
+        self.assertNotIn("width", pipeline.kwargs)
+        self.assertNotIn("height", pipeline.kwargs)
+
     def test_image_to_image_requires_image_and_passes_strength(self):
         pipeline = _FakePipeline()
         generator = ImageGenerator(pipeline, "image-to-image", "cpu", _FakeTorch)
