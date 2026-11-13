@@ -25,6 +25,8 @@ PyTorch/TorchvisionはOS、Python、CUDAに合う公式コマンドで先に導�
 python -m pip install 'cv-data-lesson[vision]'
 ```
 
+この追加依存はHugging Face Hub 1.xを許容し、Colabにある新しいTransformers等が必要とするHubを古い版へ下げません。
+
 開発版の場合は`cv-data-lesson`を`-e '.[vision]'`へ置き換えます。CPUを既定にします。GPUを使う場合は、PyTorchが認識している装置を確認して明示的に選びます。
 
 ```python

@@ -20,7 +20,7 @@ PyPI公開前の開発版です。次の依存構成は機能単位で分けて�
 | 画像表示・監査 | `display` | NumPy、Pillow、Matplotlib | 画像を開いて表示・検査するときに必要 |
 | ResNet分類・回帰 | `torch` | NumPy、Pillow、PyTorch、Torchvision | ResNet重みは初回利用時に別途取得。TorchとTorchvisionは公式の対応組み合わせで導入する |
 | 日本語OCR | `ocr` | PaddleOCR 3.1.0、PaddleX 3.1系、LangChain 1.0未満、Hugging Face Hub | PaddlePaddle本体はCPU/GPU環境に合わせ別途導入。OCR専用環境を推奨 |
-| 物体検出・領域分割 | `vision` | NumPy、Pillow、Transformers、Hugging Face Hub | PyTorchを先に導入。初回の明示読み込み時にDETR約167 MBまたはSAMの重み約375 MBを取得 |
+| 物体検出・領域分割 | `vision` | NumPy、Pillow、Transformers、Hugging Face Hub（1.x対応） | PyTorchを先に導入。初回の明示読み込み時にDETR約167 MBまたはSAMの重み約375 MBを取得 |
 | SDXL生成・画像変換 | `diffusion` | Pillow、Diffusers（Torch extraを含む）、Transformers、Hugging Face Hub | 初回利用時に基盤モデルと選択LoRAを取得。数GBの空き容量が必要 |
 
 Hugging Face系の役割は分かれています。**Hugging Face Hub**はモデル・LoRAの取得とキャッシュ、**Transformers**はモデル構成や関連部品、**Diffusers**は画像生成パイプラインを担当します。Hub用パッケージだけ、または3つ全部を基本依存へ入れる構成にはしません。

@@ -2,6 +2,21 @@
 
 更新日：2026-11-13
 
+## 今回の作業単位：DETR・SAM Colab検証前のHub依存競合を解消
+
+対象仕様：4.3、5.1、5.2、7。OCR動作確認後の次の実環境検証として、Colab T4でDETR・SAMの取得と推論を行う。事前確認で`vision` extraもHugging Face Hubを`<1`に制限しており、Colab既存のTransformersが要求するHub 1.xをダウングレードする可能性を確認した。
+
+順序：
+1. `vision` extraのHub上限を`<3`へ変更し、`ocr`・`diffusion`と同じくHub 1.xを許容する。
+2. 依存メタデータのテストとインストール案内を更新する。
+3. Colab Notebookのコードを今回の固定commitに更新し、JSON・コードセル構文・依存指定を検査する。
+4. Python 3.13ネットワーク不要テストを実行し、ブランチへ反映する。
+5. 利用者がT4 Notebookを実行した結果を受け、DETR、SAM、GPU連携の実測状況を記録する。
+
+受け入れ条件：`vision` extraがHub 1.xを不必要に下げず、固定revisionのモデルを明示読込するColab T4確認Notebookが更新される。モデル実取得とGPU推論はColab結果を得た範囲だけを検証済みとする。
+
+進捗：Colab Notebookを点検し、`vision` extraのHub `<1`がColabのTransformersと競合し得ることを特定。Hub `<3`へ変更し、依存メタデータテストと利用案内を更新。Python 3.13で全69テスト成功（7件skip）、Notebook JSONと`git diff --check`も成功。Notebookの固定commit更新はこれから。Colab T4でのDETR/SAM実機テストは未実施。
+
 ## 今回の作業単位：OCR extraのColab依存競合と誤案内を修正
 
 対象仕様：4.2、5.1、5.2。ColabログでPaddleOCR 3.1.0がPaddleX 3.1.4とともにLangChain 1.x系を解決し、PaddleXの旧`langchain.docstore`参照でOCR importが失敗することを確認。また、OCR extraの`huggingface_hub<1`がColab既存のTransformers/Diffusersと競合し、依存不整合を報告している。
