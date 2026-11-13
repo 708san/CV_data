@@ -7,7 +7,7 @@
 2. Notebook内で両者を別名（`notebook_display` / `cv_display`）にし、表示コードを更新する。
 3. Notebook JSONを読み直し、表示セルの参照名とインストール版を確認する。Colabの再実行結果は別途確認し、未実施なら実機検証済みと書かない。
 
-進捗：GitHub mainのalpha6 Notebookで、IPython関数を`display`としてimportしながら`display.show(...)`を呼んでいることを確認。別名で分離する修正を作業中。
+進捗：PR #87でIPython関数を`notebook_display`、`cvlesson.display`モジュールを`cv_display`として分離し、合成画像・OCR枠表示の呼び出しを修正。Notebook JSONの再読み込みで確認し、CIのPython 3.11/3.12/3.13、display-smoke、package-smoke、optional-dependency-resolutionが全て成功。PRはmainへマージ済み。Colabでの再実行は未確認。
 
 ---
 
