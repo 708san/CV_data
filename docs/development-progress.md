@@ -7,7 +7,7 @@
 - SDXL用`diffusion` extraは`diffusers[torch]`からPyTorchを取得することを明記。`vision` extraにもPyTorch/Torchvisionを含め、検出・領域分割をextra一回で導入できる候補に変更。PEFTの最低版を0.21.3とし、Colabの旧TorchAO競合回避のためのPEFT Git再installセルを削除しました。PyTorchのGPU別wheel選択とPaddlePaddleは公式環境別導入を残しています。
 - Colab Notebook installをGitHubの個別commitからPyPI `0.1.0a5`固定へ統一し、OCRの重複installを整理。5機能のランタイム・確認内容・結果記録表を追加。
 - 使い方ガイドとモデル別ガイドで、アップロード前提の画像変数を定義し、基本installで使える機能やPyTorch extraの手順を記載。
-- Python 3.11/3.13で各92テスト成功（各18件skip）。Notebook JSON/Pythonセル構文・公開PyPI版指定、Markdownリンク・Pythonコード例、`git diff --check`成功。実環境テスト、PyPI alpha5公開、Colab実行は未完了。
+- Python 3.11/3.13で各92テスト成功（各18件skip）。Notebook JSON/Pythonセル構文・公開PyPI版指定、Markdownリンク・Pythonコード例、`git diff --check`成功。PR #83はPython 3.11/3.12/3.13 unit、display-smoke、package-smokeがすべて成功。PR merge、PyPI alpha5公開、Colab実行は未完了。
 
 ## 2026-11-13：PyPI初回導線と基本インストールを改善（alpha3公開済み）
 

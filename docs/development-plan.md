@@ -29,7 +29,7 @@
 - 全Colab smoke Notebookが公開PyPI版をinstallし、実行順、ランタイム、データ/モデル量、出力確認が分かる。
 - Colab実機で成功した機能だけを検証済みと記録し、GPU機能は実測したGPU名を残す。
 
-進捗：監査を実施し、仕様0.20と本計画を先行更新。`vision` extraへTorch/Torchvisionを追加し、PEFT最低版を0.21.3へ更新。基本利用と機能別導入の不一致、画像パスの未定義例、ColabのGit commit直installとOCR二重installを修正。PyPI版固定の5機能NotebookとColab確認表を用意。Python 3.11/3.13で各92テスト成功（この作業環境では軽量optional依存が未導入のため18件skip）、Notebook JSON/Python構文・固定PyPI版検査、Markdownローカルリンク・コード例、`git diff --check`成功。PR/CI、alpha5公開、公開PyPI packageのColab実行は未完了。
+進捗：監査を実施し、仕様0.20と本計画を先行更新。`vision` extraへTorch/Torchvisionを追加し、PEFT最低版を0.21.3へ更新。基本利用と機能別導入の不一致、画像パスの未定義例、ColabのGit commit直installとOCR二重installを修正。PyPI版固定の5機能NotebookとColab確認表を用意。Python 3.11/3.13で各92テスト成功（この作業環境では軽量optional依存が未導入のため18件skip）、Notebook JSON/Python構文・固定PyPI版検査、Markdownローカルリンク・コード例、`git diff --check`成功。PR #83のPython 3.11/3.12/3.13 unit、display-smoke、package-smokeは全て成功。PR merge、alpha5公開、公開PyPI packageのColab実行は未完了。
 
 ## 今回の作業単位：公開後の利用者向け文書を再構成し、PyPI alphaを更新
 
