@@ -518,3 +518,12 @@
 - 生成NotebookはCV_dataの固定main commitとPEFT修正merge commitを導入する。PEFTの修正を含む正式版が出るまでの暫定固定である。
 - インストール案内にローカル仮想環境を推奨する手順を追加。仮想環境にtorchaoを持ち込まない限り、共有Python環境のパッケージは変更しない。
 - Notebook JSONを読み書きして構造を確認。Colab T4での再実行・LoRA生成成功は未確認。
+
+
+## 2026-11-13：画像生成のPEFT依存を明示
+
+- `generation.load()`はDiffusersのLoRA読込でPEFTを必要とする一方、従来の`diffusion` extraがPEFTを含まず、Colabの事前導入に偶然依存していた。
+- `diffusion` extraへ`peft>=0.21.2,<1`を追加し、extrasメタデータテストの期待値を更新。
+- インストール案内にPEFTの役割と、旧torchaoを含むColabでは修正版PEFTを固定する生成Notebookを使う注意を追記。PEFTの修正版がPyPI配布されるまで、Notebook外のColab利用は保証しない。
+- `pip uninstall torchao`は行わない。ローカルでは仮想環境を推奨。
+- 実依存解決・Colab T4生成はCI/Colabで未確認。PR CIのメタデータテストを確認する。
