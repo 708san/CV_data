@@ -85,7 +85,8 @@ class LoraModel:
     training_dataset_license: str
     source_url: str
     rights_note: str
-    use_case_ja: str
+    capabilities_ja: str
+    use_examples_ja: tuple[str, ...]
     limitations_ja: str
 
 
@@ -110,7 +111,8 @@ _MODELS: dict[str, LoraModel] = {
             "モデルカードと学習データカードはMITと表示。Microsoftの元絵を含むため、"
             "商標・第三者権利と生成物の利用条件は利用者が確認する。Microsoft公式モデルではない。"
         ),
-        use_case_ja="課題ポスターや発表資料に使う、単体のアイコン・挿絵を作る。",
+        capabilities_ja="SDXLで、丸みのある3Dアイコンや絵文字風の単体イラストを生成する。",
+        use_examples_ja=("案内用のアイコンや挿絵", "発表資料・ポスター・アプリ素材など"),
         limitations_ja=(
             "単体で中央に置く絵向け。画像内の文字は正確に描けない。"
             "Microsoftの公式モデルではなく、Microsoftとの提携・承認もありません。"
@@ -136,7 +138,8 @@ _MODELS: dict[str, LoraModel] = {
             "LoRA重みは配布元がApache-2.0と表示。SDXL 1.0用でトリガー語不要。"
             "学習元データの出典・ライセンスはモデルカードに記載がなく、別途確認できていない。"
         ),
-        use_case_ja="許可を得た写真を水彩風にし、地域課題の説明画像やポスターの背景・挿絵にする。",
+        capabilities_ja="SDXLの生成画像や入力画像を水彩画風にする。",
+        use_examples_ja=("写真の雰囲気を変えた画像", "風景の背景や説明用イラストなど"),
         limitations_ja=(
             "文字は正確に描けない。学習元データの来歴は未記載。"
             "出力の著作権・肖像権・第三者権利は利用者が確認する。"
@@ -163,7 +166,8 @@ _MODELS: dict[str, LoraModel] = {
             "学習元はCC0の合成ピクセル素材から選んだ1,000枚と記載。"
             "基盤SDXLの利用条件も適用される。"
         ),
-        use_case_ja="地域のごみ分別や食品ロスを学ぶミニゲームに使う、単体のピクセル絵素材を作る。",
+        capabilities_ja="SDXLで、単体の物体をピクセルアート風に生成する。",
+        use_examples_ja=("ゲーム用の小物やキャラクター素材", "教材・発表資料に使う図版など"),
         limitations_ja=(
             "単体の小さな物体向けで、背景や複数物体、文字は苦手。"
             "出力は正確な16×16ドット配置ではなく、ゲーム用には目視確認と調整が必要。"
@@ -190,7 +194,8 @@ _MODELS: dict[str, LoraModel] = {
             "Wikimedia CommonsとWikiArt由来としていますが、画像ごとの出典記録は保持されていないとのこと。"
             "基盤SDXLにはCreativeML Open RAIL++-Mが別途適用される。"
         ),
-        use_case_ja="許可を得た地域の風景写真を油彩画風にし、自然環境や公園を紹介するポスターの背景に使う。",
+        capabilities_ja="SDXLの生成画像や入力画像をHudson River School風の風景油彩画にする。",
+        use_examples_ja=("風景写真のスタイル変換", "地域や自然を紹介する背景・挿絵など"),
         limitations_ja=(
             "Hudson River School風に寄るため地域の実景を正確に記録する用途には使わない。"
             "画像内の文字は描けず、人物・建物などが変化することがある。"
@@ -244,12 +249,13 @@ def model_info(model_id: str) -> dict[str, Any]:
             "license": item.training_dataset_license,
         },
         "source_url": item.source_url,
+        "capabilities_ja": item.capabilities_ja,
+        "use_examples_ja": list(item.use_examples_ja),
         "rights_status": (
             f"モデルライセンス表記あり（{item.license_name}）。"
             f"学習元データ: {item.training_dataset_license}"
         ),
         "rights_note": item.rights_note,
-        "use_case_ja": item.use_case_ja,
         "limitations_ja": item.limitations_ja,
         "weights_included": False,
         "download": "generation.load()を明示したときだけ配布元から取得",

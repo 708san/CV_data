@@ -122,7 +122,7 @@ if objects:
 
 Recyclable Waste v0.1.1の整形済みRelease assetは公開されていますが、包装上の肖像写真や商品表示を含む第三者権利審査が未完了のため、生徒向けAPIから外しています（[審査記録](docs/datasets/recyclable_waste.md)）。
 
-観葉植物データは元画像1,172枚を全量デコードし、完全一致重複10枚を除外しました。GPSを含むEXIF情報を取り除き、長辺512px以下にそろえた1,162枚を取得できます。家庭や学校で見かける植物の分類を試せますが、有毒性・食用・病気・育て方の判定には使えません。
+観葉植物データは元画像1,172枚を全量デコードし、完全一致重複10枚を除外しました。GPSを含むEXIF情報を取り除き、長辺512px以下にそろえた1,162枚を取得できます。7種類の画像分類や、撮影条件による予測の違いを調べられます。使い方の例として植物画像の整理や観察記録を作れますが、有毒性・食用・病気・育て方の判定はできません。
 
 FruitSeg30は全量監査後、寸法が一致しないGuavaクラスを除いた29クラス1,914組を整備し、固定Releaseを公開しました。GitHub mainブランチでは取得APIを利用できます。PyPI配布版への反映はパッケージ更新時に行います。`to_torch_dataset()`は画像と濃淡マスクを返します。
 
@@ -138,11 +138,11 @@ Obstacles Avoidance Assistanceは段差・柵・穴・ポールを囲むbboxを�
 
 Kuzushiji-MNISTはCC BY-SA 4.0の表示を確認しましたが、公式配布物の固定版とSHA-256を確定できないため保留中です。取得元が動的な状態では固定版取得の安全条件を満たせません。
 
-`datasets.list_tasks(audience="student")`は、生徒が選べる課題タイプとデータIDを返します。画像分類では家庭菜園の葉や青果など、身近な観察課題を扱えます。Orange Fruitは約113 MBで、外観カテゴリや背景・照明の影響を調べる食品ロス課題の試作に使えます。鮮度・食用可否・食品安全・病気の判定には使いません。物体検出では道路損傷、清掃活動、製図用具、洗濯前の衣類の汚れ探しを扱えます。FabricSpotDefectは約744 MBで、展開後は約744 MBのキャッシュ容量が必要です。衣類の清潔さ・着用可否・安全性や汚れ落ちは判定しません。RDD2020 Japanは約642 MBで、展開後は約646 MBのキャッシュ容量が必要です。CC BY-NC 3.0のため非商用の教育利用に限られます。モデルだけで道路の安全性や修繕順位を決めないでください。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
+`datasets.list_tasks(audience="student")`は、タスクとデータID、データごとの内容・形式・使用例を返します。使用例は入口の一例です。画像分類・検出・領域分割・OCR・回帰などの能力を基に、生徒が別の題材や問いへ応用できます。たとえば、画像カテゴリの比較、物体の位置記録、撮影条件の影響、画像と数値の関係などを調べられます。Orange Fruitは約113 MBです。FabricSpotDefectは約744 MBで、展開後も約744 MBのキャッシュ容量が必要です。RDD2020 Japanは約642 MBで、展開後は約646 MB必要です。RDD2020 JapanはCC BY-NC 3.0のため非商用利用に限られます。データのラベルが示さないこと（鮮度・食用可否・道路の安全性など）は確定できません。教師がプレビューを含めて確認する場合は`datasets.list_tasks(audience="teacher", include_preview=True)`を使います。未審査または未公開の候補は一覧に出しません。
 
 LeFood-Setは`datasets.get("lefood_set")`で食前・食後画像524組を取得し、`to_df()`で実測重量や見た目評価を確認できます。日本の学校給食を代表するデータではなく、健康・栄養判断には使いません。
 
-画像生成ではSDXLと4種類のLoRAを使えます。`fluent_emoji_3d`はアイコン、`watercolor_sdxl`と`thomas_cole_landscape`は写真・風景のイラスト化、`pixel_art_sdxl`はごみ分別などを題材にした学習ゲームの単体素材向けです。`generation.load(lora="pixel_art_sdxl", device="cuda")`のように明示して読み込みます。重みは再配布せず、固定版から初回利用時に取得します。[Colabで4件を試す](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/generation_smoke_test.ipynb)。ライセンス、学習元データ、制約は[画像生成ガイド](docs/image-generation.md)を確認してください。LoRA学習素材は別管理で、権利確認中の文化祭アイコンは生徒向けに公開していません。
+画像生成ではSDXLと4種類のLoRAを使えます。テキストからの画像生成や写真のスタイル変換ができ、LoRAごとに絵柄の特徴が異なります。アイコン、挿絵、ゲーム素材、風景の表現などは使用例です。目的に合わせて題材やプロンプトを考えられます。`generation.load(lora="pixel_art_sdxl", device="cuda")`のように明示して読み込みます。重みは再配布せず、固定版から初回利用時に取得します。[Colabで4件を試す](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/generation_smoke_test.ipynb)。ライセンス、学習元データ、能力・限界は[画像生成ガイド](docs/image-generation.md)を確認してください。LoRA学習素材は別管理で、権利確認中の文化祭アイコンは生徒向けに公開していません。
 
 ## AIにプログラムを改造してもらうとき
 

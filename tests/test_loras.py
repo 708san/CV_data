@@ -43,14 +43,16 @@ class LoraCatalogTests(unittest.TestCase):
         self.assertEqual(pixel["training_dataset"]["license"], "CC0（モデルカードの表示）")
         self.assertEqual(pixel["revision"], "85565b5401663e1277c70b51fd34a8b8c2b9e3f9")
         self.assertEqual(pixel["sha256"], "acbae146be564ea1bcbc65c233b374a30972249aea15c8a0bcf383983603c297")
-        self.assertIn("ごみ分別", pixel["use_case_ja"])
+        self.assertIn("単体の物体", pixel["capabilities_ja"])
+        self.assertTrue(any("ゲーム" in example for example in pixel["use_examples_ja"]))
 
         landscape = loras.model_info("thomas_cole_landscape")
         self.assertEqual(landscape["license"]["name"], "MIT（LoRA重み。基盤モデルは別ライセンス）")
         self.assertEqual(landscape["revision"], "30373be8e89838dff2a4c6bfa2001d4188632695")
         self.assertEqual(landscape["sha256"], "6ad18bdf606c25be342c2acda1fbcd02ad669c40163f25027d886022b52bea8a")
         self.assertIn("画像ごとの出典記録は保持されていない", landscape["rights_note"])
-        self.assertIn("地域の風景写真", landscape["use_case_ja"])
+        self.assertIn("風景油彩画", landscape["capabilities_ja"])
+        self.assertGreaterEqual(len(landscape["use_examples_ja"]), 2)
         self.assertFalse(landscape["weights_included"])
 
 

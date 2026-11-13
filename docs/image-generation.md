@@ -2,16 +2,18 @@
 
 ## 用途
 
-画像生成は、地域の困りごとを説明するポスターの挿絵、アプリのアイコン、手持ち写真のイラスト化などに使えます。完成画像内の日本語は誤りやすいため、見出し・説明・日時はスライドや画像編集ソフトで後から載せてください。生成画像は課題のアイデアを伝える補助であり、事実や安全性の証拠にはなりません。
+SDXLは文章から画像を生成したり、入力画像の雰囲気を変えたりできます。ポスターの挿絵、アイコン、ゲーム素材、写真のスタイル変換などは使用例です。目的に合わせて題材を選べます。完成画像内の日本語は誤りやすいため、文字は別のアプリで載せてください。生成画像は事実や安全性の証拠にはなりません。
 
 ## 登録済みLoRA
 
-| ID | 内容 | 配布元ライセンス表示 | 固定取得先 | 用途と注意 |
+| ID | モデルの特徴 | 配布元ライセンス表示 | 固定取得先 | 使用例と注意 |
 | --- | --- | --- | --- | --- |
-| `fluent_emoji_3d` | SDXL用の丸みのある3Dアイコン・絵文字風 | MIT（モデルカード）。学習データカードもMIT表記 | [モデルページ](https://huggingface.co/klibaner/fluent-emoji-style-sdxl)、revision `7ff36ef02e53e75a4ca3bd5bd326de3f30a41fba` | `msemj style`が自動でpromptに付く。単体で中央に置く絵が得意。文字描画には使わない |
-| `watercolor_sdxl` | 写真・風景を水彩画風にする | Apache-2.0（モデルカード） | [モデルページ](https://huggingface.co/ostris/watercolor_style_lora_sdxl)、revision `0b65af0ac64347c8a35b82b4695ef5eadeffd5d7` | トリガー不要。許可を得た写真を地域課題の説明画像やポスター挿絵に使える。学習元データはモデルカードに記載なし |
-| `pixel_art_sdxl` | 単体のピクセルアート素材 | CreativeML Open RAIL++-M（SDXLから継承と配布元表示）。学習元はCC0表示 | [モデルカード](https://huggingface.co/unsupervised-abdullah/pixel-art-sdxl-lora)、revision `85565b5401663e1277c70b51fd34a8b8c2b9e3f9` | `pxlsprite`が自動で付く。ごみ分別・食品ロスを学ぶミニゲームの素材向け。1,000枚の合成スプライトで学習。正確な16×16画像ではなく背景も一定しない |
-| `thomas_cole_landscape` | 風景を19世紀の油彩画風にする | MIT（LoRA重み）。学習画像は配布元が米国でパブリックドメインと説明 | [モデルカード](https://huggingface.co/VRuins/thomas-cole-sdxl-lora)、revision `30373be8e89838dff2a4c6bfa2001d4188632695` | `tcole`が自動で付く。許可を得た風景写真を自然環境・公園紹介のポスター背景に使える。個々の学習画像の出典記録は保持されていない |
+| `fluent_emoji_3d` | 丸みのある3Dアイコン・絵文字風の単体イラスト | MIT（モデルカード）。学習データカードもMIT表記 | [モデルページ](https://huggingface.co/klibaner/fluent-emoji-style-sdxl)、revision `7ff36ef02e53e75a4ca3bd5bd326de3f30a41fba` | `msemj style`が自動でpromptに付く。アイコン、挿絵、発表資料の素材など。文字描画は苦手 |
+| `watercolor_sdxl` | 画像を水彩画風に変換・生成 | Apache-2.0（モデルカード） | [モデルページ](https://huggingface.co/ostris/watercolor_style_lora_sdxl)、revision `0b65af0ac64347c8a35b82b4695ef5eadeffd5d7` | トリガー不要。写真のスタイル変換、風景背景、説明用イラストなど。学習元データはモデルカードに記載なし |
+| `pixel_art_sdxl` | 単体の物体をピクセルアート風に生成 | CreativeML Open RAIL++-M（SDXLから継承と配布元表示）。学習元はCC0表示 | [モデルカード](https://huggingface.co/unsupervised-abdullah/pixel-art-sdxl-lora)、revision `85565b5401663e1277c70b51fd34a8b8c2b9e3f9` | `pxlsprite`が自動で付く。ゲーム用の小物、キャラクター、教材の図版など。1,000枚の合成スプライトで学習。正確な16×16画像ではなく背景も一定しない |
+| `thomas_cole_landscape` | 風景をHudson River School風の油彩画にする | MIT（LoRA重み）。学習画像は配布元が米国でパブリックドメインと説明 | [モデルページ](https://huggingface.co/VRuins/thomas-cole-sdxl-lora)、revision `30373be8e89838dff2a4c6bfa2001d4188632695` | `tcole`が自動で付く。風景写真の変換、地域・自然を扱う背景や挿絵など。個々の学習画像の出典記録は保持されていない |
+
+表の使用例は入口の例で、用途を限定するものではありません。LoRAは絵柄を加えるもので、入力の内容や構図が保たれるとは限りません。
 
 モデル重みは約341MB、約12MB、約186MB、約228MBです。Git、PyPI、CV_data_artifactsへはコピーせず、利用者が `generation.load()` を呼んだ場合にだけ固定revisionから直接取得します。各重みは登録済みSHA-256と照合します。pixel artのSHA-256は `acbae146be564ea1bcbc65c233b374a30972249aea15c8a0bcf383983603c297`、Thomas Cole風のSHA-256は `6ad18bdf606c25be342c2acda1fbcd02ad669c40163f25027d886022b52bea8a` です。
 
@@ -50,10 +52,10 @@ result.save("park_icon.png")
 
 写真の人物を使う場合は本人の同意を得てください。住所・学校名・顔などの個人情報が写っていないか確認してから、外部サービスへ画像をアップロードしてください。現在のAPIはHugging Faceからモデルを取得しますが、入力写真はモデル提供元へアップロードしません。
 
-## 利用例の制限
+## 注意事項
 
-- ポスターでは図・アイコンだけを生成し、文字と連絡先は後から正しく追加します。
-- 写真のイラスト化では、許諾を得た写真を使います。入力と出力の両方を確認し、誤解を招く用途には使いません。
+- 画像モデルが描く文字は誤りやすいため、正確さが必要な文字情報は生成後に確認・追加してください。
+- 写真を入力する場合は、利用許諾と写り込んだ人の同意を確認してください。出力も、目的に合っているか見直してください。
 - `watercolor_sdxl`の学習元データはモデルカードに記載されていません。配布元の重みライセンスはApache-2.0ですが、学習画像の権利確認済みという意味ではありません。
 - GPUは勝手に選択されません。`available_devices()`で確認し、使う場合は `device="cuda"` を明示します。
 
