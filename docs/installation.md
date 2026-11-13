@@ -48,7 +48,9 @@ PyPIにはまだ公開していません。以下のコマンドは、このリ�
 | ResNet分類・回帰 | `torch` | NumPy、Pillow、PyTorch、Torchvision | ResNet重みは初回利用時に別途取得。TorchとTorchvisionは公式の対応組み合わせで導入する |
 | 日本語OCR | `ocr` | PaddleOCR 3.1.0、PaddleX 3.1系、Pillow、LangChain 1.0未満、Hugging Face Hub | PaddlePaddle本体はCPU/GPU環境に合わせ別途導入。OCR専用環境を推奨 |
 | 物体検出・領域分割 | `vision` | NumPy、Pillow、Transformers、Hugging Face Hub（1.x対応） | PyTorchを先に導入。初回の明示読み込み時にDETR約167 MBまたはSAMの重み約375 MBを取得 |
-| SDXL生成・画像変換 | `diffusion` | Pillow、Diffusers（Torch extraを含む）、Transformers、Hugging Face Hub | 初回利用時に基盤モデルと選択LoRAを取得。数GBの空き容量が必要 |
+| SDXL生成・画像変換 | `diffusion` | Pillow、Diffusers（Torch extraを含む）、Transformers、Hugging Face Hub、PEFT | LoRAの読込にPEFTを使います。初回利用時に基盤モデルと選択LoRAを取得し、数GBの空き容量が必要 |
+
+LoRA生成を行う場合、`diffusion` extraにPEFTも含まれます。Colabの一部ランタイムには古い`torchao`が事前導入されており、現行のPEFT配布版と組み合わせるとLoRAの読込に失敗する既知問題があります。PEFTの修正がPyPI版へ反映されるまでは、[Colab生成Notebook](../notebooks/colab/generation_smoke_test.ipynb)が固定導入するPEFT修正版を使ってください。Notebookは`torchao`を削除しません。ローカルPCでは仮想環境を推奨します。
 
 Hugging Face系の役割は分かれています。**Hugging Face Hub**はモデル・LoRAの取得とキャッシュ、**Transformers**はモデル構成や関連部品、**Diffusers**は画像生成パイプラインを担当します。Hub用パッケージだけ、または3つ全部を基本依存へ入れる構成にはしません。画像例のタイトル・ラベルは`japanize-matplotlib`を通じて日本語フォントへ設定します。ライブラリのimportだけでは読み込まず、`show_examples()`の実行時に適用します。
 

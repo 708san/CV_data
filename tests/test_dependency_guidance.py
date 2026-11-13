@@ -41,7 +41,7 @@ class PackagingMetadataTests(unittest.TestCase):
             "display": {"numpy", "pillow", "pandas", "matplotlib", "japanize-matplotlib"},
             "torch": {"numpy", "pillow", "torch", "torchvision"},
             "ocr": {"paddleocr", "paddlex", "pillow", "huggingface-hub"},
-            "diffusion": {"pillow", "diffusers", "transformers", "huggingface-hub"},
+            "diffusion": {"pillow", "diffusers", "transformers", "huggingface-hub", "peft"},
         }
         for extra, packages in expected.items():
             with self.subTest(extra=extra):

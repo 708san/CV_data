@@ -2,6 +2,21 @@
 
 更新日：2026-11-13
 
+## 今回の作業単位：画像生成extraへLoRA実行依存PEFTを含める
+
+対象仕様：4.4、5.1、5.2、7。実装はDiffusersの`load_lora_weights()`を使うが、`diffusion` extraにPEFTが含まれていなかった。Colabの既存環境では暗黙に入っていたため依存漏れが見えにくかった。LoRAを使う際に必要なPEFTをextraへ追加し、PyPIユーザーが新規環境で必要依存を一度に導入できるようにする。PEFTのPyPI版ではColabの旧torchao問題修正が未確認のため、Colab Notebookは上流修正merge commitを一時的に固定し、制限を利用者へ説明する。
+
+順序：
+1. 仕様と実装、`pyproject.toml`、依存ガイダンステスト、インストール案内を照合する。API仕様の追加変更は不要。
+2. この計画に今回の作業範囲と受け入れ条件を記録する。
+3. `diffusion` extraへPEFTの互換範囲を追加し、依存メタデータテストを更新する。
+4. インストール案内にPEFTの役割、Colabの旧torchao制約、修正版固定Notebookを使うことを記す。ローカルでは仮想環境を使う。
+5. 依存宣言テスト、Notebook JSON、Pythonセル構文、PR CIを確認する。Colab T4実生成は利用者実測を得るまで未確認とする。
+
+受け入れ条件：`pip install cv-data-lesson[diffusion]`でクリーンな仮想環境にPEFTが導入され、LoRA利用に必要なバックエンドが不足しない。Notebookはtorchaoを削除せずPEFT上流の修正を固定使用する。PyPI版PEFT修正が出るまで、Colabの旧torchao環境でNotebook外から直接使う場合は未保証と明記する。
+
+進捗：依存漏れを確認し、実装前の計画を追加。PEFT追加と説明更新を進める。
+
 ## 今回の作業単位：Colab旧TorchAO競合をLoRA環境を壊さず解決
 
 対象仕様：4.4、5.1、5.2、7。Colab T4でLoRA 4件が、事前導入torchao 0.10.0とPEFT 0.19以降の互換性問題で失敗した。PEFT修正PR #3989のmerge commit `c2d5f697fbb30063cbde6f39e2734883b70b8753`を確認。共有ランタイム上でtorchaoをアンインストールする手順は取りやめ、修正を含むPEFT commitをNotebookだけで固定導入する。ローカル利用は仮想環境を推奨する。
