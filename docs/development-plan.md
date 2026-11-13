@@ -2,27 +2,26 @@
 
 更新日：2026-11-13
 
-## 今回の作業単位：空画像と翌日天候データを登録
+## 今回の作業単位：空画像・翌日天気データを利用可能にし、生成Notebookの固定版ずれを修正
 
-対象仕様：3.1〜3.3、4.1、7。ユーザー作成の`sky-weather-next-day.zip`を、ライセンス・教材用途・画像・ラベル・分割を確認した上で共通形式化し、明示取得できる分類データとして登録する。分類ラベルに加えて、翌日の降水量等の数値メタデータを`to_df()`から取得可能にする。
+対象仕様：3.1〜3.3、4.4、5.1、6、7。空画像・翌日天気データを成果物Release、registry、ライブラリAPIの順に統合し、SDXL/LoRA Notebookで起きた`capabilities_ja`のKeyErrorを解消する。
 
-事前監査：
-- 上流データカードはNREL SRRL全天空画像データをCC BY 4.0と表示。Open-MeteoはAPIデータをCC BY 4.0とし、無料APIサービス利用は非商用条件。帰属・変更表示、データライセンスとAPI利用条件の区別を記録する。
-- 提供ZIP SHA-256は`c30cf675819fea9b0bad62e0d0c8cb77890b808253e92c604b39d6c97a6f5280`、10,014,296 bytes。ZIP CRC成功、危険パス・symlinkなし。画像1,000枚、224×224 JPEGを全件デコード。5枚を目視し全天空カメラ画像であることを確認。
-- labels.csv 1,000行・画像参照一致・重複なし。晴れ664、曇り184、雨152。撮影123日、同日ラベル衝突なし、同日がsplit間をまたがない。train 656 / val 161 / test 183。テストsplitのクラス分布がtrainと大きく異なる。
-- ラベルは翌日のMST固定UTC−7 6:00〜17:59から作った教材用分類。Open-Meteo ERA5再解析値であり、公式予報・観測ではない。1地点（Colorado州Golden）・季節の限られた1,000画像で、日本の地域天気予報には使えない。
+事前確認：
+- データartifact Releaseは公開済み。GitHubから再取得したファイルは10,014,277 bytes、SHA-256 `c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0`で一致。
+- 成果物registry等はCV_data_artifacts PR #49、ライブラリ登録はCV_data PR #64に準備済み。#64はこのブランチをbaseにする。
+- 生成NotebookはCV_data固定commit `635fa30db261ae5b3d43ab87c9e5f9e66a78bd1a`をインストールしていた。この版の`loras.list_models()`は`capabilities_ja`を返さない。PR #63の現行コードcommit `940ae09babebc698563b7cf3a35bd842840388f5`では当該項目を返すことを確認した。
 
 順序：
-1. 仕様0.14に追加メタデータを`to_df()`へ返す契約を追加する。
-2. 固定Release artifactへ整形し、manifest・帰属・変更履歴・画像/ラベル対応・ファイルSHA-256を生成する。元画像の画素値は変更しない。
-3. `ReleaseSource`へ追加し、分類列に加えて日付・降水量・雲量・降雪量を型付き追加列として提供する。取得は`datasets.get("sky_weather_next_day")`時のみ行う。
-4. 日本語のデータ説明・README・カタログを追加し、地点・時刻・クラス分布・評価上の限界を説明する。
-5. `CV_data_artifacts`へsource/artifact manifest・監査記録・権利説明を登録し、固定Release assetとSHA-256を照合する。CV_dataやPyPIのGit履歴へ画像を入れない。
-6. 開発計画・進捗・PR本文を実施状態に合わせる。
+1. PR #49の成果物manifest・権利記録・台帳と、Release assetの固定URL/SHAを確認して成果物側を統合する。
+2. 生成Notebookのインストール参照を、`capabilities_ja`を含む完全な40桁commitへ更新する。見出し・授業順・生成コードは変更しない。
+3. NotebookのJSONとセル構文・固定参照を確認し、開発進捗へ原因と修正を記録する。SDXL実行はColab T4で行う。
+4. PR #64をこのPRのbase branchへ取り込み、成果物データ/APIとNotebook修正を同じライブラリ変更としてmain向けPR #63から公開する。
+5. 変更対象のPRレビュー状態とCI結果を確認してから統合し、最終状態を開発計画・進捗へ記録する。
 
-受け入れ条件：学生が`datasets.get()`後に固定split、画像パス、日本語クラス名、天候の数値列を取得できる。配布物は固定URL・固定SHAで検証され、CC BY 4.0の帰属と改変表示、Open-Meteo無料APIの非商用条件が正確に説明される。データは地域予報の精度保証として説明しない。
+受け入れ条件：成果物registryとライブラリが同一固定URL・SHAを参照し、マージ後に`datasets.get("sky_weather_next_day")`で取得できる。Notebookの指定commitで`loras.list_models()`が`capabilities_ja`を含み、表示セルがKeyErrorなしで実行できる。GPU実生成を行っていない場合はColab未確認と明記する。
 
-進捗：一次情報のライセンス・API条件、提供ZIP構成とSHA、ZIP安全性、CRC、全画像デコード、ラベル規則、日付split、代表画像を確認済み。共通artifact（1,000画像・全ファイルSHA manifest）、分類追加列の型付き`to_df()`対応、カタログ・データ説明を実装しました。固定Release assetを公開し、GitHubから再取得したZIPのサイズ10,014,277 bytes・SHA-256 `c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0`が一致。成果物manifest・監査・権利・変換記録とregistry、ライブラリ公開設定を各PRに反映しました。両PRは未マージのため、変更をdefault branchへ反映するレビュー・マージが残っています。Colabでの実利用確認は未実施です。
+進捗：CV_data_artifacts PR #49をmainへマージ済み。Release assetを再取得してサイズ・SHA一致を確認済み。LoRA一覧の`capabilities_ja`を含まない古いcommitをNotebookが固定していた原因を特定し、`940ae09babebc698563b7cf3a35bd842840388f5`へ更新しました。CV_data PR #64のデータ・API登録をPR #63へ統合中です。ColabでのSDXL実生成とSky-weatherデータ取得は、PR #63を統合後に未確認として案内します。
+
 
 ## 今回の作業単位：分類Notebookの`predict_proba()`型不一致を修正
 
