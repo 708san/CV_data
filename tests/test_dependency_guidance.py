@@ -28,8 +28,10 @@ class PackagingMetadataTests(unittest.TestCase):
                 names.add(re.sub(r"[-_.]+", "-", match.group(1)).lower())
         return names
 
-    def test_core_install_has_no_runtime_dependencies(self):
-        self.assertEqual(self.project.get("dependencies", []), [])
+    def test_core_install_includes_lightweight_student_workflow_dependencies(self):
+        dependencies = self._requirement_names(self.project.get("dependencies", []))
+        self.assertTrue({"numpy", "pillow", "pandas", "matplotlib", "japanize-matplotlib"} <= dependencies)
+        self.assertFalse({"torch", "torchvision", "paddleocr", "transformers", "diffusers"} & dependencies)
         self.assertEqual(self.project["requires-python"], ">=3.11,<3.14")
 
     def test_features_are_declared_as_separate_extras(self):
@@ -66,9 +68,9 @@ class OptionalDependencyGuidanceTests(unittest.TestCase):
             rights_note="",
         )
 
-    def test_dataframe_error_points_to_dataframe_extra(self):
+    def test_dataframe_error_explains_basic_install(self):
         with patch.dict(sys.modules, {"pandas": None}):
-            with self.assertRaisesRegex(DatasetError, r"cv-data-lesson\[dataframe\]"):
+            with self.assertRaisesRegex(DatasetError, r"pip install --pre cv-data-lesson"):
                 self.bundle.to_df()
 
     def test_torch_dataset_error_points_to_torch_extra(self):
@@ -76,10 +78,10 @@ class OptionalDependencyGuidanceTests(unittest.TestCase):
             with self.assertRaisesRegex(DatasetError, r"cv-data-lesson\[torch\]"):
                 self.bundle.to_torch_dataset()
 
-    def test_display_error_points_to_display_extra(self):
+    def test_display_error_explains_basic_install(self):
         with patch.dict(sys.modules, {"matplotlib": None}):
             with self.assertRaisesRegex(
-                DatasetError, r"cv-data-lesson\[display\]"
+                DatasetError, r"pip install --pre cv-data-lesson"
             ):
                 self.bundle.show_examples()
 
@@ -123,7 +125,7 @@ class OptionalDependencyGuidanceTests(unittest.TestCase):
 
     def test_missing_japanese_font_dependency_has_install_guidance(self):
         with patch.dict(sys.modules, {"japanize_matplotlib": None}):
-            with self.assertRaisesRegex(DatasetError, r"cv-data-lesson\[display\]"):
+            with self.assertRaisesRegex(DatasetError, r"pip install --pre cv-data-lesson"):
                 _enable_japanese_matplotlib()
 
 

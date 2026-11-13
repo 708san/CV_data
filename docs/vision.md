@@ -111,7 +111,7 @@ mask_result = segmenter.predict(image_path, point=(240, 180))
 display.show(image_path, mask_result)
 ```
 
-導入時は機能別に`display` extraを追加してください：`python -m pip install --pre 'cv-data-lesson[display]'`。
+画像へのマスク重ね合わせ表示は基本インストールに含まれています。未導入の場合は`python -m pip install --pre cv-data-lesson`を実行してください。
 
 別のSAM互換モデルを指定するときも、repository IDと完全な40桁revisionを両方渡してください。指定モデルの利用条件やモデル構造を、このライブラリが自動で審査するものではありません。
 

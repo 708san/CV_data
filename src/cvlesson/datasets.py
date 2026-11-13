@@ -45,7 +45,7 @@ def _enable_japanese_matplotlib():
     except ImportError as exc:
         raise DatasetError(
             "画像表示の日本語フォント設定にはjapanize-matplotlibが必要です。"
-            "python -m pip install --pre 'cv-data-lesson[display]'を実行してください。"
+            "python -m pip install --pre cv-data-lesson を実行してください。"
         ) from exc
     japanize_matplotlib.japanize()
     font_path = Path(japanize_matplotlib.get_font_ttf_path())
@@ -195,7 +195,7 @@ class DatasetBundle:
         except ImportError as exc:
             raise DatasetError(
                 "DataFrame変換にはpandasが必要です。"
-                "python -m pip install --pre 'cv-data-lesson[dataframe]'を実行してください。"
+                "python -m pip install --pre cv-data-lesson を実行してください。"
             ) from exc
         if self.kind == "detection":
             names = self.classes
@@ -352,7 +352,7 @@ class DatasetBundle:
         return {name: int(counts.get(name, 0)) for name in ("train", "val", "test")}
 
     def show_examples(self, n: int = 9, *, split: str | None = None, seed: int = 42):
-        """画像例を日本語対応で表示する。Pillow、matplotlib等はdisplay extraで導入する。"""
+        """画像例を日本語対応で表示する。Pillow、matplotlib等は基本依存に含まれる。"""
         if n <= 0:
             raise ValueError("nは1以上にしてください。")
         try:
@@ -362,7 +362,7 @@ class DatasetBundle:
         except ImportError as exc:
             raise DatasetError(
                 "画像表示にはPillow、NumPy、matplotlib、japanize-matplotlibが必要です。"
-                "python -m pip install --pre 'cv-data-lesson[display]'を実行してください。"
+                "python -m pip install --pre cv-data-lesson を実行してください。"
             ) from exc
         japanese_font = _enable_japanese_matplotlib()
         frame = self.to_df(seed=seed)

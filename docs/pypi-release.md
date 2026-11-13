@@ -1,11 +1,11 @@
 # PyPI公開・更新の運用記録
 
-`cv-data-lesson==0.1.0a1`は2026-11-13にPyPIへ公開済みです。PyPI上の同じ版は差し替えられません。次の更新は`0.1.0a2`としてビルドし、GitHub Releaseの公開をきっかけにTrusted Publishingで送ります。
+`cv-data-lesson==0.1.0a2`は2026-11-13にPyPIへ公開済みです。PyPI上の同じ版は差し替えられません。次の更新は`0.1.0a3`としてビルドし、GitHub Releaseの公開をきっかけにTrusted Publishingで送ります。
 
 ## 利用者向けコマンド
 
 ```bash
-python -m pip install --pre 'cv-data-lesson[display]'
+python -m pip install --pre cv-data-lesson
 ```
 
 PyPIへ一般公開した各alpha版は、同じコマンドで取得できます。READMEと利用ガイドは公開済み版に合わせて更新します。開発checkoutやeditable installは開発者向けの作業であり、利用者向けインストール案内へ混ぜません。
@@ -14,11 +14,10 @@ PyPIへ一般公開した各alpha版は、同じコマンドで取得できま�
 
 PyPIへ置くのはPythonコード、カタログ・説明・ライセンス等のテキスト、wheelとsource distributionです。画像・マスク・LoRA・基盤モデル重みは含めません。データは利用者がAPIを呼んだ時に固定版Releaseから取得し、LoRA・モデル重みは機能の読み込み時に配布元から取得する設計です。PyPIのコードライセンスはMITですが、個別データ・モデルの条件はそれぞれの説明に従います。
 
-公開後のalpha版インストール例：
+基本インストールに、表・画像例の確認で使う軽量依存も含めます。ResNet、OCR、検出・領域分割、画像生成の重い依存は機能別extrasに分離します。
 
 ```bash
 python -m pip install --pre cv-data-lesson
-python -m pip install --pre 'cv-data-lesson[display]'
 ```
 
 alpha版を使うため`--pre`を指定します。ResNet、OCR、検出・領域分割、画像生成は必要なextraと別途導入するフレームワークが異なります。詳細は[インストール案内](installation.md)を参照してください。
@@ -47,5 +46,6 @@ GitHub側の`pypi` environmentを作成し、必要ならdeployment protection r
 
 ## 公開履歴
 
-- `0.1.0a1`：2026-11-13公開。PyPI READMEに未公開の案内が残ったため、次版で利用者向け文書を修正する。
-- `0.1.0a2`：高校生向け説明・AI改造ガイド・利用者向け導入案内を整理して公開予定。
+- `0.1.0a1`：2026-11-13公開。PyPI READMEに未公開の案内が残った。
+- `0.1.0a2`：高校生向け説明・AI改造ガイド・利用者向け導入案内を整理。
+- `0.1.0a3`：基本導入から表・画像表示までを一つのコマンドにまとめ、PyPI READMEの見出しとリンクを改善予定。

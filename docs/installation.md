@@ -13,21 +13,19 @@ source .venv/bin/activate
 python -m pip install --upgrade pip
 ```
 
-## 目的別にインストール
+## 基本インストール
 
-画像表示も使う基本的な導入：
+alpha版のため`--pre`を付けてください。通常のデータ利用、DataFrame、表・画像例の確認に必要な軽量パッケージは一緒に入ります。
 
 ```bash
-python -m pip install --pre 'cv-data-lesson[display]'
+python -m pip install --pre cv-data-lesson
 ```
 
-データ一覧と取得だけなら`display`を省略できます。alpha版を使うため`--pre`を付けてください。
+配布名は`cv-data-lesson`、Pythonのimport名は`cvlesson`です。`[display]`や`[dataframe]`は従来コマンドとの互換用に残っていますが、通常は指定不要です。
 
 | 使いたい機能 | インストール・準備 | 実行時に取得するもの |
 |---|---|---|
-| データ一覧・説明・取得 | `python -m pip install --pre cv-data-lesson` | `datasets.get()`を呼んだデータの固定Release ZIP |
-| 表・画像例の確認 | `python -m pip install --pre 'cv-data-lesson[display]'` | データ取得時のZIP |
-| DataFrame | `python -m pip install --pre 'cv-data-lesson[dataframe]'` | データ取得時のZIP |
+| データ一覧・説明・取得、表・画像例 | 基本インストール | `datasets.get()`を呼んだデータの固定Release ZIP |
 | ResNet分類・回帰 | GPU/OSに合うPyTorchとTorchvisionを公式手順で導入後、`python -m pip install --pre 'cv-data-lesson[torch]'` | ResNetの重み |
 | 日本語OCR | 対応するPaddlePaddleを導入後、`python -m pip install --pre 'cv-data-lesson[ocr]'` | OCRモデル（`ocr.load()`時） |
 | 検出・領域分割 | PyTorchとTorchvisionを公式手順で導入後、`python -m pip install --pre 'cv-data-lesson[vision]'` | DETRまたはSAMのモデル（load時） |

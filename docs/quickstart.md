@@ -2,16 +2,16 @@
 
 ## 1. インストール
 
-Python 3.11〜3.13で、ターミナルまたはColabセルから実行します。画像表示も使うなら`display`を追加します。
+Python 3.11〜3.13で使えます。現在はalpha版なので、pipに開発版も選ばせる`--pre`が必要です。表や画像例の表示も含めて、最初はこの1行だけ実行します。
 
 ```bash
-python -m pip install --pre 'cv-data-lesson[display]'
+python -m pip install --pre cv-data-lesson
 ```
 
 Colabでは先頭に`%`を付けます。
 
 ```python
-%pip install --pre 'cv-data-lesson[display]'
+%pip install --pre cv-data-lesson
 ```
 
 ## 2. データを探して取得
@@ -20,7 +20,8 @@ Colabでは先頭に`%`を付けます。
 from cvlesson import datasets
 
 print(datasets.list_tasks(audience="student"))
-print(datasets.list_available(audience="student"))
+for item in datasets.list_available(audience="student")[:8]:
+    print(item["id"], item["name_ja"], "—", item["task"])
 print(datasets.info("tomato_leaves"))
 
 data = datasets.get("tomato_leaves")
