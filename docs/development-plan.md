@@ -21,7 +21,7 @@ PyPI/TestPyPIへのアップロードは未実施。
 
 対象仕様：4.4、5.5、6、7。PR #71で25 steps・guidance 7.0・768×768を初期設定とし、seed、negative prompt、画像変換strengthなどをNotebookから調整できるようにした。ユーザーがColabで確認済み。実行時のGPU使用量や詳しい品質比較値は未記録のため、数値実測としては扱わない。
 
-## 今回の作業単位：日本語表示extraをCIで実環境確認
+## 完了：日本語表示extraをCIで実環境確認
 
 対象仕様：5.1、5.2、7。display extraにはMatplotlibとjapanize-matplotlibがあるが、現在のCI unit jobはtest extraだけを導入する。日本語フォント設定はmock testのみで、実パッケージの導入・フォント参照をCIで確かめていない。
 
@@ -33,7 +33,7 @@ PyPI/TestPyPIへのアップロードは未実施。
 
 受け入れ条件：既存のmockテストを維持しつつ、CIのdisplay jobでjapanize-matplotlibの実フォントパスが有効であることを確認する。画像・モデル・データのダウンロードを行わず、通常の軽量test jobを重量級依存で膨らませない。
 
-進捗：Python 3.13の独立display-smoke jobと実フォントファイル検査を実装。CI結果確認待ち。
+進捗：Python 3.13の独立display-smoke jobでdisplay extra導入と実フォントパス検査を実行。全テスト成功。通常のPython 3.11〜3.13 unit matrixとpackage-smokeも成功。
 
 ## 完了：画像生成extraへLoRA実行依存PEFTを含める
 
