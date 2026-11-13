@@ -17,7 +17,7 @@
 - `.github/workflows/publish.yml`を追加。GitHub Releaseの`published`時だけ起動し、tag/version一致、wheel/sdist、Twine metadata、画像・重み・大容量ファイルの検査を通過したartifactをTrusted Publishingで送る。
 - PyPI pending publisherの設定値（owner `708san`、repo `CV_data`、workflow `publish.yml`、environment `pypi`）と初回公開の注意を[手順書](pypi-release.md)へ記録。
 - PyPI JSON APIは2026-11-13時点でHTTP 404。これは名前の予約を意味しない。現時点でPyPI upload・GitHub Release/tag作成は未実施。
-- ローカルPython 3.11/3.13で91テスト成功（各18件skip）。YAML構文と`git diff --check`成功。変更後のpackage-smoke CIは未実行。
+- ローカルPython 3.11/3.13で91テスト成功（各18件skip）。PR #76をmainへマージし、GitHub ActionsのPython 3.11〜3.13 unit、display-smoke、package-smoke（wheel/sdist build、Twine、禁止バイナリ、クリーンvenv import）が全て成功。YAML構文と`git diff --check`も成功。Release公開イベントはまだ発生していないため、publish workflowは未実行。
 
 
 ## 2026-11-13：空画像と翌日の天気データの準備
