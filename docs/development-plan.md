@@ -2,6 +2,20 @@
 
 更新日：2026-11-13
 
+## 今回の作業単位：ColabのOCR smoke testで古いcvlessonを検出・更新
+
+対象仕様：4.2、5.1、7。ユーザーのColab出力に旧版OCRコードが現れ、既定名`PP-OCRv5_server_det`とローカルのmobileモデルの不一致を確認した。新しい固定コードを確実に使い、古いimport済みモジュールを見分けられるようにする。
+
+順序：
+1. 固定commit `9da8f480bf6bdc9c834a5fe92f371939ad45214b`の`ocr.py`がモデル名を明示し、`lang`/`ocr_version`を渡さないことを確認する。
+2. Notebookの依存インストール後に、依存を変えずライブラリ本体だけを固定commitから再インストールする手順を加える。
+3. 既にimport済みの古いソースを検出し、Colabランタイムの再作成・Notebook再読込を促すチェックを追加する。
+4. Notebook構文とネットワーク不要テストを確認し、PR #63を更新する。
+
+受け入れ条件：OCR smoke testは互換修正commitのコードを使い、旧コードがロードされていたらモデル取得前に原因と復旧方法を示す。HF_TOKENは公開モデル利用に必須ではない旨を注記する。
+
+進捗：Colabログの`lang`/`ocr_version`警告とserver/mobileのモデル名不一致から旧`cvlesson.ocr`が動いていることを特定。HF_TOKEN警告は別件で、公開モデル利用にはtoken不要。Notebookで依存導入後にライブラリ本体を固定commitからforce-reinstallし、ロードソースにmobileモデル名がない場合はランタイム再作成を促す検査を追加。HF_TOKEN警告の説明も記載。Python 3.11〜3.13で各67テスト成功（各7件skip）、Notebook JSON/コードセル構文と`git diff --check`成功。Colab再実行はこれから。
+
 ## 今回の作業単位：データ・モデルの使用例を非限定表現へ統一
 
 ## 今回の作業単位：OCR依存の互換性修正と機能別導入
