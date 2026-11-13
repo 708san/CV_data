@@ -27,7 +27,7 @@ python -m pip install --pre cv-data-lesson
 |---|---|---|
 | データ一覧・説明・取得、表・画像例 | 基本インストール | `datasets.get()`を呼んだデータの固定Release ZIP |
 | ResNet分類・回帰 | `python -m pip install --pre 'cv-data-lesson[torch]'` | PyTorch依存とResNetの重み |
-| 日本語OCR | 対応するPaddlePaddleを導入後、`python -m pip install --pre 'cv-data-lesson[ocr]'` | OCRモデル（`ocr.load()`時） |
+| 日本語OCR | `python -m pip install --pre 'cv-data-lesson[ocr]'` | OCRモデル（`ocr.load()`時） |
 | 検出・領域分割 | `python -m pip install --pre 'cv-data-lesson[vision]'` | PyTorch依存とDETRまたはSAMのモデル（load時） |
 | SDXL画像生成・画像変換 | `python -m pip install --pre 'cv-data-lesson[diffusion]'` | PyTorchを含むPython依存、SDXLと指定LoRA（load時、数GB） |
 
@@ -37,13 +37,19 @@ python -m pip install --pre cv-data-lesson
 
 ## 日本語OCR
 
-PaddlePaddleは環境に合わせた公式wheelが必要です。先に[PaddlePaddle公式インストール案内](https://www.paddlepaddle.org.cn/install/quick)からCPUまたはGPU/CUDA版を選び、その後にOCR extraを追加します。
+CPUで使う場合、`ocr` extraにPaddlePaddle CPU版・PaddleOCR・OCRモデル取得用の依存が含まれます。インストール後は`import paddle`を書かず、`from cvlesson import ocr`と`ocr.load()`を使います。
 
 ```bash
 python -m pip install --pre 'cv-data-lesson[ocr]'
 ```
 
-Colab・ローカルでPaddleOCRとPyTorch系を同じ環境に入れる場合の互換性は組み合わせにより異なります。OCR専用の仮想環境に分ける方法をおすすめします。ライブラリが実行中にpip installを行ったり、利用者に`import paddle`を要求したりすることはありません。
+GPU版PaddlePaddleを使う場合だけは、[PaddlePaddle公式インストール案内](https://www.paddlepaddle.org.cn/install/quick)からOS/CUDAに合うwheelを選びます。Paddle GPU版の導入手順はCPU版と異なります。
+
+OCRとPyTorch系のextrasを同時に使う場合は、同じ新規仮想環境へまとめて指定できます。Colab Notebookも一つのinstall行で複数extraを選べます。Python 3.11〜3.13の組み合わせはリリース前に依存解決で確認します。
+
+```bash
+python -m pip install --pre 'cv-data-lesson[ocr,vision,diffusion]'
+```
 
 ## キャッシュと取得
 

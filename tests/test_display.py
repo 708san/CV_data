@@ -33,6 +33,13 @@ class DisplayTests(unittest.TestCase):
         result = display.render(self.image, ocr.OCRResult((line,), "fixture"))
         self.assertNotEqual(result.tobytes(), self.image.tobytes())
 
+    def test_ocr_can_draw_boxes_without_overlapping_text_labels(self):
+        line = ocr.OCRLine("text", 0.92, ((4, 4), (24, 4), (24, 15), (4, 15)))
+        with_boxes = display.render(self.image, ocr.OCRResult((line,), "fixture"), show_labels=False)
+        self.assertNotEqual(with_boxes.tobytes(), self.image.tobytes())
+        with self.assertRaisesRegex(ValueError, "show_labels"):
+            display.render(self.image, None, show_labels=1)
+
     def test_segmentation_mask_is_blended(self):
         mask = np.zeros((30, 40), dtype=np.bool_)
         mask[5:20, 6:22] = True

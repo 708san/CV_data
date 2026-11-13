@@ -119,13 +119,33 @@ class NotebookIntegrityTests(unittest.TestCase):
             with self.subTest(notebook=path.relative_to(ROOT)):
                 self.assertTrue(install_lines, "公開PyPI版のinstall行がありません")
                 self.assertTrue(
-                    any("==0.1.0a5" in line for line in install_lines),
+                    any("==0.1.0a6" in line for line in install_lines),
                     "Colab確認は対象PyPI版を固定してください",
                 )
                 self.assertFalse(
                     any("CV_data.git@" in line for line in install_lines),
                     "実際の配布wheelではなくGit checkoutをinstallしています",
                 )
+
+    def test_ocr_notebook_installs_cpu_backend_from_ocr_extra_only(self):
+        notebook = json.loads((ROOT / "notebooks/colab/ocr_smoke_test.ipynb").read_text())
+        code = "\n".join(
+            "".join(cell.get("source", []))
+            for cell in notebook["cells"] if cell.get("cell_type") == "code"
+        )
+        self.assertIn("cv-data-lesson[ocr]==0.1.0a6", code)
+        self.assertNotIn("pip install paddlepaddle", code)
+        self.assertIn("display.show(image, result, show_labels=False)", code)
+
+    def test_generation_notebook_only_generates_selected_lora_once(self):
+        notebook = json.loads((ROOT / "notebooks/colab/generation_smoke_test.ipynb").read_text())
+        code = "\n".join(
+            "".join(cell.get("source", []))
+            for cell in notebook["cells"] if cell.get("cell_type") == "code"
+        )
+        self.assertIn("LORA_ID =", code)
+        self.assertIn("generated = generator.generate(PROMPT, **kwargs)", code)
+        self.assertNotIn("for model_id, task, prompt in cases", code)
 
 
 if __name__ == "__main__":

@@ -46,6 +46,8 @@ Colabにも通常PyTorchが入っています。独自のCUDA版を選びたい�
 
 `ImageGenerator.generate()`は、パラメータを省略すると`num_inference_steps=25`、`guidance_scale=7.0`、`strength=0.65`、`use_trigger=True`を使います。`seed`は未指定ならランダム、`width`と`height`は基盤パイプライン既定のサイズを使います。
 
+`diffusion` extraはPyPI公開済みPEFT 0.21.2以降を導入します。Colabなどに古いTorchAOが事前に入っていても、通常の非量子化SDXL LoRAを読み込む間だけTorchAOの機能判定を一時的に無効にします。環境からTorchAOを削除せず、TorchAO量子化モデルをサポートする変更でもありません。PEFT側でも同種の互換修正が進んでいます（[PEFT issue #3964](https://github.com/huggingface/peft/issues/3964)、[fix PR #3989](https://github.com/huggingface/peft/pull/3989)）。
+
 | 引数 | 内容 |
 |---|---|
 | `num_inference_steps` | 生成を繰り返す回数。増やすと遅くなります。細部が整う場合がありますが、常に改善するわけではありません。 |
@@ -113,4 +115,4 @@ result.save("park_icon.png")
 
 ## Colabで動作を試す
 
-[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。PyPI `0.1.0a5`を使い、登録済み4件を順に試します。Image-to-Imageでは合成画像または利用者が明示アップロードした画像を使えます。初回はSDXL本体と4つの重みを取得するため数GBの空き容量が必要です。4件すべて成功すると最後に成功メッセージが出ます。
+[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。次回公開候補の`0.1.0a6`を使い、登録済み4件の情報を確認してから選択した1件だけを取得・生成します。Image-to-Imageでは利用者が明示アップロードした画像を使います。初回はSDXL本体と選択したLoRAの重みを取得するため数GBの空き容量が必要です。

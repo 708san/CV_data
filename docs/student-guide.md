@@ -2,7 +2,7 @@
 
 このライブラリでは、課題に合う画像やモデルを選び、入力を渡し、結果を画像や数値で確かめられます。`cv-data-lesson`はpipで使う配布名、`cvlesson`はPythonで読み込む名前、表示名は「CV教材ライブラリ」です。現在のPyPI alphaには生徒向けデータ23件と登録LoRA 4件があります。使用例は出発点です。テーマ、入力画像、出力の見せ方は自分の課題に合わせて考えられます。
 
-基本導入だけでデータ一覧、表、画像例を使えます。モデル機能は使いたいものだけ追加します。分類・回帰は`torch`、検出・領域分割は`vision`、SDXL画像生成は`diffusion`です。これらのextraは必要なPython依存をまとめて導入します。OCRだけは環境に合うPaddlePaddleを先に入れます。コマンドは[インストール案内](installation.md)を確認してください。
+基本導入だけでデータ一覧、表、画像例を使えます。モデル機能は使いたいものだけ追加します。分類・回帰は`torch`、検出・領域分割は`vision`、SDXL画像生成は`diffusion`です。CPUのOCRは`ocr` extraだけでPaddlePaddleも入ります。複数機能を使う場合はextrasをまとめて指定できます。GPU版PaddlePaddleだけは環境に合う公式wheelを選びます。コマンドは[インストール案内](installation.md)を確認してください。
 
 Colabでは、使う機能の行だけを実行します。既に基本版を入れている場合も`--upgrade`を付けると最新の公開alphaを使えます。
 
@@ -12,7 +12,13 @@ Colabでは、使う機能の行だけを実行します。既に基本版を入
 %pip install --pre --upgrade 'cv-data-lesson[diffusion]'   # SDXL画像生成
 ```
 
-OCRはPaddlePaddleの公式手順を先に実行してから`%pip install --pre --upgrade 'cv-data-lesson[ocr]'`を実行してください。モデル重みやデータはこのコマンドでは入りません。初回の`datasets.get()`またはモデルの`load()`時に取得します。
+CPU OCRは`%pip install --pre --upgrade 'cv-data-lesson[ocr]'`だけで準備できます。モデル重みやデータはこのコマンドでは入りません。初回の`datasets.get()`またはモデルの`load()`時に取得します。
+
+OCR・検出・画像生成を同じ新規環境で使う場合は、まとめて導入できます。
+
+```python
+%pip install --pre --upgrade 'cv-data-lesson[ocr,vision,diffusion]'
+```
 
 ## 1. データを選ぶ
 
@@ -107,16 +113,24 @@ Colabへアップロードした画像は現在のランタイムで処理され
 
 ## 3. OCR（画像の文字を読む）
 
-OCRは学習済みPP-OCRv5を使う**推論機能**です。このライブラリからOCRモデルを追加学習する機能ではありません。既定は日本語・CPUです。PaddlePaddle本体はOSやCPU/GPUに合う公式手順で別途導入します。利用者が`import paddle`を書く必要はありません。
+OCRは学習済みPP-OCRv5を使う**推論機能**です。このライブラリからOCRモデルを追加学習する機能ではありません。既定は日本語・CPUです。CPU版PaddlePaddleは`ocr` extraに含まれます。GPUを使う場合だけ環境に合う公式wheelを選びます。利用者が`import paddle`を書く必要はありません。
 
 ```python
 from cvlesson import ocr
 
 reader = ocr.load(device="cpu")
 result = reader.predict(image_path)
-print(result.text)
+print(result)  # result.textと同じ読み取った文字を簡潔に表示
 for line in result.lines:
     print(line.text, line.confidence, line.polygon)
+```
+
+`cvlesson.display`を使うと文字位置を画像上で確認できます。文字が多く重なる場合は、文字ラベルを消して枠だけ表示します。
+
+```python
+from cvlesson import display
+
+display.show(image_path, result, show_labels=False)
 ```
 
 結果には文字、信頼度、画像上の位置が含まれます。信頼度は読み取り正解の保証ではありません。金額や日付など大事な部分は元画像と照合してください。正解文字列がないデータでは、文字認識精度を数値評価できません。導入条件は[インストール案内](installation.md#日本語ocr)を確認してください。

@@ -44,13 +44,14 @@ class PackagingMetadataTests(unittest.TestCase):
             "display": {"numpy", "pillow", "pandas", "matplotlib", "japanize-matplotlib"},
             "torch": {"numpy", "pillow", "torch", "torchvision"},
             "vision": {"numpy", "pillow", "torch", "torchvision", "transformers", "huggingface-hub"},
-            "ocr": {"paddleocr", "paddlex", "pillow", "huggingface-hub"},
+            "ocr": {"paddlepaddle", "paddleocr", "paddlex", "pillow", "huggingface-hub"},
             "diffusion": {"pillow", "diffusers", "transformers", "huggingface-hub", "peft"},
         }
         for extra, packages in expected.items():
             with self.subTest(extra=extra):
                 self.assertTrue(packages <= self._requirement_names(extras[extra]))
         ocr_requirements = extras["ocr"]
+        self.assertIn("paddlepaddle>=3.0,<3.2", ocr_requirements)
         self.assertTrue(any(req.startswith("paddlex[ocr]>=3.1.0,<3.2.0") for req in ocr_requirements))
         self.assertIn("langchain>=0.2,<1", ocr_requirements)
         self.assertIn("requests>=2.32.2,<2.33", ocr_requirements)
@@ -58,7 +59,7 @@ class PackagingMetadataTests(unittest.TestCase):
         self.assertIn("huggingface_hub>=0.23,<3", extras["vision"])
         self.assertIn("torch>=2.6,<3", extras["vision"])
         self.assertIn("torchvision>=0.21,<1", extras["vision"])
-        self.assertIn("peft>=0.21.3,<1", extras["diffusion"])
+        self.assertIn("peft>=0.21.2,<1", extras["diffusion"])
 
 
 class OptionalDependencyGuidanceTests(unittest.TestCase):

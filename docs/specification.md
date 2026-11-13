@@ -1,7 +1,7 @@
 # CV教材ライブラリ 仕様書
 
-更新日：2026-11-13
-仕様バージョン：0.20（開発中）
+更新日：2026-11-14
+仕様バージョン：0.21（開発中）
 
 変更記録：2026-11-13、PyPI/GitHubの表記差、feature extraの依存自己完結性、公開PyPI版を使ったColab実機検証を要件化。2026-11-13、PyPI利用者・高校生向け説明と開発者向け手順を分離し、AIへ改造を頼むときに既存API・データ権利・成功条件を明示するガイドを要件化。2026-11-13、画像生成APIの既定値・明示できる設定・各設定の日本語説明を要件化。Colab確認Notebookの低steps設定を通常例として扱わない方針を追加。2026-11-13、生成設定の値域と型をpipeline実行前に検査する要件を追加。
 
@@ -64,10 +64,12 @@
 - PaddleOCRとPaddleXは互換性が確認された同一minor系列に固定する。3.1系を使う間はPaddleX 3.2未満を依存条件に含める。
 - モデルは固定したHugging Face repository revisionから明示的なOCRモデル読み込み時に取得し、モデル重みをGit/PyPIへ含めない。
 - `load(device="cpu")`を既定とし、GPUは`device="gpu:0"`等を利用者が指定した場合だけ使う。GPU対応のPaddlePaddle環境か事前確認する。
-- PaddlePaddle本体はOS・CPU/GPU・CUDAに合う公式配布手順で別途導入する。ライブラリは`ocr.load()`等のOCR機能が呼ばれた時にだけOCR依存をimportし、実行時にpip installや環境変更を自動実行しない。利用者が`import paddle`する必要はない。
+- CPU利用では`ocr` extraに対応するPaddlePaddleを含め、利用者が追加のPaddle installや`import paddle`を書かずに使えるようにする。GPU版を使う場合だけOS/CUDA別の公式GPU wheel手順を案内する。ライブラリはOCR機能が呼ばれた時だけOCR依存をimportし、実行時にpip installや環境変更を自動実行しない。
 - 共通出力は読み取った文字列、0〜1の信頼度、画像座標上の四点ポリゴンとする。バックエンド固有型を公開APIに漏らさない。
+- 生の`OCRResult`・`OCRLine`・`to_dict()`を維持しつつ、`str(result)`または`result.text`で行単位の文字列を確認でき、`cvlesson.display`で元画像へ文字位置を重ねて見られる。
+- `ocr` extraには対応環境向けCPU版PaddlePaddleを含める。GPU版を使う場合だけはOS/CUDA別の公式GPU wheel手順を案内する。
 - 別モデルを使う場合は、互換形式のローカルモデルディレクトリを明示指定できる。任意の未固定リモートモデル名は取得しない。
-- PaddlePaddleはOS・CPU/GPU・CUDAで配布手順が異なるため、`ocr` extraとは別に公式手順で導入する。OCR用のPaddle環境とPyTorch/Diffusers環境の併用は保証せず、必要なら仮想環境を分ける。
+- 複数extrasは同じノートブック環境へまとめて導入できるよう、対応Pythonで依存解決を検証する。Paddle GPU wheelのような環境固有の選択が必要な場合のみ別手順にする。
 
 ### 4.3 物体検出・領域分割
 
@@ -82,6 +84,7 @@
   - 物体検出：`facebook/detr-resnet-50`、revision `557a3b6fcdb1be415f074c22da2e16ab4f7e8265`。COCO 2017の80カテゴリに限る閉集合検出で、約167 MB。出力ラベルは英語のCOCOカテゴリ名とする。任意物体の文章検索ではなく、COCO外の物体を検出できる保証もない。
   - 領域分割：`facebook/sam-vit-base`、revision `70c1a07f894ebb5b307fd9eaaee97b9dfc16068f`。Transformersが使うsafetensors重みは約375 MB。Hugging Faceの全ファイル表示は約1.13 GB（PyTorch・TensorFlow等の重複重みを含む）。入力画像と点または矩形を受け、対象名を付けないマスク候補を返す。意味領域分割ではない。
 - SAMへ人が点・矩形を渡すほか、DETRの検出枠をそのままSAMへ渡す連携を提供する。DETRとSAMの組合せはCOCOカテゴリの物体に限った提案であり、常に正しい領域を切り出すとは限らない。
+- DETRの検出枠は入力画像の幅・高さを記録した元画像座標で返し、画像端を越える値を範囲内へ収める。検出結果を異なる寸法の画像へSAM連携する場合は記録した元寸法から枠を変換する。
 - APIはモデルを明示的に読み込む設計にし、CPUを既定とする。GPUは利用者が明示し、読み込み前に利用可能性を確認する。モデル重みは固定revisionからキャッシュへ取得し、Git/PyPIへ含めない。
 - Transformersの物体検出・SAM実装を使う`vision` extraを設け、Torch/Torchvisionも含める。通常環境はextra一つで必要なPython依存を導入できる。利用者がGPU向けwheelを選びたい場合は公式のOS・CPU/GPU別手順で先に導入する。
 - 既定モデルは引数なしで選ぶ。利用者が別のHugging Faceモデルを明示する場合は、物体検出またはSAM互換モデルのrepository IDと完全な40桁revisionを両方渡す。`main`等の浮動参照は拒否する。指定モデルのライセンス、容量、モデル構造の互換性は利用者が確認するものとし、ライブラリ既定モデルと同じ利用承認を受けたようには表示しない。
@@ -91,6 +94,7 @@
 - SDXLによるテキストからの画像生成と、画像から画像への変換を提供する。
 - 登録LoRAを選びやすくし、対応する別モデルを明示的に指定できる設計にする。
 - `generate()`の既定値は`num_inference_steps=25`、`guidance_scale=7.0`、`seed=None`、`strength=0.65`、`use_trigger=True`とし、width/height未指定時は基盤パイプラインの既定サイズを使う。
+- 教材Notebookは初期状態でLoRAを一つだけ選んで生成し、利用者がIDを切り替えられる。複数モデルの重みを連続取得する全件実行を既定にしない。
 - 利用者は`num_inference_steps`、`guidance_scale`、`seed`、`width`、`height`、`negative_prompt`、Image-to-Imageの`strength`、`use_trigger`を明示的に変更できる。各値が生成時間、文章への追従、元画像の保持、再現性、構図・VRAM使用量へ与える影響を日本語で説明する。
 - 生成前に主要設定を検査し、不正値をモデルpipelineへ渡す前に日本語の`ValueError`で知らせる。stepsは正の整数、guidance scaleは有限の0以上の数、strengthは有限の0〜1、seedは整数または`None`、negative promptは文字列または`None`、use_triggerは真偽値とする。指定するwidth/heightはそれぞれ8の倍数の正の整数とする。
 - Notebookの通常例は短時間動作確認だけの低steps設定にせず、ライブラリ既定値に沿う品質確認設定を示す。低stepsは短時間の動作確認用途と明記する。
@@ -122,6 +126,7 @@
 - PyPIの基本インストールは、高校生が最初に使うデータ表・画像例の表示に必要なpandas、Pillow、NumPy、Matplotlib、日本語フォント依存を含める。最初の操作に`[display]`や`[dataframe]`の追加指定を求めない。
 - 基本importとデータ一覧・固定Release取得は重いAIフレームワークやモデル重みを読み込まない。依存パッケージがインストール済みでも、各機能の使用時まで遅延importする。
 - `display`と`dataframe` extrasは既存コマンドとの互換用に維持するが、利用者向けの通常手順では案内しない。PyTorch/ResNet、OCR、検出・領域分割、画像生成は機能別の追加依存として分離する。
+- 主要機能のextraは、その機能の標準的なCPU環境で必要なPython依存を含める。環境別wheelを必要とするGPU実行では、CPU既定からの切替手順を明示する。
 - 機能別依存は遅延importし、追加依存が未導入の場合は対象機能、追加方法、CPU/GPUの選び方が分かるエラーを返す。
 - `DatasetBundle.show_examples()`などライブラリがMatplotlib図を作る機能は、日本語フォント設定を自動で適用する。`japanize-matplotlib`は基本依存に含めるが、Python 3.12以降でdistutils依存によりimportに失敗する版があるため、ライブラリはpackage importではなく配布物に含まれるフォントファイルを利用する。
 - PyTorchは機能別extraから通常依存として導入できるようにする。CUDA等の環境に合わせてwheelを選びたい利用者には、公式配布条件に合う先行導入手順も案内する。GPUは明示選択と事前確認を維持する。
@@ -205,6 +210,8 @@
 要件変更が必要になったら、実装に先立ち本書へ変更理由・日付・変更箇所を記録する。その後、[開発計画](development-plan.md)と利用者向け文書を更新し、計画内の受け入れ条件を改めてから実装する。
 
 ### 変更履歴
+
+- 2026-11-14 / 0.21：OCRのraw結果を保った行テキスト・画像重ね表示を要件化。DETR出力に元画像寸法を記録し、座標の範囲処理と異なる寸法でのSAM連携を追加。画像生成の既定設定と単一LoRA選択Notebookを明記。OCR CPU版PaddlePaddleを`ocr` extraへ含め、GPU版は環境別手順とする。理由：OCRの生repr、DETR座標の画像範囲外エラー、SAMに異なる画像寸法の枠を渡したエラー、ColabのTorchAO/LoRA読み込みエラー、LoRA全件連続生成の負担が報告されたため。
 
 - 2026-11-13 / 0.20：PyPIとGitHub `main`の説明差はリリース時点のスナップショットと継続更新を区別し、リリースごとの照合を必須化。主要機能のextraに必要依存を含め、PaddlePaddleのような環境別wheel依存だけを理由付きで別手順にする。公開PyPI版を使うColabの実機確認を要件化。理由：画像生成のTorch導入が自動なのか分かりにくく、機能ごとの導入手順とColab実使用の確認が必要。
 - 2026-11-13 / 0.18：基本インストールに高校生向けのデータ表・画像表示依存を含め、通常操作から`[display]`/`[dataframe]`を省く。PyPIの自動project/version見出しと重なるREADME H1を置かず、文書リンクを絶対URLにする。alphaの`--pre`は開発版であることの説明を添えて一度だけ案内する。理由：初回インストールと使い始め方が分かりにくく、PyPI相対リンクが正しく開かず、タイトルが重複して見えるとの利用者報告。
