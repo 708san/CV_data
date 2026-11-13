@@ -577,4 +577,4 @@
 
 - generation APIでNaN/inf、boolを整数として渡すケース、誤ったseed・prompt型、0以下や8の倍数でない画像寸法をpipeline呼び出し前に拒否する検証を追加。
 - 値域と型を網羅するネットワーク・モデル不要のテストを追加。極端に大きな数値も分かりやすいValueErrorになるよう確認。
-- [クイックスタート](quickstart.md)と[画像生成ガイド](image-generation.md)に有効な設定範囲を追記。CI結果はPRで確認する。
+- [クイックスタート](quickstart.md)と[画像生成ガイド](image-generation.md)に有効な設定範囲を追記。PR #75のPython 3.11〜3.13 unit、display-smoke、package-smokeが成功。
