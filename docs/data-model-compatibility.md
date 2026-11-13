@@ -147,7 +147,7 @@ SAMはクラス名を予測しません。正解マスクと結果を比較す�
 
 ### OCR：画像を読み取り、構造化正解は参照用
 
-OCRデータの`ground_truth`にはデータ固有の文字・項目情報があります。現行OCR APIは画像ファイルパスを読み、`OCRResult`を返します。`result.text`、各行の文字・信頼度・四点座標、または`result.to_dict()`で結果を参照できます。
+OCRデータの`ground_truth`にはデータ固有の文字・項目情報があります。現行OCR APIは画像ファイルパスを読み、`OCRResult`を返します。`result.text`、各行の文字・信頼度・四点座標、または`result.to_dict()`で結果を参照できます。 `display.show_ocr(image_path, result)`は読み順の文字一覧と折りたたみ式の行別画像を表示します。別アプリでは`display.render_ocr_report()`が返すHTMLまたは`result.to_dict()`を使えます。
 
 ```python
 from cvlesson import ocr
@@ -159,14 +159,16 @@ image_path = frame.iloc[0]["image_path"]
 reader = ocr.load(device="cpu")
 result = reader.predict(image_path)
 print(result.text)
-print(result.to_dict())
+portable_result = result.to_dict()  # 元の機械可読な形式を保持
 ```
 
 ```python
 from cvlesson import display
 
-display.show(image_path, result)
-display.save(image_path, "results/ocr.png", result)
+display.show_ocr(image_path, result)  # 文字一覧。行を開くと画像部分を表示
+html_report = display.render_ocr_report(image_path, result)  # 他のUIへ埋め込み可能
+# 必要な場合のみ枠付き画像を保存
+display.save(image_path, "results/ocr.png", result, show_labels=False)
 ```
 
 OCRモデルは推論専用です。`ground_truth`はデータの正解情報であり、現行APIが自動で読み込んでモデル評価するわけではありません。データに文字列全体ではなく項目別JSONが含まれる場合もあるため、正解形式を確認してから評価方法を決めてください。
