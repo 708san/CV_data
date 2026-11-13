@@ -33,6 +33,10 @@ class OCRResult:
     lines: tuple[OCRLine, ...]
     source: str
 
+    def __str__(self) -> str:
+        """構造化reprの代わりに、読み取った行をそのまま表示する。"""
+        return self.text or "文字を検出できませんでした。"
+
     @property
     def text(self) -> str:
         """行ごとに改行した読み取り文字列。"""

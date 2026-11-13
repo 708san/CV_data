@@ -1,6 +1,20 @@
-# 現行作業：alpha5公開を記録し、公開版の全機能Colab確認を完了する
+# 現行作業：OCR・検出・生成の実使用エラーを修正し、Colab再検証する
 
-更新日：2026-11-13。基準版：PyPI `0.1.0a5` / GitHub `main` `f9306108be06b185b84fd63660b490700c7786d1`。
+更新日：2026-11-14。基準版：PyPI `0.1.0a5` / GitHub `main` `881da35dfb51c1370ce8021050ef621cc267f110`。
+
+対象仕様：0.21、4.2〜4.4、5.1〜5.4、6、7。OCRの結果を読みやすくし、CPU版OCRを一つのextraから導入できるようにする。DETR出力とSAM連携で画像寸法の不一致・範囲外枠を扱い、画像生成のPEFT/TorchAO互換とNotebookのLoRA選択を改善する。
+
+作業順と受け入れ条件：
+1. 仕様0.21とこの計画を先行更新する。
+2. OCRResultのraw fields・`to_dict()`を保ち、`str(result)`を行テキスト化する。画像表示を調整可能にし、OCR Notebookでテキスト表示と画像上の位置確認を示す。
+3. `ocr` extraに標準CPU用PaddlePaddleを加える。GPU実行は公式のGPU wheelを必要とする例外として、CPU版と混同しない導入方法を示す。
+4. Detectionに生成元の画像寸法を保持し、検出枠を有限かつ入力範囲内に整える。別寸法画像への`segment_detections()`では枠を拡縮し、直接予測では入力画像座標を保つ。
+5. Diffusers/PEFT/TorchAOの報告エラーを一次資料と依存解決で調べる。通常のSDXL LoRA読み込みで既存の未使用TorchAO旧版が障害にならない形にし、外部モデルなしのテストを追加する。
+6. 画像生成APIの既定値を利用者向けに明示し、Colab生成Notebookを単一LoRA選択式にする。モデル情報は一覧表示し、初期状態では選択した1件しか重みを取得・生成しない。
+7. 複数extrasを同時指定する依存解決をdry-runし、競合を直す。CPU offline tests、Notebook JSON/Python構文、PR CIを確認する。
+8. 修正版をPR/Release/PyPIへ反映し、公開PyPI版をColabで分類、回帰、OCR、DETR/SAM、画像生成（選択LoRA一つ）実行する。Colabランタイムへ直接接続できない場合は、Notebookと記録表を整えて利用者の実行ログで実測更新する。
+
+進捗：OCRResult文字列化と文字ラベルなし画像表示、CPU版PaddlePaddleを含むOCR extra、Detectionの元画像サイズ保持・枠clip・SAM入力サイズへの拡縮、古いTorchAOと通常PEFT LoRAの互換ラッパー、単一LoRA選択Notebookを実装した。`peft>=0.21.2`へ下限を合わせた（現時点のPyPI公開版）。追加の依存組み合わせCIを用意。オフラインunit testsはPython 3.13で99件成功、19件skip。Linux向けの全依存dry-runはこのMac上からはbinary-onlyの制約でPaddleXのsource-only依存を解決できず完了していないため、CI判定待ち。Colab実機検証は修正版PyPI公開後に行う。
 
 対象仕様：0.20、5.1、6、7。利用者からの「PyPIとGitHubの表記差」「画像生成時のTorch導入」「実使用の問題点を列挙・改善」「使用ガイド」「全機能のColab実機確認」に対応する。既存の未コミット変更は別checkoutに残し、この作業ブランチでは触れない。
 

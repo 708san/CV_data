@@ -124,8 +124,52 @@ class VisionTests(unittest.TestCase):
         detector = vision.ObjectDetector(processor, _CallableModel(), _Torch, "cpu")
         with patch("cvlesson.vision._open_image", return_value=SimpleNamespace(size=(40, 50))):
             predictions = detector.predict("ignored.jpg", threshold=0.4)
-        self.assertEqual(predictions, [vision.Detection("bicycle", 0.91, (1.25, 2.0, 21.0, 30.0))])
+        self.assertEqual(
+            predictions,
+            [vision.Detection("bicycle", 0.91, (1.25, 2.0, 21.0, 30.0), (40, 50))],
+        )
         self.assertEqual(processor.kwargs, {"threshold": 0.4, "target_sizes": [(50, 40)]})
+
+    def test_detection_boxes_are_clipped_and_invalid_boxes_skipped(self):
+        class Processor:
+            def __call__(self, **kwargs):
+                return {}
+
+            def post_process_object_detection(self, outputs, **kwargs):
+                return [{
+                    "boxes": [
+                        _Tensor([-5, -2, 45, 60]),
+                        _Tensor([20, 10, 60, 30]),
+                        _Tensor([4, 4, 4, 8]),
+                    ],
+                    "scores": [_Tensor(.8), _Tensor(.7), _Tensor(.6)],
+                    "labels": [_Tensor(1), _Tensor(1), _Tensor(1)],
+                }]
+
+        detector = vision.ObjectDetector(Processor(), _CallableModel(), _Torch, "cpu")
+        with patch("cvlesson.vision._open_image", return_value=SimpleNamespace(size=(40, 50))):
+            predictions = detector.predict("ignored.jpg")
+        self.assertEqual([item.box for item in predictions], [(0.0, 0.0, 40.0, 50.0), (20.0, 10.0, 40.0, 30.0)])
+
+    def test_segment_detections_rescales_boxes_to_target_image_size(self):
+        segmenter = vision.PromptSegmenter(None, None, None, None, "cpu")
+        source_detection = vision.Detection("bicycle", .9, (10, 20, 30, 40), (100, 100))
+        image = SimpleNamespace(size=(200, 50))
+        captured = []
+
+        def predict(target, *, box):
+            captured.append(box)
+            return "mask"
+
+        with patch("cvlesson.vision._open_image", return_value=image), patch.object(
+            segmenter, "predict", side_effect=predict
+        ):
+            result = segmenter.segment_detections(image, [source_detection])
+        self.assertEqual(captured, [(20.0, 10.0, 60.0, 20.0)])
+        self.assertIs(result[0].detection, source_detection)
+
+    def test_detection_without_source_size_remains_backward_compatible(self):
+        self.assertEqual(vision.Detection("bottle", .9, (1, 2, 3, 4)).source_size, None)
 
     def test_sam_selects_highest_scoring_mask_and_keeps_shape(self):
         class CandidateMask:

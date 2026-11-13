@@ -9,7 +9,7 @@ class DisplayError(RuntimeError):
     """画像表示用の変換・描画で発生したエラー。"""
 
 
-def render(image: Any, result: Any = None, *, mask_alpha: int = 110):
+def render(image: Any, result: Any = None, *, mask_alpha: int = 110, show_labels: bool = True):
     """画像へ推論結果を描き、合成したRGBのPillow Imageを返す。
 
     ``result``にはOCRResult、Detectionのリスト、Segmentation、DetectedSegmentの
@@ -19,6 +19,8 @@ def render(image: Any, result: Any = None, *, mask_alpha: int = 110):
     Image, ImageDraw, ImageFont = _pillow()
     if not isinstance(mask_alpha, int) or isinstance(mask_alpha, bool) or not 0 <= mask_alpha <= 255:
         raise ValueError("mask_alphaは0から255の整数で指定してください。")
+    if not isinstance(show_labels, bool):
+        raise ValueError("show_labelsはTrueまたはFalseで指定してください。")
     canvas = _open_rgb(image, Image)
     if result is None:
         return canvas
@@ -36,15 +38,15 @@ def render(image: Any, result: Any = None, *, mask_alpha: int = 110):
             _draw_detection(draw, item, font, canvas.size)
         elif hasattr(item, "lines"):
             for line in item.lines:
-                _draw_ocr_line(draw, line, font, canvas.size)
+                _draw_ocr_line(draw, line, font, canvas.size, show_label=show_labels)
         else:
             raise DisplayError(f"未対応の推論結果です: {type(item).__name__}")
     return canvas
 
 
-def show(image: Any, result: Any = None, *, mask_alpha: int = 110):
+def show(image: Any, result: Any = None, *, mask_alpha: int = 110, show_labels: bool = True):
     """合成画像をNotebookまたは既定の画像ビューアで表示して返す。"""
-    rendered = render(image, result, mask_alpha=mask_alpha)
+    rendered = render(image, result, mask_alpha=mask_alpha, show_labels=show_labels)
     try:
         from IPython.display import display as notebook_display
     except ImportError:
@@ -54,11 +56,18 @@ def show(image: Any, result: Any = None, *, mask_alpha: int = 110):
     return rendered
 
 
-def save(image: Any, path: str | Path, result: Any = None, *, mask_alpha: int = 110) -> Path:
+def save(
+    image: Any,
+    path: str | Path,
+    result: Any = None,
+    *,
+    mask_alpha: int = 110,
+    show_labels: bool = True,
+) -> Path:
     """合成画像を指定先へ保存し、保存先Pathを返す。"""
     destination = Path(path).expanduser()
     destination.parent.mkdir(parents=True, exist_ok=True)
-    rendered = render(image, result, mask_alpha=mask_alpha)
+    rendered = render(image, result, mask_alpha=mask_alpha, show_labels=show_labels)
     rendered.save(destination)
     return destination
 
@@ -112,7 +121,14 @@ def _draw_detection(draw: Any, detection: Any, font: Any, size: tuple[int, int])
     _draw_label(draw, box[0], box[1], text, font)
 
 
-def _draw_ocr_line(draw: Any, line: Any, font: Any, size: tuple[int, int]) -> None:
+def _draw_ocr_line(
+    draw: Any,
+    line: Any,
+    font: Any,
+    size: tuple[int, int],
+    *,
+    show_label: bool = True,
+) -> None:
     polygon = tuple(tuple(float(value) for value in point) for point in line.polygon)
     if len(polygon) < 4 or any(len(point) != 2 for point in polygon):
         raise DisplayError("OCR polygonは画像上の(x, y)座標を4点以上指定してください。")
@@ -120,8 +136,14 @@ def _draw_ocr_line(draw: Any, line: Any, font: Any, size: tuple[int, int]) -> No
         if not (0 <= x <= size[0] and 0 <= y <= size[1]):
             raise DisplayError("OCR polygonが画像の範囲外です。")
     draw.polygon(polygon, outline=(0, 210, 255, 255), width=3)
-    _draw_label(draw, min(point[0] for point in polygon), min(point[1] for point in polygon),
-                f"{line.text} ({float(line.confidence):.2f})", font)
+    if show_label:
+        _draw_label(
+            draw,
+            min(point[0] for point in polygon),
+            min(point[1] for point in polygon),
+            f"{line.text} ({float(line.confidence):.2f})",
+            font,
+        )
 
 
 def _draw_label(draw: Any, x: float, y: float, text: str, font: Any) -> None:

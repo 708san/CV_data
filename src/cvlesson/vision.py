@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 from pathlib import Path
 import re
 from typing import Any, Iterable
@@ -24,6 +25,7 @@ class Detection:
     label: str
     score: float
     box: tuple[float, float, float, float]
+    source_size: tuple[int, int] | None = None  # (width, height)
 
 
 @dataclass(frozen=True)
@@ -69,12 +71,15 @@ class ObjectDetector:
         labels = self._model.config.id2label
         detections = []
         for box, score, label_id in zip(result["boxes"], result["scores"], result["labels"]):
-            coords = tuple(float(value) for value in _as_list(box))
+            coords = _clip_detection_box(_as_list(box), width, height)
+            if coords is None:
+                continue
             detections.append(
                 Detection(
                     label=str(labels[int(label_id)]),
                     score=float(score),
                     box=coords,  # type: ignore[arg-type]
+                    source_size=(width, height),
                 )
             )
         return detections
@@ -128,8 +133,24 @@ class PromptSegmenter:
     ) -> list[DetectedSegment]:
         """検出枠ごとにSAMを呼ぶ。検出ラベルはSAMの推論ラベルではない。"""
         results = []
+        width, height = _open_image(image).size
         for detection in detections:
-            mask = self.predict(image, box=detection.box)
+            box = detection.box
+            if detection.source_size is not None:
+                source_width, source_height = detection.source_size
+                if source_width <= 0 or source_height <= 0:
+                    raise ValueError("Detection.source_sizeは正の(width, height)で指定してください。")
+                scale_x, scale_y = width / source_width, height / source_height
+                box = (
+                    box[0] * scale_x,
+                    box[1] * scale_y,
+                    box[2] * scale_x,
+                    box[3] * scale_y,
+                )
+            box = _clip_detection_box(box, width, height)
+            if box is None:
+                continue
+            mask = self.predict(image, box=box)
             results.append(DetectedSegment(detection=detection, segmentation=mask))
         return results
 
@@ -244,6 +265,25 @@ def _validate_box(box: Iterable[float], width: int, height: int) -> tuple[float,
     if not (0 <= x1 < x2 <= width and 0 <= y1 < y2 <= height):
         raise ValueError(f"boxは画像範囲内({width}×{height})の正しい矩形にしてください。")
     return values  # type: ignore[return-value]
+
+
+def _clip_detection_box(
+    box: Iterable[float], width: int, height: int
+) -> tuple[float, float, float, float] | None:
+    """有限な検出座標を画像範囲へ収め、面積0の枠を除外する。"""
+    values = tuple(float(value) for value in box)
+    if len(values) != 4 or not all(math.isfinite(value) for value in values):
+        return None
+    x1, y1, x2, y2 = values
+    clipped = (
+        min(max(x1, 0.0), float(width)),
+        min(max(y1, 0.0), float(height)),
+        min(max(x2, 0.0), float(width)),
+        min(max(y2, 0.0), float(height)),
+    )
+    if clipped[0] >= clipped[2] or clipped[1] >= clipped[3]:
+        return None
+    return clipped
 
 
 def _validate_point(point: Iterable[float], width: int, height: int) -> tuple[float, float]:

@@ -59,6 +59,10 @@ class OCRTests(unittest.TestCase):
         self.assertEqual(pipeline.image_path, str(image))
         self.assertEqual(len(result.lines[0].polygon), 0)
         self.assertEqual(result.to_dict()["lines"][1]["text"], "行2")
+        self.assertEqual(str(result), "行1\n行2")
+
+    def test_empty_ocr_result_has_readable_string(self):
+        self.assertEqual(str(ocr.OCRResult((), "fixture")), "文字を検出できませんでした。")
 
     def test_predict_accepts_pillow_and_removes_temporary_image(self):
         try:

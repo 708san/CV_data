@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 import unittest
+import sys
+import types
 from unittest.mock import Mock, patch
 
-from cvlesson.generation import ImageGenerator
+from cvlesson.generation import ImageGenerator, _allow_plain_lora_with_old_torchao
 
 
 class _FakeGenerator:
@@ -27,6 +29,38 @@ class _FakePipeline:
 
 
 class GenerationTests(unittest.TestCase):
+    def test_old_torchao_is_disabled_only_during_plain_lora_load(self):
+        checker = lambda: (_ for _ in ()).throw(ImportError("old torchao"))
+        import_utils = types.ModuleType("peft.import_utils")
+        import_utils.is_torchao_available = checker
+        peft_package = types.ModuleType("peft")
+        peft_package.__path__ = []
+        another_peft_module = types.ModuleType("peft.tuners.lora.torchao")
+        another_peft_module.is_torchao_available = checker
+        with patch("importlib.metadata.version", return_value="0.10.0"), patch.dict(
+            sys.modules,
+            {"peft": peft_package, "peft.import_utils": import_utils,
+             "peft.tuners.lora.torchao": another_peft_module},
+        ):
+            with self.assertWarnsRegex(UserWarning, "older than 0.16.0"):
+                with _allow_plain_lora_with_old_torchao():
+                    self.assertIs(import_utils.is_torchao_available(), False)
+                    self.assertIs(another_peft_module.is_torchao_available(), False)
+            self.assertIs(import_utils.is_torchao_available, checker)
+            self.assertIs(another_peft_module.is_torchao_available, checker)
+
+    def test_torchao_new_enough_does_not_patch_peft(self):
+        checker = lambda: True
+        import_utils = types.ModuleType("peft.import_utils")
+        import_utils.is_torchao_available = checker
+        peft_package = types.ModuleType("peft")
+        peft_package.__path__ = []
+        with patch("importlib.metadata.version", return_value="0.16.0"), patch.dict(
+            sys.modules, {"peft": peft_package, "peft.import_utils": import_utils}
+        ):
+            with _allow_plain_lora_with_old_torchao():
+                self.assertIs(import_utils.is_torchao_available, checker)
+
     def test_text_to_image_adds_registered_trigger_and_seed(self):
         pipeline = _FakePipeline()
         generator = ImageGenerator(pipeline, "text-to-image", "cpu", _FakeTorch,

@@ -5,9 +5,14 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.metadata
 import math
 from pathlib import Path
+import re
+import sys
 from typing import Any
+import warnings
+from contextlib import contextmanager
 
 from . import loras
 
@@ -173,13 +178,62 @@ def load(
                 raise GenerationError(
                     f"LoRAのSHA-256が一致しません。取得を中断しました: {actual_sha256}"
                 )
-            pipeline.load_lora_weights(str(adapter_path), adapter_name=adapter.id)
+            with _allow_plain_lora_with_old_torchao():
+                pipeline.load_lora_weights(str(adapter_path), adapter_name=adapter.id)
     except GenerationError:
         raise
     except Exception as exc:
         raise GenerationError(f"画像生成モデルを読み込めませんでした: {exc}") from exc
     triggers = adapter.trigger_words if adapter is not None else ()
     return ImageGenerator(pipeline, task, device, torch, triggers)
+
+
+@contextmanager
+def _allow_plain_lora_with_old_torchao():
+    """旧torchaoがPEFTの通常LoRA注入を妨げる既知問題を、注入中だけ回避する。
+
+    SDXLの通常のfloat/half重みにはtorchao量子化機能は不要。torchao量子化済み
+    モデルを扱う公開APIではないため、古いtorchaoがある環境ではPEFTの機能判定を
+    LoRA注入中だけ無効化し、他のパッケージ・環境設定は変更しない。
+    """
+    try:
+        installed = importlib.metadata.version("torchao")
+    except importlib.metadata.PackageNotFoundError:
+        yield
+        return
+    match = re.match(r"^(\d+)\.(\d+)(?:\.(\d+))?", installed)
+    if match is None or tuple(int(part or 0) for part in match.groups()) >= (0, 16, 0):
+        yield
+        return
+
+    try:
+        import peft.import_utils as peft_import_utils
+    except ImportError:
+        yield
+        return
+
+    changed = []
+    original_checker = peft_import_utils.is_torchao_available
+    for module in tuple(sys.modules.values()):
+        namespace = getattr(module, "__dict__", None)
+        if namespace is not None and namespace.get("is_torchao_available") is original_checker:
+            changed.append((namespace, namespace["is_torchao_available"]))
+            namespace["is_torchao_available"] = lambda: False
+    # Include the canonical function even if no PEFT submodule has imported it yet.
+    if not any(namespace is peft_import_utils.__dict__ for namespace, _ in changed):
+        changed.append((peft_import_utils.__dict__, original_checker))
+        peft_import_utils.is_torchao_available = lambda: False
+    warnings.warn(
+        f"torchao {installed} is older than 0.16.0. This SDXL LoRA is not torchao-quantized, "
+        "so torchao integration is disabled temporarily while loading the adapter.",
+        UserWarning,
+        stacklevel=2,
+    )
+    try:
+        yield
+    finally:
+        for namespace, original in changed:
+            namespace["is_torchao_available"] = original
 
 
 def _is_finite_number(value: int | float) -> bool:

@@ -1,5 +1,15 @@
 # 開発進捗
 
+## 2026-11-14：OCR・検出/SAM・生成Notebookの使い勝手修正（alpha6候補、未公開）
+
+- OCRResultは`print(result)`で読み取った行を表示し、構造化された`lines`と`to_dict()`はそのまま利用できます。`display.show(image, result, show_labels=False)`で文字枠だけ重ねられるようにしました。
+- `ocr` extraにCPU版PaddlePaddleを含め、CPU OCRの追加installをなくしました。GPU版だけはPaddle公式の環境別wheelが必要です。`paddlepaddle`は大きいため、OCRを使う人がextraで選択した時にだけ導入されます。
+- DETRの各`Detection`に検出元画像サイズを追加。外れた枠を入力画像へclipし、面積0の枠を除外します。異なる寸法の画像に`segment_detections()`を使う場合、枠を縦横の倍率で拡縮します。
+- Diffusion依存PEFTはPyPI版`>=0.21.2`へ修正。未使用の古いTorchAOがあるColabでは、通常の非量子化LoRA読み込み中だけTorchAO判定を一時停止し、終了時に元へ戻す互換処理を追加しました。環境からTorchAOを削除しません。
+- 画像生成APIの既定値（25 steps、guidance 7.0、strength 0.65、トリガー語を付ける）をNotebook・ガイドへ記載。生成Notebookは4件のLoRA情報を先に見せ、選んだ1件だけを取得・生成します。
+- Python 3.13でネットワーク不要テスト99件成功、19件skip（この作業環境にPillow・pandas等のtest extrasがなく実行できないテスト）。ローカルのLinux向けdependency dry-runはPaddleXのsource-only依存をcross-platform binary限定で扱えず失敗。Linux CIに完全resolver dry-runを追加し判定待ち。
+- PyPI `0.1.0a6`は未公開。Colab実機テストも未実施。PR CI/依存解決の結果を確認してからalpha6を公開し、その公開版で5つのColab Notebook（分類、回帰、OCR、検出/SAM、選択LoRAの生成）を実行する。
+
 ## 2026-11-13：alpha5を公開し、PyPIクリーン環境導入を確認
 
 - PR #83をmainへ統合し、GitHub prerelease [v0.1.0a5](https://github.com/708san/CV_data/releases/tag/v0.1.0a5)を作成。Trusted Publishing workflowが成功し、PyPI [0.1.0a5](https://pypi.org/project/cv-data-lesson/0.1.0a5/)へ公開された。

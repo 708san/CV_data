@@ -64,7 +64,7 @@ with Image.open(image_path) as opened:
 results = detector.predict(image)
 ```
 
-`box`は元画像の`(x_min, y_min, x_max, y_max)`です。信頼度しきい値は`threshold`で変更できます。GPUを使う場合は、利用可能性を確認して指定します。
+`box`は元画像の`(x_min, y_min, x_max, y_max)`です。`source_size`には検出時の画像サイズ`(width, height)`が入ります。枠は画像の内側へ収め、幅・高さが0の枠は返しません。信頼度しきい値は`threshold`で変更できます。GPUを使う場合は、利用可能性を確認して指定します。
 
 ```python
 detector = vision.load_detector(device="cuda:0")
@@ -139,6 +139,8 @@ for item in objects:
 ```
 
 この例では検出結果ごとにSAMを実行するため、複数物体では処理時間とメモリ使用量が増えます。`detection.label`はSAMの分類結果ではありません。
+
+`Detection`が持つ元画像サイズとSAMへ渡す画像のサイズが異なる場合、`segment_detections()`は枠を縦横比に合わせて拡縮してから渡します。直接SAMへ枠を渡す`predict(image, box=...)`は、その`image`のピクセル座標を使います。
 
 ## モデル・権利・確認状況
 

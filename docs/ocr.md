@@ -1,6 +1,6 @@
 # 日本語OCRを使う
 
-更新日：2026-11-13
+更新日：2026-11-14
 
 `cvlesson.ocr`は、写真に写っている文字と位置を返す推論用APIです。既定モデルは日本語に対応するPP-OCRv5 mobileです。OCRモデルの学習・追加学習は行いません。
 
@@ -8,13 +8,19 @@
 
 ColabでCPU推論を試すときは[日本語OCRのColab Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/ocr_smoke_test.ipynb)を新しいランタイムで開いてください。PyTorchを使うDETR・SAMのNotebookとは環境を分けます。Colab Python 3.13のCPUで、合成英数字画像から`TOTAL 1280 JPY`を読み取り、文字列・信頼度・座標を返すことを確認済みです。日本語実画像での精度、GPU、他OSの動作は未確認です。
 
-PaddlePaddleはCPU/GPUとCUDAの組み合わせにより導入コマンドが異なります。PyTorch系ライブラリとの競合を避けるため、OCR専用の仮想環境を使う方法を勧めます。[インストール手順](installation.md#ocr用の環境)で環境に合うPaddlePaddleを導入してください。利用者が`import paddle`を書く必要はありません。`ocr.load()`を呼んだ時にライブラリが必要なモジュールを読み込みます。
+CPUで使う場合、PaddlePaddle CPU版を含む`ocr` extraを一度入れるだけで使えます。GPU版を使う場合だけは、OS/CUDAに合うGPU wheelを[PaddlePaddle公式案内](https://www.paddlepaddle.org.cn/install/quick)で選んでください。利用者が`import paddle`を書く必要はなく、`ocr.load()`を呼んだ時に必要なモジュールを読み込みます。
 
 ```bash
 python -m pip install --pre 'cv-data-lesson[ocr]'
 ```
 
-これはPaddleOCR 3.1.0、互換範囲を3.2未満に固定したPaddleX 3.1系、LangChain 1.0未満、Colabの標準`requests`版を保つ範囲、およびHugging Face Hubを導入します。PaddleX 3.1系がLangChain 1.xの旧APIを参照するため、LangChainの上限を指定しています。Hugging Face Hubは1.xも利用でき、Colabに入っている他のAIパッケージを古いHubへ下げません。PaddlePaddle本体はCPU/GPU・CUDA環境に合わせて別に導入します。OCRモデルは合計約22 MBで、次の`load()`時に固定revisionからキャッシュへ取得されます。公開モデルの取得にHugging Faceのログインや`HF_TOKEN`は不要です。ライブラリはOCRを呼んだ時だけPaddle系モジュールをimportし、実行中にpip installは行いません。
+これはPaddlePaddle CPU版、PaddleOCR 3.1.0、互換範囲を3.2未満に固定したPaddleX 3.1系、LangChain 1.0未満、Hugging Face Hubを導入します。PaddleX 3.1系がLangChain 1.xの旧APIを参照するため、LangChainの上限を指定しています。OCRモデルは合計約22 MBで、`load()`時に固定revisionからキャッシュへ取得されます。公開モデルの取得にHugging Faceのログインや`HF_TOKEN`は不要です。ライブラリはOCRを呼んだ時だけPaddle系モジュールをimportし、実行中にpip installは行いません。
+
+OCRと検出・領域分割、画像生成を同じ環境で使う場合も、機能をまとめて指定できます。新しい仮想環境で先に依存解決してください。Colabはランタイムに既に入っているパッケージとの組み合わせがあるため、問題が出た場合は機能別に新しいランタイムを使います。
+
+```bash
+python -m pip install --pre 'cv-data-lesson[ocr,vision,diffusion]'
+```
 
 以前のColabランタイムで`No module named 'langchain.docstore'`が出た場合は、修正済みの依存指定を入れ直してからランタイムを再起動してください。古い`cvlesson`をimportしたままでは、入れ直した依存は反映されません。
 
@@ -60,6 +66,15 @@ print(result.text)
 
 `result.text`は読み取った行を改行でつないだ文字列です。`confidence`はモデルの信頼度で、正解である確率を保証しません。`polygon`は画像の左上を原点とする四つの座標です。読み取り結果は元画像と照合してください。
 
+`print(result)`でも読み取った行を表示できます。データ構造や座標が必要なときは`result.lines`または`result.to_dict()`を使います。文字位置を画像に重ねるには、文字の多い画像でラベルが重ならないよう`show_labels=False`を指定できます。
+
+```python
+from cvlesson import display
+
+display.show(image_path, result, show_labels=False)
+display.save(image_path, "results/ocr_boxes.png", result, show_labels=False)
+```
+
 ## 別のモデルを使う
 
 対応するPaddle推論形式の検出・認識モデルを手元に用意した場合、モデル名をリモートから自動取得させず、両方のローカルディレクトリを指定できます。
@@ -91,8 +106,8 @@ from cvlesson import display, ocr
 reader = ocr.load(device="cpu")
 result = reader.predict(image_path)
 print(result.text)
-display.show(image_path, result)
-display.save(image_path, "results/receipt_ocr.png", result)
+display.show(image_path, result, show_labels=False)
+display.save(image_path, "results/receipt_ocr.png", result, show_labels=False)
 ```
 
 - 検出：[`PaddlePaddle/PP-OCRv5_mobile_det`](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_det/tree/0d63e78e2b680928f6b1747d76a08db6e645efb7)
