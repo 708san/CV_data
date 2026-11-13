@@ -6,7 +6,7 @@
 - PR [#99](https://github.com/708san/CV_data/pull/99)をCI成功後にmainへ統合。全Colab確認Notebookを0.1.0a8に固定。
 - GitHub Release [v0.1.0a8](https://github.com/708san/CV_data/releases/tag/v0.1.0a8)を作成。build・metadata・禁止バイナリ検査・PyPI Trusted Publishingが成功。
 - [PyPI 0.1.0a8](https://pypi.org/project/cv-data-lesson/0.1.0a8/)でwheelとsdistを確認。SHA-256はColab確認前の進捗記録を参照。
-- 利用者から公開OCR Notebookの表示確認済みとの報告あり。実行日、Python、ランタイム等は未報告。別アプリ上での表示・連携動作は未検証。
+- 利用者から公開OCR Notebookの表示確認済みとの報告あり。実行環境はColab。実行日、Python版、GPU名は未報告。別アプリ上での表示・連携動作は未検証。
 
 ## 2026-11-14：Colab実測の利用者報告を反映
 
