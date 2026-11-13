@@ -1,5 +1,13 @@
 # 開発進捗
 
+## 2026-11-14：Colab実測の利用者報告を反映
+
+- 利用者が分類Notebookを確認し、test正解率0.825を報告。回帰Notebookも正しく動作したと報告。
+- OCRはColabで推論・戻り値を確認済み（「TOTAL 1280 JPY」、1行、confidence 0.993）。ただし、`cvlesson.display`の別名import修正後に画像重ね合わせセルを再実行したかは未確認。
+- DETR＋SAMは動作確認済み。SAMマスクの画像が1枚だけ表示されること、Chromeでポップアップによる画像アップロードができることを確認。
+- LoRAを使った画像生成もColabで動作確認済み。LoRAのID、text-to-image / image-to-imageの別、GPU・Python・ライブラリ版などの実行条件は未報告のため記録しない。
+- Image-to-Imageは未確認。各機能の状態と不明点は[Colab確認表](colab-verification.md)に反映。
+
 ## 2026-11-14：OCR・検出/SAM・生成Notebookの使い勝手修正（alpha6候補、未公開）
 
 - OCRResultは`print(result)`で読み取った行を表示し、構造化された`lines`と`to_dict()`はそのまま利用できます。`display.show(image, result, show_labels=False)`で文字枠だけ重ねられるようにしました。
