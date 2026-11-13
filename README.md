@@ -32,17 +32,17 @@ data.show_examples(6)
 
 - **データを選ぶ**：データの説明、形式、出典、ライセンス、取得サイズを確認して、固定版を安全に取得します。
 - **分類・回帰**：ResNet18の画像特徴を使い、課題に合わせた出力層を学習します。`fit`、`predict`、`score`で扱えます。
-- **OCR**：日本語対応の学習済みモデルで文字・位置・信頼度を読み取ります。
+- **OCR**：日本語対応の学習済みモデルで文字・位置・信頼度を読み取り、文字が多い画像でも一覧と行別画像で確認できます。元のOCR結果は辞書やJSONとして他のアプリへ渡せます。
 - **物体検出・領域分割**：学習済みモデルで物体の枠や、指定した物のマスクを推論します。
 - **画像生成・変換**：SDXLで文章から画像を生成し、登録済みLoRAや入力画像を使って絵柄を変えます。
 
-高校生向けの機能説明と、データからモデルへつなぐ例は[使い方ガイド](https://github.com/708san/CV_data/blob/v0.1.0a6/docs/student-guide.md)へ。AIに自分の課題に合わせた変更を相談する場合は[AI改造ガイド](https://github.com/708san/CV_data/blob/v0.1.0a6/docs/ai-coding-guide.md)を参照してください。
+高校生向けの機能説明と、データからモデルへつなぐ例は[使い方ガイド](https://github.com/708san/CV_data/blob/v0.1.0a7/docs/student-guide.md)へ。AIに自分の課題に合わせた変更を相談する場合は[AI改造ガイド](https://github.com/708san/CV_data/blob/v0.1.0a7/docs/ai-coding-guide.md)を参照してください。
 
 ## 使い方と利用条件
 
-- まず[インストール案内](https://github.com/708san/CV_data/blob/v0.1.0a6/docs/installation.md)を確認してください。CPU版OCRは`[ocr]`だけで導入できます。検出・領域分割・画像生成も機能別extraから必要なPython依存を導入できます。
-- [データ一覧と形式](https://github.com/708san/CV_data/blob/v0.1.0a6/docs/data-model-compatibility.md)から、扱いたいデータのタスク・ラベル・注釈を確認できます。
-- [Colabで公開版を試す手順](https://github.com/708san/CV_data/blob/v0.1.0a6/docs/colab-verification.md)に、機能別Notebookとランタイムをまとめています。
+- まず[インストール案内](https://github.com/708san/CV_data/blob/v0.1.0a7/docs/installation.md)を確認してください。CPU版OCRは`[ocr]`だけで導入できます。検出・領域分割・画像生成も機能別extraから必要なPython依存を導入できます。
+- [データ一覧と形式](https://github.com/708san/CV_data/blob/v0.1.0a7/docs/data-model-compatibility.md)から、扱いたいデータのタスク・ラベル・注釈を確認できます。
+- [Colabで公開版を試す手順](https://github.com/708san/CV_data/blob/v0.1.0a7/docs/colab-verification.md)に、機能別Notebookとランタイムをまとめています。
 - データやモデルごとに利用条件が異なります。使う前に各説明ページのライセンス・出典・注意を確認してください。
 - このパッケージに画像・マスク・LoRA重み・基盤モデル重みは含みません。取得やモデル読み込みは明示的に呼び出したときだけ始まります。
 - GPUは自動で選びません。利用可能か確認してから明示的に指定します。CPUでの利用可否や必要容量は機能ごとの案内を確認してください。

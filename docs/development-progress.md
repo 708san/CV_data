@@ -1,5 +1,13 @@
 # 開発進捗
 
+## 2026-11-14：OCR結果を一覧と行別画像で確認する表示を追加
+
+- 仕様0.23を更新。レシートなど文字が多い画像ではOCR枠を全面表示せず、認識行・信頼度の目安を一覧にし、必要な行だけ対応領域を展開できる設計。
+- `display.render_ocr_report()`は埋め込み用の自己完結HTML文字列を返し、`display.show_ocr()`はNotebookに単一出力として表示する。HTMLはJavaScript・外部通信なしで、OCRテキストをHTML escapeする。
+- `OCRResult`、`OCRLine`、`to_dict()`は変更せず、元データをアプリへ渡せる例をガイドとNotebookに追加。
+- PR #97のCIは全6ジョブ成功。PyPI 0.1.0a7は公開準備中だが、Release作成に必要なローカル`gh`認証が無効のため未公開。更新Notebookを使うColab実測は公開後に行う。
+
+
 ## 2026-11-14：Colab実測の利用者報告を反映
 
 - 利用者が分類Notebookを確認し、test正解率0.825を報告。回帰Notebookも正しく動作したと報告。

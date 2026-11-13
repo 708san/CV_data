@@ -21,6 +21,18 @@ data = datasets.get("japanese_receipts_detailed")
 records = data.to_df()  # image path, ground_truth, split, sample_id
 ```
 
+OCRを試した後、レシート全体に文字枠を重ねず、読み取った行を一覧で確認できます。行を開くと、その行に対応する画像部分を見られます。
+
+```python
+from cvlesson import ocr, display
+
+reader = ocr.load(device="cpu")
+image_path = records.iloc[0]["image_path"]
+result = reader.predict(image_path)
+display.show_ocr(image_path, result)
+raw_result = result.to_dict()  # 別アプリへ渡す元データ
+```
+
 ## 権利・個人情報
 
 出典は[IngCrowd Inc.のデータセット](https://huggingface.co/datasets/IngCrowd/japanese-receipts-detailed)、ライセンスは[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)です。**非商用利用のみ**可能です。IngCrowd Inc.とデータセットを表示し、変更内容を明記してください。

@@ -40,6 +40,31 @@ class DisplayTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "show_labels"):
             display.render(self.image, None, show_labels=1)
 
+    def test_ocr_report_shows_readable_text_confidence_and_collapsed_crop(self):
+        line = ocr.OCRLine("<script>alert(1)</script>", 0.925, ((4, 4), (24, 4), (24, 15), (4, 15)))
+        result = ocr.OCRResult((line,), "fixture")
+        original = result.to_dict()
+        report = display.render_ocr_report(self.image, result)
+        self.assertIn("&lt;script&gt;alert(1)&lt;/script&gt;", report)
+        self.assertNotIn("<script>alert(1)</script>", report)
+        self.assertIn("信頼度の目安: 92.5%", report)
+        self.assertIn("<details><summary>画像の該当部分を見る</summary>", report)
+        self.assertIn("data:image/png;base64,", report)
+        self.assertEqual(result.to_dict(), original)
+
+    def test_ocr_report_handles_empty_result_and_invalid_polygon(self):
+        empty = display.render_ocr_report(self.image, ocr.OCRResult((), "fixture"))
+        self.assertIn("文字を検出できませんでした。", empty)
+        line = ocr.OCRLine("位置なし", 0.4, ())
+        report = display.render_ocr_report(self.image, ocr.OCRResult((line,), "fixture"))
+        self.assertIn("位置情報はありません", report)
+        self.assertNotIn("data:image/png;base64,", report)
+
+    def test_ocr_report_rejects_invalid_crop_padding(self):
+        result = ocr.OCRResult((), "fixture")
+        for padding in (-1, True, 1.5):
+            with self.subTest(padding=padding), self.assertRaisesRegex(ValueError, "crop_padding"):
+                display.render_ocr_report(self.image, result, crop_padding=padding)
     def test_segmentation_mask_is_blended(self):
         mask = np.zeros((30, 40), dtype=np.bool_)
         mask[5:20, 6:22] = True
