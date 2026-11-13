@@ -534,3 +534,11 @@
 - ユーザーが修正版生成NotebookをColabで実行し、`torchao`をアンインストールせずにLoRAが動作したと確認。共有環境からの削除は不要。
 - PEFT上流修正commitをNotebookに固定し、`diffusion` extraにもPEFTを明示追加したPR #67・#68をmainへ統合。PR #68のPythonテストCIは成功。
 - wheel/sdistをCIで構築し、画像・マスク・モデル重み・データartifactの同梱なし、クリーンvenvからのwheel install/import成功を確認。Python 3.11〜3.13の全ユニットテストとpackage-smoke jobが成功。PyPI本番公開と大容量diffusion extraのクリーン環境での全依存解決は未実施。
+
+
+## 2026-11-13：LoRA生成パラメータの利用性改善
+
+- `generation.py`監査で、steps・guidance scale・seed・出力サイズ・negative prompt・Image-to-Image strength・LoRA trigger on/offは既に明示指定可能と確認。APIの新設は不要。
+- 生成Notebookの6 steps・512pxが速さ優先の動作確認値で、通常品質例としては低いことが分かった。25 steps、guidance 7.0、768px、固定seedを編集可能な設定ブロックへまとめる。
+- クイックスタートと画像生成説明に各引数の効果・時間/VRAM tradeoff・seedの再現性限界を追加。Scheduler等の未公開引数は使えると案内しない。
+- `test_generation.py`に既定値・明示パラメータのpipeline伝達テストを追加。Colab T4での新設定再生成はユーザー確認前のため未確認。
