@@ -1,6 +1,6 @@
-# 現行作業：OCR・検出・生成の実使用エラーを修正し、Colab再検証する
+# 完了：OCR・検出・生成の実使用エラーを修正し、alpha6を公開
 
-更新日：2026-11-14。基準版：PyPI `0.1.0a5` / GitHub `main` `881da35dfb51c1370ce8021050ef621cc267f110`。
+更新日：2026-11-14。対象版：PyPI `0.1.0a6` / GitHub `v0.1.0a6`。PR #85はmainへマージ済み。Colab実機検証は未実施。
 
 対象仕様：0.21、4.2〜4.4、5.1〜5.4、6、7。OCRの結果を読みやすくし、CPU版OCRを一つのextraから導入できるようにする。DETR出力とSAM連携で画像寸法の不一致・範囲外枠を扱い、画像生成のPEFT/TorchAO互換とNotebookのLoRA選択を改善する。
 
@@ -14,7 +14,15 @@
 7. 複数extrasを同時指定する依存解決をdry-runし、競合を直す。CPU offline tests、Notebook JSON/Python構文、PR CIを確認する。
 8. 修正版をPR/Release/PyPIへ反映し、公開PyPI版をColabで分類、回帰、OCR、DETR/SAM、画像生成（選択LoRA一つ）実行する。Colabランタイムへ直接接続できない場合は、Notebookと記録表を整えて利用者の実行ログで実測更新する。
 
-進捗：OCRResult文字列化と文字ラベルなし画像表示、CPU版PaddlePaddleを含むOCR extra、Detectionの元画像サイズ保持・枠clip・SAM入力サイズへの拡縮、古いTorchAOと通常PEFT LoRAの互換ラッパー、単一LoRA選択Notebookを実装した。`peft>=0.21.2`へ下限を合わせた（現時点のPyPI公開版）。追加の依存組み合わせCIを用意。オフラインunit testsはPython 3.13で99件成功、19件skip。Linux向けの全依存dry-runはこのMac上からはbinary-onlyの制約でPaddleXのsource-only依存を解決できず完了していないため、CI判定待ち。Colab実機検証は修正版PyPI公開後に行う。
+進捗：PR #85をmainへマージし、GitHub Release `v0.1.0a6`とPyPI `0.1.0a6`を公開。Publish workflowのbuild・publish両jobが成功し、PyPI JSONでwheelとsdistを確認した。PR CIではPython 3.11/3.12/3.13、表示smoke、package smoke、OCR・vision・diffusion同時依存解決が成功。ローカルunit testsは101件成功、19件skip（optional依存未導入）。Notebookの実行・Colab T4でのOCR/DETR/SAM/SDXL実機確認は未実施で、[Colab確認表](colab-verification.md)の利用者実行待ち。
+## 公開後の文書更新：alpha6公開状態へ同期
+
+作業単位：公開記録、Colab実行手順、計画の現状表示を`0.1.0a6`の実際の状態へ更新する。
+
+受け入れ条件：alpha6を公開済みと明記し、インストール・Colab手順から「公開後に実行」の表現を除く。Colab実機結果は未確認のまま保ち、公開成功と実機検証成功を区別する。
+
+順序：本項を計画へ先行記録し、PyPIのversion/filesとGitHub Release/PRの状態を照合した後、公開記録とColab手順を更新する。文書のリンク・版表記と`git diff --check`を確認してPRにする。
+
 
 対象仕様：0.20、5.1、6、7。利用者からの「PyPIとGitHubの表記差」「画像生成時のTorch導入」「実使用の問題点を列挙・改善」「使用ガイド」「全機能のColab実機確認」に対応する。既存の未コミット変更は別checkoutに残し、この作業ブランチでは触れない。
 
