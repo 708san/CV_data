@@ -533,4 +533,4 @@
 
 - ユーザーが修正版生成NotebookをColabで実行し、`torchao`をアンインストールせずにLoRAが動作したと確認。共有環境からの削除は不要。
 - PEFT上流修正commitをNotebookに固定し、`diffusion` extraにもPEFTを明示追加したPR #67・#68をmainへ統合。PR #68のPythonテストCIは成功。
-- 次はwheel/sdistをCIで構築し、バイナリ非同梱とクリーン仮想環境での基本install/importを確認する。PyPI本番公開は今回の対象外。
+- wheel/sdistをCIで構築し、画像・マスク・モデル重み・データartifactの同梱なし、クリーンvenvからのwheel install/import成功を確認。Python 3.11〜3.13の全ユニットテストとpackage-smoke jobが成功。PyPI本番公開と大容量diffusion extraのクリーン環境での全依存解決は未実施。
