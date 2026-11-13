@@ -35,13 +35,14 @@ print(vision.available_devices())
 
 ## 物体を検出する
 
-`image_path`には使う画像ファイルのパスを入れます。Colabへ自分の画像をアップロードする例は[高校生向け使い方ガイド](student-guide.md#自分の画像を準備する)にもあります。
+Colab左側の「ファイル」欄から画像をアップロードし、表示されたパスを`image_path`または`SOURCE_IMAGE_PATH`へ設定してください。`files.upload()`のポップアップは使いません。Safariなどでアップロードに失敗する場合は、画像をGoogle Driveへ置き、Driveをマウントしてそのファイルパスを指定してください。詳しい手順は[高校生向け使い方ガイド](student-guide.md#自分の画像を準備する)を参照してください。
 
 ```python
-from google.colab import files
+from pathlib import Path
 
-uploaded = files.upload()
-image_path = next(iter(uploaded))
+image_path = "/content/your-image.jpg"  # Colab左側の「ファイル」欄からアップロードしたパス
+if not Path(image_path).is_file():
+    raise FileNotFoundError("Colab左側の「ファイル」欄から画像をアップロードし、image_pathをそのファイル名に合わせてください。")
 ```
 
 ```python
