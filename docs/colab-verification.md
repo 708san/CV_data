@@ -16,7 +16,7 @@
 |---|---|---|---|---|
 | 1 | [分類Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/cv/classification_v1.ipynb) | T4 GPU推奨。CPUでも動くが学習は遅くなる | PyPI install、`tomato_leaves`の取得、表・日本語画像表示、ResNet分類のfit/predict/predict_proba/score | 利用者確認済み。test正解率0.825の報告あり |
 | 2 | [回帰Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/resnet_regression_smoke_test.ipynb) | T4 GPU推奨 | `lefood_set`の取得、画像ペアのResNetRegressor、validation/test評価 | 利用者確認済み（正しく動作との報告） |
-| 3 | [日本語OCR Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/ocr_smoke_test.ipynb) | 新しいCPUランタイム | `ocr` extraによるPaddlePaddle CPU版とOCR依存の導入、OCRモデル取得、文字・信頼度・座標の戻り値、レシート画像推論 | OCR推論・戻り値とalpha8の全文＋折りたたみ詳細は利用者確認済み（実行環境の詳細は未報告） |
+| 3 | [日本語OCR Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/ocr_smoke_test.ipynb) | 新しいCPUランタイム | `ocr` extraによるPaddlePaddle CPU版とOCR依存の導入、OCRモデル取得、文字・信頼度・座標の戻り値、レシート画像推論 | OCR推論・戻り値とalpha8の全文＋折りたたみ詳細はColabで利用者確認済み（GPU・Python版は未報告） |
 | 4 | [検出・領域分割Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/vision_smoke_test.ipynb) | T4 GPU | DETR検出、SAMマスク、画像重ね合わせ、FruitSeg30のテスト画像で比較、Chromeでポップアップ画像アップロード | 利用者確認済み。DETR/SAM動作、マスク画像の単一表示、Chromeアップロードを確認 |
 | 5 | [SDXL・LoRA Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb) | T4 GPU | PyPI install、text-to-image、image-to-image、選択したLoRA1件の読み込み・生成・保存 | LoRA生成とImage-to-Imageは利用者確認済み。LoRA ID・GPU等は未報告 |
 
@@ -29,8 +29,8 @@ Colabの実際のGPU名、Python、`cv-data-lesson`の版を記録してくだ�
 | 項目 | 結果 |
 |---|---|
 | 実行日 | 個別の実行日時は未報告（確認報告日：2026-11-14） |
-| Python / cv-data-lesson | 実行環境の詳細は未報告 |
-| ランタイム / GPU名 | 未報告（T4実測としては記録しない） |
+| 実行環境 / Python / cv-data-lesson | すべてColab。Python版とライブラリ版は未報告 |
+| ランタイム / GPU名 | Colab。GPU名は未報告（T4実測としては記録しない） |
 | 分類 | 確認済み。test正解率0.825との報告 |
 | 回帰 | 確認済み。正しく動作との報告 |
 | OCR推論・戻り値・表示 | OCR推論の`TOTAL 1280 JPY`（confidence 0.993）と、alpha8の全文優先表示を利用者確認済み。実行環境詳細は未報告 |
