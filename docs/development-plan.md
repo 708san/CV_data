@@ -35,7 +35,7 @@
 
 受け入れ条件：分類と回帰の両方で、登録済み固定Releaseデータの明示取得から、trainでの学習、validation/testでの分離評価、未見サンプルの推論までを追える。OCRとSAMは権利・注釈の範囲を説明した上で公開実データ画像を推論に渡す。分類Estimatorと回帰Estimatorの実APIを使い、異なるtaskのラベル・単位を混同しない。実Colabで実行していない場合は未検証として記録する。
 
-進捗：Notebook実装・構文検査・ネットワーク不要テストまで完了。classification_v1、ResNet回帰、OCR実レシート、FruitSeg30/SAMのColab手順を追加・更新。Python 3.13テスト79件成功（任意依存不足で16件skip）。データReleaseの実ダウンロード、ResNet学習、PaddleOCR実レシート推論、SAM実データIoUはColabで未実行。
+進捗：Notebook実装・構文検査・ネットワーク不要テストまで完了。classification_v1、ResNet回帰、OCR実レシート、FruitSeg30/SAMのColab手順を追加・更新。Colabログでclassification_v1のpip installコマンドに閉じ引用符がない問題が分かり、修正を追加。全Notebookのinstallコマンド引用符も確認する。Python 3.13テスト79件成功（任意依存不足で16件skip）。データReleaseの実ダウンロード、ResNet学習、PaddleOCR実レシート推論、SAM実データIoUはColabで未実行。
 
 ### 今回の作業単位：利用者自身の画像をColab・ローカルで使う導線
 

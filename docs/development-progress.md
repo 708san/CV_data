@@ -10,6 +10,12 @@
 
 # 開発進捗
 
+## 2026-11-13：分類Colabインストール行の引用符を修正
+
+- Colab実行ログで`classification_v1.ipynb`の`%pip install`行末に閉じ引用符がないことを確認。シェルがEOFで失敗し、続く`cvlesson` importも失敗していました。
+- PEP 508直接参照を二重引用符で囲み、全Notebookのpip install行で引用符の対を検査しました。Notebook JSON・Pythonセル構文・`git diff --check`は成功。
+- 修正をPR #63へ反映します。NotebookのセルはColabで再読み込みし、インストールから再実行してください。
+
 ## 2026-11-13：分類・回帰・推論Notebookを実データ対応に更新
 
 - `notebooks/cv/classification_v1.ipynb`は独自CNNから`ResNetClassifier`に変更。固定Releaseのトマト画像でtrain/validation/testを分離し、`fit`、`score`、`predict`、`predict_proba`を実行する流れを追加。見出し・授業順・記入欄は維持。
