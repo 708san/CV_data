@@ -36,10 +36,12 @@ class DatasetError(RuntimeError):
     """データの取得・検証に失敗した場合。"""
 
 
-def _enable_japanese_matplotlib() -> None:
-    """Apply the optional Japanese font configuration only when plotting is used."""
+def _enable_japanese_matplotlib():
+    """Configure Matplotlib and return an explicit IPAexGothic font property."""
     try:
         import japanize_matplotlib
+        from matplotlib import rcParams
+        from matplotlib.font_manager import FontProperties
     except ImportError as exc:
         raise DatasetError(
             "画像表示の日本語フォント設定にはjapanize-matplotlibが必要です。"
@@ -47,6 +49,12 @@ def _enable_japanese_matplotlib() -> None:
             "pip install 'cv-data-lesson[display]'を実行してください。"
         ) from exc
     japanize_matplotlib.japanize()
+    font_path = Path(japanize_matplotlib.get_font_ttf_path())
+    if not font_path.is_file():
+        raise DatasetError(f"日本語フォントファイルが見つかりません: {font_path}")
+    font = FontProperties(fname=str(font_path))
+    rcParams["font.family"] = [font.get_name()]
+    return font
 
 
 @dataclass(frozen=True)
@@ -342,7 +350,7 @@ class DatasetBundle:
                 "開発版ではpip install -e '.[display]'、PyPI版では"
                 "pip install 'cv-data-lesson[display]'を実行してください。"
             ) from exc
-        _enable_japanese_matplotlib()
+        japanese_font = _enable_japanese_matplotlib()
         frame = self.to_df(seed=seed)
         if self.kind == "regression":
             if split == "val":
@@ -365,7 +373,7 @@ class DatasetBundle:
                 for axis, image_path, title in cells:
                     with Image.open(image_path) as image:
                         axis.imshow(image.convert("RGB"))
-                    axis.set_title(title)
+                    axis.set_title(title, fontproperties=japanese_font)
                     axis.axis("off")
             figure.tight_layout()
             plt.show()
@@ -414,9 +422,12 @@ class DatasetBundle:
                         (left, top), box["width"] * width, box["height"] * height,
                         fill=False, edgecolor="yellow", linewidth=2,
                     ))
-                    axis.text(left, top, box.get("class_name_ja", box["class_name"]), color="black", fontsize=7,
-                              bbox={"facecolor": "yellow", "alpha": 0.75, "pad": 1})
-            axis.set_title(title)
+                    axis.text(
+                        left, top, box.get("class_name_ja", box["class_name"]),
+                        color="black", fontsize=7, fontproperties=japanese_font,
+                        bbox={"facecolor": "yellow", "alpha": 0.75, "pad": 1},
+                    )
+            axis.set_title(title, fontproperties=japanese_font)
             axis.axis("off")
         for axis in axes.flat[len(selected):]:
             axis.axis("off")

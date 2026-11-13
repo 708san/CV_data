@@ -86,9 +86,29 @@ class OptionalDependencyGuidanceTests(unittest.TestCase):
     def test_japanese_matplotlib_is_configured_when_display_is_used(self):
         japanize = types.ModuleType("japanize_matplotlib")
         japanize.japanize = Mock()
-        with patch.dict(sys.modules, {"japanize_matplotlib": japanize}):
-            _enable_japanese_matplotlib()
+        japanize.get_font_ttf_path = Mock(return_value="/fonts/ipaexg.ttf")
+        font_manager = types.ModuleType("matplotlib.font_manager")
+
+        class FakeFontProperties:
+            def __init__(self, *, fname):
+                self.fname = fname
+
+            def get_name(self):
+                return "IPAexGothic"
+
+        font_manager.FontProperties = FakeFontProperties
+        matplotlib = types.ModuleType("matplotlib")
+        matplotlib.__path__ = []
+        matplotlib.rcParams = {}
+        with patch.dict(sys.modules, {
+            "japanize_matplotlib": japanize,
+            "matplotlib": matplotlib,
+            "matplotlib.font_manager": font_manager,
+        }), patch("cvlesson.datasets.Path.is_file", return_value=True):
+            font = _enable_japanese_matplotlib()
         japanize.japanize.assert_called_once_with()
+        self.assertEqual(font.fname, "/fonts/ipaexg.ttf")
+        self.assertEqual(matplotlib.rcParams["font.family"], ["IPAexGothic"])
 
     def test_missing_japanese_font_dependency_has_install_guidance(self):
         with patch.dict(sys.modules, {"japanize_matplotlib": None}):

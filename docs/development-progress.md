@@ -10,6 +10,12 @@
 
 # 開発進捗
 
+## 2026-11-13：Colabの日本語Glyph警告に対応
+
+- Colabで`japanize-matplotlib`の導入は成功したものの、`show_examples()`のタイトルが豆腐表示になり、Glyph警告が出ることを確認。
+- 日本語フォント名のrcParams設定だけに依存しないよう、IPAexGothicのフォントファイルを取得し、Matplotlibの`FontProperties`として各タイトル・検出注釈へ明示的に渡す修正を追加。フォントファイルの欠落時は理由が分かるエラーを返す。
+- フォント設定の呼び出しとフォントパス・ファミリー指定をmock testで確認。Notebook関連を含む10テスト成功。Colab上での描画再確認はこれから。
+
 ## 2026-11-13：Notebook変数の静的点検と日本語Matplotlib表示
 
 - 全配布Notebookを横断点検し、分類Notebookで`frame = data.to_df()`を作っている一方、次セルが未定義の`df`を参照する問題を見つけて修正。
