@@ -18,7 +18,7 @@
 - 画像を改変せず、`images/<split>/<class>/`、`labels.csv`、`metadata.jsonl`、manifestへ整形。ZIPは10,014,277 bytes、SHA-256 `c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0`。
 - `datasets.to_df()`に型付き追加列を出す実装と、`datasets.info/list_available`で型を表示する実装を追加。日本語データ説明・カタログ・モデル対応表を更新。
 - Colorado州Goldenの1地点・ERA5再解析値で日本の地域予報に使えないこと、固定MST、test側の雨比率が高いことを記載。
-- CV_data_artifacts PR #49をmainへマージ済み。Release assetの再取得でサイズとSHA-256が一致。CV_data PR #64のAPI・説明・一覧変更はPR #63のhead branchへマージ済み。取得可能件数23件となる変更はPR #63のmainへのマージ後に通常ブランチで利用可能。データのColab実取得は未確認。
+- CV_data_artifacts PR #49をmainへマージ済み。Release assetの再取得でサイズとSHA-256が一致。CV_data PR #64のAPI・説明・一覧変更はPR #63のhead branchへマージ済み。取得可能件数23件となる変更はPR #63でmainへマージ済み。データのColab実取得は未確認。
 
 
 ## 2026-11-13：LoRA生成Notebookのモデル情報エラー
@@ -493,3 +493,11 @@
 - 電力量計v1はCC0 1.0とCOCO注釈を確認。全体写真からラベル付き数字bbox 977件を切り出し、元画像単位でsplit。配布物には数字切り出しのみを収録。
 - 3件の固定Release用ZIPを作成し、manifest・CRC・共通artifact構造を検証。ZIPはTrashNet 42,765,280 bytes（train 1,762 / val 382 / test 383）、ViFoodLabel 187,378,509 bytes、電力量計数字 11,516,398 bytes。
 - 3件の固定Release assetを公開し、公開URLから再取得した全ZIPのSHA-256一致を確認。APIの生徒向け件数を22件に更新しました。
+
+
+## 2026-11-13：空画像・翌日天気データとLoRA Notebook修正を統合
+
+- CV_data PR #63をmainへsquash merge（`a824ee96d0123843ba58c6cf0df299656903e545`）。`sky_weather_next_day`はmainの`datasets.get()`から取得できる登録状態です。
+- 成果物Releaseは[sky-weather-next-day-v0.1.0](https://github.com/708san/CV_data_artifacts/releases/tag/sky-weather-next-day-v0.1.0)。ZIP 10,014,277 bytes、SHA-256 `c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0`。
+- CIはPython 3.11、3.12、3.13の全6ジョブ成功。天候metadata列の型付きDataFrameテストを含む。
+- `generation_smoke_test.ipynb`は`capabilities_ja`を返す固定commitをインストールするため、KeyErrorの原因となった旧版ずれを解消。ColabでのSDXL生成とデータ取得は利用者環境で未確認。
