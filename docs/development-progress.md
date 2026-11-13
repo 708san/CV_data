@@ -1,13 +1,15 @@
 # 開発進捗
 
-## 2026-11-13：PyPI初回導線と基本インストールを改善（alpha3準備中）
+## 2026-11-13：PyPI初回導線と基本インストールを改善（alpha3公開済み）
 
 - PyPIページのREADMEに自動タイトルと重なる見出しがあり、詳細リンクがPyPI外で確実に開けず、`[display]`指定が必要に見える点を修正対象として記録。
 - 仕様0.18と開発計画へ、軽量なDataFrame・画像表示依存を基本導入に含める要件、PyPI READMEの絶対リンク・初回例要件、次の開発順を先行記録。
 - `pyproject.toml`は`0.1.0a3`候補。README、installation、quickstart、エラー案内を`python -m pip install --pre cv-data-lesson`に統一し、重いAI依存は機能別extraに維持。
 - 既定PyPIページのproject/version表示自体はPyPIが生成するため変更できない。README先頭の重複見出しをなくし、ライブラリの日本語名・説明を先に表示する。
 - Python 3.11/3.12/3.13でネットワーク不要テスト91件成功（各18件skip。表示系依存がこのローカルに未導入）。README/quickstartのPython例、PyPIリンク4件、pyproject metadata、全src/testsの構文、`git diff --check`を確認。
-- CIの表示smokeは`display` extraではなく標準依存を導入する構成へ変更。wheel/sdist・twine・禁止バイナリ検査はPR CIで確認予定。PR、PyPI Release、alpha3公開は未完了。
+- CIの表示smokeは`display` extraではなく標準依存を導入する構成へ変更。Python 3.11〜3.13 unit、標準依存display-smoke、wheel/sdist・twine・禁止バイナリ検査がすべて成功。PR #79をmainへマージ。
+- GitHub Release `v0.1.0a3`を作成し、Trusted Publishing workflowがbuild・metadata・バイナリ検査・PyPI publishに成功。PyPI JSON APIで版、wheel/sdist（wheel 68,166 bytes、sdist 80,805 bytes）、summary、project URLsを確認。固定版のSHA-256はPyPIに掲載済み。
+- Colabでの公開版clean-installからデータ取得・画像表示までは未確認。次の作業で確認する。
 
 ## 2026-11-13：PyPI `0.1.0a1`公開
 

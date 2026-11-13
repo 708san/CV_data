@@ -31,7 +31,7 @@
 5. ユニットテスト、Notebook検査、wheel/sdist・PyPI metadata・バイナリ検査、差分を確認する。PRを作成しCIを通す。PyPI公開後にインストールを再確認する。
 6. 次の開発順を計画へ明示する：Colabのデータ→分類/回帰/OCR/検出/分割/生成フローの再確認、入力・出力・エラーの一貫性改善、stable化の受け入れ条件整理。
 
-進捗：仕様0.18と本計画を先行更新。標準依存・PyPI README・クイックスタート・エラー案内・基本導入のテストを更新。Python 3.11〜3.13のネットワーク不要テストは各91件成功（各18件skip）、README Python例・絶対リンク・metadata・構文・diff check成功。PR CIのpackage smokeと標準依存入りdisplay smoke、PR/PyPI公開確認が残る。
+進捗：仕様0.18と本計画を先行更新。標準依存・PyPI README・クイックスタート・エラー案内・基本導入のテストを更新。Python 3.11〜3.13のネットワーク不要テストは各91件成功（各18件skip）。PR #79はunit、標準依存display smoke、package-smokeすべて成功してmainへマージ。GitHub Release `v0.1.0a3`を公開し、Trusted Publishing成功。PyPI JSONで0.1.0a3、wheel/sdist、summary、project URLsを確認。Colabでの公開版clean-install動作確認は次の作業。
 
 受け入れ条件：PyPI利用者向けの基本コマンドが`python -m pip install --pre cv-data-lesson`の1つで、`datasets.get()`、`to_df()`、`show_examples()`まで追加extraなしで使える。PyPI READMEのリンクがすべて絶対URLで、配布名・版の重複H1がない。基本依存にtorch、PaddleOCR、Transformers、Diffusersを含まない。alpha3の説明が公開物と一致し、CI成功を確認する。
 
