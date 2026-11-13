@@ -1,6 +1,6 @@
 # PyPI公開・更新の運用記録
 
-`cv-data-lesson==0.1.0a4`は2026-11-13にPyPIへ公開済みです。PyPI上の同じ版は差し替えられません。次の更新は`0.1.0a5`としてビルドし、GitHub Releaseの公開をきっかけにTrusted Publishingで送ります。
+`cv-data-lesson==0.1.0a5`は2026-11-13にPyPIへ公開済みです。PyPI上の同じ版は差し替えられません。次の更新は`0.1.0a6`としてビルドし、GitHub Releaseの公開をきっかけにTrusted Publishingで送ります。
 
 ## 利用者向けコマンド
 
@@ -50,3 +50,13 @@ GitHub側の`pypi` environmentを作成し、必要ならdeployment protection r
 - `0.1.0a2`：高校生向け説明・AI改造ガイド・利用者向け導入案内を整理。
 - `0.1.0a3`：基本導入から表・画像表示までを一つのコマンドにまとめ、PyPI READMEの見出しとリンクを改善。2026-11-13に公開。
 - `0.1.0a4`：Python 3.13での日本語フォント依存importエラーを修正。2026-11-13公開。
+- `0.1.0a5`：基本導入と機能別extrasの説明を修正。`vision` extraへPyTorch/Torchvisionを含め、Colab Notebookを公開PyPI版固定に統一。2026-11-13公開。
+
+### `0.1.0a5`公開確認
+
+- GitHub Release: [v0.1.0a5](https://github.com/708san/CV_data/releases/tag/v0.1.0a5)
+- PyPI: [cv-data-lesson 0.1.0a5](https://pypi.org/project/cv-data-lesson/0.1.0a5/)
+- main commit: `f9306108be06b185b84fd63660b490700c7786d1`
+- wheel: 68,579 bytes; SHA-256 `7eefc0092d75a6d659ff7d15e67684ed856876d9f06e338e4d95f7ad0c433022`
+- source distribution: 81,799 bytes; SHA-256 `3286565bf31e81095df8db1bf18b0a66a02eb44a706661ac11e9e74a050f5ca0`
+- Python 3.13 clean venv: PyPI install、`cvlesson` import、学生向けデータ23件の一覧、`pip check`成功。基本importでTorchを読み込まないことを確認。

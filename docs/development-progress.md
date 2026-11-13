@@ -1,5 +1,12 @@
 # 開発進捗
 
+## 2026-11-13：alpha5を公開し、PyPIクリーン環境導入を確認
+
+- PR #83をmainへ統合し、GitHub prerelease [v0.1.0a5](https://github.com/708san/CV_data/releases/tag/v0.1.0a5)を作成。Trusted Publishing workflowが成功し、PyPI [0.1.0a5](https://pypi.org/project/cv-data-lesson/0.1.0a5/)へ公開された。
+- PyPI JSONでversion・summary・Python要件・Documentationリンクを確認。wheel 68,579 bytes（SHA-256 `7eefc0092d75a6d659ff7d15e67684ed856876d9f06e338e4d95f7ad0c433022`）、sdist 81,799 bytes（SHA-256 `3286565bf31e81095df8db1bf18b0a66a02eb44a706661ac11e9e74a050f5ca0`）。
+- Python 3.13の新規venvへPyPIから直接install。基本import、学生向けカタログ23件、基本import時にTorch未読込、`pip check`成功。データの全量取得や重量級依存・モデル重みの取得はしていない。
+- PyPI配布物の公開確認はColabでの実行確認とは別。分類、回帰、OCR、DETR/SAM、SDXLとLoRAは[Colab確認表](colab-verification.md)で未実行のまま管理し、実際のColab実行結果を待つ。
+
 ## 2026-11-13：導入方法の不一致を修正し、公開版Colab確認を準備（alpha5候補）
 
 - 監査一覧：[利用者向け導入・実使用の監査](usability-review-2026-11-13.md)。PyPI表示はリリース時点で固定、GitHub mainは更新中のため、同じREADME文面を維持する必要はないが、PyPIから開く手順と版の整合が必要です。
