@@ -47,7 +47,7 @@ class DisplayTests(unittest.TestCase):
         original = result.to_dict()
         report = display.render_ocr_report(self.image, result)
         self.assertIn(
-            '<pre class="full-text">&lt;script&gt;alert(1)&lt;/script;>\\nTOTAL 1280 JPY</pre>',
+            '<pre class="full-text">&lt;script&gt;alert(1)&lt;/script&gt;\nTOTAL 1280 JPY</pre>',
             report,
         )
         self.assertNotIn("<script>alert(1)</script>", report)
