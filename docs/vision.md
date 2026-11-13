@@ -35,7 +35,7 @@ print(vision.available_devices())
 
 ## 物体を検出する
 
-Colab左側の「ファイル」欄から画像をアップロードし、表示されたパスを`image_path`または`SOURCE_IMAGE_PATH`へ設定してください。`files.upload()`のポップアップは使いません。Safariなどでアップロードに失敗する場合は、画像をGoogle Driveへ置き、Driveをマウントしてそのファイルパスを指定してください。詳しい手順は[高校生向け使い方ガイド](student-guide.md#自分の画像を準備する)を参照してください。
+ColabではChromeなら`files.upload()`で画像を選べます。Safariなどでポップアップが失敗する場合は、Colab左側の「ファイル」欄からアップロードし、`image_path`にパスを指定してください。詳しくは[高校生向け使い方ガイド](student-guide.md#自分の画像を準備する)を参照してください。
 
 ```python
 from pathlib import Path
@@ -105,19 +105,23 @@ result = segmenter.predict(image_path, point=(210, 150))
 `cvlesson.display`で検出枠、OCRの文字位置、SAMのマスクを元画像に重ねられます。`show()`はNotebookで表示し、`render()`は合成したPillow Imageを返します。`save()`は指定先へ保存します。
 
 ```python
-from cvlesson import display, vision
+from cvlesson import display as cv_display, vision
 
 detector = vision.load_detector(device="cpu")
 detections = detector.predict(image_path)
-result_image = display.show(image_path, detections)
-display.save(image_path, "results/detections.png", detections)
+# 黄色い枠=位置、枠上の文字=COCOカテゴリ、数値=DETRの信頼度
+result_image = cv_display.show(image_path, detections[:5])
+cv_display.save(image_path, "results/detections.png", detections[:5])
 ```
 
-SAMの場合は、マスク結果または`segment_detections()`の結果を同じ方法で渡せます。OCRでは`ocr_result`を渡すと文字枠と読み取り文字を重ねます。文字表示に使える日本語フォントが環境にない場合、枠のみ描画されることがあります。
+SAMのマスクは緑色の半透明で元画像に重なります。`mask_alpha`で濃さを0〜255に調整できます。検出連携では黄色いDETR枠・ラベルと緑のSAMマスクを同時に表示します。OCRでは`ocr_result`を渡すと文字枠と読み取り文字を重ねます。
 
 ```python
+from cvlesson import display as cv_display, vision
+
+segmenter = vision.load_segmenter()
 mask_result = segmenter.predict(image_path, point=(240, 180))
-display.show(image_path, mask_result)
+cv_display.show(image_path, mask_result, mask_alpha=145)
 ```
 
 画像へのマスク重ね合わせ表示は基本インストールに含まれています。
@@ -127,11 +131,16 @@ display.show(image_path, mask_result)
 ## DETRの枠をSAMに渡す
 
 ```python
+from cvlesson import display as cv_display, vision
+
 detector = vision.load_detector()
 segmenter = vision.load_segmenter()
 
 detections = detector.predict(image_path, threshold=0.7)
 objects = segmenter.segment_detections(image_path, detections)
+
+# 黄色い枠はDETR、緑の半透明領域はSAMの結果
+cv_display.show(image_path, objects[:1])
 
 for item in objects:
     print("DETRのカテゴリ:", item.detection.label)

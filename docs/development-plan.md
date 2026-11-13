@@ -1,3 +1,19 @@
+# 実装・CI完了：DETR・SAMの画像上の結果表示を明確にする（Colab確認待ち）
+
+更新日：2026-11-14。対象仕様：0.22、4.3、5.3。既存の`cvlesson.display`が枠・ラベル・信頼度および半透明マスクを描けるため、Colab検証Notebookで可視化を一貫して使い、出力の意味と色を説明する。画像アップロードは利用者の希望に合わせてポップアップ方式を既定に戻し、Chromeで再確認できるようにする。
+
+順序と受け入れ条件：
+1. 仕様0.22を先に更新し、検出枠・ラベル・信頼度、SAM半透明マスク、DETR+SAM合成表示を要件化する。
+2. DETR/SAM Notebookの画像入力セルをポップアップ式に戻す。画像パス指定は代替手段として案内する。
+3. `cvlesson.display`を別名でimportし、DETR枠と検出クラス・信頼度を元画像へ重ねる。SAMは元画像と半透明マスクを見比べられる形にする。検出枠からSAMへ渡した結果も両方を重ねて表示する。
+4. 表示の色・ラベル・スコアが何を示すか短く説明し、DETR閉集合検出とSAMのマスク出力の限界を維持する。
+5. 検証NotebookのJSON・コードセル構文・CIを確認し、公開Notebookリンクを用意する。Colab T4実行はユーザーが共有するログを得てから実測済みに更新する。
+
+受け入れ条件：検出がある場合は矩形・クラス名・信頼度が画像で見え、SAMは元画像に半透明で重ねて表示される。連携結果ではDETR枠とSAMマスクを同じ画像で確認できる。ポップアップ画像アップロードから推論までNotebookを実行できる。
+
+進捗：DETR/SAM Notebookでポップアップ式アップロードを既定にし、パス指定へ切り替え可能にした。DETR上位5件までを黄色い枠・COCO名・信頼度付きで重ね、SAMの緑色半透明マスクと元画像を連続表示。DETR+SAMの合成結果とFruitSeg30比較も画像上で確認できる。`cvlesson.display`の既存APIを利用し、表示モジュールは`cv_display`としてIPython関数と衝突しない。Notebook JSON・全Pythonセル構文、PR #91のPython 3.11/3.12/3.13・display/package smoke・optional dependency resolution CIが成功。Chrome上のColab T4再実行は未確認で、利用者の実行ログ待ち。
+
+---
 # 完了：Colab画像アップロードのRangeErrorを回避
 
 更新日：2026-11-14。ユーザー報告の例外は`files.upload()`実行時のColabフロントエンド由来で、OCR・検出モデル処理より前に発生する。Colab側の同型報告ではSafariで再現する例がある（[Colab issue #364](https://github.com/googlecolab/colabtools/issues/364)）。
