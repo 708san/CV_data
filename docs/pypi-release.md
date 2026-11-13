@@ -42,7 +42,7 @@ GitHub側の`pypi` environmentを作成し、必要ならdeployment protection r
 
 `.github/workflows/publish.yml`はGitHub Releaseを`published`にした時だけ起動します。ビルドとmetadata検査を行い、Release tagが`pyproject.toml`の版と一致すること、配布物に画像・モデル重みが含まれないことを確認してから、検証済みartifactをPyPIへ送ります。手動実行やtag pushでは起動しません。
 
-公開後の更新では、`pyproject.toml`の版を上げ、mainへ反映した同じ版から`v<version>`のGitHub Releaseを作成します。workflow完了後にPyPI JSON APIでversion、wheel、sdist、SHA-256を確認します。
+公開後の更新では、`pyproject.toml`の版を上げ、PyPI READMEと`project.urls.Documentation`のリンクを作成予定の`v<version>`へ合わせてmainへ反映します。同じ版から`v<version>`のGitHub Releaseを作成します。workflow完了後にPyPI JSON APIでversion、wheel、sdist、SHA-256、READMEを確認し、GitHub tag内のREADME・利用ガイドとインストールコマンドを照合します。
 
 ## 公開履歴
 

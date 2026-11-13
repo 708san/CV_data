@@ -1,6 +1,7 @@
-CV教材ライブラリは、身近なテーマの画像データを使って、画像分類・数値予測・文字読み取り・物体検出・領域分割・画像生成を試すPythonライブラリです。高校生が自分で決めた課題に合わせて、データや画像、出力を選んで試作できます。
+高校生が身近な課題に画像AIを活用するための教材ライブラリ「CV教材ライブラリ」です。画像分類・数値予測・文字読み取り・物体検出・領域分割・画像生成を試せます。自分で決めた課題に合わせて、データや画像、出力を選べます。
 
 配布名は`cv-data-lesson`、Pythonから読み込む名前は`cvlesson`です。
+PyPIでは配布名と版番号がページタイトルに表示されます。GitHubのこのREADMEは更新中の内容、PyPI上のREADMEは公開時点の内容です。各公開版の使い方は、その版のリリースノートとリンク先のガイドをご覧ください。
 
 ## インストール
 
@@ -35,12 +36,13 @@ data.show_examples(6)
 - **物体検出・領域分割**：学習済みモデルで物体の枠や、指定した物のマスクを推論します。
 - **画像生成・変換**：SDXLで文章から画像を生成し、登録済みLoRAや入力画像を使って絵柄を変えます。
 
-高校生向けの機能説明と、データからモデルへつなぐ例は[使い方ガイド](https://github.com/708san/CV_data/blob/main/docs/student-guide.md)へ。AIに自分の課題に合わせた変更を相談する場合は[AI改造ガイド](https://github.com/708san/CV_data/blob/main/docs/ai-coding-guide.md)を参照してください。
+高校生向けの機能説明と、データからモデルへつなぐ例は[使い方ガイド](https://github.com/708san/CV_data/blob/v0.1.0a5/docs/student-guide.md)へ。AIに自分の課題に合わせた変更を相談する場合は[AI改造ガイド](https://github.com/708san/CV_data/blob/v0.1.0a5/docs/ai-coding-guide.md)を参照してください。
 
 ## 使い方と利用条件
 
-- まず[インストール案内](https://github.com/708san/CV_data/blob/main/docs/installation.md)を確認してください。OCR、ResNet、検出、生成は追加の環境設定が必要です。
-- [データ一覧と形式](https://github.com/708san/CV_data/blob/main/docs/data-model-compatibility.md)から、扱いたいデータのタスク・ラベル・注釈を確認できます。
+- まず[インストール案内](https://github.com/708san/CV_data/blob/v0.1.0a5/docs/installation.md)を確認してください。OCRはPaddlePaddleの環境別導入が必要です。ResNet・検出・生成は機能別extraからPython依存を導入できます。
+- [データ一覧と形式](https://github.com/708san/CV_data/blob/v0.1.0a5/docs/data-model-compatibility.md)から、扱いたいデータのタスク・ラベル・注釈を確認できます。
+- [Colabで公開版を試す手順](https://github.com/708san/CV_data/blob/v0.1.0a5/docs/colab-verification.md)に、機能別Notebookとランタイムをまとめています。
 - データやモデルごとに利用条件が異なります。使う前に各説明ページのライセンス・出典・注意を確認してください。
 - このパッケージに画像・マスク・LoRA重み・基盤モデル重みは含みません。取得やモデル読み込みは明示的に呼び出したときだけ始まります。
 - GPUは自動で選びません。利用可能か確認してから明示的に指定します。CPUでの利用可否や必要容量は機能ごとの案内を確認してください。

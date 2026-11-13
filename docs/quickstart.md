@@ -33,6 +33,12 @@ data.show_examples(6)
 
 ## 3. 分類モデルを学習
 
+ResNetを使う前に、分類・回帰用の依存を入れます。Colabでは次のセルを実行してください。ローカルでは`python -m pip install --pre --upgrade 'cv-data-lesson[torch]'`を実行します。
+
+```python
+%pip install --pre --upgrade 'cv-data-lesson[torch]'
+```
+
 `to_df()`の`split`列から学習用とテスト用を分けます。列名は実データで確認してください。
 
 ```python
@@ -57,3 +63,4 @@ print("正解率:", model.score(test_data["image_path"], test_data["label"]))
 - [機能別インストール](installation.md)
 - [データとモデルの対応表](data-model-compatibility.md)
 - [分類・回帰](resnet-model.md)、[OCR](ocr.md)、[検出・領域分割](vision.md)、[画像生成・LoRA](image-generation.md)
+- [公開版をColabで機能別に確認する](colab-verification.md)

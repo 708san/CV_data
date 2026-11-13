@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cv-data-lesson"
-version = "0.1.0a4"
+version = "0.1.0a5"
 description = "高校生が身近な課題に画像AIを活用するための教材ライブラリ"
 readme = "README.md"
 license = "MIT"
@@ -42,18 +42,18 @@ ocr = [
     "huggingface_hub>=0.23,<3",
     "Pillow>=9,<14",
 ]
-vision = ["numpy>=1.23,<3", "Pillow>=9,<14", "transformers>=4.41,<6", "huggingface_hub>=0.23,<3"]
+vision = ["numpy>=1.23,<3", "Pillow>=9,<14", "torch>=2.6,<3", "torchvision>=0.21,<1", "transformers>=4.41,<6", "huggingface_hub>=0.23,<3"]
 diffusion = [
     "Pillow>=9,<14",
     "diffusers[torch]>=0.30,<1",
     "transformers>=4.41,<6",
     "huggingface_hub>=0.23,<3",
-    "peft>=0.21.2,<1",
+    "peft>=0.21.3,<1",
 ]
 
 [project.urls]
 Repository = "https://github.com/708san/CV_data"
-Documentation = "https://github.com/708san/CV_data/blob/main/docs/student-guide.md"
+Documentation = "https://github.com/708san/CV_data/blob/v0.1.0a5/docs/student-guide.md"
 Issues = "https://github.com/708san/CV_data/issues"
 Changelog = "https://github.com/708san/CV_data/releases"
 Artifacts = "https://github.com/708san/CV_data_artifacts"

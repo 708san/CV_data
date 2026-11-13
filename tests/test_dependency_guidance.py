@@ -43,6 +43,7 @@ class PackagingMetadataTests(unittest.TestCase):
             "dataframe": {"pandas"},
             "display": {"numpy", "pillow", "pandas", "matplotlib", "japanize-matplotlib"},
             "torch": {"numpy", "pillow", "torch", "torchvision"},
+            "vision": {"numpy", "pillow", "torch", "torchvision", "transformers", "huggingface-hub"},
             "ocr": {"paddleocr", "paddlex", "pillow", "huggingface-hub"},
             "diffusion": {"pillow", "diffusers", "transformers", "huggingface-hub", "peft"},
         }
@@ -55,6 +56,9 @@ class PackagingMetadataTests(unittest.TestCase):
         self.assertIn("requests>=2.32.2,<2.33", ocr_requirements)
         self.assertIn("huggingface_hub>=0.23,<3", ocr_requirements)
         self.assertIn("huggingface_hub>=0.23,<3", extras["vision"])
+        self.assertIn("torch>=2.6,<3", extras["vision"])
+        self.assertIn("torchvision>=0.21,<1", extras["vision"])
+        self.assertIn("peft>=0.21.3,<1", extras["diffusion"])
 
 
 class OptionalDependencyGuidanceTests(unittest.TestCase):

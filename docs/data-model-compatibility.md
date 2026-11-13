@@ -90,13 +90,16 @@ image_path = frame.iloc[0]["image_path"]
 predictions = detector.predict(image_path)
 ```
 
-手元画像を使う場合は、Pillow Imageを直接渡せます。
+手元画像を使う場合は、ColabでアップロードしたファイルをPillow Imageとして直接渡せます。次の例では利用者が画像を選びます。
 
 ```python
+from google.colab import files
 from PIL import Image
 from cvlesson import display
 
-with Image.open("my_image.jpg") as opened:
+uploaded = files.upload()
+image_path = next(iter(uploaded))
+with Image.open(image_path) as opened:
     image = opened.convert("RGB")
 predictions = detector.predict(image)
 display.show(image, predictions)

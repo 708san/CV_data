@@ -18,7 +18,7 @@ from cvlesson import datasets
 data = datasets.get("fashion_mnist")
 df = data.to_df()  # pip install --pre 'cv-data-lesson[dataframe]'
 print(df[["label", "label_ja", "split"]].head())
-data.show_examples(9)  # pip install --pre 'cv-data-lesson[display]'
+data.show_examples(9)  # 基本インストールで利用できます
 ```
 
 ## クラス

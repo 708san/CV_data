@@ -16,7 +16,7 @@
 from cvlesson import datasets
 
 data = datasets.get("トマトの葉")
-df = data.to_df()  # pip install --pre 'cv-data-lesson[dataframe]'
+df = data.to_df()  # 基本インストールで利用できます
 print(df.head())
 print(df["label_ja"].value_counts())
 train_data = data.to_torch_dataset(split="train", image_size=(64, 64))  # pip install --pre 'cv-data-lesson[torch]'

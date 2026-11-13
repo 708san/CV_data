@@ -1,6 +1,18 @@
 # 画像AIの使い方ガイド
 
-このライブラリでは、課題に合う画像やモデルを選び、入力を渡し、結果を画像や数値で確かめられます。現在のPyPI alphaには生徒向けデータ23件と登録LoRA 4件があります。使用例は出発点です。テーマ、入力画像、出力の見せ方は自分の課題に合わせて考えられます。`to_df()`には`dataframe`または`display`、画像表示には`display`、ResNetには`torch`の追加導入が必要です。
+このライブラリでは、課題に合う画像やモデルを選び、入力を渡し、結果を画像や数値で確かめられます。`cv-data-lesson`はpipで使う配布名、`cvlesson`はPythonで読み込む名前、表示名は「CV教材ライブラリ」です。現在のPyPI alphaには生徒向けデータ23件と登録LoRA 4件があります。使用例は出発点です。テーマ、入力画像、出力の見せ方は自分の課題に合わせて考えられます。
+
+基本導入だけでデータ一覧、表、画像例を使えます。モデル機能は使いたいものだけ追加します。分類・回帰は`torch`、検出・領域分割は`vision`、SDXL画像生成は`diffusion`です。これらのextraは必要なPython依存をまとめて導入します。OCRだけは環境に合うPaddlePaddleを先に入れます。コマンドは[インストール案内](installation.md)を確認してください。
+
+Colabでは、使う機能の行だけを実行します。既に基本版を入れている場合も`--upgrade`を付けると最新の公開alphaを使えます。
+
+```python
+%pip install --pre --upgrade 'cv-data-lesson[torch]'       # 分類・回帰
+%pip install --pre --upgrade 'cv-data-lesson[vision]'      # 検出・領域分割
+%pip install --pre --upgrade 'cv-data-lesson[diffusion]'   # SDXL画像生成
+```
+
+OCRはPaddlePaddleの公式手順を先に実行してから`%pip install --pre --upgrade 'cv-data-lesson[ocr]'`を実行してください。モデル重みやデータはこのコマンドでは入りません。初回の`datasets.get()`またはモデルの`load()`時に取得します。
 
 ## 1. データを選ぶ
 
@@ -27,7 +39,7 @@ print(datasets.info("tomato_leaves"))
 data = datasets.get("tomato_leaves")
 frame = data.to_df()       # 画像パス・ラベル・分割などを表で見る
 print(frame.head())
-data.show_examples(6)      # 画像例を表示（display依存が必要）
+data.show_examples(6)      # 画像例を表示
 ```
 
 データごとに列や注釈が違います。何が入っているかは`data.to_df().columns`、画像の場所は`data.root`やデータ別ガイドで確認してください。[データとモデルの対応表](data-model-compatibility.md)には登録データの形式と対応するAPIをまとめています。
@@ -79,6 +91,20 @@ print("R²:", model.score(test_data[image_pair], test_data[target]))
 
 両方ともscikit-learnに似た`fit()`、`predict()`、`score()`の流れです。画像パスまたはPillow Imageを渡せます。GPUを使う場合は`available_devices()`を確認して`device="cuda:0"`を指定します。
 
+## 自分の画像を準備する
+
+以下を一度実行すると、アップロードした画像を`image_path`でOCR・検出・領域分割へ渡せます。ローカルでは`image_path = "./自分の画像.jpg"`のようにファイルパスを指定します。
+
+```python
+from google.colab import files
+
+uploaded = files.upload()
+image_path = next(iter(uploaded))
+print("選んだ画像:", image_path)
+```
+
+Colabへアップロードした画像は現在のランタイムで処理され、ライブラリが外部サービスへ自動送信することはありません。第三者の写真を使う場合は利用許可や写っている人の同意を確認してください。
+
 ## 3. OCR（画像の文字を読む）
 
 OCRは学習済みPP-OCRv5を使う**推論機能**です。このライブラリからOCRモデルを追加学習する機能ではありません。既定は日本語・CPUです。PaddlePaddle本体はOSやCPU/GPUに合う公式手順で別途導入します。利用者が`import paddle`を書く必要はありません。
@@ -87,7 +113,7 @@ OCRは学習済みPP-OCRv5を使う**推論機能**です。このライブラ�
 from cvlesson import ocr
 
 reader = ocr.load(device="cpu")
-result = reader.predict("receipt.jpg")
+result = reader.predict(image_path)
 print(result.text)
 for line in result.lines:
     print(line.text, line.confidence, line.polygon)
@@ -106,7 +132,7 @@ from cvlesson import vision
 
 print(vision.available_devices())
 detector = vision.load_detector(device="cpu")
-objects = detector.predict("street.jpg", threshold=0.5)
+objects = detector.predict(image_path, threshold=0.5)
 for item in objects:
     print(item.label, item.score, item.box)
 ```
@@ -117,7 +143,7 @@ for item in objects:
 
 ```python
 segmenter = vision.load_segmenter(device="cpu")
-mask = segmenter.predict("street.jpg", box=(40, 30, 240, 220))
+mask = segmenter.predict(image_path, box=(40, 30, 240, 220))
 print(mask.mask.shape, mask.mask.dtype)
 ```
 
@@ -145,9 +171,7 @@ display.show(image)
 
 SDXLとLoRAは大きなモデル重みを使います。初回ダウンロードとGPUメモリが必要です。GPUは勝手に選択せず、使う前に確認して明示指定します。生成画像内の文字や事実は正確とは限らず、入力画像の構図や内容も変わることがあります。
 
-## 自分の画像を使う
-
-ローカルでは画像ファイルのパス、またはPillow Imageを各モデルへ渡せます。Colabでは自分が選んだ画像をランタイムへアップロードし、表示されたローカルパスを渡します。ライブラリが画像を外部へ自動送信することはありません。第三者の写真を使う場合は利用許可や写っている人の同意を確認してください。
+各モデルには画像パスまたはPillow Imageを渡せます。
 
 ## 結果を考える
 
