@@ -1,6 +1,10 @@
 """画像とCV推論結果を重ねて表示・保存する補助機能。"""
 from __future__ import annotations
 
+import base64
+from html import escape
+import io
+import math
 from pathlib import Path
 from typing import Any
 
@@ -43,6 +47,109 @@ def render(image: Any, result: Any = None, *, mask_alpha: int = 110, show_labels
             raise DisplayError(f"未対応の推論結果です: {type(item).__name__}")
     return canvas
 
+
+def render_ocr_report(image: Any, result: Any, *, crop_padding: int = 8) -> str:
+    """OCR結果を読み順の一覧と、折りたたみ式の行別画像で表示するHTMLへ変換する。
+
+    OCRResultやOCRLine、to_dict()の内容は変更しません。返すHTMLは単体で埋め込め、
+    画像部分はデータURIに含めるため外部通信を行いません。
+    """
+    Image, _, _ = _pillow()
+    if not isinstance(crop_padding, int) or isinstance(crop_padding, bool) or crop_padding < 0:
+        raise ValueError("crop_paddingは0以上の整数で指定してください。")
+    if not hasattr(result, "lines"):
+        raise DisplayError("resultにはOCRResultを指定してください。")
+    canvas = _open_rgb(image, Image)
+    lines = list(result.lines)
+    styles = (
+        "<style>",
+        ".cvlesson-ocr{font-family:system-ui,sans-serif;max-width:900px;color:#202124}",
+        ".cvlesson-ocr h3{margin:.2em 0 .7em}",
+        ".cvlesson-ocr ol{padding-left:2.2em}",
+        ".cvlesson-ocr li{padding:.55em .7em;margin:.4em 0;border:1px solid #dadce0;border-radius:8px}",
+        ".cvlesson-ocr .text{font-size:1.05em;overflow-wrap:anywhere}",
+        ".cvlesson-ocr .confidence{color:#5f6368;font-size:.9em;margin-left:.5em}",
+        ".cvlesson-ocr details{margin-top:.35em}",
+        ".cvlesson-ocr summary{cursor:pointer;color:#1769aa}",
+        ".cvlesson-ocr img{display:block;max-width:100%;height:auto;margin:.6em 0;background:white}",
+        ".cvlesson-ocr .empty{padding:.8em;background:#f8f9fa;border-radius:8px}",
+        "</style>",
+    )
+    rows = []
+    for index, line in enumerate(lines, start=1):
+        text = escape(str(getattr(line, "text", "")))
+        try:
+            confidence = float(line.confidence)
+        except (AttributeError, TypeError, ValueError):
+            confidence_text = "信頼度の目安: 不明"
+        else:
+            confidence_text = (
+                f"信頼度の目安: {confidence:.1%}"
+                if math.isfinite(confidence)
+                else "信頼度の目安: 不明"
+            )
+        crop = _ocr_line_crop_data_uri(canvas, line, crop_padding, Image)
+        if crop is None:
+            image_detail = "<small>この行の位置情報はありません。</small>"
+        else:
+            image_detail = (
+                "<details><summary>画像の該当部分を見る</summary>"
+                f'<img src="{crop}" alt="{text} の画像部分">'
+                "</details>"
+            )
+        rows.append(
+            "<li>"
+            f'<span class="text">{text or "（空の読み取り結果）"}</span>'
+            f'<span class="confidence">{confidence_text}</span>'
+            f"{image_detail}</li>"
+        )
+    if rows:
+        content = "<ol>" + "".join(rows) + "</ol>"
+    else:
+        content = '<p class="empty">文字を検出できませんでした。</p>'
+    title = "OCRの読み取り結果"
+    return (
+        "<section class=\"cvlesson-ocr\">"
+        + "".join(styles)
+        + f"<h3>{title}</h3>{content}</section>"
+    )
+
+
+def show_ocr(image: Any, result: Any, *, crop_padding: int = 8) -> None:
+    """OCR結果をNotebookに一覧表示する。表示後に暗黙表示される値は返さない。"""
+    markup = render_ocr_report(image, result, crop_padding=crop_padding)
+    try:
+        from IPython.display import HTML, display as notebook_display
+    except ImportError as exc:
+        raise DisplayError(
+            "show_ocr()にはIPythonが必要です。別アプリではrender_ocr_report()が返すHTML、"
+            "またはresult.to_dict()を利用してください。"
+        ) from exc
+    notebook_display(HTML(markup))
+
+
+def _ocr_line_crop_data_uri(image: Any, line: Any, padding: int, image_module: Any) -> str | None:
+    try:
+        points = tuple(tuple(float(value) for value in point) for point in line.polygon)
+    except (AttributeError, TypeError, ValueError):
+        return None
+    if len(points) < 4 or any(len(point) != 2 for point in points):
+        return None
+    coords = [coordinate for point in points for coordinate in point]
+    if not all(math.isfinite(value) for value in coords):
+        return None
+    width, height = image.size
+    left = max(0, math.floor(min(point[0] for point in points)) - padding)
+    top = max(0, math.floor(min(point[1] for point in points)) - padding)
+    right = min(width, math.ceil(max(point[0] for point in points)) + padding)
+    bottom = min(height, math.ceil(max(point[1] for point in points)) + padding)
+    if right <= left or bottom <= top:
+        return None
+    snippet = image.crop((left, top, right, bottom))
+    output = io.BytesIO()
+    snippet.save(output, format="PNG")
+    encoded = base64.b64encode(output.getvalue()).decode("ascii")
+    return f"data:image/png;base64,{encoded}"
 
 def show(image: Any, result: Any = None, *, mask_alpha: int = 110, show_labels: bool = True):
     """合成画像をNotebookまたは既定の画像ビューアで表示して返す。"""
@@ -184,4 +291,4 @@ def _check_box(box: tuple[float, ...], size: tuple[int, int]) -> None:
         raise DisplayError(f"検出boxが画像の範囲外か不正です: box={box}, image_size={size}")
 
 
-__all__ = ["DisplayError", "render", "save", "show"]
+__all__ = ["DisplayError", "render", "render_ocr_report", "save", "show", "show_ocr"]
