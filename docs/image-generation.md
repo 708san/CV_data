@@ -115,4 +115,4 @@ result.save("park_icon.png")
 
 ## Colabで動作を試す
 
-[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。次回公開候補の`0.1.0a6`を使い、登録済み4件の情報を確認してから選択した1件だけを取得・生成します。Image-to-Imageでは利用者が明示アップロードした画像を使います。初回はSDXL本体と選択したLoRAの重みを取得するため数GBの空き容量が必要です。
+[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。公開版`0.1.0a6`を使い、登録済み4件の情報を確認してから選択した1件だけを取得・生成します。Image-to-Imageでは利用者が明示アップロードした画像を使います。初回はSDXL本体と選択したLoRAの重みを取得するため数GBの空き容量が必要です。Colabでの実行結果はまだ確認されていません。
