@@ -6,20 +6,16 @@
 
 対象仕様：4.4、5.5、6、7。APIにはsteps、guidance、seed、出力サイズ、negative prompt、Image-to-Image strength、LoRA triggerの指定が既にあったため、新APIは追加せず、仕様0.15・ガイド・Notebook・テストを整備。Notebookを6 steps/512pxの速度優先から25 steps、guidance 7.0、768px、seed 42を変更可能な品質比較例へ更新。PR #71をmainへマージし、Python 3.11〜3.13のユニットテストとpackage-smokeを確認。新設定でのColab画質・VRAMは未確認。
 
-## 今回の作業単位：PyPI配布メタデータ検査をCIへ追加
+## 完了：PyPI配布メタデータ検査をCIへ追加
 
-対象仕様：5.1、7。wheel/sdist build・内容物検査・clean venv installはCIで成功済み。PyPI本番公開の前に`twine check`でREADMEを含む配布メタデータの表示適合をCIで確認する。TestPyPI/PyPIへのアップロードは行わない。
+対象仕様：5.1、7。wheel/sdist build後の配布メタデータをTwineで検査する。
 
-順序：
-1. 仕様、開発計画、CIのpackage-smoke job、pyprojectのREADME/license/classifiersを確認する。
-2. この作業と受け入れ条件を計画へ記録する（完了）。
-3. CIのpackage-smoke jobでbuild frontendとTwineを導入し、wheel/sdist build後に`twine check dist/*`を実行する。
-4. Python 3.13 package-smokeとPython 3.11〜3.13 unit jobsを実行し、結果を記録する。
-5. 配布物を公開・アップロードせずCI内で確認する。
+実施内容：
+1. package-smoke CIにTwineを追加し、build直後に`python -m twine check dist/*`を実行。
+2. データ・モデル等の禁止バイナリ検査とクリーンvenv導入確認を維持。
+3. PR #72をmainへマージ。Python 3.11、3.12、3.13のunit jobとPython 3.13 package-smoke job（build、Twine check、バイナリ検査、import）がすべて成功。
 
-受け入れ条件：wheel/sdistのbuild、`twine check`、binary不在検査、clean venv install/importが成功し、CIのunit matrixが通る。PyPIへの公開は含めない。
-
-進捗：計画を追加。PEFT v0.21.3を確認したが、torchao旧版を警告扱いするPR #3989の変更はtagged sourceに含まれていないため、Colab Notebookの固定修正版を維持する。
+PyPI/TestPyPIへのアップロードは未実施。
 
 ## 完了：画像生成extraへLoRA実行依存PEFTを含める
 
