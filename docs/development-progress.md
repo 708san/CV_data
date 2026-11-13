@@ -1,6 +1,6 @@
 # 開発進捗
 
-## 2026-11-14：OCR表示の全文優先レイアウトを準備
+## 2026-11-14：OCR表示を全文優先に改善（alpha8候補、PyPI未公開）
 
 - GitHub Release [v0.1.0a7](https://github.com/708san/CV_data/releases/tag/v0.1.0a7)を公開。Trusted Publishingのbuild・publish両jobが成功し、PyPIのwheel・sdistも確認した。
 - a7のOCR行カード表示について、利用者から長い結果が細切れに見えるとの報告を受けた。OCR全文を主表示し、行ごとの位置・信頼度・切り抜きを折りたたむa8候補へ改善中。
