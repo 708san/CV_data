@@ -263,8 +263,8 @@ class ReleaseTests(unittest.TestCase):
             ["2026-01-01T12:00:00Z", "2026-01-01T05:00:00-07:00", "2026-01-01",
              "2026-01-02", "2.5", "3.0", "78.0", "0.0", "ERA5", "source/sky/one.jpg"],
         ]
-        header = "image,label,split," + ",".join(columns) + "\\n"
-        row = "images/test/sunny/one.jpg,sunny,test," + ",".join(rows[0]) + "\\n"
+        header = "image,label,split," + ",".join(columns) + "\n"
+        row = "images/test/sunny/one.jpg,sunny,test," + ",".join(rows[0]) + "\n"
         (self.cache / "labels.csv").write_text(header + row, encoding="utf-8")
         bundle = datasets.DatasetBundle(
             id="sky_weather_next_day", kind="classification", root=self.cache,
