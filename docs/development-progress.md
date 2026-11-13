@@ -527,3 +527,10 @@
 - インストール案内にPEFTの役割と、旧torchaoを含むColabでは修正版PEFTを固定する生成Notebookを使う注意を追記。PEFTの修正版がPyPI配布されるまで、Notebook外のColab利用は保証しない。
 - `pip uninstall torchao`は行わない。ローカルでは仮想環境を推奨。
 - 実依存解決・Colab T4生成はCI/Colabで未確認。PR CIのメタデータテストを確認する。
+
+
+## 2026-11-13：PEFT依存追加後のColab LoRA実測
+
+- ユーザーが修正版生成NotebookをColabで実行し、`torchao`をアンインストールせずにLoRAが動作したと確認。共有環境からの削除は不要。
+- PEFT上流修正commitをNotebookに固定し、`diffusion` extraにもPEFTを明示追加したPR #67・#68をmainへ統合。PR #68のPythonテストCIは成功。
+- 次はwheel/sdistをCIで構築し、バイナリ非同梱とクリーン仮想環境での基本install/importを確認する。PyPI本番公開は今回の対象外。
