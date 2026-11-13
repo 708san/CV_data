@@ -1,6 +1,6 @@
-# 現行作業：導入・文書の不一致を解消し、公開版の全機能Colab確認を行う
+# 現行作業：alpha5公開を記録し、公開版の全機能Colab確認を完了する
 
-更新日：2026-11-13。基準版：PyPI `0.1.0a4` / GitHub `main` `9f1c8142d3688ed5d817a8a9835735657f0ddefb`。
+更新日：2026-11-13。基準版：PyPI `0.1.0a5` / GitHub `main` `f9306108be06b185b84fd63660b490700c7786d1`。
 
 対象仕様：0.20、5.1、6、7。利用者からの「PyPIとGitHubの表記差」「画像生成時のTorch導入」「実使用の問題点を列挙・改善」「使用ガイド」「全機能のColab実機確認」に対応する。既存の未コミット変更は別checkoutに残し、この作業ブランチでは触れない。
 
@@ -29,7 +29,15 @@
 - 全Colab smoke Notebookが公開PyPI版をinstallし、実行順、ランタイム、データ/モデル量、出力確認が分かる。
 - Colab実機で成功した機能だけを検証済みと記録し、GPU機能は実測したGPU名を残す。
 
-進捗：監査を実施し、仕様0.20と本計画を先行更新。`vision` extraへTorch/Torchvisionを追加し、PEFT最低版を0.21.3へ更新。基本利用と機能別導入の不一致、画像パスの未定義例、ColabのGit commit直installとOCR二重installを修正。PyPI版固定の5機能NotebookとColab確認表を用意。Python 3.11/3.13で各92テスト成功（この作業環境では軽量optional依存が未導入のため18件skip）、Notebook JSON/Python構文・固定PyPI版検査、Markdownローカルリンク・コード例、`git diff --check`成功。PR #83のPython 3.11/3.12/3.13 unit、display-smoke、package-smokeは全て成功。PR merge、alpha5公開、公開PyPI packageのColab実行は未完了。
+進捗：監査を実施し、仕様0.20と本計画を先行更新。`vision` extraへTorch/Torchvisionを追加し、PEFT最低版を0.21.3へ更新。基本利用と機能別導入の不一致、画像パスの未定義例、ColabのGit commit直installとOCR二重installを修正。PyPI版固定の5機能NotebookとColab確認表を用意。Python 3.11/3.13で各92テスト成功（この作業環境では軽量optional依存が未導入のため18件skip）、Notebook JSON/Python構文・固定PyPI版検査、Markdownローカルリンク・コード例、`git diff --check`成功。PR #83のPython 3.11/3.12/3.13 unit、display-smoke、package-smokeは全て成功し、mainへmerge。`v0.1.0a5`をGitHub prereleaseとPyPIへ公開。PyPI JSONとwheel/sdistを確認し、Python 3.13の新規venvでPyPIからinstall、カタログ23件、`pip check`、基本import時にTorch未読込を確認。残作業は5機能の実Colab確認で、結果は[Colab確認表](colab-verification.md)に未実行として記録。
+
+## 公開後の確認単位：alpha5クリーン導入と公開記録
+
+対象仕様：5.1、6、7。PyPI `0.1.0a5`とGitHub `v0.1.0a5`が公開されたため、利用者向けの導入経路と公開履歴を事実に合わせる。
+
+受け入れ条件：PyPI clean venvから基本インストール、`cvlesson` import、学生向けカタログ表示、依存整合性検査が通る。PyPI/GitHubの版、Documentationリンク、wheel/sdist SHA-256を記録し、Colab実行は実測前のまま明示する。
+
+進捗：Python 3.13 clean venvへ`cv-data-lesson==0.1.0a5`をPyPIからinstall。`datasets.list_available(audience="student")`が23件を返し、基本importでTorchは読み込まれず、`pip check`は依存不整合なし。PyPI wheelは68,579 bytes / SHA-256 `7eefc0092d75a6d659ff7d15e67684ed856876d9f06e338e4d95f7ad0c433022`、sdistは81,799 bytes / SHA-256 `3286565bf31e81095df8db1bf18b0a66a02eb44a706661ac11e9e74a050f5ca0`。Colab実モデル検証は未実施。
 
 ## 今回の作業単位：公開後の利用者向け文書を再構成し、PyPI alphaを更新
 
