@@ -1,6 +1,6 @@
 # PyPI公開・更新の運用記録
 
-`cv-data-lesson==0.1.0a6`は2026-11-13にPyPIへ公開済みです。PyPI上の同じ版は差し替えられません。次回は`pyproject.toml`の版を上げ、GitHub Releaseの公開をきっかけにTrusted Publishingで送ります。
+`cv-data-lesson==0.1.0a6`は2026-11-13にPyPIへ公開済みです。OCR結果の一覧表示を含む`0.1.0a7`を準備中です。PyPI上の同じ版は差し替えられないため、新しい版として公開します。
 
 ## 利用者向けコマンド
 
@@ -45,6 +45,8 @@ GitHub側の`pypi` environmentを作成し、必要ならdeployment protection r
 公開後の更新では、`pyproject.toml`の版を上げ、PyPI READMEと`project.urls.Documentation`のリンクを作成予定の`v<version>`へ合わせてmainへ反映します。同じ版から`v<version>`のGitHub Releaseを作成します。workflow完了後にPyPI JSON APIでversion、wheel、sdist、SHA-256、READMEを確認し、GitHub tag内のREADME・利用ガイドとインストールコマンドを照合します。
 
 ## 公開履歴
+
+- `0.1.0a7`：OCR結果を読み順の一覧で示し、各行の画像部分を折りたたんで確認できる表示を追加。`OCRResult.to_dict()`は維持。公開準備中。
 
 - `0.1.0a1`：2026-11-13公開。PyPI READMEに未公開の案内が残った。
 - `0.1.0a2`：高校生向け説明・AI改造ガイド・利用者向け導入案内を整理。
