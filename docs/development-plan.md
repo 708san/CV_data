@@ -15,7 +15,7 @@
 
 受け入れ条件：Colabログの`softmax input must be Tensor, not numpy.ndarray`を修正し、`predict_proba()`が形状`(サンプル数, クラス数)`の行ごとに正規化された確率目安を返す。既存の分類・回帰のscikit-learn風Estimator APIとOCR/vision/generationの用途別APIを混同させない。
 
-進捗：`predict_proba()`でNumPy logitsを`torch.as_tensor()`に変換してからsoftmaxへ渡す修正を実装。外部モデルを使わない型変換・確率行和のテストを追加。分類・回帰EstimatorとOCR/DETR/SAM/SDXLの呼び出し方をクイックスタートへ追記し、確率配列の形状と意味を文書化。Python 3.13で全85テスト成功（16件skip）、`git diff --check`成功。Colabでの分類Notebook再実行は未確認。
+進捗：`predict_proba()`でNumPy logitsを`torch.as_tensor()`に変換してからsoftmaxへ渡す修正を実装。外部モデルを使わない型変換・確率行和のテストを追加。分類・回帰EstimatorとOCR/DETR/SAM/SDXLの呼び出し方をクイックスタートへ追記し、確率配列の形状と意味を文書化。Python 3.13で全85テスト成功（16件skip）、`git diff --check`成功。ユーザーがColab分類Notebookの実行を確認済み。回帰Notebookと他機能の再確認は未実施。
 
 ## 今回の作業単位：Notebookのケアレスミス検査とMatplotlib日本語表示
 
