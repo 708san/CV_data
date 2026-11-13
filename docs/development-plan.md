@@ -2,20 +2,24 @@
 
 更新日：2026-11-13
 
-## 今回の作業単位：画像生成extraへLoRA実行依存PEFTを含める
+## 完了：画像生成extraへLoRA実行依存PEFTを含める
 
-対象仕様：4.4、5.1、5.2、7。実装はDiffusersの`load_lora_weights()`を使うが、`diffusion` extraにPEFTが含まれていなかった。Colabの既存環境では暗黙に入っていたため依存漏れが見えにくかった。LoRAを使う際に必要なPEFTをextraへ追加し、PyPIユーザーが新規環境で必要依存を一度に導入できるようにする。PEFTのPyPI版ではColabの旧torchao問題修正が未確認のため、Colab Notebookは上流修正merge commitを一時的に固定し、制限を利用者へ説明する。
+対象仕様：4.4、5.1、5.2、7。`diffusion` extraへ`peft>=0.21.2,<1`を追加し、依存メタデータテストと導入案内を更新。PR #68をmainへマージし、CI成功。ユーザーがColabで修正版Notebookを実行し、torchaoをアンインストールせずにLoRA生成が動作することを確認。
+
+## 今回の作業単位：PyPI wheel/sdistとクリーン環境の基本導入を検証
+
+対象仕様：5.1、5.2、7。PyPI本番公開前にwheel・sdistを作成し、内容物にPythonコード以外の画像・モデル重み・データartifactが紛れないことと、クリーン環境で軽量な基本install/importが通ることをCIで確認する。大容量依存とモデル重みを使う確認はこのCIへ含めない。
 
 順序：
-1. 仕様と実装、`pyproject.toml`、依存ガイダンステスト、インストール案内を照合する。API仕様の追加変更は不要。
-2. この計画に今回の作業範囲と受け入れ条件を記録する。
-3. `diffusion` extraへPEFTの互換範囲を追加し、依存メタデータテストを更新する。
-4. インストール案内にPEFTの役割、Colabの旧torchao制約、修正版固定Notebookを使うことを記す。ローカルでは仮想環境を使う。
-5. 依存宣言テスト、Notebook JSON、Pythonセル構文、PR CIを確認する。Colab T4実生成は利用者実測を得るまで未確認とする。
+1. `docs/specification.md`、本計画、既存CI、pyprojectのbuild設定とパッケージ構成を確認する。
+2. この作業と完了条件を計画へ記録する（完了）。
+3. CIへwheel/sdistのbuild・内容物検査・一時venvでの`--no-deps` install/import smokeを追加する。
+4. Python対応版で通常ユニットテストとpackage smokeを実行し、成果物を保存・公開せずCI内で破棄する。
+5. PyPI本番公開・アップロードは行わず、build結果と未確認の大容量extraを計画・進捗へ記録する。
 
-受け入れ条件：`pip install cv-data-lesson[diffusion]`でクリーンな仮想環境にPEFTが導入され、LoRA利用に必要なバックエンドが不足しない。Notebookはtorchaoを削除せずPEFT上流の修正を固定使用する。PyPI版PEFT修正が出るまで、Colabの旧torchao環境でNotebook外から直接使う場合は未保証と明記する。
+受け入れ条件：wheelとsdistが構築でき、`cvlesson`をimport可能なPythonコードを含む。データ・LoRA・画像の大容量バイナリを含まない。クリーンvenvへのinstall/import smokeと既存テストが成功する。Diffusers/PEFTの完全な依存解決やColab生成は、別途実環境で確認した範囲だけを成功と記録する。
 
-進捗：依存漏れを確認し、実装前の計画を追加。PEFT追加と説明更新を進める。
+進捗：作業計画を記録。実装・CI確認はこれから。
 
 ## 今回の作業単位：Colab旧TorchAO競合をLoRA環境を壊さず解決
 
