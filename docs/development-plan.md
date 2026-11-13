@@ -4,7 +4,7 @@
 
 ## 完了：SDXL/LoRAの生成設定を使いやすく説明
 
-対象仕様：4.4、5.5、6、7。APIにはsteps、guidance、seed、出力サイズ、negative prompt、Image-to-Image strength、LoRA triggerの指定が既にあったため、新APIは追加せず、仕様0.15・ガイド・Notebook・テストを整備。Notebookを6 steps/512pxの速度優先から25 steps、guidance 7.0、768px、seed 42を変更可能な品質比較例へ更新。PR #71をmainへマージし、Python 3.11〜3.13のユニットテストとpackage-smokeを確認。新設定でのColab画質・VRAMは未確認。
+対象仕様：4.4、5.5、6、7。APIにはsteps、guidance、seed、出力サイズ、negative prompt、Image-to-Image strength、LoRA triggerの指定が既にあったため、新APIは追加せず、仕様0.15・ガイド・Notebook・テストを整備。Notebookを6 steps/512pxの速度優先から25 steps、guidance 7.0、768px、seed 42を変更可能な品質比較例へ更新。PR #71をmainへマージし、Python 3.11〜3.13のユニットテストとpackage-smokeを確認。ユーザーがColab動作を確認済み。実行時のVRAMや詳細な品質比較値は未記録。
 
 ## 完了：PyPI配布メタデータ検査をCIへ追加
 
@@ -35,6 +35,17 @@ PyPI/TestPyPIへのアップロードは未実施。
 
 進捗：Python 3.13の独立display-smoke jobでdisplay extra導入と実フォントパス検査を実行。全テスト成功。通常のPython 3.11〜3.13 unit matrixとpackage-smokeも成功。
 
+## 今回の作業単位：画像生成パラメータの事前入力検査
+
+対象仕様：4.4、5.5、6、7。stepsやstrengthの既存検査ではNaN、無限大、bool、文字列などがすり抜け、幅・高さ・seed・negative promptの不正値はDiffusersまで届く可能性がある。設定ミスをモデル実行前に短い日本語で伝える。
+
+順序：
+1. 仕様0.16へ受け付ける型・値域・画像寸法条件を追記する（先行）。
+2. 生成pipelineを呼ぶ前に全設定を検査し、NaN/inf、bool、型違い、不正な寸法などをValueErrorで拒否する。
+3. モデル重みやDiffusersを使わないテストで、有効値の引き渡しと境界値・型違いを確認する。
+4. 画像生成ガイドと進捗へ利用者向けの条件を簡潔に記載し、Notebook JSON・全CIを確認する。
+
+受け入れ条件：stepsは正の整数、guidance_scaleは有限かつ0以上、strengthは有限な0〜1、width/heightは指定時に正の8の倍数、seedは整数かNone、negative_promptは文字列かNone、use_triggerはboolとして検査する。無効値でpipelineが一度も呼ばれず、値の直し方が分かるエラーになる。
 ## 完了：画像生成extraへLoRA実行依存PEFTを含める
 
 対象仕様：4.4、5.1、5.2、7。`diffusion` extraへ`peft>=0.21.2,<1`を追加し、依存メタデータテストと導入案内を更新。PR #68をmainへマージし、CI成功。ユーザーがColabで修正版Notebookを実行し、torchaoをアンインストールせずにLoRA生成が動作することを確認。
