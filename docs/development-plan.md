@@ -20,6 +20,8 @@
 6. wheel/sdist、Twine、禁止バイナリ、クリーン環境導入、unit matrixをPR CIで確認する。PyPI/TestPyPIへのアップロードは行わない。
 
 受け入れ条件：`0.1.0a1`のwheel/sdistをbuild・twine checkできる。画像・LoRA・モデル重みを含まない。READMEのPyPI表示、利用コマンド、任意依存説明がmetadataと一致する。release workflowは版の一致時だけPyPIへ発行し、workflow_dispatchやpush tagで誤発行しない。初回登録はpending Trusted Publisherを使う手順が明確で、公開実行前にPyPI側設定と明示承認が必要な状態を保つ。
+
+進捗：初回候補版`0.1.0a1`とAlpha classifier、PyPI公開後の導入説明、pending publisher設定手順、Release限定のTrusted Publishing workflowを追加。PyPI JSON APIは2026-11-13時点でHTTP 404（名前の予約を意味しない）。Python 3.11/3.13で91テスト成功（各18件skip）、workflow YAMLと`git diff --check`成功。mainの既存package-smoke CIはwheel/sdist、Twine、禁止バイナリ、クリーンvenv importを検査済み。今回のPR CIは未実行。PyPI upload、GitHub Release/tag作成は未実施。
 ## 完了：SDXL/LoRAの生成設定を使いやすく説明
 
 対象仕様：4.4、5.5、6、7。APIにはsteps、guidance、seed、出力サイズ、negative prompt、Image-to-Image strength、LoRA triggerの指定が既にあったため、新APIは追加せず、仕様0.15・ガイド・Notebook・テストを整備。Notebookを6 steps/512pxの速度優先から25 steps、guidance 7.0、768px、seed 42を変更可能な品質比較例へ更新。PR #71をmainへマージし、Python 3.11〜3.13のユニットテストとpackage-smokeを確認。ユーザーがColab動作を確認済み。実行時のVRAMや詳細な品質比較値は未記録。

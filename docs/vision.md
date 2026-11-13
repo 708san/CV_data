@@ -17,7 +17,7 @@ DETRはCOCOにあるカテゴリだけを検出する閉集合モデルです。
 
 ## インストール
 
-Colab T4での動作確認には[DETR・SAMのColab Notebook](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/vision_smoke_test.ipynb)を使えます。Python 3.13のT4で合成図形画像を実行し、DETRの検出結果とSAMのマスク・重ね合わせ表示を確認済みです。NotebookにはFruitSeg30のtest画像・正解マスクを使った追加比較も用意しましたが、Colabではまだ実行していません。1画像のIoUは全体の精度評価ではありません。
+Colab T4での動作確認には[DETR・SAMのColab Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/vision_smoke_test.ipynb)を使えます。Python 3.13のT4で合成図形画像を実行し、DETRの検出結果とSAMのマスク・重ね合わせ表示を確認済みです。NotebookにはFruitSeg30のtest画像・正解マスクを使った追加比較も用意しましたが、Colabではまだ実行していません。1画像のIoUは全体の精度評価ではありません。
 
 PyTorch/TorchvisionはOS、Python、CUDAに合う公式コマンドで先に導入してください。その後、Transformers等を追加します。
 

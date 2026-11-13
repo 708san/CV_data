@@ -10,6 +10,16 @@
 
 # 開発進捗
 
+## 2026-11-13：PyPI初回alpha公開の候補を準備
+
+- 初回候補を`cv-data-lesson==0.1.0a1`、コードライセンスをMITとして`pyproject.toml`へ設定。個別データ・モデルの利用条件とは分けて説明。
+- README、quickstart、installationにPyPI公開後の`--pre`導入例と、現在は未公開であることを記載。開発checkoutのeditable install案内は別に維持。Colabリンクを既定ブランチへ揃えた。
+- `.github/workflows/publish.yml`を追加。GitHub Releaseの`published`時だけ起動し、tag/version一致、wheel/sdist、Twine metadata、画像・重み・大容量ファイルの検査を通過したartifactをTrusted Publishingで送る。
+- PyPI pending publisherの設定値（owner `708san`、repo `CV_data`、workflow `publish.yml`、environment `pypi`）と初回公開の注意を[手順書](pypi-release.md)へ記録。
+- PyPI JSON APIは2026-11-13時点でHTTP 404。これは名前の予約を意味しない。現時点でPyPI upload・GitHub Release/tag作成は未実施。
+- ローカルPython 3.11/3.13で91テスト成功（各18件skip）。YAML構文と`git diff --check`成功。変更後のpackage-smoke CIは未実行。
+
+
 ## 2026-11-13：空画像と翌日の天気データの準備
 
 - ユーザー提供ZIP（10,014,296 bytes、SHA-256 `c30cf675819fea9b0bad62e0d0c8cb77890b808253e92c604b39d6c97a6f5280`）を固定し、安全なZIP構造・CRC・全1,000 JPEGの224×224デコード・ラベルと画像参照を確認。5枚を代表目視。
