@@ -46,6 +46,8 @@ SDXLは文章から画像を生成したり、入力画像の雰囲気を変え�
 | `strength` | Image-to-Imageで元画像を残す度合い。小さいほど保持し、大きいほど変化が強くなります。 |
 | `use_trigger` | 登録LoRAのトリガー語を自動でpromptへ加えるかどうか。 |
 
+入力範囲も生成前に確認します。stepsは1以上の整数、guidance scaleは有限の0以上、strengthは有限の0〜1です。width/heightを指定する場合は8以上の8の倍数、seedは整数、negative promptは文字列、use_triggerはTrue/Falseにしてください。不正な値は画像モデルを実行する前にValueErrorで知らせます。
+
 例では768×768、25 stepsを使います。T4でメモリ不足になったらサイズを512へ下げ、生成時間を短くしたい場合はstepsを下げます。同じpromptとseedを保ち、一度に一つの値だけ変えると違いを比べやすくなります。Schedulerなど現在のAPIにないDiffusers固有設定は指定できません。
 
 ```python
@@ -92,4 +94,4 @@ result.save("park_icon.png")
 
 ## Colabで動作を試す
 
-[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。固定commitのライブラリを使い、登録済み4件を順に試します。Image-to-Imageでは合成画像または利用者が明示アップロードした画像を使えます。初回はSDXL本体と4つの重みを取得するため数GBの空き容量が必要です。4件すべて成功すると最後に成功メッセージが出ます。Colab上で実行するまでは実環境テスト済みではありません。
+[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。固定commitのライブラリを使い、登録済み4件を順に試します。Image-to-Imageでは合成画像または利用者が明示アップロードした画像を使えます。初回はSDXL本体と4つの重みを取得するため数GBの空き容量が必要です。4件すべて成功すると最後に成功メッセージが出ます。
