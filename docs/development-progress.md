@@ -501,3 +501,11 @@
 - 成果物Releaseは[sky-weather-next-day-v0.1.0](https://github.com/708san/CV_data_artifacts/releases/tag/sky-weather-next-day-v0.1.0)。ZIP 10,014,277 bytes、SHA-256 `c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0`。
 - CIはPython 3.11、3.12、3.13の全6ジョブ成功。天候metadata列の型付きDataFrameテストを含む。
 - `generation_smoke_test.ipynb`は`capabilities_ja`を返す固定commitをインストールするため、KeyErrorの原因となった旧版ずれを解消。ColabでのSDXL生成とデータ取得は利用者環境で未確認。
+
+
+## 2026-11-13：Colabの旧TorchAOとLoRA読込の競合
+
+- LoRA 4件すべてが、Colabに事前導入されたtorchao 0.10.0とPEFT 0.19以降の互換性エラーで読み込みに失敗。GPU最大使用量6.57 GiBであり、メモリ不足ではない。
+- PEFT上流のIssue #3964と修正PR #3989を確認。量子化していないモデルのLoRA挿入でも古いTorchAO検出が例外になる既知問題。修正はPEFT mainに統合されているが、現在のPyPI版に含まれるかは未確認。
+- 画像生成Notebookに、TorchAO量子化を使わないこの実行では古いtorchaoを削除し、Colabランタイムを再起動してから全セルを実行する手順を追加。torchaoを別用途で使うランタイムには適用しない。
+- NotebookのColab再実行・4件の画像生成成功は未確認。
