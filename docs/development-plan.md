@@ -33,6 +33,8 @@ PyPI/TestPyPIへのアップロードは未実施。
 
 受け入れ条件：既存のmockテストを維持しつつ、CIのdisplay jobでjapanize-matplotlibの実フォントパスが有効であることを確認する。画像・モデル・データのダウンロードを行わず、通常の軽量test jobを重量級依存で膨らませない。
 
+進捗：Python 3.13の独立display-smoke jobと実フォントファイル検査を実装。CI結果確認待ち。
+
 ## 完了：画像生成extraへLoRA実行依存PEFTを含める
 
 対象仕様：4.4、5.1、5.2、7。`diffusion` extraへ`peft>=0.21.2,<1`を追加し、依存メタデータテストと導入案内を更新。PR #68をmainへマージし、CI成功。ユーザーがColabで修正版Notebookを実行し、torchaoをアンインストールせずにLoRA生成が動作することを確認。
