@@ -8,7 +8,7 @@
 
 事前確認：
 - データartifact Releaseは公開済み。GitHubから再取得したファイルは10,014,277 bytes、SHA-256 `c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0`で一致。
-- 成果物registry等はCV_data_artifacts PR #49、ライブラリ登録はCV_data PR #64に準備済み。#64はこのブランチをbaseにする。
+- 成果物registry等を含むCV_data_artifacts PR #49はmainへマージ済み。ライブラリ登録PR #64は本ブランチ（PR #63のhead）へマージ済み。
 - 生成NotebookはCV_data固定commit `635fa30db261ae5b3d43ab87c9e5f9e66a78bd1a`をインストールしていた。この版の`loras.list_models()`は`capabilities_ja`を返さない。PR #63の現行コードcommit `940ae09babebc698563b7cf3a35bd842840388f5`では当該項目を返すことを確認した。
 
 順序：
@@ -20,7 +20,7 @@
 
 受け入れ条件：成果物registryとライブラリが同一固定URL・SHAを参照し、マージ後に`datasets.get("sky_weather_next_day")`で取得できる。Notebookの指定commitで`loras.list_models()`が`capabilities_ja`を含み、表示セルがKeyErrorなしで実行できる。GPU実生成を行っていない場合はColab未確認と明記する。
 
-進捗：CV_data_artifacts PR #49をmainへマージ済み。Release assetを再取得してサイズ・SHA一致を確認済み。LoRA一覧の`capabilities_ja`を含まない古いcommitをNotebookが固定していた原因を特定し、`940ae09babebc698563b7cf3a35bd842840388f5`へ更新しました。CV_data PR #64のデータ・API登録をPR #63へ統合中です。ColabでのSDXL実生成とSky-weatherデータ取得は、PR #63を統合後に未確認として案内します。
+進捗：CV_data_artifacts PR #49をmainへマージ済み。Release assetを再取得してサイズ・SHA一致を確認済み。LoRA一覧の`capabilities_ja`を含まない古いcommitをNotebookが固定していた原因を特定し、`940ae09babebc698563b7cf3a35bd842840388f5`へ更新しました。CV_data PR #64のデータ・API登録はPR #63のhead branchへマージ済みです。ColabでのSDXL実生成とSky-weatherデータ取得は、PR #63を統合後に未確認として案内します。
 
 
 ## 今回の作業単位：分類Notebookの`predict_proba()`型不一致を修正
