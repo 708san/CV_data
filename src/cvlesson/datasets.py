@@ -663,6 +663,7 @@ _SOURCES: dict[str, ReleaseSource] = {
         file_urls={
             "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/sky-weather-next-day-v0.1.0/sky_weather_next_day-v0.1.0.zip",
         },
+        published=False,
         max_archive_bytes=20_000_000, max_unpacked_bytes=20_000_000, max_files=1500,
     ),
     "tomato_leaves": ReleaseSource(
@@ -1554,6 +1555,7 @@ def list_available(*, task: str | None = None, audience: str | None = None,
             "use_cases_ja": list(src.use_cases_ja),
             "input_description_ja": src.input_description_ja,
             "output_description_ja": src.output_description_ja,
+            "metadata_columns": dict(src.metadata_columns),
             "画像数": src.image_count,
             "サンプル数": src.sample_count,
             "ダウンロードサイズMB": src.download_size_mb,
@@ -1593,6 +1595,7 @@ def info(dataset_id: str | None = None) -> dict[str, Any] | list[dict[str, Any]]
         "task": src.task, "audiences": list(src.audiences), "difficulty": src.difficulty,
         "use_cases_ja": list(src.use_cases_ja), "input_description_ja": src.input_description_ja,
         "output_description_ja": src.output_description_ja,
+        "metadata_columns": dict(src.metadata_columns),
         "ダウンロードサイズMB": src.download_size_mb, "publication_status": _source_status(src),
         "audit_status": src.audit_status, "audit_report": src.audit_report,
         "画像数（配布元申告）": src.image_count, "固定版": src.tag,
