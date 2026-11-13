@@ -10,6 +10,13 @@
 
 # 開発進捗
 
+## 2026-11-13：Notebook変数の静的点検と日本語Matplotlib表示
+
+- 全配布Notebookを横断点検し、分類Notebookで`frame = data.to_df()`を作っている一方、次セルが未定義の`df`を参照する問題を見つけて修正。
+- 標準ライブラリだけを使うNotebook検査を追加。JSON/Python構文、セルをまたぐグローバル変数、pip行の引用符、固定Git commit SHA、`cvlesson` importより前のインストールを検査します。アーカイブ用の`notebooks/reference`は授業用CV Notebookではないため対象外。
+- `display` extraに`japanize-matplotlib`を加え、`DatasetBundle.show_examples()`実行時に日本語フォントを自動設定。コアimport時は読み込まず、表示に必要なpandasも`display`へ含めて導入を一つにしました。
+- Python 3.13で全84テスト成功（16件skip）。Notebook検査、`git diff --check`成功。japanize-matplotlibとMatplotlibが環境にないため、実描画・日本語字形・Colabでの表示確認は未実施です。ruff/pyflakesはネットワークDNS制限で取得できなかったため、標準ライブラリの静的検査を使用。
+
 ## 2026-11-13：分類Colabインストール行の引用符を修正
 
 - Colab実行ログで`classification_v1.ipynb`の`%pip install`行末に閉じ引用符がないことを確認。シェルがEOFで失敗し、続く`cvlesson` importも失敗していました。

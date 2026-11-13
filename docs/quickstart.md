@@ -4,10 +4,10 @@
 
 ## 1. 必要な機能を入れる
 
-PyPIにはまだ公開していません。インストールは[目的別の手順](installation.md#目的から選ぶ)から選んでください。データ一覧だけなら追加依存なし、画像表示も使う場合は`dataframe`と`display`を追加します。
+PyPIにはまだ公開していません。インストールは[目的別の手順](installation.md#目的から選ぶ)から選んでください。データ一覧だけなら追加依存なし、画像表示も使う場合は`display`を追加します。`display`には画像サンプル表示に必要なDataFrame依存も含み、`show_examples()`のMatplotlib図はライブラリが日本語フォント設定を行います。
 
 ```bash
-python -m pip install -e '.[dataframe,display]'
+python -m pip install -e '.[display]'
 ```
 
 ## 2. 課題とデータを選ぶ

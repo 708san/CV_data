@@ -69,7 +69,7 @@ print(icons.images_dir)
 print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 ```
 
-`datasets.get()`は固定Releaseを取得してZIPを検証し、ローカルに展開します。保存先の変更は`cache_dir`で指定できます。元の公式testは変更せず、DataFrameではtrainから再現可能なvalを作ります。画像表示には `pip install -e '.[display]'` が必要です。LoRA学習そのものやモデル重みの再配布は、このライブラリの対象外です。
+`datasets.get()`は固定Releaseを取得してZIPを検証し、ローカルに展開します。保存先の変更は`cache_dir`で指定できます。元の公式testは変更せず、DataFrameではtrainから再現可能なvalを作ります。画像表示と日本語ラベル表示には `pip install -e '.[display]'` が必要です。このextraにはサンプル一覧に必要なpandasも含みます。LoRA学習そのものやモデル重みの再配布は、このライブラリの対象外です。
 
 検出・OCR・領域分割の結果は`cvlesson.display.show()`で元画像に重ねて表示でき、`cvlesson.display.save()`で保存できます。合成画像はPillow Imageとして返るため、表示以外の処理にも渡せます。
 

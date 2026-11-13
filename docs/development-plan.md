@@ -2,6 +2,21 @@
 
 更新日：2026-11-13
 
+## 今回の作業単位：Notebookのケアレスミス検査とMatplotlib日本語表示
+
+対象仕様：5.1、6、7。分類Notebookのインストール行で閉じ引用符が欠けた不具合をきっかけに、全Notebookの変数・実行順・構文・インストール指定を再点検し、ライブラリ自身が作るMatplotlib図を日本語表示できるようにする。
+
+順序：
+1. 仕様0.13に、Matplotlibの日本語フォント自動設定、機能別依存、Notebook公開前の静的検査要件を記録する。
+2. この計画へ、全Notebook監査、再発防止の自動検査、`display` extraへの`japanize-matplotlib`追加を記録する。
+3. すべての配布Notebookを解析し、JSON/Python構文、未定義名、セル実行順、`%pip install`の引用符と固定参照を確認する。誤りは最小限に修正し、既存Notebookの見出し・記入欄・授業順を保つ。
+4. `DatasetBundle.show_examples()`でMatplotlibを初期化した直後に日本語設定を遅延適用し、依存案内、テスト、導入文書をそろえる。
+5. ネットワーク不要テスト、Notebook全件検査、パッケージメタデータ、差分を確認する。
+
+受け入れ条件：全Notebookのセル構文と静的変数検査が通り、導入セルからimportまでの順序が正しく、pip行の引用符・固定参照に誤りがない。ライブラリのMatplotlib出力は`display` extra導入時に日本語フォントを自動設定し、コアimportやMatplotlibを使わない機能では日本語化依存を読み込まない。Colab実行をしていないものは未検証と記録する。
+
+進捗：全配布Notebookを調べ、分類Notebookの未定義`df`を`frame`へ修正。標準ライブラリだけでNotebook JSON・セル構文・セル間グローバル名・pip引用符・CV_data Git URLの40桁固定参照・install前のimportを確認するテストを追加。`display` extraに`japanize-matplotlib`を追加し、`show_examples()`内で描画時だけ日本語フォント設定を適用。`display`にDataFrame依存も含め、表示導線の追加指定を減らした。Python 3.13で全84テスト成功（16件skip）、Notebook検査3項目成功、`git diff --check`成功。japanize-matplotlibと描画依存はこの環境に入っておらず、実際のフォント描画・Colab実行は未確認。ruff/pyflakesの一時導入はネットワークDNS制限でできなかったため、標準ライブラリ検査で確認。
+
 ## 今回の作業単位：初心者向けの導入・データ・推論体験を改善
 
 対象仕様：1、3、4、5、6、7。ColabでOCR CPUとDETR/SAM T4の実モデル推論を確認済み。初回インストールから入力・結果確認・データ利用までの使いやすさを改善する。

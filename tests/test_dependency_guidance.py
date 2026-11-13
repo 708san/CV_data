@@ -4,11 +4,12 @@ from __future__ import annotations
 import sys
 import re
 import tomllib
+import types
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
-from cvlesson.datasets import DatasetBundle, DatasetError
+from cvlesson.datasets import DatasetBundle, DatasetError, _enable_japanese_matplotlib
 
 
 class PackagingMetadataTests(unittest.TestCase):
@@ -37,7 +38,7 @@ class PackagingMetadataTests(unittest.TestCase):
         expected = {
             "test": {"pandas", "pillow"},
             "dataframe": {"pandas"},
-            "display": {"numpy", "pillow", "matplotlib"},
+            "display": {"numpy", "pillow", "pandas", "matplotlib", "japanize-matplotlib"},
             "torch": {"numpy", "pillow", "torch", "torchvision"},
             "ocr": {"paddleocr", "paddlex", "pillow", "huggingface-hub"},
             "diffusion": {"pillow", "diffusers", "transformers", "huggingface-hub"},
@@ -75,12 +76,24 @@ class OptionalDependencyGuidanceTests(unittest.TestCase):
             with self.assertRaisesRegex(DatasetError, r"cv-data-lesson\[torch\]"):
                 self.bundle.to_torch_dataset()
 
-    def test_display_error_points_to_both_required_extras(self):
+    def test_display_error_points_to_display_extra(self):
         with patch.dict(sys.modules, {"matplotlib": None}):
             with self.assertRaisesRegex(
-                DatasetError, r"cv-data-lesson\[display,dataframe\]"
+                DatasetError, r"cv-data-lesson\[display\]"
             ):
                 self.bundle.show_examples()
+
+    def test_japanese_matplotlib_is_configured_when_display_is_used(self):
+        japanize = types.ModuleType("japanize_matplotlib")
+        japanize.japanize = Mock()
+        with patch.dict(sys.modules, {"japanize_matplotlib": japanize}):
+            _enable_japanese_matplotlib()
+        japanize.japanize.assert_called_once_with()
+
+    def test_missing_japanese_font_dependency_has_install_guidance(self):
+        with patch.dict(sys.modules, {"japanize_matplotlib": None}):
+            with self.assertRaisesRegex(DatasetError, r"cv-data-lesson\[display\]"):
+                _enable_japanese_matplotlib()
 
 
 if __name__ == "__main__":
