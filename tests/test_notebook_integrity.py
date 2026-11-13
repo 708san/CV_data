@@ -119,7 +119,7 @@ class NotebookIntegrityTests(unittest.TestCase):
             with self.subTest(notebook=path.relative_to(ROOT)):
                 self.assertTrue(install_lines, "公開PyPI版のinstall行がありません")
                 self.assertTrue(
-                    any("==0.1.0a6" in line for line in install_lines),
+                    any("==0.1.0a7" in line for line in install_lines),
                     "Colab確認は対象PyPI版を固定してください",
                 )
                 self.assertFalse(
@@ -133,7 +133,7 @@ class NotebookIntegrityTests(unittest.TestCase):
             "".join(cell.get("source", []))
             for cell in notebook["cells"] if cell.get("cell_type") == "code"
         )
-        self.assertIn("cv-data-lesson[ocr]==0.1.0a6", code)
+        self.assertIn("cv-data-lesson[ocr]==0.1.0a7", code)
         self.assertNotIn("pip install paddlepaddle", code)
         self.assertIn("display.show(image, result, show_labels=False)", code)
 
