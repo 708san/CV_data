@@ -8,13 +8,13 @@
 
 ColabでCPU推論を試すときは[日本語OCRのColab Notebook](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/ocr_smoke_test.ipynb)を新しいランタイムで開いてください。PyTorchを使うDETR・SAMのNotebookとは環境を分けます。Colab上での実行結果は未確認です。
 
-PaddlePaddleはCPU/GPUとCUDAの組み合わせにより導入コマンドが異なります。PyTorch系ライブラリとの競合を避けるため、OCR専用の仮想環境を使う方法を勧めます。[インストール手順](installation.md#ocr用の環境)で環境に合うPaddlePaddleを導入してください。
+PaddlePaddleはCPU/GPUとCUDAの組み合わせにより導入コマンドが異なります。PyTorch系ライブラリとの競合を避けるため、OCR専用の仮想環境を使う方法を勧めます。[インストール手順](installation.md#ocr用の環境)で環境に合うPaddlePaddleを導入してください。利用者が`import paddle`を書く必要はありません。`ocr.load()`を呼んだ時にライブラリが必要なモジュールを読み込みます。
 
 ```bash
 python -m pip install -e '.[ocr]'
 ```
 
-これはPaddleOCR APIとHugging Face Hubを導入しますが、PaddlePaddle本体は別に導入します。OCRモデルは合計約22 MBで、次の`load()`時に固定revisionからキャッシュへ取得されます。
+これはPaddleOCR 3.1.0、互換範囲を3.2未満に固定したPaddleX 3.1系、およびHugging Face Hubを導入します。PaddlePaddle本体はCPU/GPU・CUDA環境に合わせて別に導入します。OCRモデルは合計約22 MBで、次の`load()`時に固定revisionからキャッシュへ取得されます。ライブラリはOCRを呼んだ時だけPaddle系モジュールをimportし、実行中にpip installは行いません。
 
 ## 文字を読む
 
@@ -64,5 +64,6 @@ reader = ocr.load(
 - 検出：[`PaddlePaddle/PP-OCRv5_mobile_det`](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_det/tree/0d63e78e2b680928f6b1747d76a08db6e645efb7)
 - 文字認識：[`PaddlePaddle/PP-OCRv5_mobile_rec`](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_rec/tree/682f20538d8c086cb2128e5cfac775e6c4904e85)
 - [PaddleOCR 3.1.0 OCR仕様](https://www.paddleocr.ai/v3.1.0/en/version3.x/pipeline_usage/OCR.html)
+- [PaddleOCR/PaddleX公式バージョン対応表](https://www.paddleocr.ai/main/en/version3.x/paddleocr_and_paddlex.html)
 
 このAPIはネットワーク不要のテストで形式を検査できますが、OCR実モデルのCPU/GPU推論はまだ実環境で確認していません。

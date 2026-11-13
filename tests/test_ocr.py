@@ -92,8 +92,10 @@ class OCRTests(unittest.TestCase):
         self.assertEqual(calls[0]["revision"], ocr._DETECTION_REVISION)
         self.assertEqual(calls[1]["repo_id"], ocr._RECOGNITION_REPO)
         self.assertEqual(calls[1]["revision"], ocr._RECOGNITION_REVISION)
-        self.assertEqual(calls[2]["ocr_version"], "PP-OCRv5")
-        self.assertEqual(calls[2]["lang"], "japan")
+        self.assertEqual(calls[2]["text_detection_model_name"], "PP-OCRv5_mobile_det")
+        self.assertEqual(calls[2]["text_recognition_model_name"], "PP-OCRv5_mobile_rec")
+        self.assertNotIn("lang", calls[2])
+        self.assertNotIn("ocr_version", calls[2])
         self.assertEqual(calls[2]["device"], "cpu")
         self.assertEqual(calls[2]["text_detection_model_dir"], "/cached/model")
 

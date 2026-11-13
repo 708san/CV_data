@@ -67,7 +67,7 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 
 `datasets.get()`は固定Releaseを取得してZIPを検証し、ローカルに展開します。保存先の変更は`cache_dir`で指定できます。元の公式testは変更せず、DataFrameではtrainから再現可能なvalを作ります。画像表示には `pip install -e '.[display]'` が必要です。LoRA学習そのものやモデル重みの再配布は、このライブラリの対象外です。
 
-日本語OCRの推論は、別のOCR用環境にPaddlePaddleを導入してから使います。モデルは明示的な`ocr.load()`時に取得し、CPUを既定にします。GPUを使う場合は利用可否を確認して明示指定します。導入方法と返却形式は[OCRの使い方](docs/ocr.md)をご覧ください。
+日本語OCRは必要なときだけ`ocr` extraと環境に合うPaddlePaddleを導入して使います。`ocr.load()`が必要なモジュールを内部で読み込むため、利用者が`import paddle`を書く必要はありません。モデルは明示的な`ocr.load()`時に取得し、CPUを既定にします。GPUを使う場合は利用可否を確認して明示指定します。導入方法と返却形式は[OCRの使い方](docs/ocr.md)をご覧ください。
 
 物体検出・領域分割は`from cvlesson import vision`から使います。PyTorchを環境に合わせて導入した後、`vision` extraを追加します。固定版のDETR（COCO 80カテゴリ検出）とSAM（枠・点からのマスク生成）を利用できます。機能範囲・容量・限界・実環境の検証状況は[検出と領域分割の使い方](docs/vision.md)を確認してください。
 

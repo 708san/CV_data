@@ -152,16 +152,22 @@ def load(
                 raise FileNotFoundError(f"{label}モデルのディレクトリが見つかりません: {path}")
 
     try:
-        pipeline = PaddleOCR(
-            lang=language,
-            ocr_version="PP-OCRv5",
-            device=device,
-            text_detection_model_dir=str(detection_path),
-            text_recognition_model_dir=str(recognition_path),
-            use_doc_orientation_classify=False,
-            use_doc_unwarping=False,
-            use_textline_orientation=False,
-        )
+        pipeline_args = {
+            "device": device,
+            "text_detection_model_dir": str(detection_path),
+            "text_recognition_model_dir": str(recognition_path),
+            "use_doc_orientation_classify": False,
+            "use_doc_unwarping": False,
+            "use_textline_orientation": False,
+        }
+        if detection_model_dir is None:
+            # Explicit names pair the pinned local model files with PaddleOCR.
+            # PaddleOCR ignores `lang`/`ocr_version` when model paths are set.
+            pipeline_args.update(
+                text_detection_model_name="PP-OCRv5_mobile_det",
+                text_recognition_model_name="PP-OCRv5_mobile_rec",
+            )
+        pipeline = PaddleOCR(**pipeline_args)
     except Exception as exc:
         raise OCRError(f"PaddleOCRを初期化できませんでした。モデル形式と依存関係を確認してください: {exc}") from exc
     return OCR(pipeline, device=device, language=language)

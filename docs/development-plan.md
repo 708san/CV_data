@@ -4,6 +4,23 @@
 
 ## 今回の作業単位：データ・モデルの使用例を非限定表現へ統一
 
+## 今回の作業単位：OCR依存の互換性修正と機能別導入
+
+対象仕様：0.9、4.2、5.1、5.2。Colabで発生した`PaddlePredictorOption`初期化エラーを修正し、OCRの依存はOCR機能を選んだ時だけ導入・importされる形を保つ。
+
+順序：
+1. PaddleOCR 3.1系とPaddleXの公式互換範囲を確認し、仕様書へ依存系列、PaddlePaddleの環境別導入、遅延import、自動pip installをしない方針を記録する。
+2. 開発計画へ、依存pin・PaddleOCR初期化引数・Notebookの導入説明・テストの作業と受け入れ条件を記録する。
+3. `ocr` extraにPaddleX 3.1互換範囲を追加する。PaddlePaddle本体はCPU/GPU・OSに応じて別途導入する仕様を維持する。
+4. OCR既定モデル名を明示し、モデル名/ディレクトリ指定と同時に無視される`lang`・`ocr_version`引数をPaddleOCRへ渡さない。Colab Notebookから利用者向けに不要な`import paddle`を除く。
+5. 日本語の導入案内、互換制約、欠落依存時の案内を整合させ、ネットワーク不要テスト・wheel・Notebook構文を確認する。
+
+受け入れ条件：PaddleOCR 3.1系とPaddleX 3.1系が依存解決で選ばれ、Colabで報告された互換性不一致を避けられる。コアimportとOCR以外の機能はPaddle系を読み込まず、`ocr.load()`が必要な依存だけ遅延importする。利用者が`import paddle`を個別に書かずに使える。CPU/GPU用PaddlePaddleは対応環境に合う導入コマンドを明示し、ライブラリが実行中にpip installしない。
+
+進捗：一次情報を確認。PaddleOCR 3.1.xはPaddleX 3.1系と組み合わせる必要があり、3.2系APIを読み込むと今回の例外が起こる。仕様0.9と本計画を先に更新。`ocr` extraにPaddleX互換範囲を指定し、PaddleOCRへ固定モデル名を渡して`lang`/`ocr_version`の無視警告を除去。OCR Notebookの直接`import paddle`を外し、導入・遅延読み込みの説明を更新。Python 3.11〜3.13で各67テスト成功（各7件skip）、Notebook JSON/コードセル構文、`git diff --check`成功。Colab実環境での再確認は未実施。
+
+## 前回の作業単位：データ・モデルの使用例を非限定表現へ統一
+
 対象仕様：0.8、3.1、4.4、6、7。データとモデルの能力・内容・形式を主に説明し、課題での使用例は候補例として示す。ライセンス条件、データの構成上の制約、モデルの技術的限界は明確に残す。
 
 順序：

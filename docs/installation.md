@@ -19,7 +19,7 @@ PyPI公開前の開発版です。次の依存構成は機能単位で分けて�
 | DataFrame | `dataframe` | pandas | `to_df()`を使うときだけ必要 |
 | 画像表示・監査 | `display` | NumPy、Pillow、Matplotlib | 画像を開いて表示・検査するときに必要 |
 | ResNet分類・回帰 | `torch` | NumPy、Pillow、PyTorch、Torchvision | ResNet重みは初回利用時に別途取得。TorchとTorchvisionは公式の対応組み合わせで導入する |
-| 日本語OCR | `ocr` | PaddleOCR 3.1.0、Hugging Face Hub | PaddlePaddle本体はCPU/GPU環境に合わせ別途導入。OCR専用環境を推奨 |
+| 日本語OCR | `ocr` | PaddleOCR 3.1.0、PaddleX 3.1系、Hugging Face Hub | PaddlePaddle本体はCPU/GPU環境に合わせ別途導入。OCR専用環境を推奨 |
 | 物体検出・領域分割 | `vision` | NumPy、Pillow、Transformers、Hugging Face Hub | PyTorchを先に導入。初回の明示読み込み時にDETR約167 MBまたはSAMの重み約375 MBを取得 |
 | SDXL生成・画像変換 | `diffusion` | Pillow、Diffusers（Torch extraを含む）、Transformers、Hugging Face Hub | 初回利用時に基盤モデルと選択LoRAを取得。数GBの空き容量が必要 |
 
@@ -40,14 +40,14 @@ python -m pip install -e '.[diffusion]'
 
 ### OCR用の環境
 
-OCRはPaddlePaddleを使います。ResNet・SDXLのPyTorchとは別の仮想環境に分けると、深層学習基盤の依存競合を避けやすくなります。まず[PaddlePaddle公式インストール案内](https://www.paddlepaddle.org.cn/install/quick)でOS・Python・CPU/GPU・CUDAに合うPaddlePaddleを導入し、次にこのライブラリの`ocr` extraを入れます。
+OCRを使うときだけ、PaddlePaddleと`ocr` extraを導入します。ResNet・SDXLのPyTorchとは別の仮想環境に分けると、深層学習基盤の依存競合を避けやすくなります。まず[PaddlePaddle公式インストール案内](https://www.paddlepaddle.org.cn/install/quick)でOS・Python・CPU/GPU・CUDAに合うPaddlePaddleを導入し、次にこのライブラリの`ocr` extraを入れます。`ocr` extraはPaddleOCR 3.1系に合うPaddleX 3.1系を選びます。
 
 ```bash
-python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
 python -m pip install -e '.[ocr]'
 ```
 
-上記はCPU環境の例です。GPU環境では公式インストーラーで対応するCUDA版を選び、Colabでも現在のCUDA環境に一致するコマンドを選んでください。`ocr.load()`の既定はCPUです。GPUを使うときは`device="gpu:0"`を指定し、`ocr.available_devices()`で利用可否を先に確認します。
+上記はCPU環境の例です。GPU環境では公式インストーラーで対応するCUDA版を選び、Colabでも現在のCUDA環境に一致するコマンドを選んでください。PaddlePaddle本体は環境ごとにwheelが異なるため、ライブラリが実行中に自動インストールすることはありません。利用者が`import paddle`を書く必要はなく、`ocr.load()`が必要な時にライブラリ内部で読み込みます。`ocr.load()`の既定はCPUです。GPUを使うときは`device="gpu:0"`を指定し、`ocr.available_devices()`で利用可否を先に確認します。
 
 OCRモデルは`ocr.load()`を呼んだ時に、Apache-2.0表示のPP-OCRv5 mobile検出・認識モデルを固定Hugging Face revisionから取得します。2モデルで約22 MBです。モデルカードの条件は各配布元で確認できます：[検出モデル](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_det)、[認識モデル](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_rec)。推論はローカルで実行し、読み取り結果は`text`と行ごとの`confidence`、画像上の四点`polygon`で返します。
 
@@ -85,7 +85,7 @@ print("MPS:", torch.backends.mps.is_available())
 
 ## 現在の制限
 
-- OCR APIと機能別extraは実装済みですが、PaddlePaddleの組み合わせごとの実機インストール、CPU推論、Colab GPU推論は未確認です。動作確認済みとは案内しません。
+- OCR APIと機能別extraは実装済みですが、PaddlePaddle/PaddleOCR/PaddleXの組み合わせごとの実機インストールとCPU推論は未確認です。動作確認済みとは案内しません。
 - 検出・領域分割のAPIと依存extraは実装済みですが、DETR/SAMのモデル実取得、CPU/GPU推論、Colab T4での確認は未実施です。
 - OCRがPaddlePaddleなど別の深層学習基盤を必要とする場合、PyTorch系との同一環境での併用は未確認です。競合しないと確認できるまでは、専用仮想環境へ分ける導入例を優先します。機能を全部入れる`all` extraは設けません。
 - 依存範囲の実環境チェックは開発中です。ResNetの既存CPU動作確認はPyTorch 2.2.2/Torchvision 0.17.2で行ったため、更新した推奨下限（PyTorch 2.6/Torchvision 0.21）での再確認が残っています。
@@ -97,3 +97,4 @@ print("MPS:", torch.backends.mps.is_available())
 - [Diffusersのインストール条件](https://huggingface.co/docs/diffusers/installation)
 - [PaddleOCR 3.1.0の推論インストール](https://www.paddleocr.ai/v3.1.0/en/version3.x/installation.html)
 - [PaddleOCR 3.1.0 OCR推論API](https://www.paddleocr.ai/v3.1.0/en/version3.x/pipeline_usage/OCR.html)
+- [PaddleOCRとPaddleXの対応バージョン](https://www.paddleocr.ai/main/en/version3.x/paddleocr_and_paddlex.html)

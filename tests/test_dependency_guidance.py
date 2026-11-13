@@ -39,12 +39,14 @@ class PackagingMetadataTests(unittest.TestCase):
             "dataframe": {"pandas"},
             "display": {"numpy", "pillow", "matplotlib"},
             "torch": {"numpy", "pillow", "torch", "torchvision"},
-            "ocr": {"paddleocr", "huggingface-hub"},
+            "ocr": {"paddleocr", "paddlex", "huggingface-hub"},
             "diffusion": {"pillow", "diffusers", "transformers", "huggingface-hub"},
         }
         for extra, packages in expected.items():
             with self.subTest(extra=extra):
                 self.assertTrue(packages <= self._requirement_names(extras[extra]))
+        ocr_requirements = extras["ocr"]
+        self.assertTrue(any(req.startswith("paddlex[ocr]>=3.1.0,<3.2.0") for req in ocr_requirements))
 
 
 class OptionalDependencyGuidanceTests(unittest.TestCase):
