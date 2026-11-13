@@ -1,13 +1,12 @@
 # 開発進捗
 
-## 2026-11-14：OCR表示を全文優先に改善（alpha8候補、PyPI未公開）
+## 2026-11-14：OCR全文優先表示を実装・main統合（alpha8公開待ち）
 
-- GitHub Release [v0.1.0a7](https://github.com/708san/CV_data/releases/tag/v0.1.0a7)を公開。Trusted Publishingのbuild・publish両jobが成功し、PyPIのwheel・sdistも確認した。
-- a7のOCR行カード表示について、利用者から長い結果が細切れに見えるとの報告を受けた。OCR全文を主表示し、行ごとの位置・信頼度・切り抜きを折りたたむa8候補へ改善中。
-- OCRの生データとto_dict()は維持。PyPI index上のa7は公開済みだが、Colabでのa7表示再実行は未確認。
-- 公開mainの作業ツリーは変更せず、独立ブランチで仕様・計画・実装・Notebook・テストを更新する。
-
-
+- 長文で文字が細切れに見えるという報告を受け、OCR全文を一つの選択・コピー可能な枠で表示し、OCRの改行を保持するよう改善。
+- 行別の信頼度・画像切り抜きは折りたたみ詳細へ移動。OCRResult、OCRLine、to_dict()の形式は維持し、レシートの段組みや読み順を推測して再構成しない。
+- OCRガイドとColab確認Notebookを更新し、分類・回帰・生成・検出の確認Notebookも0.1.0a8候補に統一。
+- PR [#99](https://github.com/708san/CV_data/pull/99)はCI成功後にmainへ統合済み。GitHub Release/PyPIのa8公開と、公開版を使ったColab実測は未完了。
+- 実行環境のGitHub CLI認証は現在無効。Release作成後、PyPI配布確認とOCR Colab実測を行う。
 
 ## 2026-11-14：Colab実測の利用者報告を反映
 
