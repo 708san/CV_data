@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from cvlesson.generation import ImageGenerator
 
@@ -82,6 +82,51 @@ class GenerationTests(unittest.TestCase):
         with patch("cvlesson.generation._open_rgb_image", return_value="rgb image"):
             with self.assertRaisesRegex(ValueError, "0から1"):
                 generator.generate("変換", image="source.png", strength=1.2)
+
+    def test_invalid_settings_are_rejected_before_pipeline_call(self):
+        invalid_settings = [
+            ({"num_inference_steps": 0}, "num_inference_steps"),
+            ({"num_inference_steps": 2.5}, "num_inference_steps"),
+            ({"num_inference_steps": True}, "num_inference_steps"),
+            ({"guidance_scale": -1}, "guidance_scale"),
+            ({"guidance_scale": float("nan")}, "guidance_scale"),
+            ({"guidance_scale": float("inf")}, "guidance_scale"),
+            ({"guidance_scale": 10**1000}, "guidance_scale"),
+            ({"strength": float("nan")}, "strength"),
+            ({"strength": float("inf")}, "strength"),
+            ({"strength": 10**1000}, "strength"),
+            ({"strength": True}, "strength"),
+            ({"seed": 1.5}, "seed"),
+            ({"seed": True}, "seed"),
+            ({"width": 0}, "width"),
+            ({"width": 513}, "width"),
+            ({"width": 1.5}, "width"),
+            ({"height": -8}, "height"),
+            ({"height": True}, "height"),
+            ({"negative_prompt": 12}, "negative_prompt"),
+            ({"use_trigger": "yes"}, "use_trigger"),
+        ]
+        for settings, message in invalid_settings:
+            with self.subTest(settings=settings):
+                pipeline = Mock()
+                generator = ImageGenerator(pipeline, "text-to-image", "cpu", _FakeTorch)
+                with patch("cvlesson.generation._open_rgb_image") as open_image:
+                    with self.assertRaisesRegex(ValueError, message):
+                        generator.generate("テスト", **settings)
+                pipeline.assert_not_called()
+                open_image.assert_not_called()
+
+    def test_boundary_generation_settings_reach_pipeline(self):
+        pipeline = _FakePipeline()
+        generator = ImageGenerator(pipeline, "image-to-image", "cpu", _FakeTorch)
+        with patch("cvlesson.generation._open_rgb_image", return_value="rgb image"):
+            generator.generate(
+                "test", image="source.png", strength=0, guidance_scale=0,
+                num_inference_steps=1, seed=-1, width=8, height=8,
+            )
+        self.assertEqual(pipeline.kwargs["strength"], 0)
+        self.assertEqual(pipeline.kwargs["width"], 8)
+        self.assertEqual(pipeline.kwargs["height"], 8)
 
 
 if __name__ == "__main__":

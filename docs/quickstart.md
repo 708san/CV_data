@@ -63,15 +63,15 @@ OCR・物体検出・領域分割・画像生成は学習用Estimatorではな�
 
 | 設定 | 効果と調整の目安 |
 |---|---|
-| `num_inference_steps` | 生成を繰り返す回数。増やすと時間がかかり、細部が整うことがあります。 |
-| `guidance_scale` | promptへの追従の強さ。上げすぎると不自然な出力になることがあります。 |
+| `num_inference_steps` | 1以上の整数。生成を繰り返す回数で、増やすと時間がかかります。 |
+| `guidance_scale` | 有限の0以上。promptへの追従の強さで、上げすぎると不自然な出力になることがあります。 |
 | `negative_prompt` | 避けたい要素を指定しますが、完全に除去できる保証はありません。 |
-| `seed` | 数値を固定すると同じ環境で結果を比べやすくなります。未指定は毎回ランダムです。 |
-| `width`・`height` | 出力サイズ。大きいほどVRAMと時間を使います。8の倍数を指定してください。 |
+| `seed` | 整数を固定すると同じ環境で結果を比べやすくなります。未指定は毎回ランダムです。 |
+| `width`・`height` | 8以上の8の倍数。大きいほどVRAMと時間を使います。 |
 | `strength` | Image-to-Image専用。小さいほど元画像を保ち、大きいほど変更が強くなります。 |
 | `use_trigger` | Trueなら登録LoRAのトリガー語をpromptへ自動追加します。 |
 
-Notebookの動作確認は6 stepsの短時間設定でしたが、通常生成には既定の25 stepsを使う例にしています。stepsやサイズを変えて、同じprompt・seedで比較できます。Schedulerなど、表にないDiffusers固有設定は現在の公開APIから変更できません。
+設定値が条件に合わない場合は、モデル実行前に項目名を含むValueErrorを返します。stepsやサイズを変えて、同じprompt・seedで比較できます。Schedulerなど、表にないDiffusers固有設定は現在の公開APIから変更できません。
 
 ```python
 from cvlesson import generation

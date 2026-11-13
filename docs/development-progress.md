@@ -571,3 +571,10 @@
 - 既存テストは日本語Matplotlib設定をmockで確認していたため、CIに独立のPython 3.13 display-smoke jobを追加。testとdisplay extrasを導入して全オフラインテストを実行する。
 - japanize-matplotlibが実際に提供するフォントファイルの存在、FontPropertiesからの参照を確認する統合テストを追加。通常の軽量test jobではoptional dependencyとしてskipする。
 - GitHub Actions run 43418708622でdisplay-smokeの依存導入・全テストが成功。Python 3.11〜3.13のunit jobsとpackage-smokeも成功。
+
+
+## 2026-11-13：画像生成設定を実行前に検査
+
+- generation APIでNaN/inf、boolを整数として渡すケース、誤ったseed・prompt型、0以下や8の倍数でない画像寸法をpipeline呼び出し前に拒否する検証を追加。
+- 値域と型を網羅するネットワーク・モデル不要のテストを追加。極端に大きな数値も分かりやすいValueErrorになるよう確認。
+- [クイックスタート](quickstart.md)と[画像生成ガイド](image-generation.md)に有効な設定範囲を追記。PR #75のPython 3.11〜3.13 unit、display-smoke、package-smokeが成功。

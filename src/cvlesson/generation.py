@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import hashlib
+import math
 from pathlib import Path
 from typing import Any
 
@@ -57,18 +58,22 @@ class ImageGenerator:
         """
         if not isinstance(prompt, str) or not prompt.strip():
             raise ValueError("promptには空でない説明文を指定してください。")
+        _validate_generation_settings(
+            strength=strength,
+            negative_prompt=negative_prompt,
+            num_inference_steps=num_inference_steps,
+            guidance_scale=guidance_scale,
+            seed=seed,
+            width=width,
+            height=height,
+            use_trigger=use_trigger,
+        )
         if self.task == "image-to-image":
             if image is None:
                 raise ValueError("image-to-imageでは変換元のimageが必要です。")
-            if not 0.0 <= strength <= 1.0:
-                raise ValueError("strengthは0から1の間で指定してください。")
             image = _open_rgb_image(image)
         elif image is not None:
             raise ValueError("imageを使う場合はtask='image-to-image'でモデルを読み込んでください。")
-        if not isinstance(num_inference_steps, int) or num_inference_steps < 1:
-            raise ValueError("num_inference_stepsは1以上の整数にしてください。")
-        if guidance_scale < 0:
-            raise ValueError("guidance_scaleは0以上にしてください。")
 
         full_prompt = prompt.strip()
         if use_trigger:
@@ -175,6 +180,60 @@ def load(
         raise GenerationError(f"画像生成モデルを読み込めませんでした: {exc}") from exc
     triggers = adapter.trigger_words if adapter is not None else ()
     return ImageGenerator(pipeline, task, device, torch, triggers)
+
+
+def _is_finite_number(value: int | float) -> bool:
+    try:
+        return math.isfinite(value)
+    except OverflowError:
+        return False
+
+
+def _validate_generation_settings(
+    *,
+    strength: float,
+    negative_prompt: str | None,
+    num_inference_steps: int,
+    guidance_scale: float,
+    seed: int | None,
+    width: int | None,
+    height: int | None,
+    use_trigger: bool,
+) -> None:
+    if (
+        not isinstance(num_inference_steps, int)
+        or isinstance(num_inference_steps, bool)
+        or num_inference_steps < 1
+    ):
+        raise ValueError("num_inference_stepsは1以上の整数にしてください。")
+    if (
+        not isinstance(guidance_scale, (int, float))
+        or isinstance(guidance_scale, bool)
+        or not _is_finite_number(guidance_scale)
+        or guidance_scale < 0
+    ):
+        raise ValueError("guidance_scaleは有限の0以上の数にしてください。")
+    if (
+        not isinstance(strength, (int, float))
+        or isinstance(strength, bool)
+        or not _is_finite_number(strength)
+        or not 0 <= strength <= 1
+    ):
+        raise ValueError("strengthは有限の0から1の数にしてください。")
+    if seed is not None and (not isinstance(seed, int) or isinstance(seed, bool)):
+        raise ValueError("seedは整数またはNoneにしてください。")
+    for name, value in (("width", width), ("height", height)):
+        if value is not None and (
+            not isinstance(value, int)
+            or isinstance(value, bool)
+            or value < 8
+            or value % 8 != 0
+        ):
+            raise ValueError(f"{name}は8以上の8の倍数の整数にしてください。")
+    if negative_prompt is not None and not isinstance(negative_prompt, str):
+        raise ValueError("negative_promptは文字列またはNoneにしてください。")
+    if not isinstance(use_trigger, bool):
+        raise ValueError("use_triggerはTrueまたはFalseにしてください。")
 
 
 def _open_rgb_image(image: Any) -> Any:

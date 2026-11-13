@@ -1,9 +1,9 @@
 # CV教材ライブラリ 仕様書
 
 更新日：2026-11-13
-仕様バージョン：0.15（開発中）
+仕様バージョン：0.16（開発中）
 
-変更記録：2026-11-13、画像生成APIの既定値・明示できる設定・各設定の日本語説明を要件化。Colab確認Notebookの低steps設定を通常例として扱わない方針を追加。
+変更記録：2026-11-13、画像生成APIの既定値・明示できる設定・各設定の日本語説明を要件化。Colab確認Notebookの低steps設定を通常例として扱わない方針を追加。2026-11-13、生成設定の値域と型をpipeline実行前に検査する要件を追加。
 
 この文書をCV教材ライブラリの要件の正本とする。実装・README・Notebook・API説明に相違がある場合は、この仕様書を優先する。実装済みかどうかは[開発計画](development-plan.md)で管理し、この文書だけを根拠に機能を「利用可能」と案内しない。
 
@@ -92,6 +92,7 @@
 - 登録LoRAを選びやすくし、対応する別モデルを明示的に指定できる設計にする。
 - `generate()`の既定値は`num_inference_steps=25`、`guidance_scale=7.0`、`seed=None`、`strength=0.65`、`use_trigger=True`とし、width/height未指定時は基盤パイプラインの既定サイズを使う。
 - 利用者は`num_inference_steps`、`guidance_scale`、`seed`、`width`、`height`、`negative_prompt`、Image-to-Imageの`strength`、`use_trigger`を明示的に変更できる。各値が生成時間、文章への追従、元画像の保持、再現性、構図・VRAM使用量へ与える影響を日本語で説明する。
+- 生成前に主要設定を検査し、不正値をモデルpipelineへ渡す前に日本語の`ValueError`で知らせる。stepsは正の整数、guidance scaleは有限の0以上の数、strengthは有限の0〜1、seedは整数または`None`、negative promptは文字列または`None`、use_triggerは真偽値とする。指定するwidth/heightはそれぞれ8の倍数の正の整数とする。
 - Notebookの通常例は短時間動作確認だけの低steps設定にせず、ライブラリ既定値に沿う品質確認設定を示す。低stepsは短時間の動作確認用途と明記する。
 - Schedulerなど現行APIにないバックエンド固有の設定を利用可能と案内しない。
 - LoRA学習機能は本仕様の対象外。学習済みLoRAの取得・利用・仕様表示を対象とする。
