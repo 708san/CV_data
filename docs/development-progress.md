@@ -10,6 +10,14 @@
 
 # 開発進捗
 
+## 2026-11-13：OCR依存競合を修正し、Colab CPUで実モデル推論を確認
+
+- Colabの導入ログで、PaddleX 3.1.4がLangChain 1.xと非互換な旧APIを参照して`langchain.docstore`で失敗することを確認。OCR extraをLangChain `<1`、Hugging Face Hub `<3`、Requests `<2.33`に制約し、Colab既存依存との競合を抑えました。
+- OCRライブラリ欠落とPaddleOCR内部依存のimport失敗を異なるエラー案内にしました。Notebookと導入文書も更新しました。
+- Colab Python 3.13 CPUで実モデルを読み込み、合成英数字画像から`TOTAL 1280 JPY`を1行として認識。信頼度0.993、四点ポリゴンを含む共通結果を返すことをユーザー環境で確認しました。
+- Python 3.13のネットワーク不要テスト69件成功（7件skip）。日本語実画像の認識品質、GPU、他OSでの動作は未確認です。
+- 詳細：[OCRの使い方](ocr.md)、[インストール](installation.md)、[Colab Notebook](../notebooks/colab/ocr_smoke_test.ipynb)。
+
 ## 2026-11-13：Colab実モデル確認Notebookを準備
 
 - DETR/SAM用GPU Notebookと、日本語OCR用CPU Notebookを別々に作成しました。どちらもテスト画像をNotebook内で合成し、データや個人写真を取得しません。

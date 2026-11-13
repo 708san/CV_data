@@ -15,7 +15,7 @@
 
 受け入れ条件：`langchain.docstore`を含む内部`ModuleNotFoundError`を「paddleocr未導入」と誤表示しない。`ocr` extraの依存指定が互換LangChainとHugging Face Hub 1.xを許容する。Colab利用者が依存の再導入・ランタイム再起動を行う方法が明記される。
 
-進捗：貼付ログから、PaddleOCR 3.1.0がPaddleX 3.1.4経由でLangChain 1.xを導入し、PaddleX内の旧`langchain.docstore`参照で失敗すること、およびHub 0.xへのダウングレード・Requests 2.34への更新がColab既存依存と競合することを確認。`ocr` extraにLangChain `<1`、Hub `<3`、Requests `<2.33`の制約を設定。OCR未導入と内部依存エラーを別の案内にし、OCR導入文書を更新。Python 3.13で全69テスト成功（7件skip）、`git diff --check`成功。Colabでの再確認は未実施。
+進捗：貼付ログから、PaddleOCR 3.1.0がPaddleX 3.1.4経由でLangChain 1.xを導入し、PaddleX内の旧`langchain.docstore`参照で失敗すること、およびHub 0.xへのダウングレード・Requests 2.34への更新がColab既存依存と競合することを確認。`ocr` extraにLangChain `<1`、Hub `<3`、Requests `<2.33`の制約を設定。OCR未導入と内部依存エラーを別の案内にし、OCR導入文書とNotebookを更新。Python 3.13で全69テスト成功（7件skip）、`git diff --check`成功。ユーザーがColab CPUで実行し、`TOTAL 1280 JPY`を1行、信頼度0.993、四点座標付きで返すことを確認。合成した英数字画像でのsmoke test完了。日本語実画像の認識品質、GPU、他OSでの実機確認は未実施。
 
 ## 今回の作業単位：ColabのOCR smoke testで古いcvlessonを検出・更新
 

@@ -87,7 +87,7 @@ print("MPS:", torch.backends.mps.is_available())
 
 ## 現在の制限
 
-- OCR APIと機能別extraは実装済みですが、PaddlePaddle/PaddleOCR/PaddleXの組み合わせごとの実機インストールとCPU推論は未確認です。動作確認済みとは案内しません。
+- OCRはColab Python 3.13のCPUランタイムで、PaddlePaddle 3.2.0・PaddleOCR 3.1.0・PaddleX 3.1.4を導入し、合成した英数字画像の推論と共通戻り値を確認しました。日本語実画像の認識品質、GPU、他OS・他バージョンの組み合わせは未確認です。
 - 検出・領域分割のAPIと依存extraは実装済みですが、DETR/SAMのモデル実取得、CPU/GPU推論、Colab T4での確認は未実施です。
 - OCRがPaddlePaddleなど別の深層学習基盤を必要とする場合、PyTorch系との同一環境での併用は未確認です。競合しないと確認できるまでは、専用仮想環境へ分ける導入例を優先します。機能を全部入れる`all` extraは設けません。
 - 依存範囲の実環境チェックは開発中です。ResNetの既存CPU動作確認はPyTorch 2.2.2/Torchvision 0.17.2で行ったため、更新した推奨下限（PyTorch 2.6/Torchvision 0.21）での再確認が残っています。
