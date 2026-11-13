@@ -17,6 +17,17 @@
 
 PyPI/TestPyPIへのアップロードは未実施。
 
+## 次の確認：LoRA生成設定をColab T4で実測
+
+対象仕様：4.4、5.5、6、7。PR #71で通常設定を25 steps・guidance 7.0・768×768にし、seed・negative prompt・画像変換strengthなどを設定セルから調整できる。CIはAPIへの引数伝達を確認しているが、T4での生成時間・VRAM・見た目は未確認。
+
+順序：
+1. [生成確認Notebook](../notebooks/colab/generation_smoke_test.ipynb)をColab T4で実行し、通常設定のtext-to-imageを1件確認する。
+2. strengthを変更したimage-to-imageを1件確認し、設定値と画像の変化を記録する。
+3. OOMや不自然な出力が出た場合は設定の調整案を分けて記録し、既定値の変更は実測後に行う。
+
+受け入れ条件：固定LoRAを含む生成が完了し、設定・GPU・出力を利用者が確認できる。未実行の環境を検証済みと表記しない。
+
 ## 完了：画像生成extraへLoRA実行依存PEFTを含める
 
 対象仕様：4.4、5.1、5.2、7。`diffusion` extraへ`peft>=0.21.2,<1`を追加し、依存メタデータテストと導入案内を更新。PR #68をmainへマージし、CI成功。ユーザーがColabで修正版Notebookを実行し、torchaoをアンインストールせずにLoRA生成が動作することを確認。
