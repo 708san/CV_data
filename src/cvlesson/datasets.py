@@ -81,6 +81,7 @@ class ReleaseSource:
     classes: tuple[str, ...] = ()
     class_names_ja: tuple[str, ...] = ()
     label_names_ja: dict[str, str] | None = None
+    metadata_columns: dict[str, str] = field(default_factory=dict)
     license_info: dict[str, Any] | None = None
     source_info: dict[str, Any] | None = None
     preview: bool = False
@@ -272,9 +273,10 @@ class DatasetBundle:
             ], columns=["image_path", "caption", "sample_id"])
 
         records = self._classification_records(val_fraction=val_fraction, seed=seed)
+        metadata_columns = tuple(_source(self.id).metadata_columns)
         return pd.DataFrame(records, columns=[
             "image_path", "label", "label_ja", "label_id", "split",
-            "sample_id", "group_id", "source_split",
+            "sample_id", "group_id", "source_split", *metadata_columns,
         ])
 
     def _classification_records(self, *, val_fraction: float = 0.1, seed: int = 42) -> list[dict[str, Any]]:
@@ -282,10 +284,11 @@ class DatasetBundle:
         effective_splits = _effective_splits(rows, val_fraction=val_fraction, seed=seed)
         class_to_id = {label: i for i, label in enumerate(self.classes)}
         ja = dict(zip(self.classes, self.class_names_ja))
+        metadata_columns = _source(self.id).metadata_columns
         records: list[dict[str, Any]] = []
         for row, split in zip(rows, effective_splits):
             image = row["image"]
-            records.append({
+            record: dict[str, Any] = {
                 "image_path": str((self.root / image).resolve()),
                 "label": row["label"],
                 "label_ja": ja.get(row["label"], row["label"]),
@@ -294,7 +297,20 @@ class DatasetBundle:
                 "sample_id": _sample_id(image),
                 "group_id": row.get("group_id") or None,
                 "source_split": row["split"],
-            })
+            }
+            for column, value_type in metadata_columns.items():
+                value = row[column]
+                if value_type == "float":
+                    try:
+                        converted = float(value)
+                    except (TypeError, ValueError) as exc:
+                        raise DatasetError(f"追加メタデータが数値ではありません: {column}") from exc
+                    if not math.isfinite(converted):
+                        raise DatasetError(f"追加メタデータが有限値ではありません: {column}")
+                    record[column] = converted
+                else:
+                    record[column] = value
+            records.append(record)
         return records
 
     def _segmentation_records(self) -> list[dict[str, Any]]:
@@ -589,6 +605,65 @@ _SOURCES: dict[str, ReleaseSource] = {
             "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/lefood-set-v0.1.0/lefood-set-v0.1.0.zip",
         },
         archive_root_name="lefood-set-v0.1.0",
+    ),
+    "sky_weather_next_day": ReleaseSource(
+        id="sky_weather_next_day", case_id="sky_weather_next_day",
+        tag="sky-weather-next-day-v0.1.0",
+        sha256="c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0",
+        archive_size=10_014_277, image_count=1000,
+        kind="classification", name_ja="空画像と翌日の天気",
+        rights_note=(
+            "空画像とOpen-Meteo気象データはCC BY 4.0表示です。出典・ライセンス・変更内容を表示してください。"
+            "Open-Meteo無料APIのサービス利用は非商用条件です。ラベルはERA5再解析値に基づく教材用分類で、"
+            "公式予報ではありません。Colorado州の1地点のデータを日本の地域予報に使わないでください。"
+        ),
+        aliases_ja=("空と翌日の天気", "空画像天気分類", "翌日の降水量"),
+        task="classification", audiences=("student", "teacher"), difficulty="introductory",
+        use_cases_ja=(
+            "空画像と翌日の天候ラベルの関係を調べ、画像分類の結果や誤りを比べる",
+            "屋外活動の準備にどの情報を使うか、データの限界とともに考える",
+        ),
+        input_description_ja="NREL SRRL全天空カメラで撮影された224×224画像。Colorado州Goldenの1地点。",
+        output_description_ja="翌日の昼間の晴れ・曇り・雨ラベル。降水量・雲量・降雪量などの追加列も参照できます。",
+        download_size_mb=10.0,
+        audit_status="all_1000_images_decoded_crc_checked_date_grouped_split_visual_sample_reviewed",
+        audit_report="docs/datasets/sky_weather_next_day.md",
+        classes=("sunny", "cloudy", "rainy"),
+        class_names_ja=("晴れ", "曇り", "雨"),
+        metadata_columns={
+            "captured_utc": "string",
+            "captured_mst": "string",
+            "capture_date_mst": "string",
+            "target_date_mst": "string",
+            "next_day_rain_mm": "float",
+            "next_day_precipitation_mm": "float",
+            "next_day_mean_cloud_cover_pct": "float",
+            "next_day_snowfall_cm": "float",
+            "weather_data_source": "string",
+            "source_image_path": "string",
+        },
+        license_info={
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+            "rights_review": (
+                "NREL SRRL空画像データカードとOpen-Meteoの気象データがCC BY 4.0と表示。"
+                "Open-Meteo無料APIのサービス利用条件は非商用であり、データライセンスと区別して注記。"
+            ),
+        },
+        source_info={
+            "dataset_name": "NREL SRRL Minute-Resolution Sky Imagery Dataset with next-day ERA5 labels",
+            "provider": "Joshua E. Hammond and Brian A. Korgel; Open-Meteo",
+            "url": "https://huggingface.co/datasets/knl2366/NREL_Sky_Imagery",
+            "source_archive_sha256": "c30cf675819fea9b0bad62e0d0c8cb77890b808253e92c604b39d6c97a6f5280",
+            "upstream_revision": "Not recorded in the user-provided archive",
+            "weather_data_url": "https://open-meteo.com/en/docs/historical-weather-api",
+            "release_repository": "https://github.com/708san/CV_data_artifacts",
+            "release_tag": "sky-weather-next-day-v0.1.0",
+        },
+        file_urls={
+            "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/sky-weather-next-day-v0.1.0/sky_weather_next_day-v0.1.0.zip",
+        },
+        max_archive_bytes=20_000_000, max_unpacked_bytes=20_000_000, max_files=1500,
     ),
     "tomato_leaves": ReleaseSource(
         id="tomato_leaves", case_id="tomato-leaves", tag="tomato-v1.2.0",
@@ -1861,6 +1936,8 @@ def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
     if (manifest.get("case_id") != src.case_id or manifest.get("version") != version
             or manifest.get("image_count") != src.image_count):
         raise DatasetError("manifest.jsonの版または画像枚数が固定Releaseの情報と一致しません。")
+    if manifest.get("metadata_columns", {}) != src.metadata_columns:
+        raise DatasetError("manifest.jsonの追加メタデータ列・型がカタログと一致しません。")
     if src.kind == "detection":
         return _validate_detection_case(root, src, manifest)
     with (root / "labels.csv").open(encoding="utf-8-sig", newline="") as stream:
@@ -1892,6 +1969,20 @@ def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
                 raise DatasetError(f"ラベルまたは分割に誤りがあります: {image}")
             if parts[:3] != ("images", split, label):
                 raise DatasetError(f"画像配置とラベルが一致しません: {image}")
+            for column, value_type in src.metadata_columns.items():
+                value = row.get(column)
+                if value_type == "float":
+                    try:
+                        numeric_value = float(value)
+                    except (TypeError, ValueError) as exc:
+                        raise DatasetError(f"追加メタデータが数値ではありません: {column}") from exc
+                    if not math.isfinite(numeric_value):
+                        raise DatasetError(f"追加メタデータが有限値ではありません: {column}")
+                elif value_type == "string":
+                    if not isinstance(value, str) or not value:
+                        raise DatasetError(f"追加メタデータが空です: {column}")
+                else:
+                    raise DatasetError(f"未対応の追加メタデータ型です: {value_type}")
             expected_metadata[image] = {"label": label, "split": split}
         elif src.kind == "ocr":
             try:
