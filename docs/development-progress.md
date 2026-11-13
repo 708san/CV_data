@@ -18,7 +18,7 @@
 - 画像を改変せず、`images/<split>/<class>/`、`labels.csv`、`metadata.jsonl`、manifestへ整形。ZIPは10,014,277 bytes、SHA-256 `c438ca3444bf72773d4a7bb430ed3f20885db8fbb0fd5d3f00ee7727149564e0`。
 - `datasets.to_df()`に型付き追加列を出す実装と、`datasets.info/list_available`で型を表示する実装を追加。日本語データ説明・カタログ・モデル対応表を更新。
 - Colorado州Goldenの1地点・ERA5再解析値で日本の地域予報に使えないこと、固定MST、test側の雨比率が高いことを記載。
-- CV_data_artifacts PR #49をmainへマージ済み。Release assetの再取得でサイズとSHA-256が一致。CV_data PR #64のAPI・説明・一覧変更を、PR #63へ統合する準備中。取得可能件数23件となるコードはPR #63のマージ後に通常ブランチで利用可能。データのColab実取得は未確認。
+- CV_data_artifacts PR #49をmainへマージ済み。Release assetの再取得でサイズとSHA-256が一致。CV_data PR #64のAPI・説明・一覧変更はPR #63のhead branchへマージ済み。取得可能件数23件となる変更はPR #63のmainへのマージ後に通常ブランチで利用可能。データのColab実取得は未確認。
 
 
 ## 2026-11-13：LoRA生成Notebookのモデル情報エラー
