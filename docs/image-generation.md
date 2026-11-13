@@ -49,6 +49,8 @@ SDXLは文章から画像を生成したり、入力画像の雰囲気を変え�
 例では768×768、25 stepsを使います。T4でメモリ不足になったらサイズを512へ下げ、生成時間を短くしたい場合はstepsを下げます。同じpromptとseedを保ち、一度に一つの値だけ変えると違いを比べやすくなります。Schedulerなど現在のAPIにないDiffusers固有設定は指定できません。
 
 ```python
+from cvlesson import generation
+
 creator = generation.load(task="text-to-image", lora="fluent_emoji_3d", device="cuda")
 result = creator.generate(
     "丸みのある3Dの青い自転車アイコン",
