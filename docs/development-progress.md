@@ -10,6 +10,13 @@
 
 # 開発進捗
 
+## 2026-11-13：Colab T4でDETR成功、SAM品質スコア確認を修正
+
+- ユーザーのColab T4でDETRが`kite`を0.706で検出。SAMの重み取得と読込、マスクshape・bool型の検査も通過しました。
+- SAMの品質ヘッド値に対するNotebookの0〜1範囲assertionのみ失敗。仕様0.9.1で値は実IoU・確率ではなく範囲保証のない予測値と明記し、API説明も更新。Notebookは有限値のみ確認するよう修正しました。
+- ネットワーク不要テスト69件成功（7件skip）。0〜1を超えるSAMスコアをAPIがそのまま保持するテスト、Notebook JSON/Python構文を確認しました。
+- **更新NotebookでSAMセルを再実行する確認は未完了**です。現段階ではT4上のDETR実行とSAM部分実行を確認済みとし、全Notebook成功とは扱いません。
+
 ## 2026-11-13：OCR依存競合を修正し、Colab CPUで実モデル推論を確認
 
 - Colabの導入ログで、PaddleX 3.1.4がLangChain 1.xと非互換な旧APIを参照して`langchain.docstore`で失敗することを確認。OCR extraをLangChain `<1`、Hugging Face Hub `<3`、Requests `<2.33`に制約し、Colab既存依存との競合を抑えました。

@@ -28,7 +28,7 @@ class Detection:
 
 @dataclass(frozen=True)
 class Segmentation:
-    """SAMが返す1つの二値マスク。SAM自体は対象名を予測しない。"""
+    """SAMが返す二値マスク。scoreは範囲保証のない予測品質値で、対象名は予測しない。"""
 
     mask: Any  # numpy.ndarray[bool]。型注釈でNumPyをimportしない。
     score: float

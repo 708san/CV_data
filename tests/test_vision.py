@@ -147,7 +147,8 @@ class VisionTests(unittest.TestCase):
                 return SimpleNamespace(item=lambda: 1)
 
             def item(self):
-                return 0.9
+                # SAMの品質ヘッドは0〜1に制限された確率とは限らない。
+                return 1.2
 
         class Numpy:
             bool_ = bool
@@ -162,7 +163,7 @@ class VisionTests(unittest.TestCase):
         with patch("cvlesson.vision._open_image", return_value=SimpleNamespace(size=(20, 20))):
             result = segmenter.predict("ignored.jpg", box=(1, 2, 10, 15))
         self.assertEqual(result.prompt_type, "box")
-        self.assertEqual(result.score, 0.9)
+        self.assertEqual(result.score, 1.2)
         self.assertEqual(result.mask, [[True, True], [True, False]])
 
     def test_prompts_are_validated_before_model_call(self):

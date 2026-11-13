@@ -80,7 +80,7 @@ print(result.mask.shape, result.score)
 result = segmenter.predict("street.jpg", point=(210, 150))
 ```
 
-`result.mask`は元画像と同じ縦横サイズのNumPy真偽値配列です。Trueの画素が対象と推定された範囲です。SAMは対象名を返しません。
+`result.mask`は元画像と同じ縦横サイズのNumPy真偽値配列です。Trueの画素が対象と推定された範囲です。SAMは対象名を返しません。`result.score`はSAMが出すマスク品質の予測値です。実際のIoUや正解確率ではなく、0〜1の範囲も保証されません。マスクの正しさは画像と照らして確かめてください。
 
 別のSAM互換モデルを指定するときも、repository IDと完全な40桁revisionを両方渡してください。指定モデルの利用条件やモデル構造を、このライブラリが自動で審査するものではありません。
 
