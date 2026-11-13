@@ -40,7 +40,7 @@ print(frame.head())
 data.show_examples(6)
 ```
 
-`to_df()`には追加の`dataframe`依存が必要です。画像表示には`display`依存が必要です。データとモデルの接続は[対応表](data-model-compatibility.md)を確認してください。
+基本インストールで`to_df()`と画像サンプル表示が使えます。ResNet分類・回帰、検出・領域分割、画像生成は機能別extraで必要なPython依存を追加します。データとモデルの接続は[対応表](data-model-compatibility.md)を確認してください。
 
 ## 機能を選ぶ目安
 

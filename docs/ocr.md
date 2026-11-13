@@ -20,12 +20,21 @@ python -m pip install --pre 'cv-data-lesson[ocr]'
 
 ## 文字を読む
 
+`image_path`にはOCRを試す画像のパスを入れます。Colabでは次のコードで画像を選びます。ローカルでは`image_path = "./自分の画像.jpg"`のように指定してください。
+
+```python
+from google.colab import files
+
+uploaded = files.upload()
+image_path = next(iter(uploaded))
+```
+
 ```python
 from cvlesson import ocr
 
 print(ocr.available_devices())  # CPUとGPUの利用可否を確認
 reader = ocr.load()             # CPUを使う。初回だけモデルを取得
-result = reader.predict("receipt.jpg")
+result = reader.predict(image_path)
 
 print(result.text)
 for line in result.lines:
@@ -43,7 +52,7 @@ reader = ocr.load(device="gpu:0")
 ```python
 from PIL import Image
 
-with Image.open("receipt.jpg") as opened:
+with Image.open(image_path) as opened:
     image = opened.convert("RGB")
 result = reader.predict(image)
 print(result.text)
@@ -74,16 +83,16 @@ reader = ocr.load(
 
 既定の検出・認識モデルはそれぞれApache-2.0表示で、Hugging Faceの固定revisionを利用します。モデル本体はGitやPyPIに含めません。
 
-OCRの文字位置は`cvlesson.display`で元画像に重ねて表示・保存できます。画像表示用の追加依存が必要です。
+OCRの文字位置は`cvlesson.display`で元画像に重ねて表示・保存できます。画像表示用の基本依存は基本インストールに含まれています。
 
 ```python
 from cvlesson import display, ocr
 
 reader = ocr.load(device="cpu")
-result = reader.predict("receipt.jpg")
+result = reader.predict(image_path)
 print(result.text)
-display.show("receipt.jpg", result)
-display.save("receipt.jpg", "results/receipt_ocr.png", result)
+display.show(image_path, result)
+display.save(image_path, "results/receipt_ocr.png", result)
 ```
 
 - 検出：[`PaddlePaddle/PP-OCRv5_mobile_det`](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_det/tree/0d63e78e2b680928f6b1747d76a08db6e645efb7)

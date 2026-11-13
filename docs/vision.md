@@ -19,7 +19,7 @@ DETRはCOCOにあるカテゴリだけを検出する閉集合モデルです。
 
 Colab T4での動作確認には[DETR・SAMのColab Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/vision_smoke_test.ipynb)を使えます。Python 3.13のT4で合成図形画像を実行し、DETRの検出結果とSAMのマスク・重ね合わせ表示を確認済みです。NotebookにはFruitSeg30のtest画像・正解マスクを使った追加比較も用意しましたが、Colabではまだ実行していません。1画像のIoUは全体の精度評価ではありません。
 
-PyTorch/TorchvisionはOS、Python、CUDAに合う公式コマンドで先に導入してください。その後、Transformers等を追加します。
+通常は`vision` extraがPyTorch・Torchvision・Transformers等をまとめて導入します。GPU向けのPyTorch wheelを自分で選ぶ場合は、[PyTorch公式インストーラー](https://pytorch.org/get-started/locally/)のコマンドを先に実行してからextraを導入します。
 
 ```bash
 python -m pip install --pre 'cv-data-lesson[vision]'
@@ -35,11 +35,20 @@ print(vision.available_devices())
 
 ## 物体を検出する
 
+`image_path`には使う画像ファイルのパスを入れます。Colabへ自分の画像をアップロードする例は[高校生向け使い方ガイド](student-guide.md#自分の画像を準備する)にもあります。
+
+```python
+from google.colab import files
+
+uploaded = files.upload()
+image_path = next(iter(uploaded))
+```
+
 ```python
 from cvlesson import vision
 
 detector = vision.load_detector()  # CPU。初回は固定版モデル約167 MBを取得
-results = detector.predict("street.jpg", threshold=0.6)
+results = detector.predict(image_path, threshold=0.6)  # image_pathは使用する画像ファイルのパス
 
 for item in results:
     print(item.label, item.score, item.box)
@@ -50,7 +59,7 @@ for item in results:
 ```python
 from PIL import Image
 
-with Image.open("street.jpg") as opened:
+with Image.open(image_path) as opened:
     image = opened.convert("RGB")
 results = detector.predict(image)
 ```
@@ -78,14 +87,14 @@ detector = vision.load_detector(
 segmenter = vision.load_segmenter()  # CPU。初回は固定版の重み約375 MBを取得
 
 # 枠：(左, 上, 右, 下)。座標は元画像上のピクセル
-result = segmenter.predict("street.jpg", box=(80, 40, 360, 300))
+result = segmenter.predict(image_path, box=(80, 40, 360, 300))
 print(result.mask.shape, result.score)
 ```
 
 点を指定する場合は次のようにします。
 
 ```python
-result = segmenter.predict("street.jpg", point=(210, 150))
+result = segmenter.predict(image_path, point=(210, 150))
 ```
 
 `result.mask`は元画像と同じ縦横サイズのNumPy真偽値配列です。Trueの画素が対象と推定された範囲です。SAMは対象名を返しません。`result.score`はSAMが出すマスク品質の予測値です。実際のIoUや正解確率ではなく、0〜1の範囲も保証されません。マスクの正しさは画像と照らして確かめてください。
@@ -97,7 +106,6 @@ result = segmenter.predict("street.jpg", point=(210, 150))
 ```python
 from cvlesson import display, vision
 
-image_path = "street.jpg"
 detector = vision.load_detector(device="cpu")
 detections = detector.predict(image_path)
 result_image = display.show(image_path, detections)
@@ -111,7 +119,7 @@ mask_result = segmenter.predict(image_path, point=(240, 180))
 display.show(image_path, mask_result)
 ```
 
-画像へのマスク重ね合わせ表示は基本インストールに含まれています。未導入の場合は`python -m pip install --pre cv-data-lesson`を実行してください。
+画像へのマスク重ね合わせ表示は基本インストールに含まれています。
 
 別のSAM互換モデルを指定するときも、repository IDと完全な40桁revisionを両方渡してください。指定モデルの利用条件やモデル構造を、このライブラリが自動で審査するものではありません。
 
@@ -121,8 +129,8 @@ display.show(image_path, mask_result)
 detector = vision.load_detector()
 segmenter = vision.load_segmenter()
 
-detections = detector.predict("street.jpg", threshold=0.7)
-objects = segmenter.segment_detections("street.jpg", detections)
+detections = detector.predict(image_path, threshold=0.7)
+objects = segmenter.segment_detections(image_path, detections)
 
 for item in objects:
     print("DETRのカテゴリ:", item.detection.label)

@@ -4,6 +4,16 @@
 
 SDXLは文章から画像を生成したり、入力画像の雰囲気を変えたりできます。ポスターの挿絵、アイコン、ゲーム素材、写真のスタイル変換などは使用例です。目的に合わせて題材を選べます。完成画像内の日本語は誤りやすいため、文字は別のアプリで載せてください。生成画像は事実や安全性の証拠にはなりません。
 
+## インストール
+
+画像生成に必要なDiffusers・PyTorch・PEFTなどは、`diffusion` extraからまとめて入ります。別に`pip install torch`を重ねる必要はありません。
+
+```bash
+python -m pip install --pre --upgrade 'cv-data-lesson[diffusion]'
+```
+
+Colabにも通常PyTorchが入っています。独自のCUDA版を選びたい場合だけ、PyTorch公式手順を先に実行してください。モデル本体とLoRA重みはこのinstallでは入りません。`generation.load()`を呼ぶときに取得します。詳細は[インストール案内](installation.md)を参照してください。
+
 ## 登録済みLoRA
 
 | ID | モデルの特徴 | 配布元ライセンス表示 | 固定取得先 | 使用例と注意 |
@@ -69,6 +79,15 @@ result = creator.generate(
 
 SDXLのImage-to-Image機能を使い、入力写真と説明文から画像を作り直します。[Diffusersの画像変換API](https://huggingface.co/docs/diffusers/using-diffusers/img2img)では入力画像・prompt・strengthを使います。`strength`は0〜1の範囲で指定し、小さい値は入力の構図を残しやすく、大きい値は変更を強めます。
 
+Colabでは次のセルで元画像を選びます。ローカルでは`image_path`に実際の画像ファイルのパスを指定してください。
+
+```python
+from google.colab import files
+
+uploaded = files.upload()
+image_path = next(iter(uploaded))
+```
+
 ```python
 from cvlesson import generation
 
@@ -76,7 +95,7 @@ print(generation.available_devices())
 editor = generation.load(task="image-to-image", lora="watercolor_sdxl", device="cuda")
 result = editor.generate(
     "地域の公園をきれいにする活動を表す、丸みのある明るい絵文字風イラスト",
-    image="park.jpg",
+    image=image_path,
     strength=0.55,
     seed=42,
 )
@@ -94,4 +113,4 @@ result.save("park_icon.png")
 
 ## Colabで動作を試す
 
-[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。固定commitのライブラリを使い、登録済み4件を順に試します。Image-to-Imageでは合成画像または利用者が明示アップロードした画像を使えます。初回はSDXL本体と4つの重みを取得するため数GBの空き容量が必要です。4件すべて成功すると最後に成功メッセージが出ます。
+[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。PyPI `0.1.0a5`を使い、登録済み4件を順に試します。Image-to-Imageでは合成画像または利用者が明示アップロードした画像を使えます。初回はSDXL本体と4つの重みを取得するため数GBの空き容量が必要です。4件すべて成功すると最後に成功メッセージが出ます。

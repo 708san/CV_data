@@ -22,26 +22,34 @@ ImageNetの[公式アクセス条件](https://www.image-net.org/download.php)は
 ## 対応API
 
 ```python
-from cvlesson import models
+from cvlesson import datasets, models
+
+data = datasets.get("tomato_leaves")
+frame = data.to_df()
+train = frame[frame["split"] == "train"]
+test = frame[frame["split"] == "test"]
 
 print(models.available_devices())
 model = models.ResNetClassifier(epochs=3, device="cpu")
-model.fit(image_paths, labels)
-predictions = model.predict(image_paths)
-accuracy = model.score(image_paths, labels)
-probability_estimates = model.predict_proba(image_paths)  # 分類だけで利用可能
+model.fit(train["image_path"], train["label"])
+predictions = model.predict(test["image_path"])
+accuracy = model.score(test["image_path"], test["label"])
+probability_estimates = model.predict_proba(test["image_path"])  # 分類だけで利用可能
 ```
 
 `predict_proba()`は形状`(画像数, クラス数)`のNumPy配列を返します。各行が画像1枚、列は`model.classes_`の順です。値はモデルの確率目安で、`argmax`が`predict()`のラベルになります。
 
-分類は`ResNetClassifier`、数値予測は`ResNetRegressor`を使います。回帰では単画像と画像ペアを受け取れます。必要な依存は`pip install --pre cv-data-lesson[torch]`です。初回利用には重み取得のためネットワーク接続が必要です。
+分類は`ResNetClassifier`、数値予測は`ResNetRegressor`を使います。回帰では単画像と画像ペアを受け取れます。必要なPyTorch/Torchvisionは`python -m pip install --pre --upgrade 'cv-data-lesson[torch]'`でまとめて入ります。Colabにも通常PyTorchが含まれます。初回利用には重み取得のためネットワーク接続が必要です。独自のCUDA版を選びたい場合は[PyTorch公式インストーラー](https://pytorch.org/get-started/locally/)を先に使ってください。
 
 学習・予測の`X`には画像パス列またはPillow Image列を指定できます。回帰のペアでは各画像をパスまたはPillow Imageにできます。DataFrameの`image_path`列も利用できます。
 
 ```python
+from google.colab import files
 from PIL import Image
 
-with Image.open("my_image.jpg") as opened:
+uploaded = files.upload()
+image_path = next(iter(uploaded))
+with Image.open(image_path) as opened:
     image = opened.convert("RGB")
 prediction = model.predict(image)
 print(prediction)

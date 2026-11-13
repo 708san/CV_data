@@ -26,12 +26,14 @@ python -m pip install --pre cv-data-lesson
 | 使いたい機能 | インストール・準備 | 実行時に取得するもの |
 |---|---|---|
 | データ一覧・説明・取得、表・画像例 | 基本インストール | `datasets.get()`を呼んだデータの固定Release ZIP |
-| ResNet分類・回帰 | GPU/OSに合うPyTorchとTorchvisionを公式手順で導入後、`python -m pip install --pre 'cv-data-lesson[torch]'` | ResNetの重み |
+| ResNet分類・回帰 | `python -m pip install --pre 'cv-data-lesson[torch]'` | PyTorch依存とResNetの重み |
 | 日本語OCR | 対応するPaddlePaddleを導入後、`python -m pip install --pre 'cv-data-lesson[ocr]'` | OCRモデル（`ocr.load()`時） |
-| 検出・領域分割 | PyTorchとTorchvisionを公式手順で導入後、`python -m pip install --pre 'cv-data-lesson[vision]'` | DETRまたはSAMのモデル（load時） |
-| SDXL画像生成・画像変換 | 対応するPyTorchを導入後、`python -m pip install --pre 'cv-data-lesson[diffusion]'` | SDXLと指定LoRA（load時、数GB） |
+| 検出・領域分割 | `python -m pip install --pre 'cv-data-lesson[vision]'` | PyTorch依存とDETRまたはSAMのモデル（load時） |
+| SDXL画像生成・画像変換 | `python -m pip install --pre 'cv-data-lesson[diffusion]'` | PyTorchを含むPython依存、SDXLと指定LoRA（load時、数GB） |
 
-PyTorchのCPU/CUDA版はOS・CUDA・Pythonで異なります。[PyTorch公式インストーラー](https://pytorch.org/get-started/locally/)で環境に合うPyTorch/Torchvisionを選んでください。`vision` extraはPyTorch本体を含みません。GPUを自動選択することはありません。各機能の`available_devices()`で確認してから`device`を指定します。
+通常のCPU環境では、`torch`・`vision`・`diffusion`のextraが必要なPyTorch/Torchvisionを一緒に導入します。Colabにも通常はPyTorchが入っています。既存の環境でextraを追加する際、pipが依存の版を変更することがあります。Colabでは新しいランタイムを使い、インストール後に再起動を求められた場合は再起動してください。
+
+独自のCUDA版を選ぶ場合だけ、[PyTorch公式インストーラー](https://pytorch.org/get-started/locally/)でOS・Python・CUDAに合うPyTorch/Torchvisionを先に入れ、その後で機能extraを追加します。extraが必要な版条件を満たす既存環境は再利用されます。GPUは自動選択しません。各機能の`available_devices()`で確認してから`device`を指定します。
 
 ## 日本語OCR
 
@@ -50,3 +52,5 @@ Colab・ローカルでPaddleOCRとPyTorch系を同じ環境に入れる場合�
 ## 動作確認の範囲
 
 インストールできることと、全モデル・全OSで推論が検証済みであることは別です。Colabで実行した機能と実データの範囲は[開発状況](development-progress.md)と各機能ページに記載します。GPUや大容量モデルが必要な機能は、利用可能なGPUと空き容量を先に確認してください。
+
+全機能のColab確認に使うNotebook、ランタイム、実行順、記録方法は[Colab実機確認ガイド](colab-verification.md)をご覧ください。

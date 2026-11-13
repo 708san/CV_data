@@ -102,6 +102,31 @@ class NotebookIntegrityTests(unittest.TestCase):
                             f"cvlesson importより前にpip installがありません（cell {cell_number}）",
                         )
 
+    def test_public_colab_smoke_notebooks_install_the_same_pypi_release(self):
+        paths = [
+            ROOT / "notebooks/cv/classification_v1.ipynb",
+            *sorted((ROOT / "notebooks/colab").glob("*.ipynb")),
+        ]
+        self.assertTrue(paths)
+        for path in paths:
+            notebook = json.loads(path.read_text(encoding="utf-8"))
+            install_lines = [
+                line.strip()
+                for cell in notebook["cells"] if cell.get("cell_type") == "code"
+                for line in _source_lines(cell)
+                if line.strip().startswith("%pip install") and "cv-data-lesson" in line
+            ]
+            with self.subTest(notebook=path.relative_to(ROOT)):
+                self.assertTrue(install_lines, "公開PyPI版のinstall行がありません")
+                self.assertTrue(
+                    any("==0.1.0a5" in line for line in install_lines),
+                    "Colab確認は対象PyPI版を固定してください",
+                )
+                self.assertFalse(
+                    any("CV_data.git@" in line for line in install_lines),
+                    "実際の配布wheelではなくGit checkoutをinstallしています",
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

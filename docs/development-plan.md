@@ -1,3 +1,36 @@
+# 現行作業：導入・文書の不一致を解消し、公開版の全機能Colab確認を行う
+
+更新日：2026-11-13。基準版：PyPI `0.1.0a4` / GitHub `main` `9f1c8142d3688ed5d817a8a9835735657f0ddefb`。
+
+対象仕様：0.20、5.1、6、7。利用者からの「PyPIとGitHubの表記差」「画像生成時のTorch導入」「実使用の問題点を列挙・改善」「使用ガイド」「全機能のColab実機確認」に対応する。既存の未コミット変更は別checkoutに残し、この作業ブランチでは触れない。
+
+監査で確認した問題点（詳細：[ユーザビリティ監査](usability-review-2026-11-13.md)）：
+- PyPIの表示はリリース時点で固定され、GitHub `main`は更新されるため、内容が時間とともにずれる。`cv-data-lesson`（配布名）、`cvlesson`（import名）、`CV教材ライブラリ`（表示名）の対応も初回利用で目に入りにくい。
+- 基本installにはpandas・Pillow・表示依存が含まれているのに、`student-guide.md`は`to_df()`や画像表示にextrasが要ると案内し、データ別ページも旧extraコマンドを残している。
+- `diffusion` extraは`diffusers[torch]`によりTorchを依存に含むが、インストール表は先にTorchを手動導入するよう読み取れる。
+- `vision` extraはTorch/Torchvisionを含まないため、モデル利用者が別途導入する必要がある。機能別extraの意味が統一されていない。
+- Colab smoke NotebookはPyPIのalpha4ではなく、異なるGit commitをインストールする。実際に配布されているwheelを確認したことにならず、OCR NotebookにはCV_dataを2回installするセルもある。
+- 主要機能のColab Notebookは分かれているが、どれを何順で実行し、何を成功と記録するかの一枚の確認表がない。すべてを一ランタイムに入れると、OCRとPyTorch系の依存競合・SDXLの大容量取得に直面する。
+- `street.jpg`など例中のプレースホルダー画像は、そのまま実行するとファイル未存在エラーになる。生徒向けガイドにアップロードまたはサンプル取得の前準備を明示する。
+
+計画と順序：
+1. 仕様0.20と本計画へ上の問題・受け入れ条件を先に記録する。
+2. `vision` extraにTorch/Torchvisionを含め、通常は各機能のextra一回でPython依存が揃うようにする。`diffusion`は既にTorchを自動導入することを明記し、Colab・CUDAを自分で選ぶ場合の先行手順だけを例外として説明する。PaddlePaddleはOS/CUDAごとのwheelのため別導入を維持する。
+3. 使い方ガイド・インストール表・データ別コード例・PyPI READMEの主文を同一導入方針に揃え、PyPI README内の詳細リンクをリリース版に紐づける。配布名/import名/日本語表示名を同じ場所で説明する。
+4. 全Colab NotebookのinstallをPyPIの公開alpha版に統一し、Git checkoutではなくPyPIから配布されたartifactをテストする。OCRの重複install行を一つにする。
+5. Colabの機能別実機検証一覧を追加する。データ取得と画像表示、分類、回帰、OCR、DETR、SAM、SDXL text-to-image/image-to-image、4 LoRAを対象とする。OCR CPU環境とPyTorch/T4環境は分ける。巨大モデル・データのローカル取得はしない。
+6. `pyproject.toml`を次版alphaへ上げ、依存metadata・全offline tests・Notebook静的検査・wheel/sdistとCIを確認する。PRを作り、CI成功後にmerge/releaseする（公開権限は利用者の既存明示許可を適用）。
+7. 公開PyPI版でColab Notebookを実行し、環境、GPU、パッケージ版、モデル取得、結果、エラーを記録する。Colabランタイムにこちらから直接接続できない場合、Notebookと手順を完了した状態で利用者の実行ログを受け取り、実測記録を更新する。
+
+受け入れ条件：
+- `python -m pip install --pre cv-data-lesson`後にデータ一覧・DataFrame・日本語画像例の表示まで追加extraなしでできる。
+- `torch`、`vision`、`diffusion`は機能extraから依存を入れられる。GPU別PyTorchを公式選択する場合、およびPaddlePaddleは必要な理由を案内する。実行時にpip installはしない。
+- PyPIの説明は配布名・import名・版・インストール・機能概要がGitHub側の案内と一致する。リリース時点のスナップショットとmainの更新差を誤認させない。
+- 全Colab smoke Notebookが公開PyPI版をinstallし、実行順、ランタイム、データ/モデル量、出力確認が分かる。
+- Colab実機で成功した機能だけを検証済みと記録し、GPU機能は実測したGPU名を残す。
+
+進捗：監査を実施し、仕様0.20と本計画を先行更新。`vision` extraへTorch/Torchvisionを追加し、PEFT最低版を0.21.3へ更新。基本利用と機能別導入の不一致、画像パスの未定義例、ColabのGit commit直installとOCR二重installを修正。PyPI版固定の5機能NotebookとColab確認表を用意。Python 3.11/3.13で各92テスト成功（この作業環境では軽量optional依存が未導入のため18件skip）、Notebook JSON/Python構文・固定PyPI版検査、Markdownローカルリンク・コード例、`git diff --check`成功。PR #83のPython 3.11/3.12/3.13 unit、display-smoke、package-smokeは全て成功。PR merge、alpha5公開、公開PyPI packageのColab実行は未完了。
+
 ## 今回の作業単位：公開後の利用者向け文書を再構成し、PyPI alphaを更新
 
 対象仕様：1、2、4、5、6、7。現行`main`の`0.1.0a1`はPyPIへ公開済みだが、READMEに「未公開」と開発用editable installの説明が残っている。機能説明・モデルの入出力と限界・生徒がAIへ変更を依頼する仕様も散らばっている。最新実装とColabで実際に確認した範囲を照合し、利用者用の入口を作り直す。公開済み版を差し替えず`0.1.0a2`を作成してPyPI更新する。
