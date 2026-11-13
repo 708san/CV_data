@@ -67,6 +67,9 @@ def render_ocr_report(image: Any, result: Any, *, crop_padding: int = 8) -> str:
         ".cvlesson-ocr h3{margin:.2em 0 .7em}",
         ".cvlesson-ocr ol{padding-left:2.2em}",
         ".cvlesson-ocr li{padding:.55em .7em;margin:.4em 0;border:1px solid #dadce0;border-radius:8px}",
+        ".cvlesson-ocr .full-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65;margin:0;padding:1em;background:#f8f7f2;border:1px solid #e5e1d5;border-radius:8px;font-family:ui-monospace,monospace}",
+        ".cvlesson-ocr .line-details{margin-top:1em;border-top:1px solid #dadce0;padding-top:.6em}",
+        ".cvlesson-ocr .line-details>summary{cursor:pointer;color:#1769aa;font-weight:600}",
         ".cvlesson-ocr .text{font-size:1.05em;overflow-wrap:anywhere}",
         ".cvlesson-ocr .confidence{color:#5f6368;font-size:.9em;margin-left:.5em}",
         ".cvlesson-ocr details{margin-top:.35em}",
@@ -103,11 +106,19 @@ def render_ocr_report(image: Any, result: Any, *, crop_padding: int = 8) -> str:
             f'<span class="confidence">{confidence_text}</span>'
             f"{image_detail}</li>"
         )
-    if rows:
-        content = "<ol>" + "".join(rows) + "</ol>"
+    recognized_text = str(getattr(result, "text", "\n".join(
+        str(getattr(line, "text", "")) for line in lines
+    )))
+    if recognized_text:
+        content = f'<pre class="full-text">{escape(recognized_text)}</pre>'
     else:
         content = '<p class="empty">文字を検出できませんでした。</p>'
-    title = "OCRの読み取り結果"
+    if rows:
+        content += (
+            f'<details class="line-details"><summary>行ごとの詳細（{len(rows)}行）</summary>'
+            + "<ol>" + "".join(rows) + "</ol></details>"
+        )
+    title = "読み取った全文"
     return (
         "<section class=\"cvlesson-ocr\">"
         + "".join(styles)
