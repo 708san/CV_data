@@ -15,7 +15,7 @@
 
 受け入れ条件：`vision` extraがHub 1.xを不必要に下げず、固定revisionのモデルを明示読込するColab T4確認Notebookが更新される。モデル実取得とGPU推論はColab結果を得た範囲だけを検証済みとする。
 
-進捗：Colab Notebookを点検し、`vision` extraのHub `<1`がColabのTransformersと競合し得ることを特定。Hub `<3`へ変更し、依存メタデータテストと利用案内を更新。Python 3.13で全69テスト成功（7件skip）、Notebook JSONと`git diff --check`も成功。Notebookの固定commit更新はこれから。Colab T4でのDETR/SAM実機テストは未実施。
+進捗：Colab Notebookを点検し、`vision` extraのHub `<1`がColabのTransformersと競合し得ることを特定。Hub `<3`へ変更し、依存メタデータテストと利用案内を更新。Python 3.13で全69テスト成功（7件skip）、Notebook JSON・Pythonセル構文・`git diff --check`も成功。Notebookを固定commit `6af0bfbe2cd1b5e75cd59d407135a0f9c4355008`に更新。Colab T4でのDETR/SAM実機テストは未実施。
 
 ## 今回の作業単位：OCR extraのColab依存競合と誤案内を修正
 
