@@ -1,7 +1,7 @@
 # データとモデルの対応表
 
 更新日：2026-11-13  
-対象：生徒向けデータカタログ22件。データ本体は取得せず、カタログ・変換処理・モデルAPIの実装を照合。
+対象：生徒向けデータカタログ23件。データ本体は取得せず、カタログ・変換処理・モデルAPIの実装を照合。
 
 この文書は、登録済みデータを取得したあと何ができるかを示します。カタログ登録は、すべての基盤モデルとの互換性や、注釈を使った学習・評価を意味しません。ライセンス、出典、固定版、注意事項は`datasets.info(dataset_id)`と各データ説明を確認してください。
 
@@ -26,15 +26,15 @@ print(frame.head())
 
 `get()`はデータ全体を取得してキャッシュします。`to_df()`はデータ本体ではなく、画像・ラベル・注釈ファイルへのパスとメタデータを表にします。各タスクの元splitを保ちます。分類で元データにvalidationがない場合だけ、trainからseed固定でvalidationを作ります。取得量、権利条件、キャッシュの確認には`datasets.info()`、`datasets.cache_info()`を使ってください。
 
-### 公開準備中：空画像と翌日の天気
+### 空画像と翌日の天気
 
-`sky_weather_next_day`は、1,000枚の全天空画像を晴れ・曇り・雨に分類し、撮影時刻・翌日の降水量・雲量なども`to_df()`から参照できる形式で整備しました。`metadata_columns`は列名と型の辞書として`datasets.info()` / `datasets.list_available()`にも表示します。現在は固定Release assetの公開待ちで、一覧・`get()`からは利用できません。1地点のERA5再解析値であり、地域天気予報の評価には使えません。詳しくは[データ説明](datasets/sky_weather_next_day.md)を確認してください。
+`sky_weather_next_day`は、1,000枚の全天空画像を晴れ・曇り・雨に分類し、撮影時刻・翌日の降水量・雲量なども`to_df()`から参照できる形式で整備しました。`metadata_columns`は列名と型の辞書として`datasets.info()` / `datasets.list_available()`にも表示します。固定Release assetから取得でき、分類ラベルと追加メタデータは`to_df()`で確認できます。1地点のERA5再解析値であり、地域天気予報の評価には使えません。詳しくは[データ説明](datasets/sky_weather_next_day.md)を確認してください。
 
 ## 登録データ一覧
 
 | タスク / 件数 | ID | `kind` | `to_df()`の主な内容 | 現行のモデル接続 |
 |---|---|---|---|---|
-| 分類 8件 | `tomato_leaves`、`orange_fruit`、`fresh_rotten_fruits`、`indoor_plant_varieties`、`trashnet`、`energy_meter_digits`、`fire_recognition_image`、`agrifreshnet` | `classification` | `image_path`, `label`, `label_ja`, `label_id`, `split`, `sample_id` ほか | ResNet分類の学習・予測に接続可能 |
+| 分類 9件 | `tomato_leaves`、`orange_fruit`、`fresh_rotten_fruits`、`indoor_plant_varieties`、`trashnet`、`energy_meter_digits`、`fire_recognition_image`、`agrifreshnet`、`sky_weather_next_day` | `classification` | `image_path`, `label`, `label_ja`, `label_id`, `split`, `sample_id` ほか | ResNet分類の学習・予測に接続可能 |
 | 回帰 1件 | `lefood_set` | `regression` | 食前・食後の`image_before_path` / `image_after_path`、重量値、残食率、`split` | 画像ペアを入力するResNet回帰に接続可能 |
 | 物体検出 8件 | `rdd2020_japan`、`bangladeshi_ewaste_image`、`geoset_ennea`、`fabricspotdefect`、`indoor_waste_image`、`wastesegcluster`、`click_trash`、`obstacles_assistance` | `detection` | `image_path`, `label_file`, `boxes`, `split`, `sample_id` | 画像をDETRへ渡してCOCOカテゴリを推論可能。教師注釈を使う学習・評価APIはない |
 | 領域分割 3件 | `road_traversing_knowledge`、`fruitseg30`、`brazil_road_potholes` | `segmentation` | `image_path`, `mask_path`, `label`, `label_id`, `split`, `sample_id` | 画像をSAMへ渡し、別途指定した点・枠からマスクを推論可能。教師マスクを使う学習・評価APIはない |
