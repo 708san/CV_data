@@ -18,7 +18,7 @@
 | 2 | [回帰Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/resnet_regression_smoke_test.ipynb) | T4 GPU推奨 | `lefood_set`の取得、画像ペアのResNetRegressor、validation/test評価 | 利用者確認済み（正しく動作との報告） |
 | 3 | [日本語OCR Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/ocr_smoke_test.ipynb) | 新しいCPUランタイム | `ocr` extraによるPaddlePaddle CPU版とOCR依存の導入、OCRモデル取得、文字・信頼度・座標の戻り値、レシート画像推論 | OCR推論・戻り値は利用者確認済み（`TOTAL 1280 JPY`、confidence 0.993）。表示修正後の再実行は未確認 |
 | 4 | [検出・領域分割Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/vision_smoke_test.ipynb) | T4 GPU | DETR検出、SAMマスク、画像重ね合わせ、FruitSeg30のテスト画像で比較、Chromeでポップアップ画像アップロード | 利用者確認済み。DETR/SAM動作、マスク画像の単一表示、Chromeアップロードを確認 |
-| 5 | [SDXL・LoRA Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb) | T4 GPU | PyPI install、text-to-image、image-to-image、選択したLoRA1件の読み込み・生成・保存 | LoRAを使った生成は利用者確認済み。LoRA ID・生成モード・GPUは未報告。Image-to-Imageは未確認 |
+| 5 | [SDXL・LoRA Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb) | T4 GPU | PyPI install、text-to-image、image-to-image、選択したLoRA1件の読み込み・生成・保存 | LoRA生成とImage-to-Imageは利用者確認済み。LoRA ID・GPU等は未報告 |
 
 Colabの実際のGPU名、Python、`cv-data-lesson`の版を記録してください。T4以外で成功した場合も結果を残せますが、「T4実測」とは分けます。失敗した場合は、最後に成功したセル、エラー全文、ランタイム、GPU、`cv-data-lesson`と主要依存の版を控えます。
 
@@ -35,8 +35,8 @@ Colabの実際のGPU名、Python、`cv-data-lesson`の版を記録してくだ�
 | 回帰 | 確認済み。正しく動作との報告 |
 | OCR推論・戻り値 | 確認済み。`TOTAL 1280 JPY`、1行、confidence 0.993。display名衝突修正後の画像表示は未確認 |
 | DETR・SAM | 確認済み。SAMマスク表示は1枚、Chromeのポップアップアップロードも確認 |
-| LoRA生成 | Colabで動作確認済みとの報告。モデルID・text/image-to-imageの別は未報告 |
-| Image-to-Image | 未確認 |
+| LoRA生成 / Image-to-Image | 利用者がColabで両方の動作を確認。LoRA ID・GPUなど実行条件は未報告 |
+| Image-to-Image | 確認済み（利用者報告） |
 | 失敗・制約・Colab出力リンク | 上記の確認済み事項以外は未報告 |
 
 NotebookのJSON・Pythonセル構文とPyPI install行をCIでも確認します。それはColabでの実行成功を意味しません。実際の実行ログを確認してから、[開発進捗](development-progress.md)の検証状態を更新します。
