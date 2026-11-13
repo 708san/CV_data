@@ -17,16 +17,21 @@
 
 PyPI/TestPyPIへのアップロードは未実施。
 
-## 次の確認：LoRA生成設定をColab T4で実測
+## 完了：LoRA生成設定のColab動作確認
 
-対象仕様：4.4、5.5、6、7。PR #71で通常設定を25 steps・guidance 7.0・768×768にし、seed・negative prompt・画像変換strengthなどを設定セルから調整できる。CIはAPIへの引数伝達を確認しているが、T4での生成時間・VRAM・見た目は未確認。
+対象仕様：4.4、5.5、6、7。PR #71で25 steps・guidance 7.0・768×768を初期設定とし、seed、negative prompt、画像変換strengthなどをNotebookから調整できるようにした。ユーザーがColabで確認済み。実行時のGPU使用量や詳しい品質比較値は未記録のため、数値実測としては扱わない。
+
+## 今回の作業単位：日本語表示extraをCIで実環境確認
+
+対象仕様：5.1、5.2、7。display extraにはMatplotlibとjapanize-matplotlibがあるが、現在のCI unit jobはtest extraだけを導入する。日本語フォント設定はmock testのみで、実パッケージの導入・フォント参照をCIで確かめていない。
 
 順序：
-1. [生成確認Notebook](../notebooks/colab/generation_smoke_test.ipynb)をColab T4で実行し、通常設定のtext-to-imageを1件確認する。
-2. strengthを変更したimage-to-imageを1件確認し、設定値と画像の変化を記録する。
-3. OOMや不自然な出力が出た場合は設定の調整案を分けて記録し、既定値の変更は実測後に行う。
+1. この作業単位と受け入れ条件を計画へ記録する（先行）。
+2. Python 3.13の独立CI jobで[test,display] extrasを導入して全オフラインテストを実行する。
+3. 実際のjapanize-matplotlibが提供するフォントファイルを読み、存在・ファミリー名を確認するネットワーク不要の統合テストを追加する。通常の[test]環境では任意依存としてskipする。
+4. CIの依存導入と全テストの結果を確認し、開発進捗を更新する。
 
-受け入れ条件：固定LoRAを含む生成が完了し、設定・GPU・出力を利用者が確認できる。未実行の環境を検証済みと表記しない。
+受け入れ条件：既存のmockテストを維持しつつ、CIのdisplay jobでjapanize-matplotlibの実フォントパスが有効であることを確認する。画像・モデル・データのダウンロードを行わず、通常の軽量test jobを重量級依存で膨らませない。
 
 ## 完了：画像生成extraへLoRA実行依存PEFTを含める
 
