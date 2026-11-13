@@ -19,6 +19,21 @@
 
 更新日：2026-11-13
 
+## 今回の作業単位：Python 3.13での日本語フォント依存エラーを修正しalpha4を準備
+
+対象仕様：5.1、6、7。PyPI alpha3をPython 3.13の新規venvへ実際に導入したところ、`japanize-matplotlib==1.1.3`のimportが削除済み`distutils`を参照して失敗した。PyPI install自体・データ一覧importは通るが、日本語Matplotlib表示の利用経路で問題になる。
+
+順序：
+1. 仕様0.19へ、Python 3.12以降のdistutils互換問題を避け、font packageに含まれるIPAexGothicを直接matplotlibへ登録する要件を記録する（先行）。
+2. matplotlib font managerとimportlib.metadataからフォント資源を解決し、`japanize_matplotlib`のPython module importをしない実装へ変更する。フォントが見つからない場合は基本パッケージの再導入方法を示す。
+3. mockベースの日本語フォント設定テストを配布metadata/resource lookupに合わせて更新し、missing resourceと正常登録を検証する。
+4. 配布版を`0.1.0a4`へ上げ、PyPIから新規一時venvへinstallしてimport・データ一覧・フォント設定まで実行する。PyPI配布物にdataset/model binaryがないこととCIを確認する。
+5. PRをmainへ統合し、ユーザー許可済みのGitHub Release/Trusted Publishingで公開。次のColab確認へ進む。
+
+受け入れ条件：macOS/Python 3.13のクリーンvenvで`python -m pip install --pre cv-data-lesson`後、`datasets.list_available()`が動き、`show_examples()`がIPAexGothicを使える。`japanize_matplotlib`のimportに依存しない。既定のColab/Linux CIでも表示smoke、unit、package smokeが通る。
+
+進捗：alpha3の実PyPI installで`distutils`問題を再現。仕様0.19と本計画を先行更新後、font packageのwheel resourceを`importlib.metadata`から解決し、matplotlibへ直接登録する実装とテストを追加。PyPI alpha3の一時venv（macOS/Python 3.13）でIPAexGothic登録とmatplotlib描画依存全体を使う91テストが成功（skipなし）。`0.1.0a4`候補を準備中。PR/CI、alpha4 wheel build、alpha4のfresh PyPI installは未確認。
+
 ## 今回の作業単位：PyPIの初回利用導線を簡単にし、alpha3を準備
 
 対象仕様：5.1、6、7。現在のPyPI説明では`[display]`を付けないと画像・表の確認ができるか分かりにくく、README内リンクもPyPI上で確実に開けず、見出しがPyPI自動表示の配布名・版と重なっている。標準導入後にデータを探して表示するまでの手順を短くする。

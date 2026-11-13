@@ -37,20 +37,38 @@ class DatasetError(RuntimeError):
 
 
 def _enable_japanese_matplotlib():
-    """Configure Matplotlib and return an explicit IPAexGothic font property."""
+    """Register the Japanese font bundled with japanize-matplotlib without importing it."""
     try:
-        import japanize_matplotlib
+        from importlib import metadata
         from matplotlib import rcParams
+        from matplotlib import font_manager
         from matplotlib.font_manager import FontProperties
     except ImportError as exc:
         raise DatasetError(
-            "画像表示の日本語フォント設定にはjapanize-matplotlibが必要です。"
+            "画像表示には基本パッケージのMatplotlibと日本語フォントが必要です。"
             "python -m pip install --pre cv-data-lesson を実行してください。"
         ) from exc
-    japanize_matplotlib.japanize()
-    font_path = Path(japanize_matplotlib.get_font_ttf_path())
+
+    try:
+        font_distribution = metadata.distribution("japanize-matplotlib")
+    except metadata.PackageNotFoundError as exc:
+        raise DatasetError(
+            "日本語表示用フォントが見つかりません。"
+            "python -m pip install --pre --upgrade cv-data-lesson を実行してください。"
+        ) from exc
+    font_resource = next(
+        (
+            item for item in (font_distribution.files or ())
+            if str(item).replace("\\", "/").endswith("japanize_matplotlib/fonts/ipaexg.ttf")
+        ),
+        None,
+    )
+    if font_resource is None:
+        raise DatasetError("日本語表示用IPAexGothicフォントがパッケージ内にありません。")
+    font_path = Path(font_distribution.locate_file(font_resource))
     if not font_path.is_file():
         raise DatasetError(f"日本語フォントファイルが見つかりません: {font_path}")
+    font_manager.fontManager.addfont(str(font_path))
     font = FontProperties(fname=str(font_path))
     rcParams["font.family"] = [font.get_name()]
     return font

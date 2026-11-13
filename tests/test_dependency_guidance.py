@@ -6,6 +6,7 @@ import re
 import tomllib
 import types
 import unittest
+from importlib import metadata
 from pathlib import Path
 from unittest.mock import Mock, patch
 
@@ -86,10 +87,8 @@ class OptionalDependencyGuidanceTests(unittest.TestCase):
                 self.bundle.show_examples()
 
     def test_japanese_matplotlib_is_configured_when_display_is_used(self):
-        japanize = types.ModuleType("japanize_matplotlib")
-        japanize.japanize = Mock()
-        japanize.get_font_ttf_path = Mock(return_value="/fonts/ipaexg.ttf")
         font_manager = types.ModuleType("matplotlib.font_manager")
+        font_manager.fontManager = Mock()
 
         class FakeFontProperties:
             def __init__(self, *, fname):
@@ -102,30 +101,56 @@ class OptionalDependencyGuidanceTests(unittest.TestCase):
         matplotlib = types.ModuleType("matplotlib")
         matplotlib.__path__ = []
         matplotlib.rcParams = {}
+        matplotlib.font_manager = font_manager
+        distribution = Mock(
+            files=["japanize_matplotlib/fonts/ipaexg.ttf"],
+            locate_file=Mock(return_value="/fonts/ipaexg.ttf"),
+        )
         with patch.dict(sys.modules, {
-            "japanize_matplotlib": japanize,
             "matplotlib": matplotlib,
             "matplotlib.font_manager": font_manager,
-        }), patch("cvlesson.datasets.Path.is_file", return_value=True):
+        }), patch("importlib.metadata.distribution", return_value=distribution), patch(
+            "cvlesson.datasets.Path.is_file", return_value=True
+        ):
             font = _enable_japanese_matplotlib()
-        japanize.japanize.assert_called_once_with()
+        distribution.locate_file.assert_called_once_with("japanize_matplotlib/fonts/ipaexg.ttf")
+        font_manager.fontManager.addfont.assert_called_once_with("/fonts/ipaexg.ttf")
         self.assertEqual(font.fname, "/fonts/ipaexg.ttf")
         self.assertEqual(matplotlib.rcParams["font.family"], ["IPAexGothic"])
 
     def test_installed_japanese_font_file_is_available(self):
         try:
-            import japanize_matplotlib
-        except ImportError:
+            package = metadata.distribution("japanize-matplotlib")
+        except metadata.PackageNotFoundError:
             self.skipTest("display extra is not installed")
-        font_path = Path(japanize_matplotlib.get_font_ttf_path())
+        resource = next(
+            item for item in (package.files or ())
+            if str(item).replace("\\", "/").endswith("japanize_matplotlib/fonts/ipaexg.ttf")
+        )
+        font_path = Path(package.locate_file(resource))
         self.assertTrue(font_path.is_file(), font_path)
         font = _enable_japanese_matplotlib()
         self.assertTrue(font.get_name())
         self.assertEqual(Path(font.get_file()), font_path)
 
     def test_missing_japanese_font_dependency_has_install_guidance(self):
-        with patch.dict(sys.modules, {"japanize_matplotlib": None}):
-            with self.assertRaisesRegex(DatasetError, r"pip install --pre cv-data-lesson"):
+        matplotlib = types.ModuleType("matplotlib")
+        matplotlib.__path__ = []
+        matplotlib.rcParams = {}
+        font_manager = types.ModuleType("matplotlib.font_manager")
+        font_manager.fontManager = Mock()
+
+        class FakeFontProperties:
+            def __init__(self, *, fname):
+                self.fname = fname
+
+        font_manager.FontProperties = FakeFontProperties
+        matplotlib.font_manager = font_manager
+        with patch.dict(sys.modules, {
+            "matplotlib": matplotlib,
+            "matplotlib.font_manager": font_manager,
+        }), patch("importlib.metadata.distribution", side_effect=metadata.PackageNotFoundError):
+            with self.assertRaisesRegex(DatasetError, r"pip install --pre --upgrade cv-data-lesson"):
                 _enable_japanese_matplotlib()
 
 
