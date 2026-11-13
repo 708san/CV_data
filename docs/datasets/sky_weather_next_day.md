@@ -1,6 +1,6 @@
 # 空画像と翌日の天気
 
-**登録準備中**です。共通形式への整形と権利・実体確認は完了しています。配布Release assetの公開後に、`datasets.get("sky_weather_next_day")`で取得可能になります。
+**公開済み**です。`datasets.get("sky_weather_next_day")`で固定Releaseから取得できます。出典・ライセンス・変更内容を確認してから利用してください。
 
 ## 何を調べられるか
 
