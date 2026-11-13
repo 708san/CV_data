@@ -35,7 +35,7 @@ PyPI/TestPyPIへのアップロードは未実施。
 
 進捗：Python 3.13の独立display-smoke jobでdisplay extra導入と実フォントパス検査を実行。全テスト成功。通常のPython 3.11〜3.13 unit matrixとpackage-smokeも成功。
 
-## 今回の作業単位：画像生成パラメータの事前入力検査
+## 完了：画像生成パラメータの事前入力検査
 
 対象仕様：4.4、5.5、6、7。stepsやstrengthの既存検査ではNaN、無限大、bool、文字列などがすり抜け、幅・高さ・seed・negative promptの不正値はDiffusersまで届く可能性がある。設定ミスをモデル実行前に短い日本語で伝える。
 
@@ -47,7 +47,7 @@ PyPI/TestPyPIへのアップロードは未実施。
 
 受け入れ条件：stepsは正の整数、guidance_scaleは有限かつ0以上、strengthは有限な0〜1、width/heightは指定時に正の8の倍数、seedは整数かNone、negative_promptは文字列かNone、use_triggerはboolとして検査する。無効値でpipelineが一度も呼ばれず、値の直し方が分かるエラーになる。
 
-進捗：事前検査と境界値・型違いテストを追加し、クイックスタートと画像生成ガイドへ受け付ける範囲を記載。CI検証待ち。
+進捗：事前検査、境界値・型違いテスト、クイックスタートと画像生成ガイドを更新。PR #75のPython 3.11〜3.13 unit、display-smoke、package-smokeがすべて成功。
 ## 完了：画像生成extraへLoRA実行依存PEFTを含める
 
 対象仕様：4.4、5.1、5.2、7。`diffusion` extraへ`peft>=0.21.2,<1`を追加し、依存メタデータテストと導入案内を更新。PR #68をmainへマージし、CI成功。ユーザーがColabで修正版Notebookを実行し、torchaoをアンインストールせずにLoRA生成が動作することを確認。
