@@ -13,7 +13,7 @@
 
 完了条件：認識文字を画像上の重なったラベルに頼らず一覧で読める。選択した行だけ該当画像箇所を展開できる。既存の機械可読なOCR結果と別アプリ連携形式に変更がない。
 
-進捗：仕様0.23、`display.render_ocr_report()` / `show_ocr()`、テスト、OCR Notebook、関連ガイド、0.1.0a7候補を更新。オフラインテスト・CI、PR、PyPI公開はこれから。Colab実機での新表示は利用者確認待ち。
+進捗：仕様0.23、`display.render_ocr_report()` / `show_ocr()`、テスト、OCR Notebook、関連ガイド、0.1.0a7候補を更新。PR #97のPython 3.11/3.12/3.13、display-smoke、package-smoke、optional-dependency-resolutionの6ジョブが成功。PyPI未公開のためPRは未統合。Release作成に必要なローカル`gh`認証が無効で、alpha7公開とColab実測は保留。
 
 ---
 
