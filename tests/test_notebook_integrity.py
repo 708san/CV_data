@@ -135,7 +135,8 @@ class NotebookIntegrityTests(unittest.TestCase):
         )
         self.assertIn("cv-data-lesson[ocr]==0.1.0a7", code)
         self.assertNotIn("pip install paddlepaddle", code)
-        self.assertIn("display.show(image, result, show_labels=False)", code)
+        self.assertIn("cv_display.show_ocr(image, result)", code)
+        self.assertIn("result.to_dict()", code)
 
     def test_generation_notebook_only_generates_selected_lora_once(self):
         notebook = json.loads((ROOT / "notebooks/colab/generation_smoke_test.ipynb").read_text())
