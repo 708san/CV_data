@@ -121,7 +121,7 @@ from cvlesson import display as cv_display, vision
 
 segmenter = vision.load_segmenter()
 mask_result = segmenter.predict(image_path, point=(240, 180))
-cv_display.show(image_path, mask_result, mask_alpha=145)
+sam_preview = cv_display.show(image_path, mask_result, mask_alpha=145)
 ```
 
 画像へのマスク重ね合わせ表示は基本インストールに含まれています。
