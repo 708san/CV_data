@@ -542,3 +542,12 @@
 - 生成Notebookの6 steps・512pxが速さ優先の動作確認値で、通常品質例としては低いことが分かった。25 steps、guidance 7.0、768px、固定seedを編集可能な設定ブロックへまとめる。
 - クイックスタートと画像生成説明に各引数の効果・時間/VRAM tradeoff・seedの再現性限界を追加。Scheduler等の未公開引数は使えると案内しない。
 - `test_generation.py`に既定値・明示パラメータのpipeline伝達テストを追加。Colab T4での新設定再生成はユーザー確認前のため未確認。
+
+
+## 2026-11-13：LoRA生成設定とPEFT上流リリースの確認
+
+- PR #71をmainへマージ。`ImageGenerator.generate()`で既に対応していた`num_inference_steps`、`guidance_scale`、`negative_prompt`、`seed`、`width/height`、Image-to-Image `strength`、`use_trigger`を仕様0.15・クイックスタート・画像生成ガイド・Colab Notebookで説明。テストで既定値と明示引数のpipeline伝達を確認。
+- Colab Notebookの通常例を6 steps/512pxから25 steps・guidance 7・768pxへ変更し、値をセル冒頭の設定欄で調整できるようにした。ユーザーはこれ以前の修正版NotebookでアンインストールなしにLoRAが動くことを確認済み。新しい画質設定でのT4再実行は未確認。
+- Python 3.11、3.12、3.13のunit CIとpackage-smoke CIが成功。Notebookセルの改行を保持する形式も検査で確認。
+- PEFT v0.21.3の公式tag sourceを確認。配布版にはtorchao 0.10.0を警告扱いにするPR #3989の変更が含まれていないため、Colab Notebookは固定merge commitのPEFTを引き続き使う。PyPI版PEFTの修正リリース待ち。
+- 次は`twine check dist/*`をpackage-smoke CIに加え、PyPIの配布メタデータをアップロードなしで検査する。
