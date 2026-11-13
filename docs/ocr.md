@@ -26,13 +26,14 @@ python -m pip install --pre 'cv-data-lesson[ocr,vision,diffusion]'
 
 ## 文字を読む
 
-`image_path`にはOCRを試す画像のパスを入れます。Colabでは次のコードで画像を選びます。ローカルでは`image_path = "./自分の画像.jpg"`のように指定してください。
+Colab左側の「ファイル」欄から画像をアップロードし、表示されたパスを`image_path`または`SOURCE_IMAGE_PATH`へ設定してください。`files.upload()`のポップアップは使いません。Safariなどでアップロードに失敗する場合は、画像をGoogle Driveへ置き、Driveをマウントしてそのファイルパスを指定してください。 ローカルでは`image_path = "./自分の画像.jpg"`のように指定してください。
 
 ```python
-from google.colab import files
+from pathlib import Path
 
-uploaded = files.upload()
-image_path = next(iter(uploaded))
+image_path = "/content/your-image.jpg"  # Colab左側の「ファイル」欄からアップロードしたパス
+if not Path(image_path).is_file():
+    raise FileNotFoundError("Colab左側の「ファイル」欄から画像をアップロードし、image_pathをそのファイル名に合わせてください。")
 ```
 
 ```python
