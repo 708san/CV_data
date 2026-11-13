@@ -1,6 +1,14 @@
-# PyPI初回公開の準備
+# PyPI公開・更新の運用記録
 
-初回候補はパッケージ名`cv-data-lesson`、版`0.1.0a1`（alpha）です。2026-11-13にPyPI JSON APIを確認した時点ではプロジェクト情報が見つからずHTTP 404でした。これは名前の予約・将来の利用可能性を保証しません。PyPIで公開されるまでは`pip install cv-data-lesson`は使えません。
+`cv-data-lesson==0.1.0a1`は2026-11-13にPyPIへ公開済みです。PyPI上の同じ版は差し替えられません。次の更新は`0.1.0a2`としてビルドし、GitHub Releaseの公開をきっかけにTrusted Publishingで送ります。
+
+## 利用者向けコマンド
+
+```bash
+python -m pip install --pre 'cv-data-lesson[display]'
+```
+
+PyPIへ一般公開した各alpha版は、同じコマンドで取得できます。READMEと利用ガイドは公開済み版に合わせて更新します。開発checkoutやeditable installは開発者向けの作業であり、利用者向けインストール案内へ混ぜません。
 
 ## パッケージに含めるもの
 
@@ -35,4 +43,9 @@ GitHub側の`pypi` environmentを作成し、必要ならdeployment protection r
 
 `.github/workflows/publish.yml`はGitHub Releaseを`published`にした時だけ起動します。ビルドとmetadata検査を行い、Release tagが`pyproject.toml`の版と一致すること、配布物に画像・モデル重みが含まれないことを確認してから、検証済みartifactをPyPIへ送ります。手動実行やtag pushでは起動しません。
 
-この文書とworkflowの準備はPyPI公開を実行しません。初回公開には、PyPIのpublisher設定、GitHub Release/tagの作成、PyPIアップロードについて別途確認が必要です。
+公開後の更新では、`pyproject.toml`の版を上げ、mainへ反映した同じ版から`v<version>`のGitHub Releaseを作成します。workflow完了後にPyPI JSON APIでversion、wheel、sdist、SHA-256を確認します。
+
+## 公開履歴
+
+- `0.1.0a1`：2026-11-13公開。PyPI READMEに未公開の案内が残ったため、次版で利用者向け文書を修正する。
+- `0.1.0a2`：高校生向け説明・AI改造ガイド・利用者向け導入案内を整理して公開予定。

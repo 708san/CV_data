@@ -68,7 +68,7 @@ def _pillow():
         from PIL import Image, ImageDraw, ImageFont
     except ImportError as exc:
         raise DisplayError(
-            "画像表示にはPillowが必要です。pip install 'cv-data-lesson[display]'を実行してください。"
+            "画像表示にはPillowが必要です。python -m pip install --pre 'cv-data-lesson[display]'を実行してください。"
         ) from exc
     return Image, ImageDraw, ImageFont
 

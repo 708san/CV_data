@@ -1,3 +1,17 @@
+# 開発進捗
+
+## 2026-11-13：PyPI `0.1.0a1`公開
+
+- GitHub Release `v0.1.0a1`を作成し、Trusted Publishingのbuild・metadata・禁止バイナリ検査・PyPI uploadが成功。PyPI JSON APIでwheelとsdistの公開、version、SHA-256を確認済み。
+- PyPI READMEに「まだ未公開」と開発用editable install案内が残った問題を確認。公開済み配布物は差し替えられないため、一般利用者向け文書を整理して`0.1.0a2`で説明を更新する。
+
+## 2026-11-13：高校生向け案内・AI改造ガイド・PyPI alpha2を更新（作業中）
+
+- 仕様0.17と開発計画に、利用者向け文書と開発手順の分離、機能別の入力/出力・学習/推論・制限、AI改造依頼のひな形要件を先行記録。
+- 公開済みmainの実装で生徒向けデータ23件、学習済みLoRA 4件を確認。
+- README、quickstart、インストール、機能説明、AI改造ガイドを公開済み利用者向けの説明に書き換え中。実行時エラーに含まれる開発用editable installもPyPIコマンドへ変更。
+- `pyproject.toml`の候補版は`0.1.0a2`。Python 3.13でネットワーク不要テスト91件成功（任意依存のため18件skip）。利用者向けPython例15ブロックの構文、Markdown 66ファイルのローカルリンク、全srcのpy_compile、`git diff --check`が成功。ローカルにbuild frontendがないためwheel/sdist作成はPR package-smoke CIで確認する。PR統合・GitHub Release・PyPI公開の結果は未確認。
+
 ## 2026-11-11：Fresh and Rotten Fruits 全量監査・整形
 
 - Mendeley Data v1のCC BY 4.0表記、著者撮影の説明、農業機関の専門家によるラベル確認の説明を一次情報で確認。

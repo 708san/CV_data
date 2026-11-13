@@ -26,7 +26,7 @@
 
 予測結果を、実際のごみ分別、医療廃棄物の処理、危険物の取り扱いに使いません。クラス名はこのデータに付けられたラベルであり、地域の分別規則や安全基準を示すものではありません。polygonから外接矩形へ変換した共通artifact v0.1.0を公開し、固定SHA-256で取得できます。共通artifact v0.1.0は固定Releaseで公開済みです。画像は変更せず、polygon 1,407件を外接矩形へ変換しています。
 
-詳細：[全量監査JSON](../../reports/bangladeshi-ewaste-full-audit.json)、[全画像の目視確認](../../reports/bangladeshi-ewaste-visual-review-2026-11-08.json)。
+詳細：[全量監査JSON](../../reports/bangladeshi-ewaste-full-audit.json)。
 
 
 ## 公開版

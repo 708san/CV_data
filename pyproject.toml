@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cv-data-lesson"
-version = "0.1.0a1"
+version = "0.1.0a2"
 description = "高校生向け画像データとコンピュータビジョン学習ライブラリ"
 readme = "README.md"
 license = "MIT"
