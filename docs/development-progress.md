@@ -1,11 +1,12 @@
 # 開発進捗
 
-## 2026-11-14：OCR結果を一覧と行別画像で確認する表示を追加
+## 2026-11-14：OCR表示を全文優先に改善（alpha8候補、PyPI未公開）
 
-- 仕様0.23を更新。レシートなど文字が多い画像ではOCR枠を全面表示せず、認識行・信頼度の目安を一覧にし、必要な行だけ対応領域を展開できる設計。
-- `display.render_ocr_report()`は埋め込み用の自己完結HTML文字列を返し、`display.show_ocr()`はNotebookに単一出力として表示する。HTMLはJavaScript・外部通信なしで、OCRテキストをHTML escapeする。
-- `OCRResult`、`OCRLine`、`to_dict()`は変更せず、元データをアプリへ渡せる例をガイドとNotebookに追加。
-- PR [#97](https://github.com/708san/CV_data/pull/97)は全6 CIジョブ成功後にmainへ統合。PyPI 0.1.0a7は公開準備中だが、Release作成に必要なローカル`gh`認証が無効のため未公開。更新Notebookを使うColab実測は公開後に行う。
+- GitHub Release [v0.1.0a7](https://github.com/708san/CV_data/releases/tag/v0.1.0a7)を公開。Trusted Publishingのbuild・publish両jobが成功し、PyPIのwheel・sdistも確認した。
+- a7のOCR行カード表示について、利用者から長い結果が細切れに見えるとの報告を受けた。OCR全文を主表示し、行ごとの位置・信頼度・切り抜きを折りたたむa8候補へ改善中。
+- OCRの生データとto_dict()は維持。PyPI index上のa7は公開済みだが、Colabでのa7表示再実行は未確認。
+- 公開mainの作業ツリーは変更せず、独立ブランチで仕様・計画・実装・Notebook・テストを更新する。
+
 
 
 ## 2026-11-14：Colab実測の利用者報告を反映

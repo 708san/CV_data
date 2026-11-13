@@ -41,13 +41,19 @@ class DisplayTests(unittest.TestCase):
             display.render(self.image, None, show_labels=1)
 
     def test_ocr_report_shows_readable_text_confidence_and_collapsed_crop(self):
-        line = ocr.OCRLine("<script>alert(1)</script>", 0.925, ((4, 4), (24, 4), (24, 15), (4, 15)))
-        result = ocr.OCRResult((line,), "fixture")
+        first = ocr.OCRLine("<script>alert(1)</script>", 0.925, ((4, 4), (24, 4), (24, 15), (4, 15)))
+        second = ocr.OCRLine("TOTAL 1280 JPY", 0.91, ((4, 17), (35, 17), (35, 27), (4, 27)))
+        result = ocr.OCRResult((first, second), "fixture")
         original = result.to_dict()
         report = display.render_ocr_report(self.image, result)
-        self.assertIn("&lt;script&gt;alert(1)&lt;/script&gt;", report)
+        self.assertIn(
+            '<pre class="full-text">&lt;script&gt;alert(1)&lt;/script&gt;\nTOTAL 1280 JPY</pre>',
+            report,
+        )
         self.assertNotIn("<script>alert(1)</script>", report)
         self.assertIn("信頼度の目安: 92.5%", report)
+        self.assertIn('<details class="line-details"><summary>行ごとの詳細（2行）</summary>', report)
+        self.assertNotIn('<details class="line-details" open', report)
         self.assertIn("<details><summary>画像の該当部分を見る</summary>", report)
         self.assertIn("data:image/png;base64,", report)
         self.assertEqual(result.to_dict(), original)
