@@ -29,9 +29,11 @@ jobs:
         with:
           python-version: "3.13"
       - name: Install build frontend
-        run: python -m pip install build
+        run: python -m pip install build twine
       - name: Build wheel and source archive
         run: python -m build
+      - name: Validate PyPI package metadata
+        run: python -m twine check dist/*
       - name: Check archives contain no dataset or model binaries
         run: |
           python - <<'PY'
