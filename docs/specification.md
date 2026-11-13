@@ -1,7 +1,7 @@
 # CV教材ライブラリ 仕様書
 
 更新日：2026-11-13
-仕様バージョン：0.14（開発中）
+仕様バージョン：0.15（開発中）
 
 この文書をCV教材ライブラリの要件の正本とする。実装・README・Notebook・API説明に相違がある場合は、この仕様書を優先する。実装済みかどうかは[開発計画](development-plan.md)で管理し、この文書だけを根拠に機能を「利用可能」と案内しない。
 
@@ -88,6 +88,10 @@
 
 - SDXLによるテキストからの画像生成と、画像から画像への変換を提供する。
 - 登録LoRAを選びやすくし、対応する別モデルを明示的に指定できる設計にする。
+- `generate()`の既定値は`num_inference_steps=25`、`guidance_scale=7.0`、`seed=None`、`strength=0.65`、`use_trigger=True`とし、width/height未指定時は基盤パイプラインの既定サイズを使う。
+- 利用者は`num_inference_steps`、`guidance_scale`、`seed`、`width`、`height`、`negative_prompt`、Image-to-Imageの`strength`、`use_trigger`を明示的に変更できる。各値が生成時間、文章への追従、元画像の保持、再現性、構図・VRAM使用量へ与える影響を日本語で説明する。
+- Notebookの通常例は短時間動作確認だけの低steps設定にせず、ライブラリ既定値に沿う品質確認設定を示す。低stepsは短時間の動作確認用途と明記する。
+- Schedulerなど現行APIにないバックエンド固有の設定を利用可能と案内しない。
 - LoRA学習機能は本仕様の対象外。学習済みLoRAの取得・利用・仕様表示を対象とする。
 - LoRAと基盤モデルのライセンス、固定revision、SHA-256、取得元、必要容量、互換性を別々に記録する。
 - 重みはGit、PyPI、データartifactリポジトリへ含めず、利用者の明示操作時に固定元から取得する。
