@@ -663,7 +663,7 @@ _SOURCES: dict[str, ReleaseSource] = {
         file_urls={
             "artifact": "https://github.com/708san/CV_data_artifacts/releases/download/sky-weather-next-day-v0.1.0/sky_weather_next_day-v0.1.0.zip",
         },
-        published=False,
+        published=True,
         max_archive_bytes=20_000_000, max_unpacked_bytes=20_000_000, max_files=1500,
     ),
     "tomato_leaves": ReleaseSource(
