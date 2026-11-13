@@ -2,6 +2,24 @@
 
 更新日：2026-11-13
 
+## 今回の作業単位：PyPI初回alpha配布候補を整える（公開・アップロードは保留）
+
+対象仕様：5.1、5.2、6、7。既存CIはwheel/sdist build、Twine、バイナリ混入、クリーン環境importを検査済み。PyPI配布名は`cv-data-lesson`、初回候補版は`0.1.0a1`とする。alpha版としてPyPIに登録できるよう metadata、README、Trusted Publishingの専用workflowと手順を整える。PyPI登録・GitHub Release/tag作成・アップロードはこの作業単位に含めない。
+
+事前確認：
+- 2026-11-13にPyPI JSON APIへ`cv-data-lesson`を照会しHTTP 404。確認時点で登録は見つからなかったが、名前は公開されず予約もされていないため、登録時に取得済みとは限らない。
+- CIで`twine check dist/*`と禁止バイナリ・軽量wheel import検査が成功している。
+- READMEに旧作業ブランチ固定リンク、現状と合わないColab未実行の表記がある。PyPI表示文書として整理する。
+
+順序：
+1. この作業単位と完了条件を本計画へ記録する（先行）。
+2. pyprojectを初回alpha候補（`0.1.0a1`、Alpha classifier）に合わせ、コード・データを分離して配布することを明記する。
+3. READMEと公開導入・機能別extrasの案内を現状にそろえ、旧branch URL、誤解を招く権利・実行状態の説明を直す。
+4. GitHub Release公開イベントにだけ反応する専用`publish.yml`を用意する。tagとpyproject版を一致検査し、build・Twine・禁止バイナリ検査後にTrusted PublishingでPyPIへ送る。OIDC権限はpublish jobだけに与える。
+5. PyPIのpending Trusted Publisher設定に必要なrepository/workflow/environment情報と、公開前確認手順を文書化する。
+6. wheel/sdist、Twine、禁止バイナリ、クリーン環境導入、unit matrixをPR CIで確認する。PyPI/TestPyPIへのアップロードは行わない。
+
+受け入れ条件：`0.1.0a1`のwheel/sdistをbuild・twine checkできる。画像・LoRA・モデル重みを含まない。READMEのPyPI表示、利用コマンド、任意依存説明がmetadataと一致する。release workflowは版の一致時だけPyPIへ発行し、workflow_dispatchやpush tagで誤発行しない。初回登録はpending Trusted Publisherを使う手順が明確で、公開実行前にPyPI側設定と明示承認が必要な状態を保つ。
 ## 完了：SDXL/LoRAの生成設定を使いやすく説明
 
 対象仕様：4.4、5.5、6、7。APIにはsteps、guidance、seed、出力サイズ、negative prompt、Image-to-Image strength、LoRA triggerの指定が既にあったため、新APIは追加せず、仕様0.15・ガイド・Notebook・テストを整備。Notebookを6 steps/512pxの速度優先から25 steps、guidance 7.0、768px、seed 42を変更可能な品質比較例へ更新。PR #71をmainへマージし、Python 3.11〜3.13のユニットテストとpackage-smokeを確認。ユーザーがColab動作を確認済み。実行時のVRAMや詳細な品質比較値は未記録。
