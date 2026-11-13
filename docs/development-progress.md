@@ -6,7 +6,7 @@
 - OCRはColabで推論・戻り値を確認済み（「TOTAL 1280 JPY」、1行、confidence 0.993）。ただし、`cvlesson.display`の別名import修正後に画像重ね合わせセルを再実行したかは未確認。
 - DETR＋SAMは動作確認済み。SAMマスクの画像が1枚だけ表示されること、Chromeでポップアップによる画像アップロードができることを確認。
 - LoRAを使った画像生成とImage-to-ImageはColabで動作確認済みとの利用者報告あり。LoRAのID、GPU・Python・ライブラリ版など実行条件は未報告のため記録しない。
-- OCR表示修正後のNotebook再実行は未確認。日本語OCR確認Notebookで再確認できる。各機能の状態は[Colab確認表](colab-verification.md)に反映。Image-to-Image確認を反映するPRのCI・統合記録は後続更新する。
+- OCR表示修正後のNotebook再実行は未確認。日本語OCR確認Notebookで再確認できる。各機能の状態は[Colab確認表](colab-verification.md)に反映。Image-to-Image確認を反映したPR [#95](https://github.com/708san/CV_data/pull/95)は全6 CIジョブ成功後にmainへ統合済み。
 
 ## 2026-11-14：OCR・検出/SAM・生成Notebookの使い勝手修正（alpha6候補、未公開）
 
