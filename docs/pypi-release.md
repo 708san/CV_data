@@ -1,6 +1,6 @@
 # PyPI公開・更新の運用記録
 
-`cv-data-lesson==0.1.0a5`は2026-11-13にPyPIへ公開済みです。PyPI上の同じ版は差し替えられません。次の更新は`0.1.0a6`としてビルドし、GitHub Releaseの公開をきっかけにTrusted Publishingで送ります。
+`cv-data-lesson==0.1.0a6`は2026-11-13にPyPIへ公開済みです。PyPI上の同じ版は差し替えられません。次回は`pyproject.toml`の版を上げ、GitHub Releaseの公開をきっかけにTrusted Publishingで送ります。
 
 ## 利用者向けコマンド
 
@@ -51,6 +51,15 @@ GitHub側の`pypi` environmentを作成し、必要ならdeployment protection r
 - `0.1.0a3`：基本導入から表・画像表示までを一つのコマンドにまとめ、PyPI READMEの見出しとリンクを改善。2026-11-13に公開。
 - `0.1.0a4`：Python 3.13での日本語フォント依存importエラーを修正。2026-11-13公開。
 - `0.1.0a5`：基本導入と機能別extrasの説明を修正。`vision` extraへPyTorch/Torchvisionを含め、Colab Notebookを公開PyPI版固定に統一。2026-11-13公開。
+- `0.1.0a6`：OCR表示・CPU依存、検出枠とSAM連携、TorchAO互換、単一LoRA選択Notebook、複数extrasの依存解決を改善。2026-11-13公開。
+
+### `0.1.0a6`公開確認
+
+- GitHub Release: [v0.1.0a6](https://github.com/708san/CV_data/releases/tag/v0.1.0a6)
+- PyPI: [cv-data-lesson 0.1.0a6](https://pypi.org/project/cv-data-lesson/0.1.0a6/)
+- main commit: `bc7a46e1d859f4dd04061cafe1af76ec0a3d0996`
+- PyPI JSONでwheelとsource distributionの登録を確認。GitHub Actionsのbuild・publish jobは成功。
+- 公開確認はColab実機検証を意味しない。Colab結果は[確認表](colab-verification.md)に記録する。
 
 ### `0.1.0a5`公開確認
 
