@@ -1,4 +1,4 @@
-# 作業計画：Colab画像アップロードのRangeErrorを回避
+# 完了：Colab画像アップロードのRangeErrorを回避
 
 更新日：2026-11-14。ユーザー報告の例外は`files.upload()`実行時のColabフロントエンド由来で、OCR・検出モデル処理より前に発生する。Colab側の同型報告ではSafariで再現する例がある（[Colab issue #364](https://github.com/googlecolab/colabtools/issues/364)）。
 
@@ -7,6 +7,8 @@
 2. 検出・画像生成のColab Notebookを、左側Files欄から置いた画像のパスを指定する方式に変更する。ファイルが見つからない場合は、Colab UIでの配置方法とパス例を表示する。
 3. 生徒向けガイドと各機能ガイドのColab例も同じ方式に揃え、Drive上の画像を使う場合のパス指定を補足する。
 4. Notebook JSONとコードセル構文を確認する。Colab実機再実行は利用者の実行ログで確認し、未実施なら未確認と記録する。
+
+進捗：PR #89で検出・領域分割、画像生成のColab Notebookから`files.upload()`を除き、Colab左側のFiles欄からアップロードしたファイルのパスを設定する方式に変更。OCR・ResNet・検出・画像生成・データ形式・生徒向けガイドのColab例も同じ手順に更新。Notebook JSONとPythonコードセル構文を確認し、CIのPython 3.11/3.12/3.13、display-smoke、package-smoke、optional-dependency-resolutionが全て成功。PRはmainへマージ済み。Colabでの画面操作・ブラウザ実機確認は未実施。
 
 # 完了：OCR Notebookのdisplay名衝突を修正
 
