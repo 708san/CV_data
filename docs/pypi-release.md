@@ -1,6 +1,6 @@
 # PyPI公開・更新の運用記録
 
-`cv-data-lesson==0.1.0a2`は2026-11-13にPyPIへ公開済みです。PyPI上の同じ版は差し替えられません。次の更新は`0.1.0a3`としてビルドし、GitHub Releaseの公開をきっかけにTrusted Publishingで送ります。
+`cv-data-lesson==0.1.0a3`は2026-11-13にPyPIへ公開済みです。PyPI上の同じ版は差し替えられません。次の更新は`0.1.0a4`としてビルドし、GitHub Releaseの公開をきっかけにTrusted Publishingで送ります。
 
 ## 利用者向けコマンド
 
@@ -49,3 +49,4 @@ GitHub側の`pypi` environmentを作成し、必要ならdeployment protection r
 - `0.1.0a1`：2026-11-13公開。PyPI READMEに未公開の案内が残った。
 - `0.1.0a2`：高校生向け説明・AI改造ガイド・利用者向け導入案内を整理。
 - `0.1.0a3`：基本導入から表・画像表示までを一つのコマンドにまとめ、PyPI READMEの見出しとリンクを改善。2026-11-13に公開。
+- `0.1.0a4`：Python 3.13での日本語フォント依存importエラーを修正予定。
