@@ -110,6 +110,17 @@ class OptionalDependencyGuidanceTests(unittest.TestCase):
         self.assertEqual(font.fname, "/fonts/ipaexg.ttf")
         self.assertEqual(matplotlib.rcParams["font.family"], ["IPAexGothic"])
 
+    def test_installed_japanese_font_file_is_available(self):
+        try:
+            import japanize_matplotlib
+        except ImportError:
+            self.skipTest("display extra is not installed")
+        font_path = Path(japanize_matplotlib.get_font_ttf_path())
+        self.assertTrue(font_path.is_file(), font_path)
+        font = _enable_japanese_matplotlib()
+        self.assertTrue(font.get_name())
+        self.assertEqual(Path(font.get_file()), font_path)
+
     def test_missing_japanese_font_dependency_has_install_guidance(self):
         with patch.dict(sys.modules, {"japanize_matplotlib": None}):
             with self.assertRaisesRegex(DatasetError, r"cv-data-lesson\[display\]"):

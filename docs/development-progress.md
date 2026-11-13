@@ -558,4 +558,16 @@
 - PR #72をmainへsquash merge（`b4aacc1e2b34ef8bf9e2aabb6846528f79183742`）。
 - package-smokeでwheel/sdistのbuild後に`twine check dist/*`を実行。build、メタデータ検査、禁止バイナリ検査、クリーンvenvへのwheel導入・importが成功。
 - Python 3.11、3.12、3.13のunit jobsもすべて成功。PyPI/TestPyPIへのアップロードは行っていない。
-- 生成設定API・説明・Notebookの更新はPR #71でmainへ反映済み。25 steps・guidance 7・768×768のColab T4出力品質とVRAMは未実測。次はColab生成Notebookでtext-to-imageとimage-to-imageを各1件確認する。
+- 生成設定API・説明・Notebookの更新はPR #71でmainへ反映済み。ユーザーからColab確認済みとの報告あり。実行内容の詳細とVRAM等の数値は共有されていないため、計測値は未記録。
+
+
+## 2026-11-13：SDXL/LoRA設定のColab確認
+
+- ユーザーが設定を変更できる生成Notebookを確認済みと報告。PR #71の25 steps・guidance 7.0・768×768と、steps・guidance・seed・negative prompt・strength・triggerの説明を含む。
+- 実行内容の詳細、GPU使用量、品質比較の数値は共有されていないため、数値評価としては記録しない。
+
+## 2026-11-13：日本語表示extraのCI検証を追加
+
+- 既存テストは日本語Matplotlib設定をmockで確認していたため、CIに独立のPython 3.13 display-smoke jobを追加。testとdisplay extrasを導入して全オフラインテストを実行する。
+- japanize-matplotlibが実際に提供するフォントファイルの存在、FontPropertiesからの参照を確認する統合テストを追加。通常の軽量test jobではoptional dependencyとしてskipする。
+- GitHub Actions run 43418708622でdisplay-smokeの依存導入・全テストが成功。Python 3.11〜3.13のunit jobsとpackage-smokeも成功。
