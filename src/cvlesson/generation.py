@@ -182,6 +182,13 @@ def load(
     return ImageGenerator(pipeline, task, device, torch, triggers)
 
 
+def _is_finite_number(value: int | float) -> bool:
+    try:
+        return math.isfinite(value)
+    except OverflowError:
+        return False
+
+
 def _validate_generation_settings(
     *,
     strength: float,
@@ -202,14 +209,14 @@ def _validate_generation_settings(
     if (
         not isinstance(guidance_scale, (int, float))
         or isinstance(guidance_scale, bool)
-        or not math.isfinite(guidance_scale)
+        or not _is_finite_number(guidance_scale)
         or guidance_scale < 0
     ):
         raise ValueError("guidance_scaleは有限の0以上の数にしてください。")
     if (
         not isinstance(strength, (int, float))
         or isinstance(strength, bool)
-        or not math.isfinite(strength)
+        or not _is_finite_number(strength)
         or not 0 <= strength <= 1
     ):
         raise ValueError("strengthは有限の0から1の数にしてください。")
