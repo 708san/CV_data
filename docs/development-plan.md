@@ -1,11 +1,11 @@
-# 作業計画：ColabでのSAM重ね合わせ画像の二重表示を解消
+# 実装・CI完了：ColabでのSAM重ね合わせ画像の二重表示を解消（Colab確認待ち）
 
 更新日：2026-11-14。ユーザー実測ではDETR＋SAMは動作し、SAM表示セルだけ同じ画像が2回出る。`cvlesson.display.show()`は内部表示した後、合成画像も返すため、Colabがセル末尾の戻り値を自動表示して重複している。
 
 順序と受け入れ条件：
 1. 既存の`show()`の表示・戻り値契約は維持し、表示用Notebookでは戻り値を変数へ代入する。
 2. DETR/SAM検証Notebookの末尾式を確認し、同じ出力の二重表示を防ぐ。
-進捗：対象セルを`_ = cv_display.show(...)`にし、関数内での表示後にColabが戻り値を再表示する動きを抑止。SAM表示の説明例も戻り値を変数へ代入する形に変更。Notebook JSONと全Pythonコードセルの構文を確認済み。CI・Chrome上のColab再確認はこれから。
+進捗：対象セルを`_ = cv_display.show(...)`にし、関数内での表示後にColabが戻り値を再表示する動きを抑止。SAM表示の説明例も戻り値を変数へ代入する形に変更。Notebook JSONと全Pythonコードセルの構文を確認済み。CIのPython 3.11/3.12/3.13、display-smoke、package-smoke、optional-dependency-resolutionは全て成功。Chrome上のColab再確認は未実施。
 3. Notebook JSONと変更セルの構文を確認し、CIを通す。ユーザーがChromeで再読込して1枚だけ表示されるか確認する。
 
 # 実装・CI完了：DETR・SAMの画像上の結果表示を明確にする（Colab確認待ち）
