@@ -19,7 +19,7 @@ data = datasets.get("tomato_leaves")
 print(data.id, data.kind, data.splits)
 data.show_examples(n=6, split="train")
 
-# pandasは[dataframe] extraが必要。画像自体はDataFrameに読み込まずパスで参照
+# 基本インストールでpandasを利用可能。画像自体はDataFrameに読み込まずパスで参照
 frame = data.to_df()
 print(frame.head())
 ```

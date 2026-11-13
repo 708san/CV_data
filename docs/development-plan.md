@@ -19,6 +19,28 @@
 
 更新日：2026-11-13
 
+## 今回の作業単位：PyPIの初回利用導線を簡単にし、alpha3を準備
+
+対象仕様：5.1、6、7。現在のPyPI説明では`[display]`を付けないと画像・表の確認ができるか分かりにくく、README内リンクもPyPI上で確実に開けず、見出しがPyPI自動表示の配布名・版と重なっている。標準導入後にデータを探して表示するまでの手順を短くする。
+
+順序：
+1. 仕様0.18へ「基本インストールに軽量な表・画像表示依存を含む」「PyPI READMEは自動表示見出しを重ねず絶対リンクにする」「初回例を題材選びから表示までつなぐ」を記録する（先行）。
+2. `pyproject.toml`の標準依存にpandas、Pillow、NumPy、Matplotlib、日本語フォントを加える。重量級のAI framework・モデル重みは含めず、`display`/`dataframe` extrasは既存利用者との互換のため維持する。
+3. README、インストール案内、quickstart、PyPI運用記録、依存エラー案内を一つの導入手順にそろえる。PyPI READMEの内部リンクはGitHub絶対URLにし、H1重複をなくす。alpha版で`--pre`が要る理由は短く示す。
+4. 配布版を`0.1.0a3`へ進め、軽量依存が基本installにあること・重量級依存がないこと・導入例をテストで確認する。
+5. ユニットテスト、Notebook検査、wheel/sdist・PyPI metadata・バイナリ検査、差分を確認する。PRを作成しCIを通す。PyPI公開後にインストールを再確認する。
+6. 次の開発順を計画へ明示する：Colabのデータ→分類/回帰/OCR/検出/分割/生成フローの再確認、入力・出力・エラーの一貫性改善、stable化の受け入れ条件整理。
+
+進捗：仕様0.18と本計画を先行更新。標準依存・PyPI README・クイックスタート・エラー案内・基本導入のテストを更新。Python 3.11〜3.13のネットワーク不要テストは各91件成功（各18件skip）、README Python例・絶対リンク・metadata・構文・diff check成功。PR CIのpackage smokeと標準依存入りdisplay smoke、PR/PyPI公開確認が残る。
+
+受け入れ条件：PyPI利用者向けの基本コマンドが`python -m pip install --pre cv-data-lesson`の1つで、`datasets.get()`、`to_df()`、`show_examples()`まで追加extraなしで使える。PyPI READMEのリンクがすべて絶対URLで、配布名・版の重複H1がない。基本依存にtorch、PaddleOCR、Transformers、Diffusersを含まない。alpha3の説明が公開物と一致し、CI成功を確認する。
+
+## その後の開発順
+
+1. Colabの使い切り確認Notebookで、データ取得から各モデルの入力・出力までを再実行し、動いた環境・固定版・制限を記録する。
+2. 初心者が迷うAPI差（データ形式、画像/パス入力、結果表示、予測値の読み方）を実データ例から優先順位付けし、仕様→計画→実装→テスト→教材文書の順で整える。
+3. 安定版は、主要導線のColab確認、PyPI clean-install、Python対応範囲、optional extrasの互換、権利情報とデータ固定版、ユーザー向け説明の整合がそろった後に判断する。alpha表記を先に外さない。
+
 ## 今回の作業単位：PyPI初回alpha配布候補を整える（公開・アップロードは保留）
 
 対象仕様：5.1、5.2、6、7。既存CIはwheel/sdist build、Twine、バイナリ混入、クリーン環境importを検査済み。PyPI配布名は`cv-data-lesson`、初回候補版は`0.1.0a1`とする。alpha版としてPyPIに登録できるよう metadata、README、Trusted Publishingの専用workflowと手順を整える。PyPI登録・GitHub Release/tag作成・アップロードはこの作業単位に含めない。

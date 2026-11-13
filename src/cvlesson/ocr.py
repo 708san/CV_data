@@ -73,7 +73,7 @@ class OCR:
             from PIL import Image
         except ImportError as exc:
             raise OCRError(
-                "Pillow Image入力にはPillowが必要です。python -m pip install --pre 'cv-data-lesson[ocr]'を確認してください。"
+                "Pillow Image入力にはPillowが必要です。python -m pip install --pre cv-data-lesson を実行してください。"
             ) from exc
         if not isinstance(image, Image.Image):
             raise TypeError("imageには画像ファイルのパスまたはPillow Imageを指定してください。NumPy配列は未対応です。")
