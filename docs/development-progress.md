@@ -509,3 +509,12 @@
 - PEFT上流のIssue #3964と修正PR #3989を確認。量子化していないモデルのLoRA挿入でも古いTorchAO検出が例外になる既知問題。修正はPEFT mainに統合されているが、現在のPyPI版に含まれるかは未確認。
 - 画像生成Notebookに、TorchAO量子化を使わないこの実行では古いtorchaoを削除し、Colabランタイムを再起動してから全セルを実行する手順を追加。torchaoを別用途で使うランタイムには適用しない。
 - NotebookのColab再実行・4件の画像生成成功は未確認。
+
+
+## 2026-11-13：LoRA実行時のTorchAO変更を避け、PEFT修正版を固定
+
+- ユーザーの懸念を受け、共有環境上で`pip uninstall torchao`を行うNotebook手順を撤回。Colab上で既存パッケージを削除・変更しない方針へ変更。
+- PEFTの修正PR #3989のmerge commit `c2d5f697fbb30063cbde6f39e2734883b70b8753`を特定。この修正はTorchAO 0.10.0を警告付きで無効扱いし、TorchAOを使わない標準LoRA挿入を続行する。
+- 生成NotebookはCV_dataの固定main commitとPEFT修正merge commitを導入する。PEFTの修正を含む正式版が出るまでの暫定固定である。
+- インストール案内にローカル仮想環境を推奨する手順を追加。仮想環境にtorchaoを持ち込まない限り、共有Python環境のパッケージは変更しない。
+- Notebook JSONを読み書きして構造を確認。Colab T4での再実行・LoRA生成成功は未確認。
