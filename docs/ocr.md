@@ -67,12 +67,18 @@ print(result.text)
 
 `result.text`は読み取った行を改行でつないだ文字列です。`confidence`はモデルの信頼度で、正解である確率を保証しません。`polygon`は画像の左上を原点とする四つの座標です。読み取り結果は元画像と照合してください。
 
-`print(result)`でも読み取った行を表示できます。データ構造や座標が必要なときは`result.lines`または`result.to_dict()`を使います。文字位置を画像に重ねるには、文字の多い画像でラベルが重ならないよう`show_labels=False`を指定できます。
+`print(result)`でも読み取った行を表示できます。レシートのように文字が多い画像では、画像に枠を重ねる代わりに、行番号・読み取った文字・信頼度の目安を一覧で表示し、必要な行だけ画像の該当部分を開いて確認できます。`OCRResult`、`OCRLine`、`result.to_dict()`はそのまま使えます。
 
 ```python
 from cvlesson import display
 
-display.show(image_path, result, show_labels=False)
+# Notebookで読み取り文字を一覧表示。各行を開くと画像の該当箇所を確認できます。
+display.show_ocr(image_path, result)
+
+# 別アプリに渡すための標準Python辞書・JSONデータ
+ocr_data = result.to_dict()
+
+# 必要な場合だけ、従来の枠付き画像も作成・保存できます。
 display.save(image_path, "results/ocr_boxes.png", result, show_labels=False)
 ```
 
@@ -99,17 +105,7 @@ reader = ocr.load(
 
 既定の検出・認識モデルはそれぞれApache-2.0表示で、Hugging Faceの固定revisionを利用します。モデル本体はGitやPyPIに含めません。
 
-OCRの文字位置は`cvlesson.display`で元画像に重ねて表示・保存できます。画像表示用の基本依存は基本インストールに含まれています。
-
-```python
-from cvlesson import display, ocr
-
-reader = ocr.load(device="cpu")
-result = reader.predict(image_path)
-print(result.text)
-display.show(image_path, result, show_labels=False)
-display.save(image_path, "results/receipt_ocr.png", result, show_labels=False)
-```
+OCRの結果は`cvlesson.display.show_ocr()`で読み順の一覧にし、行ごとの画像部分を折りたたんで確認できます。`display.render_ocr_report()`は自己完結型HTML文字列を返すため、別の画面へ埋め込む用途にも使えます。連携用の構造化データは従来どおり`result.to_dict()`から取得します。従来の枠付き画像は必要な場合に`display.render()`または`display.save()`で作成できます。表示機能は外部通信を行いません。
 
 - 検出：[`PaddlePaddle/PP-OCRv5_mobile_det`](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_det/tree/0d63e78e2b680928f6b1747d76a08db6e645efb7)
 - 文字認識：[`PaddlePaddle/PP-OCRv5_mobile_rec`](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_rec/tree/682f20538d8c086cb2128e5cfac775e6c4904e85)
