@@ -42,9 +42,11 @@ data.show_examples(6)
 
 ## 使い方と利用条件
 
+- [高校生向けデータ・処理索引](https://github.com/708san/CV_data/blob/main/docs/student-data-index.md)では、正式登録23データを処理別に探し、内容・形式・個別説明へ移動できます。
 - [インストール案内](https://github.com/708san/CV_data/blob/main/docs/installation.md)では、CPU版OCRを含む機能別の導入方法を説明しています。
 - [データ一覧と形式](https://github.com/708san/CV_data/blob/main/docs/data-model-compatibility.md)から、扱いたいデータのタスク・ラベル・注釈を確認できます。
 - [APIリファレンス](https://github.com/708san/CV_data/blob/main/docs/api-reference.md)には、メソッド、引数、戻り値、制約をまとめています。
+- AIへコード作成・改造を頼むときは、正本と確認手順をまとめた[AI向けプロジェクト実装コンテキスト](https://github.com/708san/CV_data/blob/main/docs/ai-project-context.md)を最初に渡してください。
 - [Colabで公開版を試す手順](https://github.com/708san/CV_data/blob/main/docs/colab-verification.md)に、機能別Notebookとランタイムをまとめています。
 - データやモデルごとに利用条件が異なります。使う前に各説明ページのライセンス・出典・注意を確認してください。
 - このパッケージに画像・マスク・LoRA重み・基盤モデル重みは含みません。取得やモデル読み込みは明示的に呼び出したときだけ始まります。
