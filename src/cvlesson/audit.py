@@ -86,7 +86,7 @@ def inspect_release(
         except ImportError as exc:
             raise datasets.DatasetError(
                 "画像検査にはPillowが必要です。"
-                "python -m pip install --pre cv-data-lesson を実行してください。"
+                "python -m pip install cv-data-lesson を実行してください。"
             ) from exc
         bad: list[str] = []
         hashes: dict[str, list[dict[str, str]]] = {}

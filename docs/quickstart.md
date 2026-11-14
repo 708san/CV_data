@@ -2,16 +2,16 @@
 
 ## 1. インストール
 
-Python 3.11〜3.13で使えます。現在はalpha版（正式公開前の試用版）なので、pipにプレリリースを含める`--pre`が必要です。表や画像例の表示も含めて、最初はこの1行だけ実行します。
+Python 3.11〜3.13で使えます。基本インストールでデータと表・画像例を使えます。最初はこの1行を実行します。
 
 ```bash
-python -m pip install --pre cv-data-lesson
+python -m pip install cv-data-lesson
 ```
 
 Colabでは先頭に`%`を付けます。
 
 ```python
-%pip install --pre cv-data-lesson
+%pip install cv-data-lesson
 ```
 
 ## 2. データを探して取得
@@ -36,7 +36,7 @@ data.show_examples(6)
 ResNetを使う前に、分類・回帰用の依存を入れます。Colabでは新しいランタイムで次のセルを実行してください。既存環境のパッケージを意図せず更新しないよう、通常は`--upgrade`を付けません。
 
 ```python
-%pip install --pre 'cv-data-lesson[torch]'
+%pip install 'cv-data-lesson[torch]'
 ```
 
 `to_df()`の`split`列から学習用とテスト用を分けます。列名は実データで確認してください。

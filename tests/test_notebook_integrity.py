@@ -126,6 +126,10 @@ class NotebookIntegrityTests(unittest.TestCase):
                     "Colab確認は対象PyPI版を固定してください",
                 )
                 self.assertFalse(
+                    any("--pre" in line for line in install_lines),
+                    "安定版のColab installに--preを含めないでください",
+                )
+                self.assertFalse(
                     any("CV_data.git@" in line for line in install_lines),
                     "実際の配布wheelではなくGit checkoutをinstallしています",
                 )

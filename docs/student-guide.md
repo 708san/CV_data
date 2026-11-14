@@ -1,23 +1,23 @@
 # 画像AIの使い方ガイド
 
-このライブラリでは、課題に合う画像やモデルを選び、入力を渡し、結果を画像や数値で確かめられます。`cv-data-lesson`はpipで使う配布名、`cvlesson`はPythonで読み込む名前、表示名は「CV教材ライブラリ」です。[PyPIで公開中のalpha9](https://pypi.org/project/cv-data-lesson/0.1.0a9/)には生徒向けデータ23件と学習済みLoRA 4件があります。LoRA学習素材は現在登録されていません。使用例は出発点です。テーマ、入力画像、出力の見せ方は自分の課題に合わせて考えられます。
+このライブラリでは、課題に合う画像やモデルを選び、入力を渡し、結果を画像や数値で確かめられます。`cv-data-lesson`はpipで使う配布名、`cvlesson`はPythonで読み込む名前、表示名は「CV教材ライブラリ」です。[PyPIで公開中の0.1.0](https://pypi.org/project/cv-data-lesson/0.1.0/)には生徒向けデータ23件と学習済みLoRA 4件があります。LoRA学習素材は現在登録されていません。使用例は出発点です。テーマ、入力画像、出力の見せ方は自分の課題に合わせて考えられます。
 
 基本導入だけでデータ一覧、表、画像例を使えます。モデル機能は使いたいものだけ追加します。分類・回帰は`torch`、検出・領域分割は`vision`、SDXL画像生成は`diffusion`です。CPUのOCRは`ocr` extraだけでPaddlePaddleも入ります。複数機能を使う場合はextrasをまとめて指定できます。GPU版PaddlePaddleだけは環境に合う公式wheelを選びます。コマンドは[インストール案内](installation.md)を確認してください。
 
 Colabでは、最初は新しいランタイムで使う機能の行だけを実行してください。通常の導入では`--upgrade`を付けません。今入っている版を意図して更新する場合だけ、[インストール案内](installation.md)を確認してから更新してください。
 
 ```python
-%pip install --pre 'cv-data-lesson[torch]'       # 分類・回帰
-%pip install --pre 'cv-data-lesson[vision]'      # 検出・領域分割
-%pip install --pre 'cv-data-lesson[diffusion]'   # SDXL画像生成
+%pip install 'cv-data-lesson[torch]'       # 分類・回帰
+%pip install 'cv-data-lesson[vision]'      # 検出・領域分割
+%pip install 'cv-data-lesson[diffusion]'   # SDXL画像生成
 ```
 
-CPU OCRは`%pip install --pre 'cv-data-lesson[ocr]'`だけで準備できます。モデル重みやデータはこのコマンドでは入りません。初回の`datasets.get()`またはモデルの`load()`時に取得します。
+CPU OCRは`%pip install 'cv-data-lesson[ocr]'`だけで準備できます。モデル重みやデータはこのコマンドでは入りません。初回の`datasets.get()`またはモデルの`load()`時に取得します。
 
 OCR・検出・画像生成を同じ新規環境で使う場合は、まとめて導入できます。
 
 ```python
-%pip install --pre 'cv-data-lesson[ocr,vision,diffusion]'
+%pip install 'cv-data-lesson[ocr,vision,diffusion]'
 ```
 
 メソッドの引数、既定値、戻り値、入力の条件は[公開APIリファレンス](api-reference.md)を確認してください。

@@ -5,10 +5,10 @@ PyPIでは配布名と版番号がページタイトルに表示されます。G
 
 ## インストール
 
-Python 3.11〜3.13で利用できます。現在はalpha版（正式公開前の試用版）なので、pipにプレリリースを含める`--pre`を付けます。通常のデータ利用と表・画像例の表示は、次の1行で導入できます。
+Python 3.11〜3.13で利用できます。基本インストールで通常のデータ利用と表・画像例の表示ができます。
 
 ```bash
-python -m pip install --pre cv-data-lesson
+python -m pip install cv-data-lesson
 ```
 
 [PyPIの配布ページ](https://pypi.org/project/cv-data-lesson/)から公開版と版ごとの履歴を確認できます。
