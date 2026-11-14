@@ -1,4 +1,4 @@
-# 作業中：安定版0.1.0を公開し、`--pre`を通常導線から外す
+# 完了：安定版0.1.0を公開し、`--pre`を通常導線から外す
 
 更新日：2026-11-14。対象仕様：0.26、6。理由：利用者が毎回プレリリース指定を付けずに導入できるよう、alpha9から安定版へ移行する。
 
@@ -13,7 +13,7 @@
 
 完了条件：`python -m pip install cv-data-lesson`と各機能extraの通常導入で安定版が選ばれ、公開文書とNotebookに現行alpha向け`--pre`指定が残らず、CI・PyPI公開確認が成功する。
 
-進捗：仕様0.26と本計画を更新済み。版、classifier、README・利用文書・Notebook・実行時エラー案内を安定版へ同期し、安定版メタデータと版固定のテストを追加。ローカルテスト106件成功・22件skip。PR CI待ち。
+完了：PR [#107](https://github.com/708san/CV_data/pull/107)をCI成功後にsquash merge（`4a62ca7`）。GitHub Release [v0.1.0](https://github.com/708san/CV_data/releases/tag/v0.1.0)からPyPI Trusted Publishingを実行し、[PyPI 0.1.0](https://pypi.org/project/cv-data-lesson/0.1.0/)でversion・Production/Stable classifier・READMEリンク・Documentation URL・wheel/sdistを確認。wheel SHA-256 `41e206ad4f62ab220df5e1f96958dcee8fe33576b44db7b3a76e44dbb947d3a9`、sdist SHA-256 `6181fa864af6fbfef89be29c562efa2b2379169a8a04beda3471beeae4ecc3c2`。PR CIでPython 3.11/3.12/3.13、display、package-smoke、複数extra依存解決が成功。ローカルPython 3.12は106件成功・22件skip。新規一時venvで`pip install cv-data-lesson`を実行し、`0.1.0`選択、import、生徒向けデータ23件の一覧を確認。安定版でのColab再実行は未実施。
 
 # 完了：文書更新をalpha9としてPyPIへ反映
 
