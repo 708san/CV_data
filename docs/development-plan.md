@@ -1,4 +1,4 @@
-# 作業中：公開API・インストール・利用ガイドの最終整備
+# 完了：公開API・インストール・利用ガイドの最終整備
 
 更新日：2026-11-14。対象仕様：0.25、6。目的は、公開中のalpha8を利用する高校生・教員が導入方法と実際のAPI契約を迷わず確認でき、AIに改造を頼む場合も実装にないAPIを作らせない状態に整えること。
 
@@ -13,7 +13,7 @@
 
 完了条件：公開APIの使い方を一か所で調べられる。高校生向け説明とAI向け仕様が同じAPIを案内する。通常インストール、機能別インストール、Colabでの再実行手順が互いに矛盾しない。軽量テストと文書整合検査が成功し、未実施の実機確認は未確認と明示する。
 
-進捗：仕様0.25と本計画を先行更新。公開APIリファレンス、高校生向け案内、AI改造ガイド、README、導入・機能ガイドの更新を実装に照合して完了。公開版リンクをalpha8へ揃え、Colabの通常installから`--upgrade`を外した。Python 3.12で規定テスト104件成功（22件は環境にPillow・pandas等がなくskip）。変更文書13件のPython例・ローカルリンク、`git diff --check`は通過。PR CI確認待ち。
+進捗：PR [#103](https://github.com/708san/CV_data/pull/103)をCI成功後にmainへsquash merge（`0560d63`）。仕様0.25、公開APIリファレンス、高校生向け案内、AI改造ガイド、README、導入・機能ガイドを実装に照合して更新した。公開版リンクをalpha8へ揃え、Colabの通常installから`--upgrade`を外した。ローカルPython 3.12では104件成功・22件skip（Pillow・pandas等が未導入）。CIではPython 3.11/3.12/3.13、標準依存表示チェック、wheel/sdist build・clean venv install、複数extra依存解決がすべて成功。13文書のPython例・ローカルリンク、`git diff --check`も通過。Colabでの再実行、OCR実画像品質、GPU/重量級モデルの追加確認は未実施。PyPI・GitHub Releaseは作成していない。
 
 # 完了：OCR全文表示をalpha8でColab確認
 
