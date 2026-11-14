@@ -46,7 +46,7 @@ python -m pip install --pre 'cv-data-lesson[ocr]'
 
 GPU版PaddlePaddleを使う場合だけは、[PaddlePaddle公式インストール案内](https://www.paddlepaddle.org.cn/install/quick)からOS/CUDAに合うwheelを選びます。Paddle GPU版の導入手順はCPU版と異なります。
 
-OCRとPyTorch系のextrasを同時に使う場合は、同じ新規仮想環境へまとめて指定できます。Colab Notebookも一つのinstall行で複数extraを選べます。Python 3.11〜3.13の主要な組み合わせはalpha8のリリースCIで依存解決を確認済みです。OS固有のGPU wheelやColabに事前導入された全パッケージとの組み合わせを保証するものではありません。alpha9では同じコードの配布版に、更新した利用者向け文書を含める予定です。
+OCRとPyTorch系のextrasを同時に使う場合は、同じ新規仮想環境へまとめて指定できます。Colab Notebookも一つのinstall行で複数extraを選べます。Python 3.11〜3.13の主要な組み合わせはalpha9のリリースCIで依存解決とclean installを確認済みです。OS固有のGPU wheelやColabに事前導入された全パッケージとの組み合わせを保証するものではありません。alpha9には更新した利用者向け文書が含まれています。
 
 ```bash
 python -m pip install --pre 'cv-data-lesson[ocr,vision,diffusion]'

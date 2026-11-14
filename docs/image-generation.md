@@ -116,6 +116,6 @@ result.save("park_icon.png")
 
 ## Colabで動作を試す
 
-[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。Notebookは公開後の`0.1.0a9`を使い、登録済み4件の情報を確認してから選択した1件だけを取得・生成します。Image-to-Imageでは利用者が明示アップロードした画像を使います。初回はSDXL本体と選択したLoRAの重みを取得するため数GBの空き容量が必要です。利用者報告ではColabでLoRA生成とImage-to-Imageを確認済みです。実行環境の詳細は未報告です。
+[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。Notebookは公開中の`0.1.0a9`を使い、登録済み4件の情報を確認してから選択した1件だけを取得・生成します。Image-to-Imageでは利用者が明示アップロードした画像を使います。初回はSDXL本体と選択したLoRAの重みを取得するため数GBの空き容量が必要です。利用者報告ではColabでLoRA生成とImage-to-Imageを確認済みです。実行環境の詳細は未報告です。
 
 メソッドの引数・制約・戻り値は[公開APIリファレンス](api-reference.md#生成表示)にまとめています。

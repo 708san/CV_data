@@ -1,11 +1,11 @@
 # 公開版をColabで確認する
 
-この手順は、GitHub上の開発コードではなく、PyPIから公開された同じ版のwheelをColabで動かすチェックリストです。公開中は`0.1.0a8`、次版`0.1.0a9`は準備中です。下記の結果は利用者からの実行報告に基づき、報告のない機能は未確認のまま記録します。
+この手順は、GitHub上の開発コードではなく、PyPIから公開された同じ版のwheelをColabで動かすチェックリストです。公開版は`0.1.0a9`です。Notebookはこの版を指定しますが、alpha9でのColab実機再実行は未確認です。下記の結果は利用者からの実行報告に基づき、報告のない機能は未確認のまま記録します。
 
 ## 実行前
 
 1. 下のNotebookリンクを開き、自分のGoogle Driveへコピーします。
-2. 各Notebookの先頭にある `%pip install` 行が確認したい公開版を指定していることを確認します。準備中Notebookは`0.1.0a9`を指定します。PyPI公開後に実行してください。
+2. 各Notebookの先頭にある `%pip install` 行が確認したい公開版を指定していることを確認します。現在のNotebookは`0.1.0a9`を指定しています。
 3. OCR Notebookは`[ocr]`だけでPaddlePaddle CPU版を含めて導入します。OCRとPyTorch系をまとめて使う場合は`[ocr,vision,diffusion]`を一度に指定できます。Colabの既存パッケージと競合した場合は新しいランタイムを作り、機能別に分けてください。
 4. 画像データ・モデル重みを初回に取得します。モデル重みはLoRAを含めて数GBになるため、T4を選び、Colabの空きディスクを確認してください。データ・モデルの利用条件はNotebookに表示される説明を読んでください。
 5. インストール後にランタイム再起動を求められた場合は再起動し、Notebook先頭から実行します。
@@ -16,7 +16,7 @@
 |---|---|---|---|---|
 | 1 | [分類Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/cv/classification_v1.ipynb) | T4 GPU推奨。CPUでも動くが学習は遅くなる | PyPI install、`tomato_leaves`の取得、表・日本語画像表示、ResNet分類のfit/predict/predict_proba/score | 利用者確認済み。test正解率0.825の報告あり |
 | 2 | [回帰Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/resnet_regression_smoke_test.ipynb) | T4 GPU推奨 | `lefood_set`の取得、画像ペアのResNetRegressor、validation/test評価 | 利用者確認済み（正しく動作との報告） |
-| 3 | [日本語OCR Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/ocr_smoke_test.ipynb) | 新しいCPUランタイム | `ocr` extraによるPaddlePaddle CPU版とOCR依存の導入、OCRモデル取得、文字・信頼度・座標の戻り値、レシート画像推論 | OCR推論・戻り値とalpha8の全文＋折りたたみ詳細はColabで利用者確認済み（GPU・Python版は未報告） |
+| 3 | [日本語OCR Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/ocr_smoke_test.ipynb) | 新しいCPUランタイム | `ocr` extraによるPaddlePaddle CPU版とOCR依存の導入、OCRモデル取得、文字・信頼度・座標の戻り値、レシート画像推論 | OCR推論・戻り値とalpha8の全文＋折りたたみ詳細はColabで利用者確認済み。alpha9では未実行（GPU・Python版は未報告） |
 | 4 | [検出・領域分割Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/vision_smoke_test.ipynb) | T4 GPU | DETR検出、SAMマスク、画像重ね合わせ、FruitSeg30のテスト画像で比較、Chromeでポップアップ画像アップロード | 利用者確認済み。DETR/SAM動作、マスク画像の単一表示、Chromeアップロードを確認 |
 | 5 | [SDXL・LoRA Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb) | T4 GPU | PyPI install、text-to-image、image-to-image、選択したLoRA1件の読み込み・生成・保存 | LoRA生成とImage-to-Imageは利用者確認済み。LoRA ID・GPU等は未報告 |
 
@@ -33,7 +33,7 @@ Colabの実際のGPU名、Python、`cv-data-lesson`の版を記録してくだ�
 | ランタイム / GPU名 | Colab。GPU名は未報告（T4実測としては記録しない） |
 | 分類 | 確認済み。test正解率0.825との報告 |
 | 回帰 | 確認済み。正しく動作との報告 |
-| OCR推論・戻り値・表示 | OCR推論の`TOTAL 1280 JPY`（confidence 0.993）と、alpha8の全文優先表示を利用者確認済み。実行環境詳細は未報告 |
+| OCR推論・戻り値・表示 | OCR推論の`TOTAL 1280 JPY`（confidence 0.993）と、alpha8の全文優先表示を利用者確認済み。alpha9の再実行なし。実行環境詳細は未報告 |
 | DETR・SAM | 確認済み。SAMマスク表示は1枚、Chromeのポップアップアップロードも確認 |
 | LoRA生成 / Image-to-Image | 利用者がColabで両方の動作を確認。LoRA ID・GPUなど実行条件は未報告 |
 | 失敗・制約・Colab出力リンク | 上記の確認済み事項以外は未報告 |

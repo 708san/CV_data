@@ -1,4 +1,4 @@
-# 作業中：文書更新をalpha9としてPyPIへ反映
+# 完了：文書更新をalpha9としてPyPIへ反映
 
 更新日：2026-11-14。対象仕様：0.25、6。理由：GitHub mainのREADME・API・高校生向け案内は更新済みだが、PyPI本文はalpha8時点のスナップショットである。過去のPyPI更新依頼に基づき、alpha9として利用者へ届ける。
 
@@ -13,7 +13,7 @@
 
 完了条件：PyPIでalpha9が取得でき、配布名・version・README・project linksがalpha9のGitHub文書と揃う。CI成功、PyPI配布物確認後に完了とする。
 
-進捗：GitHub文書整備PR #103と完了記録PR #104はmainへ統合済み。alpha9へ版指定とPyPI公開向け記録を同期し、Notebook版チェックがalpha8を固定していたため、pyproject.toml追従へ更新した。対応Python 3.12で104件成功・22件skip。PR CIとPyPI公開はこれから。
+完了：PR [#105](https://github.com/708san/CV_data/pull/105)はCI成功後にsquash merge（`73d2d15`）。GitHub Release [v0.1.0a9](https://github.com/708san/CV_data/releases/tag/v0.1.0a9)と[PyPI 0.1.0a9](https://pypi.org/project/cv-data-lesson/0.1.0a9/)を公開し、wheel/sdist、SHA-256、README内のAPI・高校生向けガイド案内、Documentation URLを確認した。Release workflowのbuild・metadata・禁止バイナリ検査・Trusted Publishingが成功。PR CIもPython 3.11/3.12/3.13、display、package-smoke、複数extra依存解決が成功。ローカルPython 3.12は104件成功・22件skip（任意依存なし）。alpha9のColab再実行は未実施。
 
 # 完了：公開API・インストール・利用ガイドの最終整備
 
