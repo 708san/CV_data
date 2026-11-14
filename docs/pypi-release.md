@@ -1,6 +1,6 @@
 # PyPI公開・更新の運用記録
 
-安定版`cv-data-lesson==0.1.0`は公開準備中です。公開後は`python -m pip install cv-data-lesson`で導入できます。公開APIリファレンスと高校生向けガイドをPyPI配布ページから案内します。既に公開した`0.1.0a9`はそのまま残し、PyPI上の同じ版は差し替えません。
+安定版`cv-data-lesson==0.1.0`は2026-11-14に[PyPI](https://pypi.org/project/cv-data-lesson/0.1.0/)へ公開済みです（[GitHub Release](https://github.com/708san/CV_data/releases/tag/v0.1.0)）。通常のpipコマンドで導入でき、公開APIリファレンスと高校生向けガイドを配布ページから確認できます。Colabで安定版パッケージを再実行した確認はまだありません。既に公開した`0.1.0a9`はそのまま残します。
 
 ## 利用者向けコマンド
 
@@ -8,7 +8,7 @@
 python -m pip install cv-data-lesson
 ```
 
-安定版公開後は、同じ通常コマンドで取得できます。READMEと利用ガイドは公開済み版に合わせて更新します。開発checkoutやeditable installは開発者向けの作業であり、利用者向けインストール案内へ混ぜません。
+このコマンドで安定版を取得できます。READMEと利用ガイドは公開済み版に合わせて更新します。開発checkoutやeditable installは開発者向けの作業であり、利用者向けインストール案内へ混ぜません。
 
 ## パッケージに含めるもの
 
@@ -46,7 +46,7 @@ GitHub側の`pypi` environmentを作成し、必要ならdeployment protection r
 
 ## 公開履歴
 
-- `0.1.0`（準備中）：安定版。通常のpip導入、機能別extras、Colab Notebookの版指定を安定版に切り替えます。
+- `0.1.0`：初回安定版。`--pre`なしの通常pip導入を案内し、Colab Notebookと機能別extrasを同じ版へ固定。2026-11-14公開。
 - `0.1.0a9`：高校生向け利用ガイド、メソッドの引数・既定値・戻り値を記載したAPIリファレンス、Colab導入案内をPyPI配布ページに反映。機能コードの変更なし。2026-11-14公開。
 - `0.1.0a8`：OCR結果の全文を先に表示し、行別詳細を折りたたむ。OCRResult・to_dict()の構造は維持。2026-11-14公開。Colabで表示確認済み。
 - `0.1.0a7`：OCR一覧表示の改良版。PyPI未公開のため、利用者は後続の`0.1.0a8`を使用します。

@@ -1,9 +1,11 @@
 # 開発進捗
 
-## 2026-11-14：安定版0.1.0公開準備中
+## 2026-11-14：安定版0.1.0公開・通常pip install確認
 
-- 0.1.0a9から安定版`0.1.0`へ移行し、利用者向け導入コマンドから`--pre`を外す作業中です。機能別extras・Notebook・実行時エラー案内も通常のpip導入に揃えます。
-- 仕様0.26と開発計画に要件を記録しました。通常インストール、機能extras、Colab Notebook、実行時依存エラー案内から`--pre`を除去し、安定版メタデータへ更新中です。PyPI/GitHub Releaseは未作成です。
+- 0.1.0a9から安定版`0.1.0`へ移行し、利用者向け導入コマンド、機能extras、Colab Notebook、実行時エラー案内から`--pre`を除去しました。README・ガイドは`python -m pip install cv-data-lesson`へ統一。
+- 仕様0.26を更新し、PR [#107](https://github.com/708san/CV_data/pull/107)をCI成功後にmainへ統合。GitHub Release [v0.1.0](https://github.com/708san/CV_data/releases/tag/v0.1.0)、[PyPI 0.1.0](https://pypi.org/project/cv-data-lesson/0.1.0/)を公開しました。CIはPython 3.11/3.12/3.13、表示、wheel/sdist、clean venv install、複数extra依存解決が成功。
+- PyPI JSONでProduction/Stable classifier、APIリファレンス案内、Documentation URL、wheel/sdistを確認。SHA-256はwheel `41e206ad4f62ab220df5e1f96958dcee8fe33576b44db7b3a76e44dbb947d3a9`、sdist `6181fa864af6fbfef89be29c562efa2b2379169a8a04beda3471beeae4ecc3c2`。
+- 新しい一時仮想環境で`pip install cv-data-lesson`を実行し、`0.1.0`が選ばれ、`cvlesson` importと生徒向けデータ23件の一覧表示が成功。ローカルPython 3.12のネットワーク不要テストは106件成功・22件skip。安定版0.1.0のColab実機再実行は未実施です。
 
 ## 2026-11-14：alpha9公開・文書配布を確認
 
