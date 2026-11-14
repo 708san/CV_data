@@ -22,21 +22,7 @@ source .venv/bin/activate
 python -m pip install cv-data-lesson
 ```
 
-Colabでは同じ基本導入を次のセルで実行します。
-
-```python
-%pip -q install cv-data-lesson
-```
-
 配布名は`cv-data-lesson`、Pythonのimport名は`cvlesson`です。`[display]`や`[dataframe]`は従来コマンドとの互換用に残っていますが、通常は指定不要です。
-
-通常のデータ利用に`ipywidgets`や`nbformat`を追加する必要はありません。Notebookにwidget操作を実装する場合だけ`ipywidgets`を追加してください。`nbformat`はNotebookファイルをPythonから作成・編集する開発作業向けで、ColabでNotebookを実行するための依存ではありません。Pillowは基本インストールに含まれるため、別途追加しません。モデル機能を使う場合は、下の表から使う機能のextraを選びます。
-
-データ選択画面などで`ipywidgets`を実際に使うColab Notebookでは、次のように追加できます。
-
-```python
-%pip -q install cv-data-lesson ipywidgets
-```
 
 | 使いたい機能 | インストール・準備 | 実行時に取得するもの |
 |---|---|---|
