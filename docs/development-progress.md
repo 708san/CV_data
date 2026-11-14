@@ -1,5 +1,14 @@
 # 開発進捗
 
+## 2026-11-14：公開API・導入案内を整備（PR #103 merged）
+
+- `docs/api-reference.md`を追加。データ・ResNet・OCR・DETR/SAM・SDXL/LoRA・表示/保存の公開メソッドについて、引数、既定値、入力、戻り値、副作用、制約を実装と照合して記載。
+- README、インストール案内、高校生向けガイド、AI改造ガイド、機能別ガイド、PyPI運用記録のリンク・公開版・導入方法をalpha8に統一。Colabでは新しいランタイムを基本にし、通常のextra導入に`--upgrade`を付けない。
+- カタログ実装から生徒向けデータ23件、学習済みLoRA4件、登録済みLoRA学習素材0件を確認。
+- PR [#103](https://github.com/708san/CV_data/pull/103)を全CI成功後にsquash merge。Python 3.11/3.12/3.13 unit、display-smoke、package-smoke（wheel/sdist buildとclean venv install）、optional-dependency-resolutionが成功。
+- ローカルPython 3.12のテストは104件成功・22件skip。隔離環境にPillow・pandas等がなくskipしたが、依存を入れたCIでは表示テストを含め成功。13文書のPython例・ローカルリンク、`git diff --check`も確認済み。
+- この作業ではPyPI/GitHub Releaseを作成していない。Colabでの再実行とGPU/重量級モデルの動作確認はしていない。以前のユーザー報告によるColab確認状態は[Colab確認表](colab-verification.md)を参照。
+
 ## 2026-11-14：OCR全文表示alpha8をColabで利用者確認
 
 - OCR全文を改行を保ったひとつの選択・コピー可能な枠で表示し、行ごとの信頼度・画像切り抜きを折りたたみ詳細へ移した。OCRResult、OCRLine、to_dict()は維持。
