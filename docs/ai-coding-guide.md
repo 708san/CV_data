@@ -1,6 +1,6 @@
 # AIに改造を相談するガイド
 
-AIに最初に渡すプロジェクト仕様は[AI向けプロジェクト実装コンテキスト](ai-project-context.md)にまとめています。高校生向けのデータ・処理選びは[生徒向け索引](student-data-index.md)、APIの正確な仕様は[APIリファレンス](api-reference.md)が基準です。
+AIに最初に渡すプロジェクト仕様は[AI向けプロジェクト実装コンテキスト](ai-project-context.md)にまとめています。高校生向けのデータ選びは[やさしいデータ案内](student-data-index.md)、APIの正確な仕様は[APIリファレンス](api-reference.md)が基準です。
 
 ChatGPT、CodexなどのAIに相談するときは、「何を作るか」だけでなく、使うデータ、実行場所、見たい結果、守る条件も伝えます。題材や見せ方を自分の困りごとに合わせて変えてください。
 
