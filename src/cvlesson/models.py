@@ -15,7 +15,7 @@ def available_devices() -> dict[str, bool]:
     try:
         import torch
     except ImportError as exc:
-        raise ModelError("ResNetにはPyTorchが必要です。python -m pip install --pre 'cv-data-lesson[torch]'を実行してください。") from exc
+        raise ModelError("ResNetにはPyTorchが必要です。python -m pip install 'cv-data-lesson[torch]'を実行してください。") from exc
     return {
         "cpu": True,
         "cuda": bool(torch.cuda.is_available()),
@@ -90,7 +90,7 @@ def _normalize_image_input(value: Any, index: int) -> Any:
         from PIL import Image
     except ImportError as exc:
         raise ValueError(
-            f"X[{index}]は画像パスまたはPillow Imageで指定してください。Pillowにはpython -m pip install --pre 'cv-data-lesson[torch]'が必要です。"
+            f"X[{index}]は画像パスまたはPillow Imageで指定してください。Pillowにはpython -m pip install 'cv-data-lesson[torch]'が必要です。"
         ) from exc
     if isinstance(value, Image.Image):
         return value.copy()
@@ -152,7 +152,7 @@ class _ResNetEstimator:
             from torchvision import models, transforms
         except (ImportError, RuntimeError) as exc:
             raise ModelError(
-                "ResNetには対応するPyTorchとTorchvisionが必要です。python -m pip install --pre 'cv-data-lesson[torch]'を実行してください。"
+                "ResNetには対応するPyTorchとTorchvisionが必要です。python -m pip install 'cv-data-lesson[torch]'を実行してください。"
             ) from exc
 
         devices = available_devices()

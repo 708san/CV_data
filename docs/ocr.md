@@ -11,7 +11,7 @@ ColabでCPU推論を試すときは[日本語OCRのColab Notebook](https://colab
 CPUで使う場合、PaddlePaddle CPU版を含む`ocr` extraを一度入れるだけで使えます。GPU版を使う場合だけは、OS/CUDAに合うGPU wheelを[PaddlePaddle公式案内](https://www.paddlepaddle.org.cn/install/quick)で選んでください。利用者が`import paddle`を書く必要はなく、`ocr.load()`を呼んだ時に必要なモジュールを読み込みます。
 
 ```bash
-python -m pip install --pre 'cv-data-lesson[ocr]'
+python -m pip install 'cv-data-lesson[ocr]'
 ```
 
 これはPaddlePaddle CPU版、PaddleOCR 3.1.0、互換範囲を3.2未満に固定したPaddleX 3.1系、LangChain 1.0未満、Hugging Face Hubを導入します。PaddleX 3.1系がLangChain 1.xの旧APIを参照するため、LangChainの上限を指定しています。OCRモデルは合計約22 MBで、`load()`時に固定revisionからキャッシュへ取得されます。公開モデルの取得にHugging Faceのログインや`HF_TOKEN`は不要です。ライブラリはOCRを呼んだ時だけPaddle系モジュールをimportし、実行中にpip installは行いません。
@@ -19,7 +19,7 @@ python -m pip install --pre 'cv-data-lesson[ocr]'
 OCRと検出・領域分割、画像生成を同じ環境で使う場合も、機能をまとめて指定できます。新しい仮想環境で先に依存解決してください。Colabはランタイムに既に入っているパッケージとの組み合わせがあるため、問題が出た場合は機能別に新しいランタイムを使います。
 
 ```bash
-python -m pip install --pre 'cv-data-lesson[ocr,vision,diffusion]'
+python -m pip install 'cv-data-lesson[ocr,vision,diffusion]'
 ```
 
 以前のColabランタイムで`No module named 'langchain.docstore'`が出た場合は、修正済みの依存指定を入れ直してからランタイムを再起動してください。古い`cvlesson`をimportしたままでは、入れ直した依存は反映されません。

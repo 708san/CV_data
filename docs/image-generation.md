@@ -9,7 +9,7 @@ SDXLは文章から画像を生成したり、入力画像の雰囲気を変え�
 画像生成に必要なDiffusers・PyTorch・PEFTなどは、`diffusion` extraからまとめて入ります。別に`pip install torch`を重ねる必要はありません。
 
 ```bash
-python -m pip install --pre 'cv-data-lesson[diffusion]'
+python -m pip install 'cv-data-lesson[diffusion]'
 ```
 
 Colabにも通常PyTorchが入っています。独自のCUDA版を選びたい場合だけ、PyTorch公式手順を先に実行してください。モデル本体とLoRA重みはこのinstallでは入りません。`generation.load()`を呼ぶときに取得します。詳細は[インストール案内](installation.md)を参照してください。
@@ -116,6 +116,6 @@ result.save("park_icon.png")
 
 ## Colabで動作を試す
 
-[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。Notebookは公開中の`0.1.0a9`を使い、登録済み4件の情報を確認してから選択した1件だけを取得・生成します。Image-to-Imageでは利用者が明示アップロードした画像を使います。初回はSDXL本体と選択したLoRAの重みを取得するため数GBの空き容量が必要です。利用者報告ではColabでLoRA生成とImage-to-Imageを確認済みです。実行環境の詳細は未報告です。
+[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。Notebookは公開後の`0.1.0`を使い、登録済み4件の情報を確認してから選択した1件だけを取得・生成します。Image-to-Imageでは利用者が明示アップロードした画像を使います。初回はSDXL本体と選択したLoRAの重みを取得するため数GBの空き容量が必要です。利用者報告ではColabでLoRA生成とImage-to-Imageを確認済みです。実行環境の詳細は未報告です。
 
 メソッドの引数・制約・戻り値は[公開APIリファレンス](api-reference.md#生成表示)にまとめています。

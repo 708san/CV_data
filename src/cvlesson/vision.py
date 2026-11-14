@@ -179,7 +179,7 @@ def load_detector(
     try:
         from transformers import AutoImageProcessor, AutoModelForObjectDetection
     except ImportError as exc:
-        raise VisionError("検出にはTransformersが必要です。python -m pip install --pre 'cv-data-lesson[vision]'を実行してください。") from exc
+        raise VisionError("検出にはTransformersが必要です。python -m pip install 'cv-data-lesson[vision]'を実行してください。") from exc
     kwargs = _load_kwargs(cache_dir, local_files_only)
     try:
         processor = AutoImageProcessor.from_pretrained(model_id, revision=revision, **kwargs)
@@ -202,7 +202,7 @@ def load_segmenter(
         import numpy
         from transformers import SamModel, SamProcessor
     except ImportError as exc:
-        raise VisionError("領域分割にはNumPyとTransformersが必要です。python -m pip install --pre 'cv-data-lesson[vision]'を実行してください。") from exc
+        raise VisionError("領域分割にはNumPyとTransformersが必要です。python -m pip install 'cv-data-lesson[vision]'を実行してください。") from exc
     kwargs = _load_kwargs(cache_dir, local_files_only)
     try:
         processor = SamProcessor.from_pretrained(model_id, revision=revision, **kwargs)
@@ -220,7 +220,7 @@ def _import_torch():
     except ImportError as exc:
         raise VisionError(
             "検出・領域分割にはPyTorchが必要です。公式サイトでCPU/GPUに合うPyTorchを導入してから、"
-            "python -m pip install --pre 'cv-data-lesson[vision]'を実行してください。"
+            "python -m pip install 'cv-data-lesson[vision]'を実行してください。"
         ) from exc
     return torch
 
@@ -245,7 +245,7 @@ def _open_image(image: str | Path):
     try:
         from PIL import Image
     except ImportError as exc:
-        raise VisionError("画像処理にはPillowが必要です。python -m pip install --pre 'cv-data-lesson[vision]'を実行してください。") from exc
+        raise VisionError("画像処理にはPillowが必要です。python -m pip install 'cv-data-lesson[vision]'を実行してください。") from exc
     if isinstance(image, (str, Path)):
         path = Path(image).expanduser()
         if not path.is_file():

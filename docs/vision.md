@@ -24,7 +24,7 @@ Colab T4での動作確認には[DETR・SAMのColab Notebook](https://colab.rese
 通常は`vision` extraがPyTorch・Torchvision・Transformers等をまとめて導入します。GPU向けのPyTorch wheelを自分で選ぶ場合は、[PyTorch公式インストーラー](https://pytorch.org/get-started/locally/)のコマンドを先に実行してからextraを導入します。
 
 ```bash
-python -m pip install --pre 'cv-data-lesson[vision]'
+python -m pip install 'cv-data-lesson[vision]'
 ```
 
 この追加依存はHugging Face Hub 1.xを許容し、Colabにある新しいTransformers等が必要とするHubを古い版へ下げません。

@@ -35,6 +35,20 @@ class PackagingMetadataTests(unittest.TestCase):
         self.assertFalse({"torch", "torchvision", "paddleocr", "transformers", "diffusers"} & dependencies)
         self.assertEqual(self.project["requires-python"], ">=3.11,<3.14")
 
+    def test_project_metadata_is_a_stable_release(self):
+        self.assertEqual(self.project["version"], "0.1.0")
+        self.assertIn("Development Status :: 5 - Production/Stable", self.project["classifiers"])
+        self.assertEqual(
+            self.project["urls"]["Documentation"],
+            "https://github.com/708san/CV_data/blob/v0.1.0/docs/student-guide.md",
+        )
+
+    def test_runtime_install_hints_do_not_require_prerelease_flag(self):
+        source_root = Path(__file__).resolve().parents[1] / "src" / "cvlesson"
+        for path in source_root.glob("*.py"):
+            with self.subTest(module=path.name):
+                self.assertNotIn("pip install --pre", path.read_text(encoding="utf-8"))
+
     def test_features_are_declared_as_separate_extras(self):
         extras = self.project["optional-dependencies"]
         self.assertNotIn("all", extras)
@@ -76,7 +90,7 @@ class OptionalDependencyGuidanceTests(unittest.TestCase):
 
     def test_dataframe_error_explains_basic_install(self):
         with patch.dict(sys.modules, {"pandas": None}):
-            with self.assertRaisesRegex(DatasetError, r"pip install --pre cv-data-lesson"):
+            with self.assertRaisesRegex(DatasetError, r"pip install cv-data-lesson"):
                 self.bundle.to_df()
 
     def test_torch_dataset_error_points_to_torch_extra(self):
@@ -87,7 +101,7 @@ class OptionalDependencyGuidanceTests(unittest.TestCase):
     def test_display_error_explains_basic_install(self):
         with patch.dict(sys.modules, {"matplotlib": None}):
             with self.assertRaisesRegex(
-                DatasetError, r"pip install --pre cv-data-lesson"
+                DatasetError, r"pip install cv-data-lesson"
             ):
                 self.bundle.show_examples()
 
@@ -155,7 +169,7 @@ class OptionalDependencyGuidanceTests(unittest.TestCase):
             "matplotlib": matplotlib,
             "matplotlib.font_manager": font_manager,
         }), patch("importlib.metadata.distribution", side_effect=metadata.PackageNotFoundError):
-            with self.assertRaisesRegex(DatasetError, r"pip install --pre --upgrade cv-data-lesson"):
+            with self.assertRaisesRegex(DatasetError, r"pip install --upgrade cv-data-lesson"):
                 _enable_japanese_matplotlib()
 
 

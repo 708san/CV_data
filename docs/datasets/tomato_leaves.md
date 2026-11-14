@@ -19,7 +19,7 @@ data = datasets.get("トマトの葉")
 df = data.to_df()  # 基本インストールで利用できます
 print(df.head())
 print(df["label_ja"].value_counts())
-train_data = data.to_torch_dataset(split="train", image_size=(64, 64))  # pip install --pre 'cv-data-lesson[torch]'
+train_data = data.to_torch_dataset(split="train", image_size=(64, 64))  # pip install 'cv-data-lesson[torch]'
 ```
 
 画像は`images/train/<ラベル>/`と`images/test/<ラベル>/`に格納されています。ラベルは`labels.csv`の`image,label,split`で確認できます。元の画像サイズは統一していません。モデルを学習するときは画像サイズなどを揃えます。

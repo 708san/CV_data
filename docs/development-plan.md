@@ -1,3 +1,20 @@
+# 作業中：安定版0.1.0を公開し、`--pre`を通常導線から外す
+
+更新日：2026-11-14。対象仕様：0.26、6。理由：利用者が毎回プレリリース指定を付けずに導入できるよう、alpha9から安定版へ移行する。
+
+作業単位：1ブランチ・1PR。コード機能の変更は含めず、公開版メタデータ、利用者向け導入文書、Colab Notebook、公開記録をまとめて安定版に揃える。
+
+作業順と受け入れ条件：
+1. 仕様書へ安定版要件を先に記録する（完了）。
+2. 本計画を先行記録する。版を`0.1.0`にし、Production/Stable classifierと固定Documentation URLを一致させる。PyPI README、全ガイド、エラー案内、Colab install行から`--pre`を外し、Notebookでは公開版`0.1.0`を固定する。alpha9以前の履歴記述は過去の事実として残す。
+3. 通常版install、extraの依存解決、PyPI wheel/sdist、パッケージ内容、Notebook版固定、リンク・版表記、ネットワーク不要テストをCIで確認する。テストで安定版version/classifierとNotebookの版一致も確認する。
+4. PRをCI成功後に統合し、GitHub Release `v0.1.0`からTrusted Publishingを実行する。PyPIのversion、wheel/sdist、README、Documentation URLを確認する。
+5. 既存Colab検証はalpha9までの動作確認であり、安定版パッケージのColab再実行は別状態として正確に記録する。
+
+完了条件：`python -m pip install cv-data-lesson`と各機能extraの通常導入で安定版が選ばれ、公開文書とNotebookに現行alpha向け`--pre`指定が残らず、CI・PyPI公開確認が成功する。
+
+進捗：仕様0.26と本計画を更新済み。版、classifier、README・利用文書・Notebook・実行時エラー案内を安定版へ同期し、安定版メタデータと版固定のテストを追加。ローカルテスト106件成功・22件skip。PR CI待ち。
+
 # 完了：文書更新をalpha9としてPyPIへ反映
 
 更新日：2026-11-14。対象仕様：0.25、6。理由：GitHub mainのREADME・API・高校生向け案内は更新済みだが、PyPI本文はalpha8時点のスナップショットである。過去のPyPI更新依頼に基づき、alpha9として利用者へ届ける。

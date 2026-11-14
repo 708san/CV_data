@@ -1,14 +1,14 @@
 # PyPI公開・更新の運用記録
 
-`cv-data-lesson==0.1.0a9`は2026-11-14に[PyPI](https://pypi.org/project/cv-data-lesson/0.1.0a9/)へ公開済みです（[GitHub Release](https://github.com/708san/CV_data/releases/tag/v0.1.0a9)）。公開APIリファレンスと高校生向けガイドをPyPI配布ページから案内します。alpha9でのColab再実行は未確認です。PyPI上の同じ版は差し替えられないため、更新時は新しい版として公開します。
+安定版`cv-data-lesson==0.1.0`は公開準備中です。公開後は`python -m pip install cv-data-lesson`で導入できます。公開APIリファレンスと高校生向けガイドをPyPI配布ページから案内します。既に公開した`0.1.0a9`はそのまま残し、PyPI上の同じ版は差し替えません。
 
 ## 利用者向けコマンド
 
 ```bash
-python -m pip install --pre cv-data-lesson
+python -m pip install cv-data-lesson
 ```
 
-PyPIへ一般公開した各alpha版は、同じコマンドで取得できます。READMEと利用ガイドは公開済み版に合わせて更新します。開発checkoutやeditable installは開発者向けの作業であり、利用者向けインストール案内へ混ぜません。
+安定版公開後は、同じ通常コマンドで取得できます。READMEと利用ガイドは公開済み版に合わせて更新します。開発checkoutやeditable installは開発者向けの作業であり、利用者向けインストール案内へ混ぜません。
 
 ## パッケージに含めるもの
 
@@ -17,10 +17,10 @@ PyPIへ置くのはPythonコード、カタログ・説明・ライセンス等�
 基本インストールに、表・画像例の確認で使う軽量依存も含めます。ResNet、OCR、検出・領域分割、画像生成の重い依存は機能別extrasに分離します。
 
 ```bash
-python -m pip install --pre cv-data-lesson
+python -m pip install cv-data-lesson
 ```
 
-alpha版を使うため`--pre`を指定します。ResNet、OCR、検出・領域分割、画像生成は必要なextraと別途導入するフレームワークが異なります。詳細は[インストール案内](installation.md)を参照してください。
+安定版は`--pre`なしで導入できます。ResNet、OCR、検出・領域分割、画像生成は必要なextraを追加します。詳細は[インストール案内](installation.md)を参照してください。
 
 ## PyPIで一度だけ行う設定
 
@@ -46,6 +46,7 @@ GitHub側の`pypi` environmentを作成し、必要ならdeployment protection r
 
 ## 公開履歴
 
+- `0.1.0`（準備中）：安定版。通常のpip導入、機能別extras、Colab Notebookの版指定を安定版に切り替えます。
 - `0.1.0a9`：高校生向け利用ガイド、メソッドの引数・既定値・戻り値を記載したAPIリファレンス、Colab導入案内をPyPI配布ページに反映。機能コードの変更なし。2026-11-14公開。
 - `0.1.0a8`：OCR結果の全文を先に表示し、行別詳細を折りたたむ。OCRResult・to_dict()の構造は維持。2026-11-14公開。Colabで表示確認済み。
 - `0.1.0a7`：OCR一覧表示の改良版。PyPI未公開のため、利用者は後続の`0.1.0a8`を使用します。

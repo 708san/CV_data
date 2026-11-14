@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cv-data-lesson"
-version = "0.1.0a9"
+version = "0.1.0"
 description = "高校生が身近な課題に画像AIを活用するための教材ライブラリ"
 readme = "README.md"
 license = "MIT"
@@ -25,7 +25,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Natural Language :: Japanese",
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Operating System :: OS Independent",
 ]
 
@@ -54,7 +54,7 @@ diffusion = [
 
 [project.urls]
 Repository = "https://github.com/708san/CV_data"
-Documentation = "https://github.com/708san/CV_data/blob/v0.1.0a9/docs/student-guide.md"
+Documentation = "https://github.com/708san/CV_data/blob/v0.1.0/docs/student-guide.md"
 Issues = "https://github.com/708san/CV_data/issues"
 Changelog = "https://github.com/708san/CV_data/releases"
 Artifacts = "https://github.com/708san/CV_data_artifacts"
