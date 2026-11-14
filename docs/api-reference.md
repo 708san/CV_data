@@ -1,6 +1,6 @@
 # 公開APIリファレンス
 
-このページは、配布中の`cv-data-lesson`から利用できる`cvlesson`の公開APIを説明します。配布名とPythonのimport名は異なります。機能別の導入方法は[インストール案内](installation.md)、高校生向けの短い例は[使い方ガイド](student-guide.md)、AIへ変更を頼む手順は[AI改造ガイド](ai-coding-guide.md)を参照してください。
+このページは、配布中の`cv-data-lesson`から利用できる`cvlesson`の公開APIを説明します。配布名とPythonのimport名は異なります。機能別の導入方法は[インストール案内](installation.md)、高校生向けの短い例は[使い方ガイド](student-guide.md)と[生徒向けデータ・処理索引](student-data-index.md)、AIへコード作成・変更を頼む際の前提は[AI向けプロジェクト実装コンテキスト](ai-project-context.md)を参照してください。
 
 このリファレンスは現在の実装を記述します。AIが作ったコードを使う場合も、ここにないメソッドや引数、データ列を仮定せず、実際のデータ情報と`help()`で確認してください。
 
