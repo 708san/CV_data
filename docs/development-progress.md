@@ -1,5 +1,11 @@
 # 開発進捗
 
+## 2026-11-14：alpha9準備中（未公開）
+
+- 配布ページに更新後の高校生向けガイド・公開APIリファレンスを反映するため、パッケージ版・Documentation URL・Colab Notebookの固定版を`0.1.0a9`へ同期中。機能コードの変更はありません。
+- Notebook版固定チェックがalpha8をテスト内に直書きしていたため、`pyproject.toml`の版と照合するよう更新しました。
+- Python 3.12のネットワーク不要テストは104件成功、22件skip（任意依存の未導入）。PR CI、GitHub Release、PyPI公開は未完了です。alpha9をColabで再実行した実測もありません。
+
 ## 2026-11-14：公開API・導入案内を整備（PR #103 merged）
 
 - `docs/api-reference.md`を追加。データ・ResNet・OCR・DETR/SAM・SDXL/LoRA・表示/保存の公開メソッドについて、引数、既定値、入力、戻り値、副作用、制約を実装と照合して記載。

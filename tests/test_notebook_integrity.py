@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import builtins
 import json
+import tomllib
 import re
 import shlex
 import symtable
@@ -103,6 +104,8 @@ class NotebookIntegrityTests(unittest.TestCase):
                         )
 
     def test_public_colab_smoke_notebooks_install_the_same_pypi_release(self):
+        with (ROOT / "pyproject.toml").open("rb") as project_file:
+            package_version = tomllib.load(project_file)["project"]["version"]
         paths = [
             ROOT / "notebooks/cv/classification_v1.ipynb",
             *sorted((ROOT / "notebooks/colab").glob("*.ipynb")),
@@ -119,7 +122,7 @@ class NotebookIntegrityTests(unittest.TestCase):
             with self.subTest(notebook=path.relative_to(ROOT)):
                 self.assertTrue(install_lines, "公開PyPI版のinstall行がありません")
                 self.assertTrue(
-                    any("==0.1.0a8" in line for line in install_lines),
+                    any(f"=={package_version}" in line for line in install_lines),
                     "Colab確認は対象PyPI版を固定してください",
                 )
                 self.assertFalse(
@@ -128,12 +131,14 @@ class NotebookIntegrityTests(unittest.TestCase):
                 )
 
     def test_ocr_notebook_installs_cpu_backend_from_ocr_extra_only(self):
+        with (ROOT / "pyproject.toml").open("rb") as project_file:
+            package_version = tomllib.load(project_file)["project"]["version"]
         notebook = json.loads((ROOT / "notebooks/colab/ocr_smoke_test.ipynb").read_text())
         code = "\n".join(
             "".join(cell.get("source", []))
             for cell in notebook["cells"] if cell.get("cell_type") == "code"
         )
-        self.assertIn("cv-data-lesson[ocr]==0.1.0a8", code)
+        self.assertIn(f"cv-data-lesson[ocr]=={package_version}", code)
         self.assertNotIn("pip install paddlepaddle", code)
         self.assertIn("cv_display.show_ocr(image, result)", code)
         self.assertIn("result.to_dict()", code)

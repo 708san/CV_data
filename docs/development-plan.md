@@ -1,3 +1,20 @@
+# 作業中：文書更新をalpha9としてPyPIへ反映
+
+更新日：2026-11-14。対象仕様：0.25、6。理由：GitHub mainのREADME・API・高校生向け案内は更新済みだが、PyPI本文はalpha8時点のスナップショットである。過去のPyPI更新依頼に基づき、alpha9として利用者へ届ける。
+
+作業単位：独立ブランチ1件、版更新とNotebook/文書の同期を含む1PR。
+
+作業順と受け入れ条件：
+1. 本計画を先行記録する。PyPI版をalpha9に更新し、project Documentation URL、Notebookの公開版指定、Colab確認ガイド、画像生成ガイド、高校生向け版表示、PyPI公開履歴を一致させる。
+2. Notebook固定版テストがalpha8を直書きしているため、`pyproject.toml`のプロジェクト版と各公開Notebookの指定を照合する方式へ更新する。OCR Notebookのextra確認も同じプロジェクト版を参照する。将来の版更新でテスト側の固定値が古くならないことを受け入れ条件にする。
+3. ネットワーク不要テスト、Notebook構文・固定版検査、依存解決、wheel/sdist buildとclean installをPR CIで確認する。機能コードはalpha8から変更していないため、Colab実機再実行は新しい機能の検証として扱わない。
+4. PRをCI成功後にmergeし、GitHub Release `v0.1.0a9`を作成してPyPI Trusted Publishingを実行する。公開後にPyPIの版・配布物・READMEリンクを確認する。
+5. Colabでalpha9の新規install・全機能再実行は未実施と明記する。利用者へ再確認用のColab Notebookを示す。
+
+完了条件：PyPIでalpha9が取得でき、配布名・version・README・project linksがalpha9のGitHub文書と揃う。CI成功、PyPI配布物確認後に完了とする。
+
+進捗：GitHub文書整備PR #103と完了記録PR #104はmainへ統合済み。alpha9へ版指定とPyPI公開向け記録を同期し、Notebook版チェックがalpha8を固定していたため、pyproject.toml追従へ更新した。対応Python 3.12で104件成功・22件skip。PR CIとPyPI公開はこれから。
+
 # 完了：公開API・インストール・利用ガイドの最終整備
 
 更新日：2026-11-14。対象仕様：0.25、6。目的は、公開中のalpha8を利用する高校生・教員が導入方法と実際のAPI契約を迷わず確認でき、AIに改造を頼む場合も実装にないAPIを作らせない状態に整えること。
