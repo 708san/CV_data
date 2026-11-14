@@ -1,10 +1,11 @@
 # 開発進捗
 
-## 2026-11-14：alpha9準備中（未公開）
+## 2026-11-14：alpha9公開・文書配布を確認
 
-- 配布ページに更新後の高校生向けガイド・公開APIリファレンスを反映するため、パッケージ版・Documentation URL・Colab Notebookの固定版を`0.1.0a9`へ同期中。機能コードの変更はありません。
+- 配布ページに高校生向けガイド・公開APIリファレンスを反映し、パッケージ版・Documentation URL・Colab Notebookの固定版を`0.1.0a9`へ同期しました。機能コードの変更はありません。
 - Notebook版固定チェックがalpha8をテスト内に直書きしていたため、`pyproject.toml`の版と照合するよう更新しました。
-- Python 3.12のネットワーク不要テストは104件成功、22件skip（任意依存の未導入）。PR CI、GitHub Release、PyPI公開は未完了です。alpha9をColabで再実行した実測もありません。
+- PR [#105](https://github.com/708san/CV_data/pull/105)をCI成功後にmainへ統合。GitHub Release [v0.1.0a9](https://github.com/708san/CV_data/releases/tag/v0.1.0a9)と[PyPI版](https://pypi.org/project/cv-data-lesson/0.1.0a9/)を確認。wheel SHA-256 `ae2d50b7547197a293de86f5a11f90c1178ef178126915fdf8cfdcb26d5e9c89`、sdist SHA-256 `3a14af4d3779e35563750bf20acd52daf9284d7e0fd672b529f2cb40a1959b72`。APIリファレンス・高校生向けガイドの案内とDocumentation URLが配布ページに反映されています。
+- PR CIはPython 3.11/3.12/3.13、display、package-smoke（wheel/sdist build・clean venv install）、optional dependency resolutionが成功。ローカルPython 3.12は104件成功・22件skip（任意依存の未導入）。alpha9のColab再実行は未実施です。
 
 ## 2026-11-14：公開API・導入案内を整備（PR #103 merged）
 
