@@ -1,3 +1,19 @@
+# 完了計画：AI生成Notebookの導入手順と現行実装の照合
+
+更新日：2026-11-14。対象仕様：0.30。利用者がAI生成Notebookに`cv-data-lesson==0.1.0a9`と`ipywidgets pillow nbformat`の導入行を出された。現行PyPI安定版・ソース・配布Notebook・利用文書を照合し、AIが過去版や用途のない依存を転記しないよう正本を明確にする。
+
+作業順・受け入れ条件：
+1. 仕様書を先に更新し、安定版0.1.0を選ぶ規則、基本データ利用と機能別extraの選択、`%pip`、Colab実行依存とNotebook作成依存の区別を要件化する（完了）。
+2. `pyproject.toml`、公開API、README、導入案内、AI向け文書、全配布Colab Notebookを照合する。リリース履歴の`0.1.0a9`は履歴として保持し、現在の実行手順と混同しない。
+3. AI向け文書に正しい最小Colab install例と依存選択ルールを加え、導入案内に`ipywidgets`/`nbformat`/Pillowの必要条件を明記する。`ipywidgets`はNotebookがwidget APIを実際に使う場合だけ追加し、`nbformat`はNotebookをプログラムから編集・生成する開発時だけ使う。Pillowは基本依存に含まれる。
+4. 安定版とextraの全Notebook installセル、現行仕様/APIとの齟齬、文書リンク・コード例を再検査する。`git diff --check`と規定のネットワーク不要テストを実行する。
+
+完了条件：利用者向け・AI向けの現行手順がPyPI安定版0.1.0と実装済み依存に一致し、AI文書が過去版a9を現行導入コマンドへ転記するのを防ぐ。履歴上のa9記録は変更しない。Colab実機推論を今回実施したとは記録しない。
+
+進捗：ソースと文書の照合で、利用者が示したa9コマンドは現行リポジトリには存在せず、0.1.0a9は履歴記録のみと確認。READMEと導入文書は安定版0.1.0を案内し、4つのColab smoke Notebookおよび分類教材Notebookも0.1.0を固定。AI向け文書に旧版禁止・依存選択の明示を追加し、導入案内を補足した。`ipywidgets`を実際に使う場合の追加例も記載。全6 NotebookのJSONと5つの配布installセルを検査し、いずれも安定版。`PYTHONPATH=src python3.11 -m unittest discover -s tests -v`は106件成功・22件skip、`git diff --check`成功。Python 3.9での最初のテスト起動は`tomllib`がないため失敗したが、対象環境Python 3.11で規定コマンドを再実行して成功。Colab実機のインストール・推論は未実施。今回の文書照合作業を完了。
+
+---
+
 # 修正計画：日本語PDFフォントとデータIDの説明
 
 更新日：2026-11-14。対象仕様：0.29。利用者報告で、生徒向けPDFに日本語が黒い豆腐文字として出ることと、一覧のどの文字列をAPIへ渡せばよいか分かりにくいことが分かった。文書出力とPDFのみを直し、既存の手元変更は維持する。
