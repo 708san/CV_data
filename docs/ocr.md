@@ -103,6 +103,8 @@ reader = ocr.load(
 
 ## モデル情報
 
+引数・戻り値の構造・入力条件は[公開APIリファレンス](api-reference.md#ocr)にも一覧があります。
+
 既定の検出・認識モデルはそれぞれApache-2.0表示で、Hugging Faceの固定revisionを利用します。モデル本体はGitやPyPIに含めません。
 
 OCRの結果は`cvlesson.display.show_ocr()`で全文を一つのテキスト枠として表示し、行ごとの信頼度・画像部分を折りたたんで確認できます。`display.render_ocr_report()`は自己完結型HTML文字列を返すため、別の画面へ埋め込む用途にも使えます。連携用の構造化データは従来どおり`result.to_dict()`から取得します。従来の枠付き画像は必要な場合に`display.render()`または`display.save()`で作成できます。表示機能は外部通信を行いません。

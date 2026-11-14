@@ -10,8 +10,9 @@ Python 3.11〜3.13が対象です。仮想環境の利用をおすすめしま�
 python -m venv .venv
 source .venv/bin/activate
 # Windows PowerShell: .venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
 ```
+
+この仮想環境には他の作業用パッケージが入っていません。Colabで試す場合は同じ理由で新しいランタイムを使います。
 
 ## 基本インストール
 
@@ -31,7 +32,7 @@ python -m pip install --pre cv-data-lesson
 | 検出・領域分割 | `python -m pip install --pre 'cv-data-lesson[vision]'` | PyTorch依存とDETRまたはSAMのモデル（load時） |
 | SDXL画像生成・画像変換 | `python -m pip install --pre 'cv-data-lesson[diffusion]'` | PyTorchを含むPython依存、SDXLと指定LoRA（load時、数GB） |
 
-通常のCPU環境では、`torch`・`vision`・`diffusion`のextraが必要なPyTorch/Torchvisionを一緒に導入します。Colabにも通常はPyTorchが入っています。既存の環境でextraを追加する際、pipが依存の版を変更することがあります。Colabでは新しいランタイムを使い、インストール後に再起動を求められた場合は再起動してください。
+通常のCPU環境では、`torch`・`vision`・`diffusion`のextraが必要なPyTorch/Torchvisionを一緒に導入します。Colabにも通常はPyTorchが入っています。既存環境へextraを追加すると、pipが依存パッケージの版を変更する場合があります。初めて試す場合はColabの新しいランタイムを使い、インストール後に再起動を求められた場合は再起動してください。既存環境を使う場合は実行前にpipの変更内容を確認し、無関係なパッケージを手動で削除しないでください。既に古い`cv-data-lesson`を導入していて更新したい場合に限り、`--upgrade`を明示します。
 
 独自のCUDA版を選ぶ場合だけ、[PyTorch公式インストーラー](https://pytorch.org/get-started/locally/)でOS・Python・CUDAに合うPyTorch/Torchvisionを先に入れ、その後で機能extraを追加します。extraが必要な版条件を満たす既存環境は再利用されます。GPUは自動選択しません。各機能の`available_devices()`で確認してから`device`を指定します。
 
@@ -45,7 +46,7 @@ python -m pip install --pre 'cv-data-lesson[ocr]'
 
 GPU版PaddlePaddleを使う場合だけは、[PaddlePaddle公式インストール案内](https://www.paddlepaddle.org.cn/install/quick)からOS/CUDAに合うwheelを選びます。Paddle GPU版の導入手順はCPU版と異なります。
 
-OCRとPyTorch系のextrasを同時に使う場合は、同じ新規仮想環境へまとめて指定できます。Colab Notebookも一つのinstall行で複数extraを選べます。Python 3.11〜3.13の組み合わせはリリース前に依存解決で確認します。
+OCRとPyTorch系のextrasを同時に使う場合は、同じ新規仮想環境へまとめて指定できます。Colab Notebookも一つのinstall行で複数extraを選べます。Python 3.11〜3.13の主要な組み合わせはalpha8のリリースCIで依存解決を確認済みです。OS固有のGPU wheelやColabに事前導入された全パッケージとの組み合わせを保証するものではありません。
 
 ```bash
 python -m pip install --pre 'cv-data-lesson[ocr,vision,diffusion]'
@@ -60,3 +61,5 @@ python -m pip install --pre 'cv-data-lesson[ocr,vision,diffusion]'
 インストールできることと、全モデル・全OSで推論が検証済みであることは別です。Colabで実行した機能と実データの範囲は[開発状況](development-progress.md)と各機能ページに記載します。GPUや大容量モデルが必要な機能は、利用可能なGPUと空き容量を先に確認してください。
 
 全機能のColab確認に使うNotebook、ランタイム、実行順、記録方法は[Colab実機確認ガイド](colab-verification.md)をご覧ください。
+
+公開メソッドの引数・既定値・戻り値・制約は[APIリファレンス](api-reference.md)にまとめています。Colabではinstallセルを実行した後、Notebookに再起動案内が出た場合はランタイムを再起動し、importセルから順に再実行してください。

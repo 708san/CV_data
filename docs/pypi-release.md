@@ -1,6 +1,6 @@
 # PyPI公開・更新の運用記録
 
-`cv-data-lesson==0.1.0a6`は2026-11-13にPyPIへ公開済みです。OCR結果の一覧表示を含む`0.1.0a7`を準備中です。PyPI上の同じ版は差し替えられないため、新しい版として公開します。
+`cv-data-lesson==0.1.0a8`は2026-11-14時点で[PyPI](https://pypi.org/project/cv-data-lesson/0.1.0a8/)へ公開済みです（[GitHub Release](https://github.com/708san/CV_data/releases/tag/v0.1.0a8)）。OCR全文優先表示を含み、利用者がColabで表示を確認しています。次の版の公開作業は未開始です。PyPI上の同じ版は差し替えられないため、更新時は新しい版として公開します。
 
 ## 利用者向けコマンド
 
@@ -46,7 +46,8 @@ GitHub側の`pypi` environmentを作成し、必要ならdeployment protection r
 
 ## 公開履歴
 
-- `0.1.0a7`：OCR結果を読み順の一覧で示し、各行の画像部分を折りたたんで確認できる表示を追加。`OCRResult.to_dict()`は維持。公開準備中。
+- `0.1.0a8`：OCR結果の全文を先に表示し、行別詳細を折りたたむ。OCRResult・to_dict()の構造は維持。2026-11-14公開。Colabで表示確認済み。
+- `0.1.0a7`：OCR一覧表示の改良版。PyPI未公開のため、利用者は後続の`0.1.0a8`を使用します。
 
 - `0.1.0a1`：2026-11-13公開。PyPI READMEに未公開の案内が残った。
 - `0.1.0a2`：高校生向け説明・AI改造ガイド・利用者向け導入案内を整理。

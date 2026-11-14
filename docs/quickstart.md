@@ -2,7 +2,7 @@
 
 ## 1. インストール
 
-Python 3.11〜3.13で使えます。現在はalpha版なので、pipに開発版も選ばせる`--pre`が必要です。表や画像例の表示も含めて、最初はこの1行だけ実行します。
+Python 3.11〜3.13で使えます。現在はalpha版（正式公開前の試用版）なので、pipにプレリリースを含める`--pre`が必要です。表や画像例の表示も含めて、最初はこの1行だけ実行します。
 
 ```bash
 python -m pip install --pre cv-data-lesson
@@ -33,10 +33,10 @@ data.show_examples(6)
 
 ## 3. 分類モデルを学習
 
-ResNetを使う前に、分類・回帰用の依存を入れます。Colabでは次のセルを実行してください。ローカルでは`python -m pip install --pre --upgrade 'cv-data-lesson[torch]'`を実行します。
+ResNetを使う前に、分類・回帰用の依存を入れます。Colabでは新しいランタイムで次のセルを実行してください。既存環境のパッケージを意図せず更新しないよう、通常は`--upgrade`を付けません。
 
 ```python
-%pip install --pre --upgrade 'cv-data-lesson[torch]'
+%pip install --pre 'cv-data-lesson[torch]'
 ```
 
 `to_df()`の`split`列から学習用とテスト用を分けます。列名は実データで確認してください。
@@ -60,6 +60,7 @@ print("正解率:", model.score(test_data["image_path"], test_data["label"]))
 
 - [高校生向け機能・使い方ガイド](student-guide.md)
 - [AIに改造を相談する](ai-coding-guide.md)
+- [公開APIリファレンス](api-reference.md)
 - [機能別インストール](installation.md)
 - [データとモデルの対応表](data-model-compatibility.md)
 - [分類・回帰](resnet-model.md)、[OCR](ocr.md)、[検出・領域分割](vision.md)、[画像生成・LoRA](image-generation.md)
