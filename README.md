@@ -42,7 +42,7 @@ data.show_examples(6)
 
 ## 使い方と利用条件
 
-- [高校生向けデータ・処理索引](https://github.com/708san/CV_data/blob/main/docs/student-data-index.md)では、正式登録23データを処理別に探し、内容・形式・個別説明へ移動できます。
+- [高校生向け：画像AIとデータの選び方](https://github.com/708san/CV_data/blob/main/docs/student-data-index.md)では、何をしたいかから処理を選び、使えるデータの写真・答え・件数・ライセンスをやさしい説明で確認できます。
 - [インストール案内](https://github.com/708san/CV_data/blob/main/docs/installation.md)では、CPU版OCRを含む機能別の導入方法を説明しています。
 - [データ一覧と形式](https://github.com/708san/CV_data/blob/main/docs/data-model-compatibility.md)から、扱いたいデータのタスク・ラベル・注釈を確認できます。
 - [APIリファレンス](https://github.com/708san/CV_data/blob/main/docs/api-reference.md)には、メソッド、引数、戻り値、制約をまとめています。
