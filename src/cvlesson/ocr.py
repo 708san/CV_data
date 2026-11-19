@@ -152,7 +152,7 @@ def load(
             device = "gpu:0"
         else:
             warnings.warn(
-                "GPUが利用できないため、日本語OCRをCPUで実行します。"
+                "GPUが利用できないため、PP-OCRv5 mobile日本語OCRをCPUで実行します。"
                 "GPUを必須にする場合はdevice='gpu:0'を明示してください。",
                 RuntimeWarning,
                 stacklevel=2,
