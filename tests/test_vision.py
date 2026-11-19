@@ -98,7 +98,7 @@ class VisionTests(unittest.TestCase):
         )
         with patch("cvlesson.vision._check_device", return_value=_Torch):
             with patch.dict(sys.modules, {"transformers": fake_transformers}):
-                vision.load_detector(local_files_only=True)
+                vision.load_detector(device="cpu", local_files_only=True)
         self.assertEqual(
             calls,
             [

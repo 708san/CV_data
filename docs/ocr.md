@@ -1,6 +1,6 @@
 # 日本語OCRを使う
 
-更新日：2026-11-13
+更新日：2026-11-19
 
 `cvlesson.ocr`は、写真に写っている文字と位置を返す推論用APIです。既定モデルは日本語に対応するPP-OCRv5 mobileです。OCRモデルの学習・追加学習は行いません。
 
@@ -24,7 +24,7 @@ python -m pip install -e '.[ocr]'
 from cvlesson import ocr
 
 print(ocr.available_devices())  # CPUとGPUの利用可否を確認
-reader = ocr.load()             # CPUを使う。初回だけモデルを取得
+reader = ocr.load()             # GPU優先。なければ警告を出してCPU。初回だけモデルを取得
 result = reader.predict("receipt.jpg")
 
 print(result.text)
@@ -32,7 +32,7 @@ for line in result.lines:
     print(line.text, line.confidence, line.polygon)
 ```
 
-GPUを使う場合は、CUDA対応PaddlePaddleを導入したうえで明示します。
+`ocr.load()`の`device="auto"`はGPUを優先し、GPUがなければCPUへ切り替えた警告を表示します。GPUを必須にする場合は、CUDA対応PaddlePaddleを導入したうえで明示します。
 
 ```python
 reader = ocr.load(device="gpu:0")

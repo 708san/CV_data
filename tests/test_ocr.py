@@ -103,7 +103,7 @@ class OCRTests(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             reader.predict("does-not-exist.png")
 
-    def test_load_uses_fixed_revisions_and_cpu_by_default(self):
+    def test_load_uses_fixed_revisions_and_cpu_fallback_by_default(self):
         calls = []
 
         class FakePipeline:
@@ -122,7 +122,7 @@ class OCRTests(unittest.TestCase):
         with patch.object(ocr, "_import_paddle", return_value=_FakePaddle), patch.dict(
             sys.modules,
             {"paddleocr": paddleocr_module, "huggingface_hub": hub_module},
-        ):
+        ), self.assertWarnsRegex(RuntimeWarning, "CPUで実行"):
             reader = ocr.load()
 
         self.assertEqual(reader.device, "cpu")

@@ -4,9 +4,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 import re
+import warnings
 from typing import Any, Iterable
 
-from ._torch_utils import cuda_device_aliases, normalize_torch_device
+from ._torch_utils import choose_torch_device, cuda_device_aliases, normalize_torch_device
 
 
 class VisionError(RuntimeError):
@@ -152,11 +153,11 @@ def available_devices() -> dict[str, bool]:
 
 
 def load_detector(
-    *, device: str = "cpu", model_id: str | None = None, revision: str | None = None,
+    *, device: str = "auto", model_id: str | None = None, revision: str | None = None,
     cache_dir: str | Path | None = None, local_files_only: bool = False
 ) -> ObjectDetector:
     """既定DETRか互換検出モデルを読み込む。別モデルは40桁revisionが必須。"""
-    device = normalize_torch_device(device)
+    device = _resolve_device(device, "DETR物体検出")
     model_id, revision = _resolve_model(model_id, revision, _DETECTOR_ID, _DETECTOR_REVISION)
     torch = _check_device(device)
     try:
@@ -175,11 +176,11 @@ def load_detector(
 
 
 def load_segmenter(
-    *, device: str = "cpu", model_id: str | None = None, revision: str | None = None,
+    *, device: str = "auto", model_id: str | None = None, revision: str | None = None,
     cache_dir: str | Path | None = None, local_files_only: bool = False
 ) -> PromptSegmenter:
     """既定SAMか互換SAMモデルを読み込む。別モデルは40桁revisionが必須。"""
-    device = normalize_torch_device(device)
+    device = _resolve_device(device, "SAM領域分割")
     model_id, revision = _resolve_model(model_id, revision, _SEGMENTER_ID, _SEGMENTER_REVISION)
     torch = _check_device(device)
     try:
@@ -224,6 +225,24 @@ def _check_device(device: str):
     if not available:
         raise VisionError(f"device={device!r}は利用できません。vision.available_devices()で確認してください。")
     return torch
+
+
+def _resolve_device(device: str, feature_name: str) -> str:
+    """Prefer an available accelerator for ``auto`` and announce CPU fallback."""
+    normalized = normalize_torch_device(device, allow_auto=True)
+    if normalized != "auto":
+        _check_device(normalized)
+        return normalized
+    devices = available_devices()
+    resolved, used_cpu_fallback = choose_torch_device(normalized, devices)
+    if used_cpu_fallback:
+        warnings.warn(
+            f"GPUが利用できないため、{feature_name}を固定モデルのCPU実行へ切り替えます。"
+            "GPUを必須にする場合はdevice='cuda'またはdevice='cuda:0'を明示してください。",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+    return resolved
 
 
 def _open_image(image: str | Path):

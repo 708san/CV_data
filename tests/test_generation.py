@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import unittest
+import sys
+import types
 from unittest.mock import patch
 
 from cvlesson import generation
@@ -19,6 +21,8 @@ class _FakeGenerator:
 
 class _FakeTorch:
     Generator = _FakeGenerator
+    float16 = "float16"
+    float32 = "float32"
 
 
 class _FakePipeline:
@@ -28,9 +32,49 @@ class _FakePipeline:
 
 
 class GenerationTests(unittest.TestCase):
-    def test_current_sdxl_loader_rejects_cpu_before_model_download(self):
-        with self.assertRaisesRegex(generation.GenerationError, "CPU実行をサポート対象にしていません"):
-            generation.load(device="cpu")
+    def test_explicit_sdxl_loader_rejects_cpu(self):
+        fake_diffusers = types.ModuleType("diffusers")
+        with patch.dict(sys.modules, {"torch": _FakeTorch, "diffusers": fake_diffusers}), patch(
+            "cvlesson.generation.available_devices",
+            return_value={"cpu": True, "cuda": False, "cuda:0": False, "mps": False},
+        ), self.assertRaisesRegex(generation.GenerationError, "SDXLはCPU実行"):
+            generation.load(model="sdxl", device="cpu")
+
+    def test_auto_cpu_uses_tiny_sd_without_lora(self):
+        calls = []
+
+        class DiffusionPipeline:
+            @classmethod
+            def from_pretrained(cls, model_id, **kwargs):
+                calls.append((model_id, kwargs))
+                return _FakePipelineWithTo()
+
+        fake_diffusers = types.ModuleType("diffusers")
+        fake_diffusers.DiffusionPipeline = DiffusionPipeline
+        fake_diffusers.AutoPipelineForImage2Image = DiffusionPipeline
+        fake_diffusers.AutoPipelineForText2Image = DiffusionPipeline
+        fake_torch = types.ModuleType("torch")
+        fake_torch.Generator = _FakeGenerator
+        fake_torch.float16 = "float16"
+        fake_torch.float32 = "float32"
+        with patch.dict(sys.modules, {"torch": fake_torch, "diffusers": fake_diffusers}), patch(
+            "cvlesson.generation.available_devices",
+            return_value={"cpu": True, "cuda": False, "cuda:0": False, "mps": False},
+        ), self.assertWarnsRegex(RuntimeWarning, "Tiny-SD") as warning:
+            generator = generation.load(device="auto", local_files_only=True)
+        self.assertIn("Tiny-SD", str(warning.warning))
+        self.assertEqual(generator.model, "tiny-sd")
+        self.assertEqual(generator.device, "cpu")
+        self.assertEqual(calls[0][0], generation._TINY_SD_ID)
+        self.assertEqual(calls[0][1]["revision"], generation._TINY_SD_REVISION)
+
+    def test_tiny_sd_rejects_lora_and_image_to_image(self):
+        with self.assertRaisesRegex(ValueError, "LoRA"):
+            generation.load(model="tiny-sd", device="cpu", lora="fluent_emoji_3d")
+        with self.assertRaisesRegex(ValueError, "text-to-image"):
+            generation.ImageGenerator(_FakePipeline(), "image-to-image", "cpu", _FakeTorch, model="tiny-sd").generate(
+                "変換", image="source.png"
+            )
 
     def test_text_to_image_adds_registered_trigger_and_seed(self):
         pipeline = _FakePipeline()
@@ -60,3 +104,9 @@ class GenerationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class _FakePipelineWithTo(_FakePipeline):
+    def to(self, device):
+        self.device = device
+        return self

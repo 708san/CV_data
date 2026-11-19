@@ -2,7 +2,19 @@
 
 ## 用途
 
-SDXLは文章から画像を生成したり、入力画像の雰囲気を変えたりできます。ポスターの挿絵、アイコン、ゲーム素材、写真のスタイル変換などは使用例です。目的に合わせて題材を選べます。完成画像内の日本語は誤りやすいため、文字は別のアプリで載せてください。生成画像は事実や安全性の証拠にはなりません。
+GPUではSDXL、CPUではTiny-SDを使って文章から画像を生成できます。SDXLは入力画像の雰囲気を変えるimage-to-imageにも対応します。ポスターの挿絵、アイコン、ゲーム素材、写真のスタイル変換などは使用例です。完成画像内の日本語は誤りやすいため、文字は別のアプリで載せてください。生成画像は事実や安全性の証拠にはなりません。
+
+`generation.load()`の既定は`model="auto", device="auto"`です。GPUが見つかればSDXL、GPUがなければ警告を表示してTiny-SDを読み込みます。Tiny-SDは軽量なtext-to-image用モデルで、LoRAとimage-to-imageには対応しません。`lora`を指定すると明示的にエラーにし、`lora=None`なら他の共通パラメータ（prompt、seed、steps、guidance、width、height）を使えます。SDXLを明示した場合、CPUへ自動切替せずエラーにします。
+
+```python
+from cvlesson import generation
+
+generator = generation.load(lora=None)  # GPU: SDXL / CPU: Tiny-SD
+image = generator.generate("明るい学校菜園のイラスト", seed=42, num_inference_steps=10)
+image.save("school_garden.png")
+```
+
+Tiny-SDの固定revisionは`252ce164b33431e42db66b366f82dc15e4df7575`です。[モデルカード](https://huggingface.co/segmind/tiny-sd)の表示ライセンスはCreativeML OpenRAIL-Mです。モデルの重みは再配布せず、利用時に固定revisionから取得します。
 
 ## 登録済みLoRA
 
@@ -57,8 +69,8 @@ result.save("park_icon.png")
 - 画像モデルが描く文字は誤りやすいため、正確さが必要な文字情報は生成後に確認・追加してください。
 - 写真を入力する場合は、利用許諾と写り込んだ人の同意を確認してください。出力も、目的に合っているか見直してください。
 - `watercolor_sdxl`の学習元データはモデルカードに記載されていません。配布元の重みライセンスはApache-2.0ですが、学習画像の権利確認済みという意味ではありません。
-- GPUは勝手に選択されません。`available_devices()`で確認し、使う場合は `device="cuda"` を明示します。
+- 既定の`device="auto"`はGPUを優先し、GPUがなければTiny-SDのCPU実行へ切り替えた警告を表示します。GPUを必須にする場合は`device="cuda"`を明示します。
 
 ## Colabで動作を試す
 
-[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。ColabでT4 GPUを選び、「すべてのセルを実行」してください。固定commitのライブラリを使い、登録済み4件を順に試します。Image-to-Imageでは合成画像または利用者が明示アップロードした画像を使えます。初回はSDXL本体と4つの重みを取得するため数GBの空き容量が必要です。4件すべて成功すると最後に成功メッセージが出ます。Colab上で実行するまでは実環境テスト済みではありません。
+[画像生成・LoRAの確認NotebookをColabで開く](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/generation_smoke_test.ipynb)か、[Notebookの内容](../notebooks/colab/generation_smoke_test.ipynb)を確認できます。T4 GPUではSDXLとLoRA、CPUではTiny-SDを確認します。Image-to-ImageはSDXLとGPUで実行し、Tiny-SDでは拒否されることを確認します。初回はモデルを取得するため大きな空き容量が必要です。Colab上で実行するまでは、今回の自動切替を実環境テスト済みとは扱いません。

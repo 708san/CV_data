@@ -77,14 +77,14 @@ print(icons.metadata_jsonl)  # LoRA学習用の画像説明文
 from cvlesson import display, vision
 
 print(vision.available_devices())  # GPUの利用可否を確認
-detector = vision.load_detector(device="cpu")  # GPUを使う場合は確認後にdevice="cuda:0"
+detector = vision.load_detector()  # GPU優先。なければ警告を出してCPU
 image_path = "street.jpg"
 detections = detector.predict(image_path)
 display.show(image_path, detections)
 display.save(image_path, "results/detections.png", detections)
 ```
 
-日本語OCRは必要なときだけ`ocr` extraと環境に合うPaddlePaddleを導入して使います。`ocr.load()`が必要なモジュールを内部で読み込むため、利用者が`import paddle`を書く必要はありません。モデルは明示的な`ocr.load()`時に取得し、CPUを既定にします。GPUを使う場合は利用可否を確認して明示指定します。導入方法と返却形式は[OCRの使い方](docs/ocr.md)をご覧ください。
+日本語OCRは必要なときだけ`ocr` extraと環境に合うPaddlePaddleを導入して使います。`ocr.load()`が必要なモジュールを内部で読み込むため、利用者が`import paddle`を書く必要はありません。既定の`ocr.load()`はGPUを優先し、GPUがなければ警告を出してCPUを使います。GPUを必須にする場合は明示指定します。導入方法と返却形式は[OCRの使い方](docs/ocr.md)をご覧ください。
 
 物体検出・領域分割は`from cvlesson import vision`から使います。PyTorchを環境に合わせて導入した後、`vision` extraを追加します。固定版のDETR（COCO 80カテゴリ検出）とSAM（枠・点からのマスク生成）を利用できます。機能範囲・容量・限界・実環境の検証状況は[検出と領域分割の使い方](docs/vision.md)を確認してください。
 
@@ -93,7 +93,7 @@ Colabでモデルを試す場合は、[DETR・SAMのGPU確認Notebook](https://c
 ```python
 from cvlesson import vision
 
-detector = vision.load_detector()  # CPUが既定
+detector = vision.load_detector()  # GPU優先。なければ警告を出してCPU
 objects = detector.predict("street.jpg", threshold=0.6)
 for item in objects:
     print(item.label, item.box)
@@ -160,7 +160,7 @@ Kuzushiji-MNISTはCC BY-SA 4.0の表示を確認しましたが、公式配布�
 
 LeFood-Setは`datasets.get("lefood_set")`で食前・食後画像524組を取得し、`to_df()`で実測重量や見た目評価を確認できます。日本の学校給食を代表するデータではなく、健康・栄養判断には使いません。
 
-画像生成ではSDXLと4種類のLoRAを使えます。テキストからの画像生成や写真のスタイル変換ができ、LoRAごとに絵柄の特徴が異なります。アイコン、挿絵、ゲーム素材、風景の表現などは使用例です。目的に合わせて題材やプロンプトを考えられます。`generation.load(lora="pixel_art_sdxl", device="cuda")`のように明示して読み込みます。重みは再配布せず、固定版から初回利用時に取得します。[Colabで4件を試す](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/generation_smoke_test.ipynb)。ライセンス、学習元データ、能力・限界は[画像生成ガイド](docs/image-generation.md)を確認してください。LoRA学習素材は別管理で、権利確認中の文化祭アイコンは生徒向けに公開していません。
+画像生成ではGPUでSDXLと4種類のLoRA、CPUでLoRAなしのTiny-SDを使えます。既定の`generation.load()`はGPUを優先し、GPUがなければメッセージを表示してTiny-SDへ切り替えます。Tiny-SDではLoRAとimage-to-imageを明確に拒否し、prompt・seed・steps・guidance・サイズなどの共通パラメータは使えます。重みは再配布せず、固定版から初回利用時に取得します。[Colabで確認](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/generation_smoke_test.ipynb)。ライセンス、学習元データ、能力・限界は[画像生成ガイド](docs/image-generation.md)を確認してください。LoRA学習素材は別管理で、権利確認中の文化祭アイコンは生徒向けに公開していません。
 
 ## AIにプログラムを改造してもらうとき
 

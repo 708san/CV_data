@@ -7,17 +7,17 @@
 対象仕様：3.3、4.1、4.2、4.3、4.4、5.1、5.2、7。固定Releaseを変更せず、`val`/`valid` splitの受け入れ、RDD2020の浮動小数点丸め誤差、全データの日本語ラベルと元ラベルの併記、機能別依存・device表記・学習速度・OCR入力検証・CPU/GPU境界を修理する。
 
 順序：
-1. 仕様0.15へ、元ラベルと日本語ラベルの両立、split互換、bbox許容誤差、進捗表示と特徴再利用、OCRデコード検証、`timm`、device別名、CPU用モデル追加条件を記録する。
+1. 仕様0.16へ、元ラベルと日本語ラベルの両立、split互換、bbox許容誤差、進捗表示と特徴再利用、OCRデコード検証、`timm`、device別名、自動GPU優先・CPUフォールバック、Tiny-SDのLoRA拒否条件を記録する。
 2. `datasets`の検出artifact validatorを`val`と`valid`の両方へ対応させ、元splitを保持する。bboxは実測した丸め誤差だけを許容し、無制限な範囲外値は拒否する。固定Releaseの再公開・再生成は行わない。
 3. 全公開データの`class_names_ja`を点検し、Road Traversingの日本語名欠落、Orange、Fire、FruitSeg30、Indoor Waste、Fresh/Rotten Fruits、AgriFreshNETを修正する。`classes`・DataFrameの元ラベルは保持し、日本語列・表示を併記する。
-4. `vision` extraへ`timm`を追加し、models・vision・generationのTorch系device表記を共通化する。CPUは実行可能な機能で維持し、画像生成はCPU用モデルを実測できた場合だけ明示選択肢にする。
+4. `vision` extraへ`timm`を追加し、models・vision・generationのTorch系device表記を共通化する。既定はGPU優先の`auto`とし、GPUがなければ確認済みCPU経路へ切り替える。画像生成はTiny-SDをCPU用モデルとして実測し、LoRAを拒否する。
 5. ResNetの凍結特徴を一度だけ計算して再利用し、epoch進捗と損失を表示する。OCRは画像をデコード検証し、WebP等を一時PNGへ変換するか、明確なエラーにする。
 6. ネットワーク不要テストを追加し、Python 3.11〜3.13、Notebook、wheel、`git diff --check`を確認する。RDD2020全量取得とDETR/SAM・画像生成のCPU実測はColabまたは別計算機に分離する。
 7. 授業Notebookと分離した`library_acceptance_test.ipynb`を作成し、固定commitからのインストール、軽量API、GeoSetEnnea/RDD2020の検証、ラベル・split・bbox、CPU/GPU境界を一括確認する。重いモデル推論は同Notebookの明示セルまたは別環境で実行し、授業の見出し・順序・記入欄には触れない。
 
-受け入れ条件：GeoSetEnneaとRDD2020の固定artifactを、元splitを保持したまま取得・検証できる。bboxは実測した極小の丸め誤差だけを許容する。全公開クラスに日本語名があり、元ラベルと併記できる。`timm`が`vision` extraから導入され、Torch系で`cuda`/`cuda:0`等を一貫して扱える。ResNetは凍結特徴をepochごとに再計算せず進捗を表示する。OCRは壊れた・未対応画像を空結果として返さない。CPU/GPUの実測範囲と画像生成のGPU要件を文書で区別する。
+受け入れ条件：GeoSetEnneaとRDD2020の固定artifactを、元splitを保持したまま取得・検証できる。bboxは実測した極小の丸め誤差だけを許容する。全公開クラスに日本語名があり、元ラベルと併記できる。`timm`が`vision` extraから導入され、Torch系で`cuda`/`cuda:0`等を一貫して扱える。ResNetは凍結特徴をepochごとに再計算せず進捗を表示する。OCRは壊れた・未対応画像を空結果として返さない。既定`auto`のGPU優先・CPUフォールバックと、明示GPU指定の厳格なエラーを各機能で確認する。Tiny-SDのCPU実モデル、DETR/SAMのCPU実モデル、GPU実モデルの実測範囲をColabで記録する。
 
-進捗：仕様・計画を更新。ラベル表、元ラベル保持、`val`/`valid`受け入れ、bbox丸め誤差、`timm`、Torch device別名、ResNet特徴再利用・進捗表示、OCR画像デコード検証、画像生成のCPU非対応を実装。固定SHA-256のGeoSetEnnea 136件とRDD2020 7,900件を一時領域で全量検証し、wheel/sdistのbuild・twine check・wheelインストール後の軽量importも確認。ネットワーク不要テスト90件中72件成功、任意依存不足による18件skip。固定Releaseの再公開は未完了。授業Notebookとは別の受け入れテストNotebook`notebooks/colab/library_acceptance_test.ipynb`、T4実モデル確認用`notebooks/colab/gpu_acceptance_test.ipynb`、OCR実モデル確認用`notebooks/colab/ocr_acceptance_test.ipynb`を、固定コミット`5b3a2425eaf36caac0a0fd87893bd78d75a250da`からのインストールを含めて作成し、JSON・セル依存・固定SHAの静的検査を完了。CPU受け入れテストとT4上のResNet分類・回帰、DETR、SAM、SDXL、CPU上のPaddleOCRによるWebP・壊れた画像・日本語レシート実画像の実行はColabで完了。OCRの依存関係導入時にはColab既存パッケージとの競合警告が出るが、OCR推論は完了した。
+進捗：仕様・計画を更新し、ResNet、OCR、DETR/SAM、画像生成の既定を`auto`へ揃えた。GPUがなければ警告を出してCPUへ切り替え、画像生成だけはTiny-SDへ切り替える。SDXLのCPU実行、Tiny-SDのLoRA、Tiny-SDのimage-to-imageは明示的に拒否する。固定SHA-256のデータ全量検証、既存のCPU/T4/OCR実モデル確認は完了済みだが、今回の`auto`経路とTiny-SD CPU、DETR/SAM CPUの実モデル確認は未実施。次に専用Colab受け入れNotebookを追加し、CPUとT4で各機能を実測してから検証済み範囲を更新する。
 
 ## 今回の作業単位：画像生成時のLoRA適用強度を指定可能にする
 

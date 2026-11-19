@@ -1,5 +1,7 @@
 # ResNet18分類・回帰モデル
 
+既定の`device="auto"`はGPUを優先し、GPUがない場合は警告を表示してCPUで実行します。CPU/GPUを固定したい場合は`device="cpu"`または`device="cuda"`を明示してください。
+
 ## 既定モデル
 
 - 実装：Torchvision `resnet18`

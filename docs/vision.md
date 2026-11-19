@@ -1,6 +1,6 @@
 # 物体検出と領域分割
 
-更新日：2026-11-13
+更新日：2026-11-19
 
 この機能は学習済みモデルによる推論だけを行います。データを使った追加学習・微調整には対応しません。モデル重みはPyPIやGitに含めず、読み込み時にHugging Face Hubから固定revisionを取得してキャッシュします。
 
@@ -27,7 +27,7 @@ python -m pip install 'cv-data-lesson[vision]'
 
 この追加依存はHugging Face Hub 1.xを許容し、Colabにある新しいTransformers等が必要とするHubを古い版へ下げません。
 
-開発版の場合は`cv-data-lesson`を`-e '.[vision]'`へ置き換えます。CPUを既定にします。GPUを使う場合は、PyTorchが認識している装置を確認して明示的に選びます。
+開発版の場合は`cv-data-lesson`を`-e '.[vision]'`へ置き換えます。既定の`device="auto"`は利用可能なGPUを優先し、GPUがなければ同じ固定モデルをCPUで実行する警告を表示します。GPUを必須にする場合だけ`device="cuda"`または`device="cuda:0"`を明示してください。
 
 ```python
 from cvlesson import vision
@@ -40,7 +40,7 @@ print(vision.available_devices())
 ```python
 from cvlesson import vision
 
-detector = vision.load_detector()  # CPU。初回は固定版モデル約167 MBを取得
+detector = vision.load_detector()  # GPU優先。なければ警告を出してCPU。初回は固定版モデル約167 MBを取得
 results = detector.predict("street.jpg", threshold=0.6)
 
 for item in results:
@@ -63,7 +63,7 @@ results = detector.predict(image)
 detector = vision.load_detector(device="cuda:0")
 ```
 
-GPUが使えない場合、ライブラリはCPUへ自動で切り替えません。
+`device="auto"`でGPUが見つからない場合は、CPUへ切り替えたことを警告します。明示したGPUが使えない場合はエラーにします。
 
 別の互換検出モデルを使う場合は、Hugging Faceのrepository IDと40桁のrevisionを両方指定します。指定モデルのライセンス、容量、構造の互換性は事前に確認してください。
 
@@ -77,7 +77,7 @@ detector = vision.load_detector(
 ## 枠や点からマスクを作る
 
 ```python
-segmenter = vision.load_segmenter()  # CPU。初回は固定版の重み約375 MBを取得
+segmenter = vision.load_segmenter()  # GPU優先。なければ警告を出してCPU。初回は固定版の重み約375 MBを取得
 
 # 枠：(左, 上, 右, 下)。座標は元画像上のピクセル
 result = segmenter.predict("street.jpg", box=(80, 40, 360, 300))
@@ -141,4 +141,4 @@ for item in objects:
 | DETR ResNet-50 | `557a3b6fcdb1be415f074c22da2e16ab4f7e8265` | Apache-2.0 ([model card](https://huggingface.co/facebook/detr-resnet-50/tree/557a3b6fcdb1be415f074c22da2e16ab4f7e8265)) | 約167 MB | Colab T4で合成画像の検出を確認 |
 | SAM ViT-B | `70c1a07f894ebb5b307fd9eaaee97b9dfc16068f` | Apache-2.0 ([model card](https://huggingface.co/facebook/sam-vit-base/tree/70c1a07f894ebb5b307fd9eaa97b9dfc16068f)) | safetensors約375 MB。Hub上の全ファイルは約1.13 GB | Colab T4でboolマスクと重ね合わせ表示を確認 |
 
-Hugging FaceのTransformers公式手順に沿ってSAMの枠・点プロンプトとマスク後処理を実装しています（[Mask Generation task guide](https://huggingface.co/docs/transformers/tasks/mask_generation)）。固定revision、モデルカード上のライセンス表示、容量は2026-11-13に確認しました。Colab T4でモデル実取得と合成画像の推論を確認済みです。CPU推論、他環境との互換性、実データでの精度評価は未確認です。通常のテストではモデル重みをダウンロードしません。
+Hugging FaceのTransformers公式手順に沿ってSAMの枠・点プロンプトとマスク後処理を実装しています（[Mask Generation task guide](https://huggingface.co/docs/transformers/tasks/mask_generation)）。固定revision、モデルカード上のライセンス表示、容量は2026-11-13に確認しました。Colab T4でモデル実取得と合成画像の推論を確認済みです。CPU推論は同じ固定モデルを使うため、GPUより大幅に遅くなる可能性があります。CPUの実測、他環境との互換性、実データでの精度評価は未確認です。通常のテストではモデル重みをダウンロードしません。

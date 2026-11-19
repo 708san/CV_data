@@ -1,4 +1,4 @@
-"""SDXLの画像生成・画像から画像への変換を簡単に使うAPI。
+"""SDXL/Tiny-SDの画像生成を簡単に使うAPI。
 
 モデルはload()を呼んだときだけ取得し、学習済みLoRAは固定revisionとSHA-256を検証する。
 """
@@ -9,36 +9,51 @@ from pathlib import Path
 from typing import Any
 
 from . import loras
-from ._torch_utils import cuda_device_aliases, normalize_torch_device
+from ._torch_utils import choose_torch_device, cuda_device_aliases, normalize_torch_device
 
 
 class GenerationError(RuntimeError):
     """画像生成の準備・実行に失敗した場合。"""
 
 
-def available_devices() -> dict[str, bool]:
-    """利用可能なCPU・CUDA GPU・Apple MPSを確認する。"""
+_SDXL_ID = "stabilityai/stable-diffusion-xl-base-1.0"
+_SDXL_REVISION = "cae78213d9dd74e36e0eb4c99ca83b4aeb94fb1a"
+_TINY_SD_ID = "segmind/tiny-sd"
+_TINY_SD_REVISION = "252ce164b33431e42db66b366f82dc15e4df7575"
+_DEFAULT_LORA = object()
+
+
+def available_devices(*, model: str = "auto") -> dict[str, bool]:
+    """利用可能なCPU・CUDA GPU・Apple MPSを確認する。
+
+    CPUはTiny-SDの実行先として利用できます。``model="sdxl"``を指定した
+    場合だけ、SDXLのCPU非対応を反映してCPUをFalseにします。
+    """
+    if model not in {"auto", "sdxl", "tiny-sd"}:
+        raise ValueError("modelは'auto'、'sdxl'または'tiny-sd'です。")
     try:
         import torch
     except ImportError as exc:
         raise GenerationError("画像生成にはtorchが必要です。pip install 'cv-data-lesson[diffusion]'を実行してください。") from exc
     mps = getattr(getattr(torch.backends, "mps", None), "is_available", lambda: False)()
     cuda_available = bool(torch.cuda.is_available())
-    # The bundled SDXL pipeline is not a practical/supported CPU model.
-    return {"cpu": False, **cuda_device_aliases(torch.cuda.device_count(), cuda_available), "mps": bool(mps)}
+    cpu_available = model != "sdxl"
+    return {"cpu": cpu_available, **cuda_device_aliases(torch.cuda.device_count(), cuda_available), "mps": bool(mps)}
 
 
 class ImageGenerator:
     """読み込み済み画像生成モデル。"""
 
     def __init__(self, pipeline: Any, task: str, device: str, torch_module: Any,
-                 trigger_words: tuple[str, ...] = (), *, lora_loaded: bool = False) -> None:
+                 trigger_words: tuple[str, ...] = (), *, lora_loaded: bool = False,
+                 model: str = "sdxl") -> None:
         self._pipeline = pipeline
         self.task = task
         self.device = device
         self._torch = torch_module
         self.trigger_words = trigger_words
         self._lora_loaded = lora_loaded
+        self.model = model
 
     def generate(
         self,
@@ -63,6 +78,8 @@ class ImageGenerator:
         if not isinstance(prompt, str) or not prompt.strip():
             raise ValueError("promptには空でない説明文を指定してください。")
         if self.task == "image-to-image":
+            if self.model == "tiny-sd":
+                raise ValueError("Tiny-SDはtext-to-imageのみ対応しています。image-to-imageにはSDXLを指定してください。")
             if image is None:
                 raise ValueError("image-to-imageでは変換元のimageが必要です。")
             if not 0.0 <= strength <= 1.0:
@@ -109,53 +126,83 @@ class ImageGenerator:
 def load(
     *,
     task: str = "text-to-image",
-    lora: str | None = "fluent_emoji_3d",
+    lora: str | None | object = _DEFAULT_LORA,
+    model: str = "auto",
     base_model: str | None = None,
     base_revision: str | None = None,
-    device: str = "cpu",
+    device: str = "auto",
     cache_dir: str | Path | None = None,
     local_files_only: bool = False,
 ) -> ImageGenerator:
-    """固定版SDXLと任意の登録済みLoRAを読み込む。
+    """GPUではSDXL、CPUではTiny-SDを自動選択して読み込む。
 
-    GPUは自動選択しない。GPUを使う場合は利用可能か確認したうえでdevice="cuda"を明示する。
+    ``model="sdxl"``または``device="cuda"``のように明示した指定は厳密に
+    扱い、利用できない環境で別モデルへ黙って切り替えません。Tiny-SDは
+    LoRAとimage-to-imageに対応しないため、LoRAを指定すると明示的に拒否します。
     モデルの重みはcheckoutやPyPIに含めず、Hugging Faceのキャッシュへ取得する。
     """
     if task not in {"text-to-image", "image-to-image"}:
         raise ValueError("taskは'text-to-image'または'image-to-image'です。")
+    if model not in {"auto", "sdxl", "tiny-sd"}:
+        raise ValueError("modelは'auto'、'sdxl'または'tiny-sd'です。")
     try:
-        device = normalize_torch_device(device)
+        device = normalize_torch_device(device, allow_auto=True)
     except ValueError as exc:
-        raise ValueError("deviceは'cpu'、'cuda'、'cuda:0'など、または'mps'から選んでください。GPUは自動選択しません。") from exc
-    if device == "cpu":
+        raise ValueError("deviceは'auto'、'cpu'、'cuda'、'cuda:0'など、または'mps'から選んでください。") from exc
+    if model == "tiny-sd" and task == "image-to-image":
+        raise ValueError("Tiny-SDはtext-to-imageのみ対応しています。image-to-imageにはmodel='sdxl'を指定してください。")
+    if model == "sdxl" and device == "cpu":
         raise GenerationError(
-            "現在の画像生成モデルはCPU実行をサポート対象にしていません。"
-            "CUDAまたはMPSを明示するか、CPU向けの別モデルを追加してください。"
+            "SDXLはCPU実行をサポート対象にしていません。model='tiny-sd'またはmodel='auto'を指定してください。"
         )
+    if model == "tiny-sd" and lora is not _DEFAULT_LORA and lora is not None:
+        raise ValueError("Tiny-SDはLoRAに対応していません。lora=Noneを指定してください。")
+    if model == "tiny-sd" and (base_model is not None or base_revision is not None):
+        raise ValueError("Tiny-SDではbase_modelとbase_revisionを指定できません。")
     try:
         import torch
     except ImportError as exc:
         raise GenerationError("画像生成にはdiffusion追加依存が必要です。pip install 'cv-data-lesson[diffusion]'を実行してください。") from exc
     try:
-        from diffusers import AutoPipelineForImage2Image, AutoPipelineForText2Image
+        from diffusers import AutoPipelineForImage2Image, AutoPipelineForText2Image, DiffusionPipeline
     except ImportError as exc:
         raise GenerationError("画像生成にはdiffusion追加依存が必要です。pip install 'cv-data-lesson[diffusion]'を実行してください。") from exc
 
-    devices = {
-        "cpu": False,
-        **cuda_device_aliases(torch.cuda.device_count(), bool(torch.cuda.is_available())),
-        "mps": bool(getattr(getattr(torch.backends, "mps", None), "is_available", lambda: False)()),
-    }
-    if not devices.get(device, False):
+    devices = available_devices()
+    requested_device = device
+    if device == "auto":
+        device, used_cpu_fallback = choose_torch_device(
+            device,
+            {key: value for key, value in devices.items() if key in {"cpu", "cuda:0", "mps"}},
+        )
+        if used_cpu_fallback:
+            import warnings
+            warnings.warn(
+                "GPUが利用できないため、画像生成をTiny-SDのCPU実行へ切り替えます。"
+                "GPUを必須にする場合はdevice='cuda'またはdevice='cuda:0'を明示してください。",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+    if model == "auto":
+        model = "tiny-sd" if device == "cpu" else "sdxl"
+    if requested_device != "auto" and not devices.get(device, False):
         raise GenerationError(f"device={device!r}はこの環境で利用できません。available_devices()で確認してください。")
-
-    adapter = loras.get_model(lora) if lora is not None else None
+    if lora is _DEFAULT_LORA:
+        lora = "fluent_emoji_3d" if model == "sdxl" else None
+    if model == "tiny-sd":
+        adapter = None
+    else:
+        adapter = loras.get_model(lora) if lora is not None else None
+    if model == "tiny-sd":
+        base_model = _TINY_SD_ID
+        base_revision = _TINY_SD_REVISION
     if adapter is None:
-        if not base_model:
-            base_model = "stabilityai/stable-diffusion-xl-base-1.0"
-            base_revision = base_revision or "cae78213d9dd74e36e0eb4c99ca83b4aeb94fb1a"
+        if model == "sdxl" and not base_model:
+            base_model = _SDXL_ID
+            base_revision = base_revision or _SDXL_REVISION
         elif not base_revision:
-            raise ValueError("独自のbase_modelには固定したbase_revisionも指定してください。")
+            if base_model:
+                raise ValueError("独自のbase_modelには固定したbase_revisionも指定してください。")
     else:
         if base_model is not None and base_model != adapter.base_model:
             raise ValueError("このLoRAはSDXL 1.0用です。別の基盤モデルではlora=Noneを指定してください。")
@@ -175,7 +222,10 @@ def load(
     if cache_dir is not None:
         load_kwargs["cache_dir"] = str(cache_dir)
     try:
-        pipeline = pipeline_class.from_pretrained(base_model, **load_kwargs)
+        if model == "tiny-sd":
+            pipeline = DiffusionPipeline.from_pretrained(base_model, **load_kwargs)
+        else:
+            pipeline = pipeline_class.from_pretrained(base_model, **load_kwargs)
         pipeline.to(device)
         if adapter is not None:
             from huggingface_hub import hf_hub_download
@@ -198,7 +248,11 @@ def load(
     except Exception as exc:
         raise GenerationError(f"画像生成モデルを読み込めませんでした: {exc}") from exc
     triggers = adapter.trigger_words if adapter is not None else ()
-    return ImageGenerator(pipeline, task, device, torch, triggers, lora_loaded=adapter is not None)
+    return ImageGenerator(
+        pipeline, task, device, torch, triggers,
+        lora_loaded=adapter is not None,
+        model=model,
+    )
 
 
 def _open_rgb_image(image: Any) -> Any:

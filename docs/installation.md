@@ -1,6 +1,6 @@
 # インストールと依存関係
 
-更新日：2026-11-13
+更新日：2026-11-19
 
 PyPI公開前の開発版です。次の依存構成は機能単位で分けています。基本のデータ一覧・説明・固定Release取得には追加パッケージを使いません。データ本体・モデル重みもインストール時には取得しません。
 
@@ -19,9 +19,9 @@ PyPIにはまだ公開していません。以下のコマンドは、このリ�
 | ResNetで分類・回帰 | 公式PyTorch/Torchvision、`torch` | 公式サイトでCPU/GPU版を選んでから `python -m pip install -e '.[torch]'` |
 | OCR | 環境に合うPaddlePaddle、`ocr` | PaddlePaddleを先に入れてから `python -m pip install -e '.[ocr]'`。PyTorch系とは別環境を推奨 |
 | 検出・領域分割 | 公式PyTorch/Torchvision、`vision` | PyTorchを先に入れてから `python -m pip install -e '.[vision]'` |
-| SDXL画像生成・画像変換 | 公式PyTorch/Torchvision、`diffusion` | GPU環境を確認し、PyTorchを先に入れてから `python -m pip install -e '.[diffusion]'` |
+| SDXL/Tiny-SD画像生成 | 公式PyTorch/Torchvision、`diffusion` | PyTorchを先に入れてから `python -m pip install -e '.[diffusion]'`。GPUではSDXL、CPUではTiny-SD |
 
-機能を一括で入れるextraはありません。ColabではランタイムのCPU/GPUを選んでから導入してください。GPUを使う場合も自動切替はせず、各APIの`available_devices()`で確認してから`device`を指定します。詳細なOS・CUDA・依存条件は以下の機能別案内にまとめています。
+機能を一括で入れるextraはありません。ColabではランタイムのCPU/GPUを選んでから導入してください。各APIの既定`device="auto"`はGPUを優先し、なければCPUへ切り替えてメッセージを表示します。GPUを必須にする場合は`device="cuda"`などを明示します。詳細なOS・CUDA・依存条件は以下の機能別案内にまとめています。
 
 ## 機能別インストール
 
@@ -36,7 +36,7 @@ PyPIにはまだ公開していません。以下のコマンドは、このリ�
 | ResNet分類・回帰 | `torch` | NumPy、Pillow、PyTorch、Torchvision | ResNet重みは初回利用時に別途取得。TorchとTorchvisionは公式の対応組み合わせで導入する |
 | 日本語OCR | `ocr` | PaddleOCR 3.1.0、PaddleX 3.1系、Pillow、LangChain 1.0未満、Hugging Face Hub | PaddlePaddle本体はCPU/GPU環境に合わせ別途導入。OCR専用環境を推奨 |
 | 物体検出・領域分割 | `vision` | NumPy、Pillow、Transformers、Hugging Face Hub（1.x対応） | PyTorchを先に導入。初回の明示読み込み時にDETR約167 MBまたはSAMの重み約375 MBを取得 |
-| SDXL生成・画像変換 | `diffusion` | Pillow、Diffusers（Torch extraを含む）、Transformers、Hugging Face Hub | 初回利用時に基盤モデルと選択LoRAを取得。数GBの空き容量が必要 |
+| SDXL/Tiny-SD生成・画像変換 | `diffusion` | Pillow、Diffusers（Torch extraを含む）、Transformers、Hugging Face Hub | GPU初回は基盤モデルと選択LoRA、CPU初回はTiny-SDを取得。数GBの空き容量が必要 |
 
 Hugging Face系の役割は分かれています。**Hugging Face Hub**はモデル・LoRAの取得とキャッシュ、**Transformers**はモデル構成や関連部品、**Diffusers**は画像生成パイプラインを担当します。Hub用パッケージだけ、または3つ全部を基本依存へ入れる構成にはしません。画像例のタイトル・ラベルは`japanize-matplotlib`を通じて日本語フォントへ設定します。ライブラリのimportだけでは読み込まず、`show_examples()`の実行時に適用します。
 
@@ -62,7 +62,7 @@ python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/pac
 python -m pip install -e '.[ocr]'
 ```
 
-上記はCPU環境の例です。GPU環境では公式インストーラーで対応するCUDA版を選び、Colabでも現在のCUDA環境に一致するコマンドを選んでください。PaddlePaddle本体は環境ごとにwheelが異なるため、ライブラリが実行中に自動インストールすることはありません。利用者が`import paddle`を書く必要はなく、`ocr.load()`が必要な時にライブラリ内部で読み込みます。`ocr.load()`の既定はCPUです。GPUを使うときは`device="gpu:0"`を指定し、`ocr.available_devices()`で利用可否を先に確認します。
+上記はCPU環境の例です。GPU環境では公式インストーラーで対応するCUDA版を選び、Colabでも現在のCUDA環境に一致するコマンドを選んでください。PaddlePaddle本体は環境ごとにwheelが異なるため、ライブラリが実行中に自動インストールすることはありません。利用者が`import paddle`を書く必要はなく、`ocr.load()`が必要な時にライブラリ内部で読み込みます。`ocr.load()`の既定はGPU優先の`auto`で、GPUがなければ警告を出してCPUを使います。GPUを必須にするときは`device="gpu:0"`を指定し、`ocr.available_devices()`で利用可否を確認します。
 
 OCRモデルは`ocr.load()`を呼んだ時に、Apache-2.0表示のPP-OCRv5 mobile検出・認識モデルを固定Hugging Face revisionから取得します。2モデルで約22 MBです。モデルカードの条件は各配布元で確認できます：[検出モデル](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_det)、[認識モデル](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_rec)。推論はローカルで実行し、読み取り結果は`text`と行ごとの`confidence`、画像上の四点`polygon`で返します。
 
@@ -70,7 +70,7 @@ Colabで以前のOCR依存を導入済みの場合は、修正版をインスト
 
 ## PyTorchとCPU/GPU
 
-PyTorchとTorchvisionは機能上対応する版の組み合わせを使います。PyPI extrasはCUDA版を選べないため、GPU利用者は先に[PyTorch公式インストーラー](https://pytorch.org/get-started/locally/)でOS・Python・CUDAまたはCPUを選んでPyTorchとTorchvisionを導入し、その後に`.[torch]`または`.[diffusion]`を追加します。extrasのインストールは既に満たされたPyTorchを再選択しない前提です。GPUの有無はライブラリ側でも明示的に確認し、GPUへ自動切替しません。
+PyTorchとTorchvisionは機能上対応する版の組み合わせを使います。PyPI extrasはCUDA版を選べないため、GPU利用者は先に[PyTorch公式インストーラー](https://pytorch.org/get-started/locally/)でOS・Python・CUDAまたはCPUを選んでPyTorchとTorchvisionを導入し、その後に`.[torch]`または`.[diffusion]`を追加します。extrasのインストールは既に満たされたPyTorchを再選択しない前提です。既定の`device="auto"`はGPUを優先し、なければCPUを使います。
 
 現行の公式対応表に基づく最小候補は次のとおりです。`pyproject.toml`の下限は2.6/0.21とし、Python 3.13ではresolverが対応する新しい組を選べるようにします。これはwheelを各OS/GPUで実行確認済みという意味ではありません。
 

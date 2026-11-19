@@ -2,10 +2,11 @@
 from __future__ import annotations
 
 import math
+import warnings
 from pathlib import Path
 from typing import Any, Iterable, Sequence
 
-from ._torch_utils import cuda_device_aliases, normalize_torch_device
+from ._torch_utils import choose_torch_device, cuda_device_aliases, normalize_torch_device
 
 
 class ModelError(RuntimeError):
@@ -118,7 +119,7 @@ class _ResNetEstimator:
     def __init__(
         self,
         *,
-        device: str = "cpu",
+        device: str = "auto",
         epochs: int = 5,
         batch_size: int = 16,
         learning_rate: float = 1e-3,
@@ -127,7 +128,7 @@ class _ResNetEstimator:
         random_state: int = 42,
         verbose: bool = True,
     ) -> None:
-        device = normalize_torch_device(device)
+        device = normalize_torch_device(device, allow_auto=True)
         if isinstance(epochs, bool) or not isinstance(epochs, int) or epochs < 1:
             raise ValueError("epochsは1以上の整数で指定してください。")
         if isinstance(batch_size, bool) or not isinstance(batch_size, int) or batch_size < 1:
@@ -143,6 +144,7 @@ class _ResNetEstimator:
         if weights not in (None, "IMAGENET1K_V1", "DEFAULT") and not hasattr(weights, "meta"):
             raise ValueError("weightsはIMAGENET1K_V1、DEFAULT、None、またはTorchvisionの重みで指定してください。")
         self.device = device
+        self._device_request = device
         self.epochs = epochs
         self.batch_size = batch_size
         self.learning_rate = float(learning_rate)
@@ -161,7 +163,16 @@ class _ResNetEstimator:
                 "ResNetには対応するPyTorchとTorchvisionが必要です。pip install 'cv-data-lesson[torch]'を実行してください。"
             ) from exc
 
+        requested_device = self._device_request
         devices = available_devices()
+        self.device, used_cpu_fallback = choose_torch_device(requested_device, devices)
+        if used_cpu_fallback:
+            warnings.warn(
+                "GPUが利用できないため、ResNetをCPUで実行します。"
+                "GPUを必須にする場合はdevice='cuda'またはdevice='cuda:0'を明示してください。",
+                RuntimeWarning,
+                stacklevel=2,
+            )
         if not devices.get(self.device, False):
             raise ModelError(f"device={self.device!r}はこの環境で利用できません。available_devices()で確認してください。")
         torch.manual_seed(self.random_state)

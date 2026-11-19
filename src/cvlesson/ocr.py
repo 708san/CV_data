@@ -4,6 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 import tempfile
+import warnings
 from typing import Any
 
 
@@ -124,14 +125,14 @@ def available_devices() -> dict[str, bool]:
 
 def load(
     *,
-    device: str = "cpu",
+    device: str = "auto",
     language: str = "japan",
     cache_dir: str | Path | None = None,
     local_files_only: bool = False,
     detection_model_dir: str | Path | None = None,
     recognition_model_dir: str | Path | None = None,
 ) -> OCR:
-    """PP-OCRv5 mobileを読み込む。既定は日本語・CPU。
+    """PP-OCRv5 mobileを読み込む。既定は日本語・GPU優先のauto。
 
     モデルはこの関数を呼んだときに限り、固定したHugging Face revisionから
     キャッシュへ取得する。別モデルを使う場合は、対応するPaddle推論モデルの
@@ -139,13 +140,24 @@ def load(
     """
     if language != "japan":
         raise ValueError("既定モデルで利用できるlanguageは現在 japan のみです。")
-    if device != "cpu" and not (device.startswith("gpu:") and device[4:].isdigit()):
-        raise ValueError("deviceは'cpu'または'gpu:0'形式で指定してください。GPUは自動選択しません。")
+    if device != "auto" and device != "cpu" and not (device.startswith("gpu:") and device[4:].isdigit()):
+        raise ValueError("deviceは'auto'、'cpu'または'gpu:0'形式で指定してください。")
     if (detection_model_dir is None) != (recognition_model_dir is None):
         raise ValueError("別のモデルを使うときはdetection_model_dirとrecognition_model_dirを両方指定してください。")
 
     paddle = _import_paddle()
     devices = _devices_from_paddle(paddle)
+    if device == "auto":
+        if devices.get("gpu:0", False):
+            device = "gpu:0"
+        else:
+            warnings.warn(
+                "GPUが利用できないため、日本語OCRをCPUで実行します。"
+                "GPUを必須にする場合はdevice='gpu:0'を明示してください。",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            device = "cpu"
     if not devices.get(device, False):
         raise OCRError(
             f"device={device!r}はこの環境で利用できません。CPU版/GPU版PaddlePaddleを確認し、"

@@ -20,7 +20,7 @@ class ResNetEstimatorTests(unittest.TestCase):
 
     def test_constructor_does_not_import_or_download_model(self):
         estimator = models.ResNetClassifier()
-        self.assertEqual(estimator.device, "cpu")
+        self.assertEqual(estimator.device, "auto")
         self.assertEqual(estimator.epochs, 5)
         self.assertFalse(estimator.is_fitted_)
         self.assertEqual(models.ResNetClassifier(device="cuda").device, "cuda:0")
