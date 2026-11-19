@@ -77,7 +77,7 @@ model.fit(train[["image_before_path", "image_after_path"]], train["consumed_weig
 
 ### 物体検出：データ注釈とDETR推論は別々に扱う
 
-`boxes`列には各画像の矩形、クラスID、クラス名などが入ります。DETRは画像パスまたはPillow Imageを受け取り、`Detection(label, score, box)`のリストを返します。`box`は元画像上の`(x_min, y_min, x_max, y_max)`です。
+`boxes`列には各画像のbbox辞書のリストが入り、各辞書に`class_id`、元ラベルの`class_name`、日本語ラベルの`class_name_ja`、正規化YOLO形式の`x_center` / `y_center` / `width` / `height`を保持します。検出DataFrameのトップレベル列は`image_path`、`label_file`、`boxes`、`split`、`sample_id`です。`DatasetBundle.splits`では検出の`val`と`valid`を`valid`へ集計しますが、`to_df()["split"]`の元表記は変更しません。DETRは画像パスまたはPillow Imageを受け取り、`Detection(label, score, box)`のリストを返します。`box`は元画像上の`(x_min, y_min, x_max, y_max)`です。
 
 ```python
 from cvlesson import vision
