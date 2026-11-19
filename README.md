@@ -88,7 +88,7 @@ display.save(image_path, "results/detections.png", detections)
 
 物体検出・領域分割は`from cvlesson import vision`から使います。PyTorchを環境に合わせて導入した後、`vision` extraを追加します。固定版のDETR（COCO 80カテゴリ検出）とSAM（枠・点からのマスク生成）を利用できます。機能範囲・容量・限界・実環境の検証状況は[検出と領域分割の使い方](docs/vision.md)を確認してください。
 
-Colabでモデルを試す場合は、[DETR・SAMのGPU確認Notebook](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/vision_smoke_test.ipynb)を開いてT4ランタイムで実行します。OCRは依存環境を分け、[日本語OCRのCPU確認Notebook](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/ocr_smoke_test.ipynb)を新しいCPUランタイムで実行します。Notebookを作成済みですが、Colab上の実行はまだです。
+Colabで自動切替を試す場合は、[CPU/T4自動切替の受け入れNotebook](../notebooks/colab/auto_device_model_acceptance_test.ipynb)を開いて、CPUランタイムとT4ランタイムでそれぞれ実行します。DETR・SAMの既存GPU確認には[DETR・SAMのGPU確認Notebook](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/vision_smoke_test.ipynb)、OCRは依存環境を分けて[日本語OCRの確認Notebook](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/ocr_acceptance_test.ipynb)を使います。自動切替の実モデル実行はこのNotebookで確認します。
 
 ```python
 from cvlesson import vision

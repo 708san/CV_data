@@ -105,7 +105,7 @@ print("MPS:", torch.backends.mps.is_available())
 - OCRはColab Python 3.13のCPUランタイムで、PaddlePaddle 3.2.0・PaddleOCR 3.1.0・PaddleX 3.1.4を導入し、合成した英数字画像の推論と共通戻り値を確認しました。日本語実画像の認識品質、GPU、他OS・他バージョンの組み合わせは未確認です。
 - 検出・領域分割はColab Python 3.13のT4でDETRとSAMの固定モデルを取得・推論し、検出結果、SAMのboolマスクと重ね合わせ表示を確認しました。確認はNotebook内の合成図形画像1枚です。実データでの精度、CPU・他OS・他GPUは未確認です。
 - OCRがPaddlePaddleなど別の深層学習基盤を必要とする場合、PyTorch系との同一環境での併用は未確認です。競合しないと確認できるまでは、専用仮想環境へ分ける導入例を優先します。機能を全部入れる`all` extraは設けません。
-- ResNetの実データ分類・回帰、OCRの公開実レシート推論、SAMの実データ比較を行うColab Notebookを用意しましたが、今回追加した各フローはまだColabで実行していません。Notebookの構文確認とAPIのネットワーク不要テストだけを完了しています。
+- ResNetの実データ分類・回帰、OCRの公開実レシート推論、SAMの実データ比較を行うColab Notebookを用意しました。自動切替の実モデル確認は[`auto_device_model_acceptance_test.ipynb`](../notebooks/colab/auto_device_model_acceptance_test.ipynb)をCPUとT4でそれぞれ実行します。今回の自動切替フローはまだColab実行前で、Notebookの構文確認とAPIのネットワーク不要テストまでを完了しています。
 - 依存範囲の実環境チェックは開発中です。ResNetの既存CPU動作確認はPyTorch 2.2.2/Torchvision 0.17.2で行ったため、更新した推奨下限（PyTorch 2.6/Torchvision 0.21）での再確認が残っています。
 
 ## 公式情報
