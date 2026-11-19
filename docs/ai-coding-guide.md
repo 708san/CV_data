@@ -29,10 +29,10 @@
 | `models.ResNetRegressor()` | ResNet18の特徴と学習する出力層で数値を予測する |
 | `model.fit(X, y)`、`predict(X)`、`score(X, y)` | 分類・回帰の学習、予測、評価をscikit-learn風に行う |
 | `classifier.predict_proba(X)` | 分類クラスごとの確率目安をNumPy配列で得る |
-| `ocr.load()`、`reader.predict("image.jpg")` | 固定版PP-OCRv5で画像の文字・信頼度・位置を読む。CPUが既定 |
-| `vision.load_detector()`、`detector.predict("image.jpg")` | COCO 80カテゴリの位置とラベルを検出する。CPUが既定 |
+| `ocr.load()`、`reader.predict("image.jpg")` | 固定版PP-OCRv5で画像の文字・信頼度・位置を読む。GPU優先、なければ警告付きCPU |
+| `vision.load_detector()`、`detector.predict("image.jpg")` | COCO 80カテゴリの位置とラベルを検出する。GPU優先、なければ警告付きCPU |
 | `vision.load_segmenter()`、`segmenter.predict("image.jpg", box=(x1,y1,x2,y2))` | 指定した枠や点に沿ってマスクを作る。SAM自体は対象名を返さない |
-| `generation.load()` | SDXLで画像を生成・変換する。モデルは明示時に取得 |
+| `generation.load()` | GPUではSDXL、CPUではTiny-SDで画像を生成する。モデルは呼び出し時に取得 |
 | `datasets.get("festival_icons")` | LoRA用画像と説明文を取得する |
 
 `list_available()`の`task`は`ocr`、`classification`、`detection`、`regression`、`segmentation`、`lora`のいずれかです。正式APIに表示されない候補は、台帳上の調査候補であり、取得可能・教材利用可能とは限りません。`include_preview=True`は教師が確認するときだけ指定します。OCRの合成レシート候補は準備中で、Release公開までは一覧にも取得例にも出ません。
@@ -59,7 +59,7 @@ GeoSetEnneaは`datasets.get("geoset_ennea")`で136枚の画像と9クラスの�
 
 学習済みLoRAの一覧と条件は`from cvlesson import loras`の`loras.list_models()`、または[画像生成ガイド](image-generation.md)で確認できます。使うモデルを`generation.load(lora="pixel_art_sdxl", device="cuda")`のように指定し、生成ごとに`generate(..., lora_scale=0.6)`でLoRAの強さを0.0〜1.0に調整できます。重みは配布せず、固定版から初回利用時に取得します。`festival_icons`は別の学習素材で、権利確認中のため生徒向け取得対象ではありません。
 
-日本語OCRは`from cvlesson import ocr`から使います。`ocr.load()`はCPUを使い、初回にPP-OCRv5 mobileの固定モデルを取得します。GPUを使う場合は、PaddlePaddleのGPU環境を確認して`ocr.load(device="gpu:0")`と明示してください。`reader.predict()`の結果に含まれる信頼度は正解を保証しないので、元画像と照合してください。詳しくは[OCRの使い方](ocr.md)を参照してください。
+日本語OCRは`from cvlesson import ocr`から使います。`ocr.load()`はGPUを優先し、GPUがなければ警告を表示してCPUを使い、初回にPP-OCRv5 mobileの固定モデルを取得します。GPUを必須にする場合は、PaddlePaddleのGPU環境を確認して`ocr.load(device="gpu:0")`と明示してください。`reader.predict()`の結果に含まれる信頼度は正解を保証しないので、元画像と照合してください。詳しくは[OCRの使い方](ocr.md)を参照してください。
 
 `get()`は`DatasetBundle`を返します。`root`、`images_dir`、`labels_csv`、`metadata_jsonl`、`kind`、`task`、`manifest`、`version`、`classes`、`class_names_ja`、`splits`、`license_info`、`source_info`を参照できます。トマトの葉では`train_dir`と`test_dir`も使えます。監査状態とレポートは`datasets.info("tomato_leaves")`で確認します。
 
@@ -81,7 +81,7 @@ GeoSetEnneaは`datasets.get("geoset_ennea")`で136枚の画像と9クラスの�
 
 > `cvlesson.datasets.get("festival_icons", allow_preview=True)`で教師向けプレビューとして取得した`labels.csv`の`image,caption`を読み、最初の5行を表にするコードを書いてください。権利確認中の素材なので、画像・説明文は変更・再配布しないでください。
 
-**注意：** `models`が提供するのはResNet18の固定特徴抽出器と出力層を学習する分類・回帰です。OCRは学習済みモデルの推論、画像生成はSDXLと登録LoRAの推論です。独自CNNの学習、OCR・検出・領域分割の追加学習、LoRA学習は提供していません。OCR・画像生成の実環境テストは未完了なので、利用前に[インストールと検証状況](installation.md)を確認してください。
+**注意：** `models`が提供するのはResNet18の固定特徴抽出器と出力層を学習する分類・回帰です。OCRは学習済みモデルの推論、画像生成はGPU時のSDXLまたはCPU時のTiny-SDと登録LoRAの推論です。Tiny-SDはLoRAとimage-to-imageに対応しません。独自CNNの学習、OCR・検出・領域分割の追加学習、LoRA学習は提供していません。自動切替の実モデル確認状況は[インストールと検証状況](installation.md)を確認してください。
 
 ## AIにデータの検査結果を説明してもらう
 

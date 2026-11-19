@@ -87,7 +87,7 @@ with Image.open(image_path) as opened:
     image = opened.convert("RGB")
 
 print(vision.available_devices())
-detector = vision.load_detector(device="cpu")  # GPU利用時は確認後、device="cuda:0"を指定
+detector = vision.load_detector()  # GPU優先。なければ警告を出してCPU
 results = detector.predict(image)
 display.show(image, results)
 ```
@@ -107,7 +107,7 @@ display.show(image, results)
 
 ## Colabで機能と実データを確認する
 
-各NotebookはColabの新しいランタイムで別々に実行します。OCRはCPU、ResNet・検出・領域分割・SDXLはT4 GPUを選んでください。全Notebookを同じランタイムで続けて実行しないでください。
+各NotebookはColabの新しいランタイムで別々に実行します。自動切替確認NotebookはCPUとT4 GPUでそれぞれ実行します。OCRはPaddle依存を分けるため専用ランタイムを使い、全Notebookを同じランタイムで続けて実行しないでください。
 
 | Notebook | 確認する内容 | データ・注意 |
 |---|---|---|
@@ -116,6 +116,7 @@ display.show(image, results)
 | [OCR](../notebooks/colab/ocr_smoke_test.ipynb) | 合成画像と公開実レシート画像1枚での推論 | 詳細レシート版、CC BY-NC 4.0、約130 MB。非商用のみ。残存情報があるため結果を公開しない |
 | [検出・領域分割](../notebooks/colab/vision_smoke_test.ipynb) | 自分の画像とFruitSeg30のtest画像でDETR/SAMを推論 | FruitSeg30はCC BY 4.0、約68 MB。SAM比較は1画像の動作確認で、全体性能ではない |
 | [SDXL・LoRA](../notebooks/colab/generation_smoke_test.ipynb) | text-to-image、image-to-imageと登録LoRA 4件 | T4と数GBの空き容量が必要。入力画像は合成画像か明示アップロードを選択 |
+| [自動切替受け入れ](../notebooks/colab/auto_device_model_acceptance_test.ipynb) | CPU/T4でResNet、DETR、SAM、画像生成の`device="auto"`を実モデル確認 | GPUではSDXL、CPUではTiny-SD。OCRは別Notebook |
 
 同じモデル名でも入力やデータの条件で結果は変わります。これらのNotebookは各APIと一部実データで一連の処理が動くか確認するもので、一般化性能の保証ではありません。Colabから開くNotebookの変更がGitHubに反映されていない場合は、作業ブランチの更新後に再読み込みしてください。
 
