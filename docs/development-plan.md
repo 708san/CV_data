@@ -1,6 +1,177 @@
 # CV_data 開発計画
 
-更新日：2026-11-13
+更新日：2026-11-19
+
+## 今回の作業単位：データ互換性・日本語ラベル・モデル実行環境の修理
+
+対象仕様：3.3、4.1、4.2、4.3、4.4、5.1、5.2、7。固定Releaseを変更せず、`val`/`valid` splitの受け入れ、RDD2020の浮動小数点丸め誤差、全データの日本語ラベルと元ラベルの併記、機能別依存・device表記・学習速度・OCR入力検証・CPU/GPU境界を修理する。
+
+順序：
+1. 仕様0.15へ、元ラベルと日本語ラベルの両立、split互換、bbox許容誤差、進捗表示と特徴再利用、OCRデコード検証、`timm`、device別名、CPU用モデル追加条件を記録する。
+2. `datasets`の検出artifact validatorを`val`と`valid`の両方へ対応させ、元splitを保持する。bboxは実測した丸め誤差だけを許容し、無制限な範囲外値は拒否する。固定Releaseの再公開・再生成は行わない。
+3. 全公開データの`class_names_ja`を点検し、Road Traversingの日本語名欠落、Orange、Fire、FruitSeg30、Indoor Waste、Fresh/Rotten Fruits、AgriFreshNETを修正する。`classes`・DataFrameの元ラベルは保持し、日本語列・表示を併記する。
+4. `vision` extraへ`timm`を追加し、models・vision・generationのTorch系device表記を共通化する。CPUは実行可能な機能で維持し、画像生成はCPU用モデルを実測できた場合だけ明示選択肢にする。
+5. ResNetの凍結特徴を一度だけ計算して再利用し、epoch進捗と損失を表示する。OCRは画像をデコード検証し、WebP等を一時PNGへ変換するか、明確なエラーにする。
+6. ネットワーク不要テストを追加し、Python 3.11〜3.13、Notebook、wheel、`git diff --check`を確認する。RDD2020全量取得とDETR/SAM・画像生成のCPU実測はColabまたは別計算機に分離する。
+7. 授業Notebookと分離した`library_acceptance_test.ipynb`を作成し、固定commitからのインストール、軽量API、GeoSetEnnea/RDD2020の検証、ラベル・split・bbox、CPU/GPU境界を一括確認する。重いモデル推論は同Notebookの明示セルまたは別環境で実行し、授業の見出し・順序・記入欄には触れない。
+
+受け入れ条件：GeoSetEnneaとRDD2020の固定artifactを、元splitを保持したまま取得・検証できる。bboxは実測した極小の丸め誤差だけを許容する。全公開クラスに日本語名があり、元ラベルと併記できる。`timm`が`vision` extraから導入され、Torch系で`cuda`/`cuda:0`等を一貫して扱える。ResNetは凍結特徴をepochごとに再計算せず進捗を表示する。OCRは壊れた・未対応画像を空結果として返さない。CPU/GPUの実測範囲と画像生成のGPU要件を文書で区別する。
+
+進捗：仕様・計画を更新。ラベル表、元ラベル保持、`val`/`valid`受け入れ、bbox丸め誤差、`timm`、Torch device別名、ResNet特徴再利用・進捗表示、OCR画像デコード検証、画像生成のCPU非対応を実装。固定SHA-256のGeoSetEnnea 136件とRDD2020 7,900件を一時領域で全量検証し、wheel/sdistのbuild・twine check・wheelインストール後の軽量importも確認。ネットワーク不要テスト89件中72件成功、任意依存不足による17件skip。固定Releaseの再公開と、任意依存を入れたCPU環境・GPU/Colab実モデル確認は未完了。授業Notebookとは別の受け入れテストNotebookを作成予定。
+
+## 今回の作業単位：画像生成時のLoRA適用強度を指定可能にする
+
+対象仕様：4.4、5.1、6、7。現状はLoRAを固定強度で読み込み、`generate()`から適用強度を変更できない。Diffusersの推論時scale指定を利用し、初心者が生成ごとにLoRAの影響を調節できるようにする。
+
+順序：
+1. 仕様0.14へ、`lora_scale`の既定値・範囲・LoRA未使用時の挙動を記録する。
+2. この計画に、実装箇所・ドキュメント・Notebook更新・受け入れ条件を記録する。
+3. `ImageGenerator.generate()`に`lora_scale=1.0`を追加し、値を0.0〜1.0に検証する。LoRAが読み込まれている場合だけDiffusersの推論呼び出しへscaleを渡す。LoRAなしでは通常生成を維持する。
+4. 画像生成ガイドとColab Notebookへ強度変更の短い例と、値の意味を追加する。
+5. 外部モデル取得なしでscaleの引き渡しと範囲検証を確認し、実環境未確認ならその旨を記録する。
+
+受け入れ条件：既定値1.0の既存呼び出しを保ちつつ、利用者が`generate(..., lora_scale=0.5)`のように生成ごとに強度を指定できる。0.0〜1.0以外は明確なエラーになり、LoRAなしの生成挙動を変えない。コード・文書・Notebookの例が一致する。
+
+進捗：仕様0.14、`ImageGenerator.generate()`、画像生成ガイド、README、AI改造ガイド、Colab生成Notebookを更新。`lora_scale`を0.0〜1.0、既定1.0とし、LoRA使用時だけDiffusersへ渡す。LoRAなしで既定値以外を指定した場合はエラーにする。PythonソースとNotebookコードセルの構文、`git diff --check`は成功。ユニットテストは未実行。Colabでの生成確認は未実施。
+
+## 今回の作業単位：PyPI初回alpha公開候補の準備（公開・アップロードは保留）
+
+対象仕様：5.1、6、7。基本依存を軽量に保ち、機能別extraとデータ・モデル本体の分離を維持したまま、初回PyPI配布候補を整える。PyPIへのアップロード、GitHub Release/tag作成はこの作業に含めない。
+
+順序：
+1. 現行メタデータとCIを確認し、候補名・alpha版番号・対応Python・MITコードライセンスを決める。データ・モデルの利用条件はパッケージコードのライセンスと混同しない。
+2. README、インストール案内、クイックスタートをPyPI alphaの利用者向けに整え、PyPI未公開の時点でインストール可能と誤認させない。GitHub branch固定リンクは既定ブランチへ直す。
+3. GitHub Release公開時だけ動くPyPI Trusted Publishing workflowを用意する。タグと`pyproject.toml`の版一致、wheel/sdist検査、画像・重み等のバイナリ非同梱を確認し、API tokenを保存しない。
+4. PyPI側で必要なTrusted Publisher設定値・初回登録の注意を文書化する。公開名の確認結果は確認時点の観測として記録し、予約済みとは扱わない。
+5. wheel/sdist構築、Twine metadata検査、既存のネットワーク不要テストと差分検査を実施し、PRでレビュー可能にする。
+
+受け入れ条件：利用者がalphaの導入と機能別extraを区別できる。公開workflowはGitHub Releaseの`published`イベントのみで動き、手動実行やtag pushからPyPIへ送らない。公開前にversion一致・metadata・禁止バイナリ検査を通し、Trusted Publishing以外の秘密tokenを要求しない。実際のPyPIアップロード、GitHub Release/tag作成、mainへのマージは明示的な最終許可まで行わない。
+
+進捗：メタデータを`0.1.0a1`へ更新し、PyPI公開前後の導入案内、Trusted Publisher設定表、Release限定workflow、CIのwheel/sdist build・Twine・バイナリ・wheel import smokeを追加。Python 3.11/3.13で85テスト成功（各16件skip）、workflow YAMLと`git diff --check`成功。ローカルのbuild/Twineは未導入で、PyPIへのDNS接続もできず隔離導入できなかったため、実配布物のbuild検査はGitHub CIで確認する。PyPI JSON APIは2026-11-13時点でHTTP 404。公開・Release作成は未実施。
+
+
+## 今回の作業単位：分類Notebookの`predict_proba()`型不一致を修正
+
+対象仕様：4.1、7。`_predict_values()`はNumPy配列を返す一方、`predict_proba()`がTensorを想定する`torch.softmax()`へそのまま渡し、ColabでTypeErrorになった。既存のscikit-learn風Estimator APIの不具合として修正する。
+
+順序：
+1. 仕様4.1の出力層学習と`fit/predict/score`中心の呼び出し方を確認する。仕様変更は不要な不具合修正とする。
+2. `predict_proba()`へ渡す前にNumPy logitsをTorch Tensorへ変換し、返り値を既存の確率目安のNumPy配列形式で保つ。
+3. ネットワーク・モデル重みを使わず、NumPy形式のlogitsがsoftmaxに渡り、各行が正規化されるテストを追加する。
+4. 分類・回帰Estimatorと基盤モデルAPIの呼び方を、実装と説明文書から短い対比で提示する。
+5. 全ユニットテスト、Notebook検査、差分を確認する。Colab実画像で再実行していない部分は未確認と記録する。
+
+受け入れ条件：Colabログの`softmax input must be Tensor, not numpy.ndarray`を修正し、`predict_proba()`が形状`(サンプル数, クラス数)`の行ごとに正規化された確率目安を返す。既存の分類・回帰のscikit-learn風Estimator APIとOCR/vision/generationの用途別APIを混同させない。
+
+進捗：`predict_proba()`でNumPy logitsを`torch.as_tensor()`に変換してからsoftmaxへ渡す修正を実装。外部モデルを使わない型変換・確率行和のテストを追加。分類・回帰EstimatorとOCR/DETR/SAM/SDXLの呼び出し方をクイックスタートへ追記し、確率配列の形状と意味を文書化。Python 3.13で全85テスト成功（16件skip）、`git diff --check`成功。ユーザーがColab分類Notebookの実行を確認済み。回帰Notebookと他機能の再確認は未実施。
+
+## 今回の作業単位：Notebookのケアレスミス検査とMatplotlib日本語表示
+
+対象仕様：5.1、6、7。分類Notebookのインストール行で閉じ引用符が欠けた不具合をきっかけに、全Notebookの変数・実行順・構文・インストール指定を再点検し、ライブラリ自身が作るMatplotlib図を日本語表示できるようにする。
+
+順序：
+1. 仕様0.13に、Matplotlibの日本語フォント自動設定、機能別依存、Notebook公開前の静的検査要件を記録する。
+2. この計画へ、全Notebook監査、再発防止の自動検査、`display` extraへの`japanize-matplotlib`追加を記録する。
+3. すべての配布Notebookを解析し、JSON/Python構文、未定義名、セル実行順、`%pip install`の引用符と固定参照を確認する。誤りは最小限に修正し、既存Notebookの見出し・記入欄・授業順を保つ。
+4. `DatasetBundle.show_examples()`で日本語設定を遅延適用する。フォント名のrcParams設定だけに依存せず、IPAexGothicの実ファイルを`FontProperties`でタイトル・注釈へ明示し、依存案内とテストをそろえる。
+5. ネットワーク不要テスト、Notebook全件検査、パッケージメタデータ、差分を確認する。
+
+受け入れ条件：全Notebookのセル構文と静的変数検査が通り、導入セルからimportまでの順序が正しく、pip行の引用符・固定参照に誤りがない。ライブラリのMatplotlib出力は`display` extra導入時に日本語フォントを自動設定し、コアimportやMatplotlibを使わない機能では日本語化依存を読み込まない。Colab実行をしていないものは未検証と記録する。
+
+進捗：全配布Notebookを調べ、分類Notebookの未定義`df`を`frame`へ修正。標準ライブラリだけでNotebook JSON・セル構文・セル間グローバル名・pip引用符・CV_data Git URLの40桁固定参照・install前のimportを確認するテストを追加。`display` extraに`japanize-matplotlib`を追加し、`show_examples()`内で描画時だけ日本語フォント設定を適用。`display`にDataFrame依存も含め、表示導線の追加指定を減らした。Python 3.13で全84テスト成功（16件skip）、Notebook検査3項目成功、`git diff --check`成功。Colab画面でGlyph警告と日本語の豆腐表示を確認。IPAexGothicフォントファイルをタイトル・注釈へ明示する実装とmock testを追加し、関連10テスト成功。完全な描画依存がこの環境になく、実字形のレンダリングと修正版のColab再実行は未確認。ruff/pyflakesの一時導入はネットワークDNS制限でできなかったため、標準ライブラリ検査で確認。
+
+## 今回の作業単位：初心者向けの導入・データ・推論体験を改善
+
+対象仕様：1、3、4、5、6、7。ColabでOCR CPUとDETR/SAM T4の実モデル推論を確認済み。初回インストールから入力・結果確認・データ利用までの使いやすさを改善する。
+
+改善計画：[利用しやすさ改善計画](usability-plan.md)。対象は導入方法、課題からのデータ選択、データ形式とモデル入力の接続、各モデルの出力表示、課題解決例、実環境での再現確認。
+
+順序：
+1. 実測済み環境・API・データ形式をコードと文書から棚卸しし、現状説明の食い違いを直す。まず`docs/installation.md`と`docs/vision.md`のDETR/SAM確認状況を更新する。
+2. 初心者の利用導線を、CPUローカル・Colab CPU・Colab T4と機能別extraごとに整理する。PyPI公開前後のインストールコマンドを区別する。
+3. `DatasetBundle`の各task形式とモデルAPIを対応表にし、取得後のサンプル表示、画像・ラベル・注釈へのアクセス、モデル入力までの変換手順を確認する。
+4. APIの入力型と戻り値を機能横断で比較し、パス変換・結果の可視化・保存に必要な最小の共通体験を設計する。新APIが仕様にない場合は仕様書を先に更新する。
+5. 課題選択から実行・結果確認までを通す短い例と、各taskの1機能Notebookを用意する。
+6. 既存の単体テストに加え、新規環境・Colabでの主要フローを確認し、対応環境と限界を記録する。
+
+受け入れ条件：機能ごとの導入選択が明確で、掲載データの取得から内容確認・タスク形式へのアクセス方法が分かり、画像入力からモデル結果の確認までのコードが簡潔で一貫する。ライセンス・データ形式・モデル出力の意味・GPU明示選択・遅延取得を維持する。実測していない動作は確認済みと書かない。
+
+進捗：仕様0.12へ利用者自身の画像を使う要件を追加。クイックスタートにローカルパス/Colabアップロードを追記し、DETR/SAM Notebookはアップロードまたは合成画像を選べる形に更新。SAMの矩形入力を画像サイズに合わせた。今回、分類Notebookを独自CNNから`ResNetClassifier`へ変更し、登録済みトマト画像でtrain/validation/test・推論を確認可能にした。LeFood-Set用`ResNetRegressor` Notebookを追加。OCR Notebookに非商用条件を明記した公開実レシート推論、DETR/SAM NotebookにFruitSeg30 test画像と正解マスク比較を追加。SDXL/LoRA Notebookに任意の利用者画像を使う選択を加えた。全NotebookのJSON・コード構文、`git diff --check`、Python 3.13テスト79件成功（16件は任意依存不足でskip）を確認。Colab上での新しいデータ取得・学習・推論・実画像表示は未確認。
+
+### 今回の作業単位：分類・回帰・推論APIを実データで確認するNotebook
+
+対象仕様：3.2、4.1〜4.3、5.4、6、7。既存の分類Notebookは独自CNNを学習しており、提供APIのResNet分類Estimatorを検証していない。実データを使う分類・回帰の学習/分離評価と、OCR/SAM基盤モデルの実画像推論を確認するColab手順を整える。
+
+順序：
+1. 仕様・データ説明・コードから分類用`tomato_leaves`と回帰用`lefood_set`の固定版、権利表示、列名、split、ターゲット単位を確認する。データartifactは既存の固定取得APIを使い、Notebookへ複製しない。
+2. `notebooks/cv/classification_v1.ipynb`の見出し・授業順・記入欄を保ち、独自CNN部分をResNetClassifierの`fit/predict/predict_proba/score`を使う実データ例へ更新する。
+3. Colab用にLeFood-SetのResNetRegressor Notebookを追加し、画像ペアでの学習、validation/testのR²、実測値と予測値の比較を含める。
+4. OCR NotebookではCC BY-NC 4.0の実レシートを1枚推論し、非商用条件・残存情報・部分注釈の注意を明記する。全面OCR正解でないためCER等の自動評価は行わない。
+5. DETR/SAM NotebookではFruitSeg30の固定Release test画像を取得し、SAMに正解マスクから得た枠をpromptとして渡す比較例を追加する。単一画像のIoUは動作確認例に限ると説明し、モデルの一般性能の評価と混同しない。
+6. 過学習や長時間化を避ける固定seedのサンプル上限を設け、train/validation/test間の混入を避ける。評価指標が低い・負の値でも、Notebookを失敗扱いにせず実測結果として表示する。
+7. Colab起動リンク、固定commit、環境要件、権利・データ上の限界を記し、Notebook JSON・コード構文・既存ネットワーク不要テストを検証する。
+
+受け入れ条件：分類と回帰の両方で、登録済み固定Releaseデータの明示取得から、trainでの学習、validation/testでの分離評価、未見サンプルの推論までを追える。OCRとSAMは権利・注釈の範囲を説明した上で公開実データ画像を推論に渡す。分類Estimatorと回帰Estimatorの実APIを使い、異なるtaskのラベル・単位を混同しない。実Colabで実行していない場合は未検証として記録する。
+
+進捗：Notebook実装・構文検査・ネットワーク不要テストまで完了。classification_v1、ResNet回帰、OCR実レシート、FruitSeg30/SAMのColab手順を追加・更新。Colabログでclassification_v1のpip installコマンドに閉じ引用符がない問題が分かり、修正を追加。全Notebookのinstallコマンド引用符も確認する。Python 3.13テスト79件成功（任意依存不足で16件skip）。データReleaseの実ダウンロード、ResNet学習、PaddleOCR実レシート推論、SAM実データIoUはColabで未実行。
+
+### 今回の作業単位：利用者自身の画像をColab・ローカルで使う導線
+
+対象仕様：5.4、6、7。モデルAPIはローカルのファイルパスとPillow Imageを受け取れるが、利用者がColabへ自分の画像を持ち込む具体例が不足している。追加の画像変換やプロジェクトへの複製を求めず、基本入力形式のまま利用できる手順を用意する。
+
+順序：
+1. 仕様0.12にローカル画像とColabへ明示アップロードした画像の扱い、外部への自動送信をしない境界を記録する。
+2. クイックスタートにローカルパスとColabアップロードの短い例を加え、どちらも同じAPIへ渡すことを示す。
+3. 固定commitで動くColab検出Notebookに任意画像のアップロード手順を追加する。合成画像の動作確認も選べるようにし、SAMの入力枠を画像サイズから決める。
+4. Notebook JSONとコードセル構文、ローカルのネットワーク不要テストを確認する。実Colabでの画像アップロード・推論・表示は実際に実行した場合だけ検証済みにする。
+
+受け入れ条件：利用者が画像ファイルを選び、画像をライブラリ形式に変換する手作業なしで、推論APIに渡せる。入力画像をリポジトリへ保存せず、Colab外への送信をライブラリが自動実行しない。特定の画像や課題に用途を限定しない。
+
+進捗：完了（ローカル実装・構文確認まで）。ローカル画像/Colabアップロードの例と、アップロードまたは合成画像を選べるDETR/SAM・SDXL Notebookを追加。SAMの枠を画像寸法に連動させた。Colab実行での確認が残る。
+
+### 作業単位：データ形式とモデル入力の対応表
+
+対象仕様：3.2、4.1〜4.4。コードだけでデータを`get()`した後にモデルへ渡す形が分かりにくいため、公開データごとの保存形式・`DatasetBundle`の操作・対応するモデル入力を照合する。
+
+順序：
+1. 公開中のデータカタログからID・task・kind・split・画像/注釈形式を列挙する。
+2. `to_df()`、`to_torch_dataset()`、個別フィールドを確認し、取得後に利用できる形を分類する。
+3. ResNet、OCR、検出、SAM、画像生成が実際に受け取る型と、返却型を対応づける。
+4. 変換が存在する箇所、利用者の手作業、現状仕様で未対応の組み合わせを区別した表を作る。未実装のAPIは紹介しない。
+
+受け入れ条件：公開中の各データについて、取得API・内容確認方法・タスク別レコード・対応モデル入力が分かる。分類・回帰・検出・領域分割・OCRの非対応機能を学習可能と誤認させない。
+
+進捗：完了。`datasets.list_tasks()`と`list_available()`で生徒向け22件を再集計し、`to_df()`・`to_torch_dataset()`、ResNet、OCR、DETR、SAM、SDXLの入出力を実装と照合。`docs/data-model-compatibility.md`に全22件のタスク別形式、接続例、非対応範囲を記録した。対応表はソース監査であり、データ全量の再監査ではない。
+
+### 作業単位：推論結果の共通描画・表示・保存
+
+対象仕様：5.3、6、7。検出・OCR・領域分割の予測結果を元画像へ重ねる処理を、初心者が利用できるAPIとして追加する。
+
+順序：
+1. 仕様0.10へ画像と結果型、合成後画像、表示・保存の契約を先に追加した。
+2. 画像パスまたはPillow Imageを受け、入力や結果を変更せずPillow Imageを返す描画APIを実装する。
+3. OCRポリゴンと文字、検出bbox・ラベル・score、SAMマスク、検出とSAMの組を描画し、画像サイズ・座標・mask形状を検査する。
+4. Notebook表示とファイル保存を追加依存を機能呼び出し時にだけ使って実装する。SDXLのPillow出力もそのまま表示できるようにする。
+5. 合成fixtureによるネットワーク不要テストで全結果型、入力非変更、保存先を検証し、API説明と利用例を更新する。
+
+受け入れ条件：学生が自分でmatplotlibの描画コードを組まずに、OCR・検出・SAMの結果を元画像と確認できる。描画結果をPillow Imageとして後続処理へ渡すか、指定先へ保存できる。表示・保存は明示操作でのみ行い、SAMの品質予測値を確率として表現しない。
+
+進捗：完了。`cvlesson.display.render/show/save`を追加。OCR文字枠、DETR bbox、SAM半透明mask、DETR+SAM結果を合成し、Pillow Image返却・Notebook表示・指定パス保存に対応。ネットワーク不要テストを含む79件成功（5件skip）。Colabでの表示と各OSの日本語フォント表示は未確認。
+
+### 作業単位：画像入力・汎用例・導入案内をそろえる
+
+対象仕様：3、4、5、6、7。現状の画像入力型を再確認し、初心者が手元画像・データ画像を扱う例と、目的別に選べる導入案内を整える。例は基本操作を示す短い雛形とし、特定データや課題に用途を限定しない。
+
+順序：
+1. 各機能が受け取るパス、Pillow Image、NumPy型を実装とバックエンド仕様で確認する。
+2. 利用者が扱いやすく、安全性と既存API互換性を保てる共通入力を決める。API拡張が必要な場合は実装前に仕様書を更新する。
+3. データ選択、サンプル確認、分類・回帰、OCR・検出・領域分割、画像生成を網羅する汎用最小例を用意する。具体的なデータIDは差し替え可能と示し、能力外の用途を例で限定しない。
+4. インストール案内の先頭に、PyPI公開前の開発checkoutと機能ごとの選択表を置く。PyTorch/PaddlePaddleのCPU/GPU別手順、環境分離、GPU確認の詳細は保つ。
+5. 文書・Notebookのコードセルを構文確認し、APIの入力形式と既存のネットワーク不要テストを検証する。
+
+受け入れ条件：画像入力型が機能ごとに明示され、対応追加後はパスとPillow Imageの扱いが一貫する。短い例はデータ取得・入力・実行・出力の基本を示し、特定の用途に固定しない。インストール入口から利用者が目的のextraとCPU/GPU準備へ進める。未公開のPyPI packageをインストール可能と案内しない。
+
+進捗：ResNet分類・回帰の学習/予測、DETR、SAM、OCRで画像パスとPillow Imageを受け取れるようにした。OCRは内部一時PNGを推論後に削除し、`ocr` extraへPillowを追加。NumPy画像は非対応としてエラーを明確化。`docs/quickstart.md`を題材を固定しない形で追加し、READMEをカタログから選ぶ流れに変更。`docs/installation.md`冒頭に目的別の導入表を追加。ネットワーク不要テスト79件成功（5件skip）、Pillow/NumPyを一時領域だけに入れて入力・一時ファイル削除・表示のテストを実施。Colabでの新画像入力・表示、実モデル推論は未確認。インストールと例の導線は更新済み。
 
 ## 今回の作業単位：空画像・翌日天気データを利用可能にし、生成Notebookの固定版ずれを修正
 

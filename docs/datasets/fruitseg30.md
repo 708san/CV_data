@@ -22,6 +22,8 @@
 
 artifact ZIPはローカルで68,242,354 bytes、SHA-256 `129384a6e9599b0b9eb756ec93abda25a90bdd70a514fd04f905a2ff2e8c5ba5`。3,833ファイル・1,914画像のmanifest照合に成功しました。データ本体はGitへ追加していません。Release asset：[fruitseg30-v0.1.0.zip](https://github.com/708san/CV_data_artifacts/releases/download/fruitseg30-v0.1.0/fruitseg30-v0.1.0.zip)。
 
+元ラベルは領域分割の`label`に残し、日本語の`label_ja`を併記します。たとえば`Apple_Gala`は「りんご（ガラ種）」、`Apple_Golden Delicious`は「りんご（ゴールデンデリシャス種）」、`Green Coconut`は「緑色のココナッツ」、`Malta`は「マルタオレンジ」です。
+
 ## 教材としての使い方と注意
 
 画像上の物体の範囲を画素単位で扱う領域分割データです。果物の種類ごとの比較、背景や撮影場所が結果に与える影響の確認、画像編集や個数確認の補助などが使用例です。クラスごとの画像数は16〜147枚で偏りがあります。マスクの階調を二値化すると境界情報が変わるため、元の濃淡を保つか閾値を選ぶかを目的に応じて決めてください。

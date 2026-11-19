@@ -30,6 +30,9 @@ RELEASE_REPOSITORY = "https://github.com/708san/CV_sample_data"
 MAX_ARCHIVE_BYTES = 160_000_000
 MAX_UNPACKED_BYTES = 600_000_000
 MAX_FILES = 12_000
+# RDD2020 contains a few decimal coordinates such as 1.00000000005 caused by
+# serialisation rounding. Keep the tolerance far below a meaningful pixel box.
+_BBOX_EPSILON = 1e-9
 
 
 class DatasetError(RuntimeError):
@@ -134,9 +137,12 @@ class DatasetBundle:
     def class_names_ja(self) -> tuple[str, ...]:
         """英語ラベルと同じ順番の日本語ラベル。"""
         source = _source(self.id)
-        names = source.label_names_ja or {}
-        if not names and len(source.class_names_ja) == len(self.classes):
-            return source.class_names_ja
+        # `class_names_ja` is the positional table used by most datasets,
+        # while `label_names_ja` contains overrides and special labels.
+        # Merge both so a single special-label entry cannot hide the full
+        # positional Japanese label table.
+        names = dict(zip(self.classes, source.class_names_ja))
+        names.update(source.label_names_ja or {})
         return tuple(names.get(label, label) for label in self.classes)
 
     @property
@@ -315,6 +321,7 @@ class DatasetBundle:
 
     def _segmentation_records(self) -> list[dict[str, Any]]:
         names_ja = dict(zip(self.classes, self.class_names_ja))
+        names_ja.update(_source(self.id).label_names_ja or {})
         records = []
         for row in _read_rows(self.labels_csv):
             image = row["image"]
@@ -322,8 +329,8 @@ class DatasetBundle:
             records.append({
                 "image_path": str((self.root / image).resolve()),
                 "mask_path": str((self.root / row["mask"]).resolve()),
-                "label": "複数クラスの画素マスク" if label == "__pixel_labels__" else label,
-                "label_ja": "複数クラスの画素マスク" if label == "__pixel_labels__" else names_ja.get(label, label),
+                "label": label,
+                "label_ja": names_ja.get(label, label),
                 "label_id": int(row["class_id"]),
                 "split": row["split"],
                 "sample_id": _sample_id(image),
@@ -332,7 +339,10 @@ class DatasetBundle:
 
     @property
     def splits(self) -> dict[str, int]:
-        """標準化後のtrain/val/test件数。"""
+        """標準化後の分割件数。検出の``val``は``valid``へ集計する。
+
+        元のsplit表記は ``to_df()["split"]`` に保持する。
+        """
         if self.kind == "regression":
             counts = Counter(row["split"] for row in _read_rows(self.metadata_csv))
             return {name: int(counts.get(name, 0)) for name in ("train", "validation", "test")}
@@ -341,7 +351,11 @@ class DatasetBundle:
             for line in self.annotations_jsonl.read_text(encoding="utf-8").splitlines():
                 if line.strip():
                     counts[json.loads(line)["split"]] += 1
-            return {name: int(counts.get(name, 0)) for name in ("train", "valid", "test")}
+            return {
+                "train": int(counts.get("train", 0)),
+                "valid": int(counts.get("valid", 0) + counts.get("val", 0)),
+                "test": int(counts.get("test", 0)),
+            }
         if self.kind == "segmentation":
             counts = Counter(row["split"] for row in _read_rows(self.labels_csv))
             return {name: int(counts.get(name, 0)) for name in ("train", "val", "test")}
@@ -395,7 +409,12 @@ class DatasetBundle:
             plt.show()
             return figure
         if split == "val" and self.kind == "detection":
-            split = "valid"
+            # Some fixed artifacts use ``valid``. Use it only as a filter
+            # alias when the raw artifact has no ``val`` rows; never rewrite
+            # the split stored in the returned DataFrame.
+            available_splits = set(frame["split"].tolist())
+            if "val" not in available_splits and "valid" in available_splits:
+                split = "valid"
         if split is not None:
             valid_splits = {"train", "val", "valid", "test"}
             if split not in valid_splits:
@@ -886,7 +905,7 @@ _SOURCES: dict[str, ReleaseSource] = {
         download_size_mb=112.6, audit_status="full_image_decode_exact_duplicate_and_sample_visual_review",
         audit_report="reports/orange-fruit-v2-audit.json",
         classes=("blackspotted_orange", "cankered_orange", "fresh_orange", "green_orange", "rotten_orange"),
-        class_names_ja=("黒点カテゴリ", "かいようカテゴリ", "見た目が新鮮とされたカテゴリ", "緑色カテゴリ", "腐敗カテゴリ"),
+        class_names_ja=("黒点のあるオレンジ", "傷んだオレンジ", "新鮮なオレンジ", "緑色のオレンジ", "腐ったオレンジ"),
         license_info={
             "name": "CC BY 4.0",
             "url": "https://creativecommons.org/licenses/by/4.0/",
@@ -1003,9 +1022,9 @@ _SOURCES: dict[str, ReleaseSource] = {
             "Pomegranate", "Watermelon", "White Pear",
         ),
         class_names_ja=(
-            "ガラりんご", "ゴールデンデリシャス", "アボカド", "バナナ", "ベリー",
+            "りんご（ガラ種）", "りんご（ゴールデンデリシャス種）", "アボカド", "バナナ", "ベリー",
             "ビルマブドウ", "スターフルーツ", "ナツメヤシ", "ドラゴンフルーツ",
-            "エレファントアップル", "ブドウ", "青いココナッツ", "ホグプラム",
+            "エレファントアップル", "ブドウ", "緑色のココナッツ", "ホグプラム",
             "キウイ", "ライチ", "マルタオレンジ", "マンゴー（ゴールデンクイーン）",
             "マンゴー（アルフォンソ）", "マンゴー（アムラパリ）", "マンゴー（バリ）",
             "マンゴー（ヒムサガル）", "オリーブ", "オレンジ", "パームフルーツ",
@@ -1052,8 +1071,8 @@ _SOURCES: dict[str, ReleaseSource] = {
         class_names_ja=(
             "新鮮なリンゴ", "新鮮なバナナ", "新鮮なブドウ", "新鮮なグアバ",
             "新鮮なナツメ", "新鮮なオレンジ", "新鮮なザクロ", "新鮮なイチゴ",
-            "傷みのあるリンゴ", "傷みのあるバナナ", "傷みのあるブドウ", "傷みのあるグアバ",
-            "傷みのあるナツメ", "傷みのあるオレンジ", "傷みのあるザクロ", "傷みのあるイチゴ",
+            "傷んだリンゴ", "傷んだバナナ", "傷んだブドウ", "傷んだグアバ",
+            "傷んだナツメ", "傷んだオレンジ", "傷んだザクロ", "傷んだイチゴ",
         ),
         license_info={
             "name": "CC BY 4.0",
@@ -1117,11 +1136,11 @@ _SOURCES: dict[str, ReleaseSource] = {
         task="detection", audiences=("student", "teacher"), difficulty="intermediate",
         use_cases_ja=("屋内画像からごみの位置とカテゴリを検出する", "清掃記録や屋内の物体位置確認などに応用する"),
         input_description_ja="屋内の床面を撮影した画像",
-        output_description_ja="紙・プラスチック・キャップ・殻の位置",
+        output_description_ja="紙・プラスチック・キャップ・ナッツの殻の位置",
         download_size_mb=107.1, audit_status="full_image_annotation_audit_and_library_validation",
         audit_report="https://github.com/708san/CV_data_artifacts/blob/main/reports/indoor_waste_image-v0.1.0-audit.json",
         classes=("paper", "plastic", "cap", "shell"),
-        class_names_ja=("紙ごみ", "プラスチック", "キャップ", "殻"),
+        class_names_ja=("紙ごみ", "プラスチック", "キャップ", "ナッツの殻"),
         license_info={"name":"CC BY 4.0","url":"https://creativecommons.org/licenses/by/4.0/","rights_review":"Mendeley Data v1のライセンス表記を確認。画像画素を保ち、注釈変換・動画単位splitを記録。代表画像50枚を目視。"},
         source_info={"dataset_name":"Indoor Waste Image Dataset","provider":"Yangke L","url":"https://data.mendeley.com/datasets/dy7smxr93r/1","doi":"10.17632/dy7smxr93r.1","release_repository":"https://github.com/708san/CV_data_artifacts","release_tag":"indoor-waste-image-v0.1.0"},
         file_urls={"artifact":"https://github.com/708san/CV_data_artifacts/releases/download/indoor-waste-image-v0.1.0/indoor_waste_image-v0.1.0.zip"},
@@ -1220,7 +1239,7 @@ _SOURCES: dict[str, ReleaseSource] = {
         download_size_mb=286.6, audit_status="full_image_decode_duplicate_audit_sample_visual_review",
         audit_report="https://github.com/708san/CV_data_artifacts/blob/main/reports/fire_recognition_image-v0.1.0-audit.json",
         classes=("Artificial_Fire", "Fire", "Safe_Fire", "Smoke"),
-        class_names_ja=("人工・装飾の火", "火", "火を扱う場面（原ラベル）", "煙"),
+        class_names_ja=("擬似的な炎", "炎", "日常で扱われる火", "煙"),
         license_info={"name":"CC BY 4.0","url":"https://creativecommons.org/licenses/by/4.0/","rights_review":"Mendeley Data v4のCC BY 4.0表示を確認。原画像1,112枚のみ収録し、代表48枚を目視。"},
         source_info={"dataset_name":"Fire Recognition Image Dataset","provider":"Snigdha Saha; Hridoy Sutradhar; Md Anwarul Islam; Md Mafiul Hasan Matin","url":"https://data.mendeley.com/datasets/7jk6xh7h6w/4","doi":"10.17632/7jk6xh7h6w.4","release_repository":"https://github.com/708san/CV_data_artifacts","release_tag":"fire-recognition-image-v0.1.0"},
         file_urls={"artifact":"https://github.com/708san/CV_data_artifacts/releases/download/fire-recognition-image-v0.1.0/fire_recognition_image-v0.1.0.zip"},
@@ -1240,7 +1259,7 @@ _SOURCES: dict[str, ReleaseSource] = {
         download_size_mb=345.8, audit_status="full_image_duplicate_group_audit_sample_visual_review",
         audit_report="https://github.com/708san/CV_data_artifacts/blob/main/reports/agrifreshnet-v0.1.0-audit.json",
         classes=("Fresh Banana(1-4)","Fresh Bittermelon(1-3)","Fresh Cucumber(1-6)","Fresh eggplant(1-4)","Fresh Orange(1-9)","Fresh Papaya(1-4)","Fresh pineapple(1-15)","Fresh Tomato(1-10)","Rotten banana(7-13)","Rotten Bittermelon(5-8)","Rotten Cucumber(12-20)","Rotten eggplant(8-15)","Rotten Orange(20-35)","Rotten Papaya(7-12)","Rotten Pineapple(25-35)","Rotten Tomato(24-35)","Semi fresh banana(4-7)","Semi Fresh Bittermelon ( 3-5)","Semi Fresh Cucumber(6-12)","Semi fresh Orange(9-20)","Semi Fresh Papaya(4-7)","Semi fresh Pineapple (15-25)","Semi fresh Tomato(10-24)","Semi_Fresh eggplant(4-8)"),
-        class_names_ja=("新鮮なバナナ","新鮮なゴーヤ","新鮮なキュウリ","新鮮なナス","新鮮なオレンジ","新鮮なパパイヤ","新鮮なパイナップル","新鮮なトマト","傷みのあるバナナ","傷みのあるゴーヤ","傷みのあるキュウリ","傷みのあるナス","傷みのあるオレンジ","傷みのあるパパイヤ","傷みのあるパイナップル","傷みのあるトマト","中間段階のバナナ","中間段階のゴーヤ","中間段階のキュウリ","中間段階のオレンジ","中間段階のパパイヤ","中間段階のパイナップル","中間段階のトマト","中間段階のナス"),
+        class_names_ja=("新鮮なバナナ","新鮮なゴーヤ","新鮮なキュウリ","新鮮なナス","新鮮なオレンジ","新鮮なパパイヤ","新鮮なパイナップル","新鮮なトマト","傷んだバナナ","傷んだゴーヤ","傷んだキュウリ","傷んだナス","傷んだオレンジ","傷んだパパイヤ","傷んだパイナップル","傷んだトマト","少し傷んだバナナ","少し傷んだゴーヤ","少し傷んだキュウリ","少し傷んだオレンジ","少し傷んだパパイヤ","少し傷んだパイナップル","少し傷んだトマト","少し傷んだナス"),
         license_info={"name":"CC BY 4.0","url":"https://creativecommons.org/licenses/by/4.0/","rights_review":"Mendeley Data v1のCC BY 4.0表示を確認。完全一致画像・ラベル競合に関わる76ファイルを除外し、出典・変更を同梱。"},
         source_info={"dataset_name":"AgriFreshNET Freshness and Shelf-Life Image Dataset","provider":"Fouzia Risdin; Hafsha Salauddin; Tasniya aziza tufa; Md Jakir Hossain","url":"https://data.mendeley.com/datasets/42m5tb7yv9/1","doi":"10.17632/42m5tb7yv9.1","release_repository":"https://github.com/708san/CV_data_artifacts","release_tag":"agrifreshnet-v0.1.0"},
         file_urls={"artifact":"https://github.com/708san/CV_data_artifacts/releases/download/agrifreshnet-v0.1.0/agrifreshnet-v0.1.0.zip"},
@@ -1850,7 +1869,7 @@ def _validate_detection_case(root: Path, src: ReleaseSource, manifest: dict[str,
         parts = PurePosixPath(image).parts if isinstance(image, str) else ()
         label_parts = PurePosixPath(label_file).parts if isinstance(label_file, str) else ()
         if (len(parts) != 3 or parts[0] != "images" or any(part in {"", ".", ".."} for part in parts)
-                or "\\" in image or "\x00" in image or split not in {"train", "valid", "test"}
+                or "\\" in image or "\x00" in image or split not in {"train", "val", "valid", "test"}
                 or parts[1] != split or PurePosixPath(image).suffix.lower() not in {".jpg", ".jpeg", ".png"}
                 or len(label_parts) != 3 or label_parts[:2] != ("labels", split)
                 or any(part in {"", ".", ".."} for part in label_parts)
@@ -1877,10 +1896,12 @@ def _validate_detection_case(root: Path, src: ReleaseSource, manifest: dict[str,
             except (KeyError, TypeError, ValueError) as exc:
                 raise DatasetError(f"物体検出annotationの値が不正です: {image}") from exc
             if (type(class_id) is not int or not 0 <= class_id < len(classes)
-                    or any(not 0 <= value <= 1 for value in coords)
+                    or any(not math.isfinite(value) or not -_BBOX_EPSILON <= value <= 1 + _BBOX_EPSILON for value in coords)
                     or coords[2] <= 0 or coords[3] <= 0
-                    or coords[0] - coords[2] / 2 < 0 or coords[1] - coords[3] / 2 < 0
-                    or coords[0] + coords[2] / 2 > 1 or coords[1] + coords[3] / 2 > 1
+                    or coords[0] - coords[2] / 2 < -_BBOX_EPSILON
+                    or coords[1] - coords[3] / 2 < -_BBOX_EPSILON
+                    or coords[0] + coords[2] / 2 > 1 + _BBOX_EPSILON
+                    or coords[1] + coords[3] / 2 > 1 + _BBOX_EPSILON
                     or annotation.get("source_annotation_format") not in {"bbox", "polygon"}):
                 raise DatasetError(f"物体検出annotationが範囲外です: {image}")
             normalized_rows.append([class_id, *coords])
@@ -1896,9 +1917,13 @@ def _validate_detection_case(root: Path, src: ReleaseSource, manifest: dict[str,
             except ValueError as exc:
                 raise DatasetError(f"共通形式の検出ラベルが数値ではありません: {label_file}") from exc
             class_id, x_center, y_center, width, height = label_row
-            if (not 0 <= class_id < len(classes) or any(not 0 <= value <= 1 for value in label_row[1:])
-                    or width <= 0 or height <= 0 or x_center - width / 2 < 0 or y_center - height / 2 < 0
-                    or x_center + width / 2 > 1 or y_center + height / 2 > 1):
+            if (not 0 <= class_id < len(classes)
+                    or any(not math.isfinite(value) or not -_BBOX_EPSILON <= value <= 1 + _BBOX_EPSILON for value in label_row[1:])
+                    or width <= 0 or height <= 0
+                    or x_center - width / 2 < -_BBOX_EPSILON
+                    or y_center - height / 2 < -_BBOX_EPSILON
+                    or x_center + width / 2 > 1 + _BBOX_EPSILON
+                    or y_center + height / 2 > 1 + _BBOX_EPSILON):
                 raise DatasetError(f"共通形式の検出ラベルが範囲外です: {label_file}")
             label_rows.append(label_row)
         if len(normalized_rows) != len(label_rows) or any(

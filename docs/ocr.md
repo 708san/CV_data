@@ -6,7 +6,7 @@
 
 ## 準備
 
-ColabでCPU推論を試すときは[日本語OCRのColab Notebook](https://colab.research.google.com/github/708san/CV_data/blob/codex/library-ocr-runtime/notebooks/colab/ocr_smoke_test.ipynb)を新しいランタイムで開いてください。PyTorchを使うDETR・SAMのNotebookとは環境を分けます。Colab Python 3.13のCPUで、合成英数字画像から`TOTAL 1280 JPY`を読み取り、文字列・信頼度・座標を返すことを確認済みです。日本語実画像での精度、GPU、他OSの動作は未確認です。
+ColabでCPU推論を試すときは[日本語OCRのColab Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/ocr_smoke_test.ipynb)を新しいランタイムで開いてください。PyTorchを使うDETR・SAMのNotebookとは環境を分けます。Colab Python 3.13のCPUで、合成英数字画像から`TOTAL 1280 JPY`を読み取り、文字列・信頼度・座標を返すことを確認済みです。日本語実画像での精度、GPU、他OSの動作は未確認です。
 
 PaddlePaddleはCPU/GPUとCUDAの組み合わせにより導入コマンドが異なります。PyTorch系ライブラリとの競合を避けるため、OCR専用の仮想環境を使う方法を勧めます。[インストール手順](installation.md#ocr用の環境)で環境に合うPaddlePaddleを導入してください。利用者が`import paddle`を書く必要はありません。`ocr.load()`を呼んだ時にライブラリが必要なモジュールを読み込みます。
 
@@ -50,6 +50,8 @@ print(result.text)
 ```
 
 `result.text`は読み取った行を改行でつないだ文字列です。`confidence`はモデルの信頼度で、正解である確率を保証しません。`polygon`は画像の左上を原点とする四つの座標です。読み取り結果は元画像と照合してください。
+
+画像パスを渡す場合も、推論前にPillowで画像として読み取れることを確認します。JPEG・PNG・WebPなどPillowが対応する形式は内部で一時PNGへ変換してから推論し、変換ファイルは処理後に削除します。壊れたファイルや未対応形式は、空のOCR結果ではなく`OCRError`になります。
 
 ## 別のモデルを使う
 

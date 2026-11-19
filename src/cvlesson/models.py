@@ -5,6 +5,8 @@ import math
 from pathlib import Path
 from typing import Any, Iterable, Sequence
 
+from ._torch_utils import cuda_device_aliases, normalize_torch_device
+
 
 class ModelError(RuntimeError):
     """モデルの準備・学習・予測で発生したエラー。"""
@@ -16,9 +18,10 @@ def available_devices() -> dict[str, bool]:
         import torch
     except ImportError as exc:
         raise ModelError("ResNetにはPyTorchが必要です。pip install 'cv-data-lesson[torch]'を実行してください。") from exc
+    cuda_available = bool(torch.cuda.is_available())
     return {
         "cpu": True,
-        "cuda": bool(torch.cuda.is_available()),
+        **cuda_device_aliases(torch.cuda.device_count(), cuda_available),
         "mps": bool(getattr(getattr(torch.backends, "mps", None), "is_available", lambda: False)()),
     }
 
@@ -122,9 +125,9 @@ class _ResNetEstimator:
         image_size: int = 224,
         weights: Any = "IMAGENET1K_V1",
         random_state: int = 42,
+        verbose: bool = True,
     ) -> None:
-        if device not in {"cpu", "cuda", "mps"}:
-            raise ValueError("deviceは'cpu'、'cuda'、'mps'のいずれかです。")
+        device = normalize_torch_device(device)
         if isinstance(epochs, bool) or not isinstance(epochs, int) or epochs < 1:
             raise ValueError("epochsは1以上の整数で指定してください。")
         if isinstance(batch_size, bool) or not isinstance(batch_size, int) or batch_size < 1:
@@ -135,6 +138,8 @@ class _ResNetEstimator:
             raise ValueError("image_sizeは32以上の整数で指定してください。")
         if isinstance(random_state, bool) or not isinstance(random_state, int):
             raise ValueError("random_stateは整数で指定してください。")
+        if not isinstance(verbose, bool):
+            raise ValueError("verboseはTrueまたはFalseで指定してください。")
         if weights not in (None, "IMAGENET1K_V1", "DEFAULT") and not hasattr(weights, "meta"):
             raise ValueError("weightsはIMAGENET1K_V1、DEFAULT、None、またはTorchvisionの重みで指定してください。")
         self.device = device
@@ -144,6 +149,7 @@ class _ResNetEstimator:
         self.image_size = image_size
         self.weights = weights
         self.random_state = random_state
+        self.verbose = verbose
         self.is_fitted_ = False
 
     def _create_runtime(self, *, output_size: int, paired: bool):
@@ -232,28 +238,50 @@ class _ResNetEstimator:
             return self._net(*(image.to(self.device) for image in images))
         return self._net(images.to(self.device))
 
+    def _extract_features(self, paths: Sequence[Any]):
+        """Extract frozen backbone features once and keep them on CPU."""
+        torch = self._torch
+        features = []
+        self._net.eval()
+        with torch.no_grad():
+            for images in self._loader(paths):
+                if isinstance(images, (tuple, list)):
+                    batch_features = [self._net.backbone(image.to(self.device)) for image in images]
+                    features.append(torch.cat(batch_features, dim=1).cpu())
+                else:
+                    features.append(self._net.backbone(images.to(self.device)).cpu())
+        return torch.cat(features, dim=0)
+
     def _train(self, paths, targets, criterion) -> None:
         torch = self._torch
         target_tensor = torch.as_tensor(targets)
-        loader = self._loader(paths, target_tensor, shuffle=True)
+        features = self._extract_features(paths)
+        dataset = torch.utils.data.TensorDataset(features, target_tensor)
+        generator = torch.Generator().manual_seed(self.random_state)
+        loader = torch.utils.data.DataLoader(
+            dataset, batch_size=self.batch_size, shuffle=True, num_workers=0, generator=generator,
+        )
         optimizer = torch.optim.Adam(self._net.head.parameters(), lr=self.learning_rate)
         self.loss_history_ = []
-        for _ in range(self.epochs):
+        for epoch in range(self.epochs):
             self._net.eval()
             self._net.head.train()
             total_loss = 0.0
             total_items = 0
-            for images, target in loader:
+            for feature, target in loader:
                 target = target.to(self.device)
                 optimizer.zero_grad(set_to_none=True)
-                prediction = self._forward_batch(images)
+                prediction = self._net.head(feature.to(self.device))
                 loss = criterion(prediction, target)
                 loss.backward()
                 optimizer.step()
                 count = len(target)
                 total_loss += float(loss.detach().cpu()) * count
                 total_items += count
-            self.loss_history_.append(total_loss / total_items)
+            epoch_loss = total_loss / total_items
+            self.loss_history_.append(epoch_loss)
+            if self.verbose:
+                print(f"epoch {epoch + 1}/{self.epochs} - loss: {epoch_loss:.4f}")
         self._net.eval()
         self.is_fitted_ = True
 

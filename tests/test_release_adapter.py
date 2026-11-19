@@ -53,17 +53,19 @@ def make_zip(case="festival-icons", *, corrupt=False, unsafe=False, symlink=Fals
     return output.getvalue()
 
 
-def make_detection_zip(case="bangladeshi_ewaste", *, corrupt_label=False, root_folder=True, unsafe=False) -> bytes:
-    image = "images/train/one.png"
-    label = "labels/train/one.txt"
+def make_detection_zip(case="bangladeshi_ewaste", *, corrupt_label=False, root_folder=True,
+                       unsafe=False, split="train", edge_rounding=False) -> bytes:
+    image = f"images/{split}/one.png"
+    label = f"labels/{split}/one.txt"
+    x_center = 0.90000000005 if edge_rounding else 0.5
     annotation = {
-        "class_id": 0, "x_center": 0.5, "y_center": 0.5,
+        "class_id": 0, "x_center": x_center, "y_center": 0.5,
         "width": 0.2, "height": 0.4, "source_annotation_format": "bbox",
     }
-    detection_label = "0 0.5 0.5 0.2 0.4\n" if not corrupt_label else "0 1.4 0.5 0.2 0.4\n"
+    detection_label = f"0 {x_center} 0.5 0.2 0.4\n" if not corrupt_label else "0 1.4 0.5 0.2 0.4\n"
     manifest = {"case_id": case, "version": "v0.1.0", "image_count": 1, "classes": ["battery"]}
-    records = [{"file_name": image, "label_file": label, "split": "train", "annotations": [annotation]}]
-    metadata = [{"file_name": image, "label_file": label, "split": "train", "annotation_count": 1}]
+    records = [{"file_name": image, "label_file": label, "split": split, "annotations": [annotation]}]
+    metadata = [{"file_name": image, "label_file": label, "split": split, "annotation_count": 1}]
     files = {
         f"{case}/manifest.json": json.dumps(manifest),
         f"{case}/classes.json": json.dumps({"classes": ["battery"]}),
@@ -418,6 +420,48 @@ class ReleaseTests(unittest.TestCase):
             self.assertEqual(data.quality_summary()["usable_images"], 1)
             cached = datasets.get(key, cache_dir=self.cache, allow_download=False)
             self.assertEqual(cached.root, data.root)
+
+    def test_detection_accepts_val_and_preserves_raw_split_with_rounding(self):
+        payload = make_detection_zip(split="val", edge_rounding=True)
+        key = "bangladeshi_ewaste_image"
+        source = replace(datasets._SOURCES[key], sha256=hashlib.sha256(payload).hexdigest(),
+                         archive_size=len(payload), image_count=1, class_names_ja=("電池ごみ",), published=True)
+        with patch.dict(datasets._SOURCES, {key: source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            data = datasets.get(key, cache_dir=self.cache)
+            raw_record = json.loads(data.annotations_jsonl.read_text(encoding="utf-8").strip())
+            self.assertEqual(raw_record["split"], "val")
+            self.assertEqual(data.splits, {"train": 0, "valid": 1, "test": 0})
+
+    def test_japanese_label_tables_keep_original_names_separate(self):
+        def bundle(dataset_id):
+            source = datasets._SOURCES[dataset_id]
+            return datasets.DatasetBundle(
+                id=dataset_id, kind=source.kind, root=self.cache, manifest={"classes": list(source.classes)},
+                source_url="", version=source.tag, rights_note=source.rights_note,
+            )
+
+        orange = bundle("orange_fruit")
+        self.assertEqual(orange.classes[1], "cankered_orange")
+        self.assertEqual(orange.class_names_ja[1], "傷んだオレンジ")
+        fire = bundle("fire_recognition_image")
+        self.assertEqual(fire.class_names_ja[0], "擬似的な炎")
+        fruitseg = bundle("fruitseg30")
+        self.assertEqual(fruitseg.class_names_ja[:2], ("りんご（ガラ種）", "りんご（ゴールデンデリシャス種）"))
+        indoor = bundle("indoor_waste_image")
+        self.assertEqual(indoor.class_names_ja[-1], "ナッツの殻")
+        road = bundle("road_traversing_knowledge")
+        self.assertEqual(road.class_names_ja[0], "背景")
+        self.assertEqual(road.class_names_ja[-1], "道路のひび割れ")
+
+    def test_every_published_class_has_a_japanese_label_entry(self):
+        for dataset_id, source in datasets._SOURCES.items():
+            if not source.classes:
+                continue
+            with self.subTest(dataset_id=dataset_id):
+                self.assertEqual(len(source.classes), len(source.class_names_ja))
+                self.assertTrue(all(isinstance(name, str) and name for name in source.class_names_ja))
 
     def test_detection_artifact_label_mismatch_is_rejected(self):
         payload = make_detection_zip(corrupt_label=True)

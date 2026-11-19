@@ -22,3 +22,5 @@
 - 固定artifact ZIPは150,919,158 bytes、SHA-256は`1ca92043fbb0ebbf86ddac5fec2c264e39151ab0d9def1b618002772d9b182eb`です。公開URLから再取得して同じサイズ・SHA-256を確認しました。
 
 内訳と完全一致重複の記録は[全量監査JSON](../../reports/fresh_rotten_fruits-v1-full-audit.json)を参照してください。
+
+元ラベルは`label`に残し、日本語の`label_ja`を併記します。`fresh_...`は「新鮮な〜」、`rotten_...`は「傷んだ〜」と表示します。

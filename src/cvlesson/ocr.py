@@ -68,7 +68,7 @@ class OCR:
             path = Path(image).expanduser()
             if not path.is_file():
                 raise FileNotFoundError(f"画像ファイルが見つかりません: {path}")
-            return self._predict_path(path, str(path.resolve()))
+            return self._predict_decoded_image(path, str(path.resolve()))
         try:
             from PIL import Image
         except ImportError as exc:
@@ -81,6 +81,24 @@ class OCR:
             path = Path(temporary_directory) / "input.png"
             image.convert("RGB").save(path, format="PNG")
             return self._predict_path(path, "Pillow Image")
+
+    def _predict_decoded_image(self, path: Path, source: str) -> OCRResult:
+        """Decode every file before handing a stable PNG to PaddleOCR."""
+        try:
+            from PIL import Image, UnidentifiedImageError
+        except ImportError as exc:
+            raise OCRError(
+                "OCRの画像検証にはPillowが必要です。pip install 'cv-data-lesson[ocr]'を実行してください。"
+            ) from exc
+        try:
+            with Image.open(path) as opened:
+                rgb = opened.convert("RGB")
+        except (UnidentifiedImageError, OSError, ValueError) as exc:
+            raise OCRError(f"画像を読み取れません。対応形式の画像を指定してください: {path}") from exc
+        with tempfile.TemporaryDirectory(prefix="cvlesson-ocr-") as temporary_directory:
+            converted = Path(temporary_directory) / "input.png"
+            rgb.save(converted, format="PNG")
+            return self._predict_path(converted, source)
 
     def _predict_path(self, path: Path, source: str) -> OCRResult:
         try:

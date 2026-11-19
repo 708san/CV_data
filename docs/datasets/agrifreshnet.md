@@ -12,4 +12,6 @@ data = datasets.get("agrifreshnet")
 print(data.to_df().head())
 ```
 
+元ラベルは`label`に残し、日本語の`label_ja`を併記します。`Fresh ...`は「新鮮な〜」、`Rotten ...`は「傷んだ〜」、`Semi Fresh ...`は「少し傷んだ〜」です。括弧内の日数は元ラベルの表記です。
+
 クラス名の括弧内の日数は出典のラベルで、保存可能日数の実測値ではありません。画像分類は食べられるか・食品安全を判定しません。現物を確認してください。[監査記録](https://github.com/708san/CV_data_artifacts/blob/main/reports/agrifreshnet-v0.1.0-audit.json)。

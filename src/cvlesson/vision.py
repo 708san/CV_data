@@ -6,6 +6,8 @@ from pathlib import Path
 import re
 from typing import Any, Iterable
 
+from ._torch_utils import cuda_device_aliases, normalize_torch_device
+
 
 class VisionError(RuntimeError):
     """検出・領域分割モデルの準備や推論に関するエラー。"""
@@ -137,7 +139,8 @@ class PromptSegmenter:
 def available_devices() -> dict[str, bool]:
     """PyTorchで利用できるCPU、CUDA、Apple MPSを返す。"""
     torch = _import_torch()
-    devices = {"cpu": True, "cuda:0": bool(torch.cuda.is_available()), "mps": False}
+    cuda_available = bool(torch.cuda.is_available())
+    devices = {"cpu": True, **cuda_device_aliases(torch.cuda.device_count(), cuda_available), "mps": False}
     try:
         devices["mps"] = bool(torch.backends.mps.is_available())
     except (AttributeError, RuntimeError):
@@ -153,6 +156,7 @@ def load_detector(
     cache_dir: str | Path | None = None, local_files_only: bool = False
 ) -> ObjectDetector:
     """既定DETRか互換検出モデルを読み込む。別モデルは40桁revisionが必須。"""
+    device = normalize_torch_device(device)
     model_id, revision = _resolve_model(model_id, revision, _DETECTOR_ID, _DETECTOR_REVISION)
     torch = _check_device(device)
     try:
@@ -175,6 +179,7 @@ def load_segmenter(
     cache_dir: str | Path | None = None, local_files_only: bool = False
 ) -> PromptSegmenter:
     """既定SAMか互換SAMモデルを読み込む。別モデルは40桁revisionが必須。"""
+    device = normalize_torch_device(device)
     model_id, revision = _resolve_model(model_id, revision, _SEGMENTER_ID, _SEGMENTER_REVISION)
     torch = _check_device(device)
     try:
@@ -206,6 +211,7 @@ def _import_torch():
 
 def _check_device(device: str):
     torch = _import_torch()
+    device = normalize_torch_device(device)
     if device == "cpu":
         return torch
     if device == "mps":
@@ -214,7 +220,7 @@ def _check_device(device: str):
         index = int(device[5:])
         available = bool(torch.cuda.is_available() and index < torch.cuda.device_count())
     else:
-        raise ValueError("deviceは'cpu'、'cuda:0'、'mps'など明示してください。")
+        raise ValueError("deviceは'cpu'、'cuda'、'cuda:0'、'mps'など明示してください。")
     if not available:
         raise VisionError(f"device={device!r}は利用できません。vision.available_devices()で確認してください。")
     return torch

@@ -5,6 +5,7 @@ import sys
 import tempfile
 import types
 import unittest
+import importlib.util
 from pathlib import Path
 from unittest.mock import patch
 
@@ -40,7 +41,10 @@ class OCRTests(unittest.TestCase):
         self.assertEqual(lines[1].confidence, 1.0)
         self.assertEqual(lines[0].polygon[0], (1.0, 2.0))
 
+    @unittest.skipUnless(importlib.util.find_spec("PIL"), "Pillowが必要です")
     def test_predict_uses_local_image_and_returns_joined_text(self):
+        from PIL import Image
+
         class Pipeline:
             def predict(self, *, input):
                 self.image_path = input
@@ -52,11 +56,12 @@ class OCRTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as temp_dir:
             image = Path(temp_dir) / "sample.jpg"
-            image.write_bytes(b"placeholder")
+            Image.new("RGB", (12, 9), "white").save(image, format="JPEG")
             pipeline = Pipeline()
             result = ocr.OCR(pipeline, device="cpu", language="japan").predict(image)
         self.assertEqual(result.text, "行1\n行2")
-        self.assertEqual(pipeline.image_path, str(image))
+        self.assertNotEqual(pipeline.image_path, image)
+        self.assertEqual(pipeline.image_path.suffix, ".png")
         self.assertEqual(len(result.lines[0].polygon), 0)
         self.assertEqual(result.to_dict()["lines"][1]["text"], "行2")
 

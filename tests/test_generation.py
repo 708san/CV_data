@@ -4,6 +4,7 @@ from __future__ import annotations
 import unittest
 from unittest.mock import patch
 
+from cvlesson import generation
 from cvlesson.generation import ImageGenerator
 
 
@@ -27,6 +28,10 @@ class _FakePipeline:
 
 
 class GenerationTests(unittest.TestCase):
+    def test_current_sdxl_loader_rejects_cpu_before_model_download(self):
+        with self.assertRaisesRegex(generation.GenerationError, "CPU実行をサポート対象にしていません"):
+            generation.load(device="cpu")
+
     def test_text_to_image_adds_registered_trigger_and_seed(self):
         pipeline = _FakePipeline()
         generator = ImageGenerator(pipeline, "text-to-image", "cpu", _FakeTorch,

@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from . import loras
+from ._torch_utils import cuda_device_aliases, normalize_torch_device
 
 
 class GenerationError(RuntimeError):
@@ -22,19 +23,22 @@ def available_devices() -> dict[str, bool]:
     except ImportError as exc:
         raise GenerationError("画像生成にはtorchが必要です。pip install 'cv-data-lesson[diffusion]'を実行してください。") from exc
     mps = getattr(getattr(torch.backends, "mps", None), "is_available", lambda: False)()
-    return {"cpu": True, "cuda": bool(torch.cuda.is_available()), "mps": bool(mps)}
+    cuda_available = bool(torch.cuda.is_available())
+    # The bundled SDXL pipeline is not a practical/supported CPU model.
+    return {"cpu": False, **cuda_device_aliases(torch.cuda.device_count(), cuda_available), "mps": bool(mps)}
 
 
 class ImageGenerator:
     """読み込み済み画像生成モデル。"""
 
     def __init__(self, pipeline: Any, task: str, device: str, torch_module: Any,
-                 trigger_words: tuple[str, ...] = ()) -> None:
+                 trigger_words: tuple[str, ...] = (), *, lora_loaded: bool = False) -> None:
         self._pipeline = pipeline
         self.task = task
         self.device = device
         self._torch = torch_module
         self.trigger_words = trigger_words
+        self._lora_loaded = lora_loaded
 
     def generate(
         self,
@@ -49,6 +53,7 @@ class ImageGenerator:
         width: int | None = None,
         height: int | None = None,
         use_trigger: bool = True,
+        lora_scale: float = 1.0,
     ) -> Any:
         """文章から画像を作るか、元画像を文章に沿って描き変える。
 
@@ -69,6 +74,10 @@ class ImageGenerator:
             raise ValueError("num_inference_stepsは1以上の整数にしてください。")
         if guidance_scale < 0:
             raise ValueError("guidance_scaleは0以上にしてください。")
+        if isinstance(lora_scale, bool) or not isinstance(lora_scale, (int, float)) or not 0.0 <= lora_scale <= 1.0:
+            raise ValueError("lora_scaleは0.0から1.0の数値で指定してください。")
+        if not self._lora_loaded and lora_scale != 1.0:
+            raise ValueError("lora_scaleを変更するには、generation.load()でLoRAを指定してください。")
 
         full_prompt = prompt.strip()
         if use_trigger:
@@ -91,6 +100,8 @@ class ImageGenerator:
             kwargs["height"] = height
         if seed is not None:
             kwargs["generator"] = self._torch.Generator(device=self.device).manual_seed(seed)
+        if self._lora_loaded:
+            kwargs["cross_attention_kwargs"] = {"scale": float(lora_scale)}
         result = self._pipeline(**kwargs)
         return result.images[0]
 
@@ -112,17 +123,30 @@ def load(
     """
     if task not in {"text-to-image", "image-to-image"}:
         raise ValueError("taskは'text-to-image'または'image-to-image'です。")
-    if device not in {"cpu", "cuda", "mps"}:
-        raise ValueError("deviceは'cpu'、'cuda'、'mps'から選んでください。GPUは自動選択しません。")
+    try:
+        device = normalize_torch_device(device)
+    except ValueError as exc:
+        raise ValueError("deviceは'cpu'、'cuda'、'cuda:0'など、または'mps'から選んでください。GPUは自動選択しません。") from exc
+    if device == "cpu":
+        raise GenerationError(
+            "現在の画像生成モデルはCPU実行をサポート対象にしていません。"
+            "CUDAまたはMPSを明示するか、CPU向けの別モデルを追加してください。"
+        )
     try:
         import torch
+    except ImportError as exc:
+        raise GenerationError("画像生成にはdiffusion追加依存が必要です。pip install 'cv-data-lesson[diffusion]'を実行してください。") from exc
+    try:
         from diffusers import AutoPipelineForImage2Image, AutoPipelineForText2Image
     except ImportError as exc:
         raise GenerationError("画像生成にはdiffusion追加依存が必要です。pip install 'cv-data-lesson[diffusion]'を実行してください。") from exc
 
-    devices = {"cpu": True, "cuda": bool(torch.cuda.is_available())}
-    devices["mps"] = bool(getattr(getattr(torch.backends, "mps", None), "is_available", lambda: False)())
-    if not devices[device]:
+    devices = {
+        "cpu": False,
+        **cuda_device_aliases(torch.cuda.device_count(), bool(torch.cuda.is_available())),
+        "mps": bool(getattr(getattr(torch.backends, "mps", None), "is_available", lambda: False)()),
+    }
+    if not devices.get(device, False):
         raise GenerationError(f"device={device!r}はこの環境で利用できません。available_devices()で確認してください。")
 
     adapter = loras.get_model(lora) if lora is not None else None
@@ -140,7 +164,7 @@ def load(
         base_model = adapter.base_model
         base_revision = adapter.base_revision
 
-    dtype = torch.float16 if device == "cuda" else torch.float32
+    dtype = torch.float16 if device.startswith("cuda:") else torch.float32
     pipeline_class = AutoPipelineForImage2Image if task == "image-to-image" else AutoPipelineForText2Image
     load_kwargs: dict[str, Any] = {
         "revision": base_revision,
@@ -174,7 +198,7 @@ def load(
     except Exception as exc:
         raise GenerationError(f"画像生成モデルを読み込めませんでした: {exc}") from exc
     triggers = adapter.trigger_words if adapter is not None else ()
-    return ImageGenerator(pipeline, task, device, torch, triggers)
+    return ImageGenerator(pipeline, task, device, torch, triggers, lora_loaded=adapter is not None)
 
 
 def _open_rgb_image(image: Any) -> Any:

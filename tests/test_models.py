@@ -23,6 +23,7 @@ class ResNetEstimatorTests(unittest.TestCase):
         self.assertEqual(estimator.device, "cpu")
         self.assertEqual(estimator.epochs, 5)
         self.assertFalse(estimator.is_fitted_)
+        self.assertEqual(models.ResNetClassifier(device="cuda").device, "cuda:0")
 
     def test_invalid_training_inputs_fail_before_loading_torch(self):
         classifier = models.ResNetClassifier()

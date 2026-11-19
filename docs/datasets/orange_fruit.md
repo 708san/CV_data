@@ -8,8 +8,9 @@
 from cvlesson import datasets
 
 data = datasets.get("orange_fruit")
-print(data.classes)
-print(data.to_df().head())
+print(data.classes)              # 元ラベル
+print(data.class_names_ja)       # 日本語ラベル
+print(data.to_df()[["label", "label_ja"]].head())
 ```
 
 初回取得時に約113 MBをダウンロードします。画像は元の224×224 JPEGの画素を保ち、各クラスをseed 42でtrain/validation/testへ分割しています。
@@ -20,7 +21,7 @@ print(data.to_df().head())
 - 出典：Ashif Shuvo, Most.Subrina Afrin Monika, Wahada Jinnat Oishy Bhuian (2026), “Orange Fruit Image Dataset for Classification,” Mendeley Data v2, [DOI: 10.17632/zk4hzhtcdd.2](https://doi.org/10.17632/zk4hzhtcdd.2).
 - 公式ページ：[Mendeley Data v2](https://data.mendeley.com/datasets/zk4hzhtcdd/2)
 - 整形済み固定版：[orange-fruit-v0.1.0](https://github.com/708san/CV_data_artifacts/releases/tag/orange-fruit-v0.1.0)
-- 出典5カテゴリ各3,000枚：黒点、かいよう、fresh、green、rottenの画像カテゴリ。
+- 出典5カテゴリ各3,000枚：`blackspotted_orange`（黒点のあるオレンジ）、`cankered_orange`（傷んだオレンジ）、`fresh_orange`（新鮮なオレンジ）、`green_orange`（緑色のオレンジ）、`rotten_orange`（腐ったオレンジ）。
 
 ## 課題上の注意
 
