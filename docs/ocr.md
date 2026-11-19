@@ -6,7 +6,7 @@
 
 ## 準備
 
-ColabでCPU推論を試すときは[日本語OCRのColab Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/ocr_smoke_test.ipynb)を新しいランタイムで開いてください。PyTorchを使うDETR・SAMのNotebookとは環境を分けます。Colab Python 3.13のCPUで、合成英数字画像から`TOTAL 1280 JPY`を読み取り、文字列・信頼度・座標を返すことを確認済みです。日本語実画像での精度、GPU、他OSの動作は未確認です。
+ColabでCPU推論を試すときは[日本語OCRのColab Notebook](https://colab.research.google.com/github/708san/CV_data/blob/main/notebooks/colab/ocr_smoke_test.ipynb)を新しいランタイムで開いてください。PyTorchを使うDETR・SAMのNotebookとは環境を分けます。Colab Python 3.13のCPUで、合成英数字画像と固定Releaseの日本語レシート画像を実際に推論し、文字列・信頼度・座標を返すことを確認済みです。依存関係導入時にColab既存のLangGraph/Requestsとの競合警告が出る場合がありますが、OCR専用の新しいランタイムでOCR推論が完了することを確認しています。GPU、他OSの動作は未確認です。
 
 PaddlePaddleはCPU/GPUとCUDAの組み合わせにより導入コマンドが異なります。PyTorch系ライブラリとの競合を避けるため、OCR専用の仮想環境を使う方法を勧めます。[インストール手順](installation.md#ocr用の環境)で環境に合うPaddlePaddleを導入してください。利用者が`import paddle`を書く必要はありません。`ocr.load()`を呼んだ時にライブラリが必要なモジュールを読み込みます。
 
@@ -93,4 +93,4 @@ display.save("receipt.jpg", "results/receipt_ocr.png", result)
 - [PaddleOCR 3.1.0 OCR仕様](https://www.paddleocr.ai/v3.1.0/en/version3.x/pipeline_usage/OCR.html)
 - [PaddleOCR/PaddleX公式バージョン対応表](https://www.paddleocr.ai/main/en/version3.x/paddleocr_and_paddlex.html)
 
-このAPIはColab Python 3.13 CPUで、合成英数字画像の実モデル推論を確認済みです。[Colab Notebook](../notebooks/colab/ocr_smoke_test.ipynb)には、CC BY-NC 4.0の公開実レシート1枚を使う追加確認も用意しました。新しい実レシート手順はまだColab未実行です。日本語実画像の認識品質、GPU、他OS・他Python版の実機確認は未実施です。
+このAPIはColab Python 3.13 CPUで、合成英数字画像とCC BY-NC 4.0の公開実レシート画像の実モデル推論を確認済みです。[Colab Notebook](../notebooks/colab/ocr_acceptance_test.ipynb)ではPNG・JPEG・WebP・Pillow Image、壊れた画像、日本語レシート画像を確認できます。日本語実画像の認識精度を評価したものではありません。GPU、他OS・他Python版の実機確認は未実施です。

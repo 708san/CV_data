@@ -17,7 +17,7 @@
 
 受け入れ条件：GeoSetEnneaとRDD2020の固定artifactを、元splitを保持したまま取得・検証できる。bboxは実測した極小の丸め誤差だけを許容する。全公開クラスに日本語名があり、元ラベルと併記できる。`timm`が`vision` extraから導入され、Torch系で`cuda`/`cuda:0`等を一貫して扱える。ResNetは凍結特徴をepochごとに再計算せず進捗を表示する。OCRは壊れた・未対応画像を空結果として返さない。CPU/GPUの実測範囲と画像生成のGPU要件を文書で区別する。
 
-進捗：仕様・計画を更新。ラベル表、元ラベル保持、`val`/`valid`受け入れ、bbox丸め誤差、`timm`、Torch device別名、ResNet特徴再利用・進捗表示、OCR画像デコード検証、画像生成のCPU非対応を実装。固定SHA-256のGeoSetEnnea 136件とRDD2020 7,900件を一時領域で全量検証し、wheel/sdistのbuild・twine check・wheelインストール後の軽量importも確認。ネットワーク不要テスト90件中72件成功、任意依存不足による18件skip。固定Releaseの再公開は未完了。授業Notebookとは別の受け入れテストNotebook`notebooks/colab/library_acceptance_test.ipynb`、T4実モデル確認用`notebooks/colab/gpu_acceptance_test.ipynb`、OCR実モデル確認用`notebooks/colab/ocr_acceptance_test.ipynb`を、固定コミット`5b3a2425eaf36caac0a0fd87893bd78d75a250da`からのインストールを含めて作成し、JSON・セル依存・固定SHAの静的検査を完了。CPU受け入れテストとT4上のResNet分類・回帰、DETR、SAM、SDXLの実行はColabで完了。OCR実モデルのColab実行は未確認。
+進捗：仕様・計画を更新。ラベル表、元ラベル保持、`val`/`valid`受け入れ、bbox丸め誤差、`timm`、Torch device別名、ResNet特徴再利用・進捗表示、OCR画像デコード検証、画像生成のCPU非対応を実装。固定SHA-256のGeoSetEnnea 136件とRDD2020 7,900件を一時領域で全量検証し、wheel/sdistのbuild・twine check・wheelインストール後の軽量importも確認。ネットワーク不要テスト90件中72件成功、任意依存不足による18件skip。固定Releaseの再公開は未完了。授業Notebookとは別の受け入れテストNotebook`notebooks/colab/library_acceptance_test.ipynb`、T4実モデル確認用`notebooks/colab/gpu_acceptance_test.ipynb`、OCR実モデル確認用`notebooks/colab/ocr_acceptance_test.ipynb`を、固定コミット`5b3a2425eaf36caac0a0fd87893bd78d75a250da`からのインストールを含めて作成し、JSON・セル依存・固定SHAの静的検査を完了。CPU受け入れテストとT4上のResNet分類・回帰、DETR、SAM、SDXL、CPU上のPaddleOCRによるWebP・壊れた画像・日本語レシート実画像の実行はColabで完了。OCRの依存関係導入時にはColab既存パッケージとの競合警告が出るが、OCR推論は完了した。
 
 ## 今回の作業単位：画像生成時のLoRA適用強度を指定可能にする
 
