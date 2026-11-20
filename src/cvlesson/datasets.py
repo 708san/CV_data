@@ -35,6 +35,19 @@ MAX_FILES = 12_000
 _BBOX_EPSILON = 1e-9
 
 
+def _canonical_detection_split(split: str) -> str:
+    """Return the library's canonical detection split name.
+
+    Release artifacts may use either ``val`` or ``valid``. The raw value is
+    kept separately by ``DatasetBundle.to_df()`` as ``source_split``.
+    """
+    if split == "valid":
+        return "val"
+    if split in {"train", "val", "test"}:
+        return split
+    raise ValueError(f"検出splitはtrain、val、valid、testのいずれかです: {split!r}")
+
+
 class DatasetError(RuntimeError):
     """データの取得・検証に失敗した場合。"""
 
@@ -224,11 +237,12 @@ class DatasetBundle:
                     "image_path": str((self.root / image).resolve()),
                     "label_file": str((self.root / item["label_file"]).resolve()),
                     "boxes": boxes,
-                    "split": item["split"],
+                    "split": _canonical_detection_split(item["split"]),
+                    "source_split": item["split"],
                     "sample_id": _sample_id(image),
                 })
             return pd.DataFrame(records, columns=[
-                "image_path", "label_file", "boxes", "split", "sample_id",
+                "image_path", "label_file", "boxes", "split", "source_split", "sample_id",
             ])
         if self.kind == "segmentation":
             records = self._segmentation_records()
@@ -339,9 +353,10 @@ class DatasetBundle:
 
     @property
     def splits(self) -> dict[str, int]:
-        """標準化後の分割件数。検出の``val``は``valid``へ集計する。
+        """標準化後の分割件数。
 
-        元のsplit表記は ``to_df()["split"]`` に保持する。
+        検出の配布元``valid``は``val``へ正規化し、元表記は
+        ``to_df()["source_split"]`` に保持する。
         """
         if self.kind == "regression":
             counts = Counter(row["split"] for row in _read_rows(self.metadata_csv))
@@ -353,7 +368,7 @@ class DatasetBundle:
                     counts[json.loads(line)["split"]] += 1
             return {
                 "train": int(counts.get("train", 0)),
-                "valid": int(counts.get("valid", 0) + counts.get("val", 0)),
+                "val": int(counts.get("valid", 0) + counts.get("val", 0)),
                 "test": int(counts.get("test", 0)),
             }
         if self.kind == "segmentation":
@@ -408,17 +423,13 @@ class DatasetBundle:
             figure.tight_layout()
             plt.show()
             return figure
-        if split == "val" and self.kind == "detection":
-            # Some fixed artifacts use ``valid``. Use it only as a filter
-            # alias when the raw artifact has no ``val`` rows; never rewrite
-            # the split stored in the returned DataFrame.
-            available_splits = set(frame["split"].tolist())
-            if "val" not in available_splits and "valid" in available_splits:
-                split = "valid"
+        if split == "valid" and self.kind == "detection":
+            # Backward-compatible input alias. DataFrame output is canonical.
+            split = "val"
         if split is not None:
-            valid_splits = {"train", "val", "valid", "test"}
+            valid_splits = {"train", "val", "test"}
             if split not in valid_splits:
-                raise ValueError("splitはtrain、valid（またはval）、testのいずれかです。")
+                raise ValueError("splitはtrain、val、testのいずれかです。")
             frame = frame[frame["split"] == split]
         if frame.empty:
             raise DatasetError("表示できる画像がありません。")

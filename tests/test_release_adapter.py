@@ -54,15 +54,20 @@ def make_zip(case="festival-icons", *, corrupt=False, unsafe=False, symlink=Fals
 
 
 def make_detection_zip(case="bangladeshi_ewaste", *, corrupt_label=False, root_folder=True,
-                       unsafe=False, split="train", edge_rounding=False) -> bytes:
+                       unsafe=False, split="train", edge_rounding=False, bbox=None) -> bytes:
     image = f"images/{split}/one.png"
     label = f"labels/{split}/one.txt"
-    x_center = 0.90000000005 if edge_rounding else 0.5
+    x_center, y_center, width, height = bbox or (
+        (0.90000000005, 0.5, 0.2, 0.4) if edge_rounding else (0.5, 0.5, 0.2, 0.4)
+    )
     annotation = {
-        "class_id": 0, "x_center": x_center, "y_center": 0.5,
-        "width": 0.2, "height": 0.4, "source_annotation_format": "bbox",
+        "class_id": 0, "x_center": x_center, "y_center": y_center,
+        "width": width, "height": height, "source_annotation_format": "bbox",
     }
-    detection_label = f"0 {x_center} 0.5 0.2 0.4\n" if not corrupt_label else "0 1.4 0.5 0.2 0.4\n"
+    detection_label = (
+        f"0 {x_center} {y_center} {width} {height}\n"
+        if not corrupt_label else "0 1.4 0.5 0.2 0.4\n"
+    )
     manifest = {"case_id": case, "version": "v0.1.0", "image_count": 1, "classes": ["battery"]}
     records = [{"file_name": image, "label_file": label, "split": split, "annotations": [annotation]}]
     metadata = [{"file_name": image, "label_file": label, "split": split, "annotation_count": 1}]
@@ -414,13 +419,16 @@ class ReleaseTests(unittest.TestCase):
             data = datasets.get(key, cache_dir=self.cache)
             frame = data.to_df()
             self.assertEqual(data.kind, "detection")
-            self.assertEqual(data.splits, {"train": 1, "valid": 0, "test": 0})
+            self.assertEqual(data.splits, {"train": 1, "val": 0, "test": 0})
+            self.assertEqual(frame.loc[0, "split"], "train")
+            self.assertEqual(frame.loc[0, "source_split"], "train")
             self.assertEqual(frame.loc[0, "boxes"][0]["class_name"], "battery")
             self.assertEqual(frame.loc[0, "boxes"][0]["class_name_ja"], "電池ごみ")
             self.assertEqual(data.quality_summary()["usable_images"], 1)
             cached = datasets.get(key, cache_dir=self.cache, allow_download=False)
             self.assertEqual(cached.root, data.root)
 
+    @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
     def test_detection_accepts_val_and_preserves_raw_split_with_rounding(self):
         payload = make_detection_zip(split="val", edge_rounding=True)
         key = "bangladeshi_ewaste_image"
@@ -432,7 +440,25 @@ class ReleaseTests(unittest.TestCase):
             data = datasets.get(key, cache_dir=self.cache)
             raw_record = json.loads(data.annotations_jsonl.read_text(encoding="utf-8").strip())
             self.assertEqual(raw_record["split"], "val")
-            self.assertEqual(data.splits, {"train": 0, "valid": 1, "test": 0})
+            frame = data.to_df()
+            self.assertEqual(frame.loc[0, "split"], "val")
+            self.assertEqual(frame.loc[0, "source_split"], "val")
+            self.assertEqual(data.splits, {"train": 0, "val": 1, "test": 0})
+
+    @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
+    def test_detection_valid_split_is_normalized_to_val_and_raw_is_kept(self):
+        payload = make_detection_zip(split="valid")
+        key = "bangladeshi_ewaste_image"
+        source = replace(datasets._SOURCES[key], sha256=hashlib.sha256(payload).hexdigest(),
+                         archive_size=len(payload), image_count=1, class_names_ja=("電池ごみ",), published=True)
+        with patch.dict(datasets._SOURCES, {key: source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            data = datasets.get(key, cache_dir=self.cache)
+            frame = data.to_df()
+            self.assertEqual(frame.loc[0, "split"], "val")
+            self.assertEqual(frame.loc[0, "source_split"], "valid")
+            self.assertEqual(data.splits, {"train": 0, "val": 1, "test": 0})
 
     def test_japanese_label_tables_keep_original_names_separate(self):
         def bundle(dataset_id):
@@ -474,6 +500,27 @@ class ReleaseTests(unittest.TestCase):
             with self.assertRaisesRegex(datasets.DatasetError, "範囲外"):
                 datasets.get(key, cache_dir=self.cache)
 
+    def test_detection_bbox_rejects_nonfinite_zero_and_meaningfully_out_of_range_values(self):
+        invalid_boxes = (
+            (float("nan"), 0.5, 0.2, 0.4),
+            (float("inf"), 0.5, 0.2, 0.4),
+            (0.5, 0.5, 0.0, 0.4),
+            (1.2, 0.5, 0.2, 0.4),
+        )
+        for bbox in invalid_boxes:
+            with self.subTest(bbox=bbox):
+                payload = make_detection_zip(bbox=bbox)
+                key = "bangladeshi_ewaste_image"
+                source = replace(
+                    datasets._SOURCES[key], sha256=hashlib.sha256(payload).hexdigest(),
+                    archive_size=len(payload), image_count=1, published=True,
+                )
+                with patch.dict(datasets._SOURCES, {key: source}), patch.object(
+                    datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+                ):
+                    with self.assertRaisesRegex(datasets.DatasetError, "範囲外"):
+                        datasets.get(key, cache_dir=self.cache)
+
     def test_rdd2020_rootless_archive_uses_dataset_specific_limits(self):
         payload = make_detection_zip(case="rdd2020_japan", root_folder=False)
         source = replace(
@@ -493,7 +540,7 @@ class ReleaseTests(unittest.TestCase):
             self.assertEqual(data.kind, "detection")
             self.assertTrue((data.root / "manifest.json").is_file())
             self.assertTrue((data.root / "images/train/one.png").is_file())
-            self.assertEqual(data.splits, {"train": 1, "valid": 0, "test": 0})
+            self.assertEqual(data.splits, {"train": 1, "val": 0, "test": 0})
 
     def test_rdd2020_rootless_archive_rejects_parent_paths(self):
         payload = make_detection_zip(case="rdd2020_japan", root_folder=False, unsafe=True)

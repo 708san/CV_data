@@ -26,6 +26,14 @@
 
 進捗：通常の`pip install cv-data-lesson`から始める授業用Notebookを追加。カタログ・全公開クラスの日本語ラベル・GeoSetEnnea/RDD2020のファイル整合性・全bbox・`val`/`valid`・モデルのCPU/T4自動切替・OCR分離を確認するセルを作成し、Notebook静的検査を完了。CPU/T4とOCRの実モデル実行はColabで確認する。
 
+## 今回の作業単位：split・device表示・bbox検証の仕様整理と実装修理
+
+対象仕様：3.3、4.3、4.5、5.1、5.2、7。現在の互換対応は検出`split`の集計を`valid`にし、DataFrameには配布元表記をそのまま返していたため、授業側で正規名が揃わず、`available_devices()`も`cuda`と`cuda:0`を同じGPUとして重複表示していた。ライブラリ出力の正規splitを`val`へ統一し、配布元表記は`source_split`へ分離する。PyTorchの標準表記に合わせ、`cuda`を第1GPUの公開正規名とし、`cuda:0`は入力時だけ受け付ける別名にする。bboxは実データと異常artifactの双方で境界検証を行う。
+
+受け入れ条件：旧`val`/`valid` artifactを取得でき、検出DataFrameと`DatasetBundle.splits`の正規splitが常に`train`/`val`/`test`になり、元表記が`source_split`に残る。`available_devices()`に同一GPUの別名を重複表示しない。NaN、無限大、ゼロ幅、高い範囲外、annotation/YOLO不一致、画像・ラベル集合不一致を受け付けず、実RDD2020全bboxは通過する。関連仕様・Notebook・テストを更新する。
+
+進捗：検出artifactは`val`/`valid`を受け入れ、ライブラリの`split`と集計を`val`へ正規化し、配布元表記を`source_split`へ分離した。PyTorch系の公開device名は`cuda`へ統一し、`cuda:0`は入力別名として受け付ける。bboxは小さなシリアライズ誤差だけを許容し、非有限値・ゼロ幅・意味のある範囲外・annotation/YOLO不一致を拒否する異常artifactテストを追加した。Python 3.11のネットワーク不要テスト96件は成功（任意依存不足によるskip 20件）。RDD2020全量と各モデルの新API実測はColabで再確認するまで未完了とする。
+
 ## 今回の作業単位：データ互換性・日本語ラベル・モデル実行環境の修理
 
 対象仕様：3.3、4.1、4.2、4.3、4.4、5.1、5.2、7。固定Releaseを変更せず、`val`/`valid` splitの受け入れ、RDD2020の浮動小数点丸め誤差、全データの日本語ラベルと元ラベルの併記、機能別依存・device表記・学習速度・OCR入力検証・CPU/GPU境界を修理する。

@@ -27,7 +27,7 @@ python -m pip install 'cv-data-lesson[vision]'
 
 この追加依存はHugging Face Hub 1.xを許容し、Colabにある新しいTransformers等が必要とするHubを古い版へ下げません。
 
-開発版の場合は`cv-data-lesson`を`-e '.[vision]'`へ置き換えます。既定の`device="auto"`は利用可能なGPUを優先し、GPUがなければ同じ固定モデルをCPUで実行する警告を表示します。GPUを必須にする場合だけ`device="cuda"`または`device="cuda:0"`を明示してください。
+開発版の場合は`cv-data-lesson`を`-e '.[vision]'`へ置き換えます。既定の`device="auto"`は利用可能なGPUを優先し、GPUがなければ同じ固定モデルをCPUで実行する警告を表示します。GPUを必須にする場合はPyTorch標準の`device="cuda"`を明示してください（`cuda:0`も入力できます）。
 
 ```python
 from cvlesson import vision
@@ -60,7 +60,7 @@ results = detector.predict(image)
 `box`は元画像の`(x_min, y_min, x_max, y_max)`です。信頼度しきい値は`threshold`で変更できます。GPUを使う場合は、利用可能性を確認して指定します。
 
 ```python
-detector = vision.load_detector(device="cuda:0")
+detector = vision.load_detector(device="cuda")
 ```
 
 `device="auto"`でGPUが見つからない場合は、CPUへ切り替えたことを警告します。明示したGPUが使えない場合はエラーにします。

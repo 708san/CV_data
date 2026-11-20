@@ -7,7 +7,7 @@ from cvlesson import datasets
 
 data = datasets.get("click_trash")
 print(data.classes)       # ('trash',)
-print(data.splits)        # train / valid / test の件数
+print(data.splits)        # train / val / test の件数
 print(data.annotations_jsonl)  # 画像ごとのbbox注釈
 ```
 

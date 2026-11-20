@@ -148,7 +148,7 @@ def load(
     try:
         device = normalize_torch_device(device, allow_auto=True)
     except ValueError as exc:
-        raise ValueError("deviceは'auto'、'cpu'、'cuda'、'cuda:0'など、または'mps'から選んでください。") from exc
+        raise ValueError("deviceは'auto'、'cpu'、'cuda'（cuda:0も入力可）など、または'mps'から選んでください。") from exc
     if model == "tiny-sd" and task == "image-to-image":
         raise ValueError("Tiny-SDはtext-to-imageのみ対応しています。image-to-imageにはmodel='sdxl'を指定してください。")
     if model == "sdxl" and device == "cpu":
@@ -173,13 +173,13 @@ def load(
     if device == "auto":
         device, used_cpu_fallback = choose_torch_device(
             device,
-            {key: value for key, value in devices.items() if key in {"cpu", "cuda:0", "mps"}},
+            {key: value for key, value in devices.items() if key in {"cpu", "cuda", "mps"}},
         )
         if used_cpu_fallback:
             import warnings
             warnings.warn(
                 "GPUが利用できないため、画像生成をTiny-SDのCPU実行へ切り替えます。"
-                "GPUを必須にする場合はdevice='cuda'またはdevice='cuda:0'を明示してください。",
+                "GPUを必須にする場合はdevice='cuda'を明示してください（cuda:0も入力できます）。",
                 RuntimeWarning,
                 stacklevel=2,
             )
@@ -211,7 +211,7 @@ def load(
         base_model = adapter.base_model
         base_revision = adapter.base_revision
 
-    dtype = torch.float16 if device.startswith("cuda:") else torch.float32
+    dtype = torch.float16 if device == "cuda" or device.startswith("cuda:") else torch.float32
     pipeline_class = AutoPipelineForImage2Image if task == "image-to-image" else AutoPipelineForText2Image
     load_kwargs: dict[str, Any] = {
         "revision": base_revision,

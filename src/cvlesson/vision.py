@@ -146,7 +146,7 @@ def available_devices() -> dict[str, bool]:
         devices["mps"] = bool(torch.backends.mps.is_available())
     except (AttributeError, RuntimeError):
         pass
-    if devices["cuda:0"]:
+    if devices["cuda"]:
         for index in range(1, int(torch.cuda.device_count())):
             devices[f"cuda:{index}"] = True
     return devices
@@ -217,11 +217,13 @@ def _check_device(device: str):
         return torch
     if device == "mps":
         available = bool(getattr(getattr(torch.backends, "mps", None), "is_available", lambda: False)())
+    elif device == "cuda":
+        available = bool(torch.cuda.is_available())
     elif device.startswith("cuda:") and device[5:].isdigit():
         index = int(device[5:])
         available = bool(torch.cuda.is_available() and index < torch.cuda.device_count())
     else:
-        raise ValueError("deviceは'cpu'、'cuda'、'cuda:0'、'mps'など明示してください。")
+        raise ValueError("deviceは'cpu'、'cuda'（cuda:0も入力可）、'mps'など明示してください。")
     if not available:
         raise VisionError(f"device={device!r}は利用できません。vision.available_devices()で確認してください。")
     return torch
@@ -238,7 +240,7 @@ def _resolve_device(device: str, feature_name: str) -> str:
     if used_cpu_fallback:
         warnings.warn(
             f"GPUが利用できないため、{feature_name}を固定モデルのCPU実行へ切り替えます。"
-            "GPUを必須にする場合はdevice='cuda'またはdevice='cuda:0'を明示してください。",
+            "GPUを必須にする場合はdevice='cuda'を明示してください（cuda:0も入力できます）。",
             RuntimeWarning,
             stacklevel=2,
         )

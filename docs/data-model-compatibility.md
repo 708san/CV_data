@@ -77,7 +77,7 @@ model.fit(train[["image_before_path", "image_after_path"]], train["consumed_weig
 
 ### 物体検出：データ注釈とDETR推論は別々に扱う
 
-`boxes`列には各画像のbbox辞書のリストが入り、各辞書に`class_id`、元ラベルの`class_name`、日本語ラベルの`class_name_ja`、正規化YOLO形式の`x_center` / `y_center` / `width` / `height`を保持します。検出DataFrameのトップレベル列は`image_path`、`label_file`、`boxes`、`split`、`sample_id`です。`DatasetBundle.splits`では検出の`val`と`valid`を`valid`へ集計しますが、`to_df()["split"]`の元表記は変更しません。DETRは画像パスまたはPillow Imageを受け取り、`Detection(label, score, box)`のリストを返します。`box`は元画像上の`(x_min, y_min, x_max, y_max)`です。
+`boxes`列には各画像のbbox辞書のリストが入り、各辞書に`class_id`、元ラベルの`class_name`、日本語ラベルの`class_name_ja`、正規化YOLO形式の`x_center` / `y_center` / `width` / `height`を保持します。検出DataFrameのトップレベル列は`image_path`、`label_file`、`boxes`、`split`、`source_split`、`sample_id`です。ライブラリが返す`split`と`DatasetBundle.splits`は`train`/`val`/`test`に統一し、配布元の表記は`source_split`へ残します。旧artifactの`valid`も読み込み時に`val`として扱います。DETRは画像パスまたはPillow Imageを受け取り、`Detection(label, score, box)`のリストを返します。`box`は元画像上の`(x_min, y_min, x_max, y_max)`です。
 
 ```python
 from cvlesson import vision
@@ -85,7 +85,7 @@ from cvlesson import datasets
 
 data = datasets.get("rdd2020_japan")
 frame = data.to_df()
-detector = vision.load_detector(device="cuda:0")  # GPUを使う場合だけ明示
+detector = vision.load_detector(device="cuda")  # GPUを使う場合だけ明示（cuda:0も入力可）
 image_path = frame.iloc[0]["image_path"]
 predictions = detector.predict(image_path)
 ```
@@ -127,7 +127,7 @@ image_path = frame.iloc[0]["image_path"]
 from PIL import Image
 with Image.open(image_path) as image:
     width, height = image.size
-segmenter = vision.load_segmenter(device="cuda:0")
+segmenter = vision.load_segmenter(device="cuda")
 prediction = segmenter.predict(image_path, point=(width // 2, height // 2))
 mask = prediction.mask  # 元画像と同じ縦横のNumPy bool配列
 ```

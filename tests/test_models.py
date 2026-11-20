@@ -9,6 +9,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from cvlesson import models
+from cvlesson._torch_utils import choose_torch_device, cuda_device_aliases
 
 
 class ResNetEstimatorTests(unittest.TestCase):
@@ -23,7 +24,26 @@ class ResNetEstimatorTests(unittest.TestCase):
         self.assertEqual(estimator.device, "auto")
         self.assertEqual(estimator.epochs, 5)
         self.assertFalse(estimator.is_fitted_)
-        self.assertEqual(models.ResNetClassifier(device="cuda").device, "cuda:0")
+        self.assertEqual(models.ResNetClassifier(device="cuda").device, "cuda")
+        self.assertEqual(models.ResNetClassifier(device="cuda:0").device, "cuda")
+
+    def test_available_device_map_uses_canonical_cuda_names(self):
+        self.assertEqual(cuda_device_aliases(1, True), {"cuda": True})
+        self.assertEqual(cuda_device_aliases(0, False), {"cuda": False})
+
+    def test_auto_prefers_canonical_cuda_and_accepts_legacy_first_gpu_alias(self):
+        self.assertEqual(
+            choose_torch_device("auto", {"cpu": True, "cuda": True, "mps": False}),
+            ("cuda", False),
+        )
+        self.assertEqual(
+            choose_torch_device("cuda:0", {"cpu": True, "cuda": True, "mps": False}),
+            ("cuda", False),
+        )
+        self.assertEqual(
+            choose_torch_device("auto", {"cpu": True, "cuda": False, "cuda:0": True, "mps": False}),
+            ("cuda", False),
+        )
 
     def test_invalid_training_inputs_fail_before_loading_torch(self):
         classifier = models.ResNetClassifier()

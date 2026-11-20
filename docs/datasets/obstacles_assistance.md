@@ -7,7 +7,7 @@ from cvlesson import datasets
 
 data = datasets.get("obstacles_assistance")
 print(data.classes)       # ('bump', 'fence', 'hole', 'pole')
-print(data.splits)        # train / valid の件数
+print(data.splits)        # train / val の件数
 print(data.annotations_jsonl)
 ```
 

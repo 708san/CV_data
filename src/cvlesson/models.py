@@ -169,7 +169,7 @@ class _ResNetEstimator:
         if used_cpu_fallback:
             warnings.warn(
                 "GPUが利用できないため、ResNetをCPUで実行します。"
-                "GPUを必須にする場合はdevice='cuda'またはdevice='cuda:0'を明示してください。",
+                "GPUを必須にする場合はdevice='cuda'を明示してください（cuda:0も入力できます）。",
                 RuntimeWarning,
                 stacklevel=2,
             )
