@@ -2,6 +2,14 @@
 
 更新日：2026-11-19
 
+## 今回の作業単位：PyPI 0.1.1公開候補と通常pip導入の確認
+
+対象仕様：5.1、7。既存PyPI `0.1.0`が自動GPU優先・CPUフォールバック修正前だったため、公開版を`0.1.1`へ更新し、通常の`pip install cv-data-lesson`で新しいAPIを取得できる状態にする。
+
+受け入れ条件：`pyproject.toml`の版が`0.1.1`、Python 3.13でwheel/sdist・twine・バイナリ混入検査が成功、隔離環境のwheelで`device="auto"`シグネチャを確認する。GitHub ReleaseとPyPI公開後に、外部の新規環境で通常pip導入とCPU/T4実モデルNotebookを実行する。PyPI公開までは`0.1.0`との差を明記し、公開済みとは扱わない。
+
+進捗：`0.1.1`へ版を更新。ローカル配布物検査とwheel隔離インストールは完了。GitHubブランチはpush済み。GitHub CLIの認証が無効なため、Release作成とPyPI Trusted Publishingは未実行。
+
 ## 今回の作業単位：データ互換性・日本語ラベル・モデル実行環境の修理
 
 対象仕様：3.3、4.1、4.2、4.3、4.4、5.1、5.2、7。固定Releaseを変更せず、`val`/`valid` splitの受け入れ、RDD2020の浮動小数点丸め誤差、全データの日本語ラベルと元ラベルの併記、機能別依存・device表記・学習速度・OCR入力検証・CPU/GPU境界を修理する。

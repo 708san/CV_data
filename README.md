@@ -2,13 +2,19 @@
 
 画像分類・物体検出・領域分割・画像生成の演習で使うデータを、Google ColabやPythonから取得するためのライブラリです。
 
-**現在は開発初期版です。PyPIにはまだ公開していません。** データ本体はコードから分離し、元の出典または許諾済みartifactの固定Releaseから取得します。既存の[CV_sample_data](https://github.com/708san/CV_sample_data)は読み取り専用です。
+**公開版は`cv-data-lesson==0.1.1`です。** データ本体はコードから分離し、元の出典または許諾済みartifactの固定Releaseから取得します。既存の[CV_sample_data](https://github.com/708san/CV_sample_data)は読み取り専用です。
 
 ## まず使う
 
 短い導入は[まず試す](docs/quickstart.md)、機能とOSごとの選び方は[インストール案内](docs/installation.md)を参照してください。
 
-ローカル環境では、このリポジトリのフォルダで次を実行します。
+通常利用はPyPIから導入します。
+
+```bash
+python -m pip install cv-data-lesson
+```
+
+開発者がこのリポジトリのコードを試す場合は、フォルダで次を実行します。
 
 ```bash
 python -m pip install -e .

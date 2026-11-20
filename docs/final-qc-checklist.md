@@ -21,7 +21,8 @@
 | OCR | PNG/JPEG/WebP/Pillow Image、壊れた画像、日本語実画像、`auto`切替を確認する | 部分完了 | CPU Notebookで既存経路は完了。`auto`確認セルの再実行待ち |
 | ネットワーク不要テスト | 指定テストが対応Pythonで成功する | 完了 | Python 3.13で92件OK、任意依存不足による18件skip |
 | Notebook静的検査 | JSON、セル依存、固定SHA、pip引用符を検査する | 完了 | `tests.test_notebook_integrity` 3件OK。`auto_device_model_acceptance_test.ipynb`を追加 |
-| wheel / sdist | 現在のHEADからbuildし、metadata検査とwheelインストールを完了する | 完了 | `cv_data_lesson-0.1.0a1-py3-none-any.whl`（75,676 bytes、SHA-256 `bf7b18d27a722e773f4b36c76f981c3257bb6206a03746b9bde04d8867d3501c`）とsdist（89,097 bytes、SHA-256 `f124373b8f9d0e30b3de8c6b9268b2c9ddc55c7b0a04c523ca9a0759ddbccd29`）をtwine check・依存なしwheel install・importで確認 |
+| wheel / sdist | `0.1.1`をbuildし、metadata検査・バイナリ混入検査・wheelインストールを完了する | 完了 | `cv_data_lesson-0.1.1-py3-none-any.whl`（77,161 bytes、SHA-256 `98792ea17f42f5c344fe34305ee3194141457ba6c52e453fe5f2499e58b89357`）とsdist（91,112 bytes、SHA-256 `e8b4a95afc1b8cf65779077281976533656d54a710acaa61527df292d085bbd2`）をtwine check・隔離wheel install・importで確認 |
+| PyPI通常導入 | `pip install cv-data-lesson`で新しい自動切替APIを取得する | 保留 | 現在PyPIの`0.1.0`は旧API。`0.1.1`公開後に再実行する |
 | PyPI / Release / main | 明示的許可後にのみ公開・マージする | 保留 | 今回は実行しない |
 
 ## 環境上の注意

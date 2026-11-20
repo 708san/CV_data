@@ -2,7 +2,7 @@
 
 更新日：2026-11-19
 
-PyPI公開前の開発版です。次の依存構成は機能単位で分けています。基本のデータ一覧・説明・固定Release取得には追加パッケージを使いません。データ本体・モデル重みもインストール時には取得しません。
+公開版`cv-data-lesson==0.1.1`と開発版を案内します。次の依存構成は機能単位で分けています。基本のデータ一覧・説明・固定Release取得には追加パッケージを使いません。データ本体・モデル重みもインストール時には取得しません。
 
 ## Python
 
@@ -10,22 +10,22 @@ PyPI公開前の開発版です。次の依存構成は機能単位で分けて�
 
 ## 目的から選ぶ
 
-PyPIにはまだ公開していません。以下のコマンドは、このリポジトリをcloneしてルートフォルダで実行する開発版向けです。PyTorchやPaddlePaddleのCPU/GPU用wheelは環境によって異なるため、該当機能のリンク先で先に選びます。
+通常利用はPyPIから導入します。以下の機能別extraを必要なものだけ追加してください。PyTorchやPaddlePaddleのCPU/GPU用wheelは環境によって異なるため、該当機能のリンク先で先に選びます。
 
 | やりたいこと | 追加するもの | 手順 |
 |---|---|---|
-| データ一覧・取得 | 追加依存なし | `python -m pip install -e .` |
-| DataFrameでラベルを確認、画像や結果を表示 | `dataframe`, `display` | `python -m pip install -e '.[dataframe,display]'` |
-| ResNetで分類・回帰 | 公式PyTorch/Torchvision、`torch` | 公式サイトでCPU/GPU版を選んでから `python -m pip install -e '.[torch]'` |
-| OCR | 環境に合うPaddlePaddle、`ocr` | PaddlePaddleを先に入れてから `python -m pip install -e '.[ocr]'`。PyTorch系とは別環境を推奨 |
-| 検出・領域分割 | 公式PyTorch/Torchvision、`vision` | PyTorchを先に入れてから `python -m pip install -e '.[vision]'` |
-| SDXL/Tiny-SD画像生成 | 公式PyTorch/Torchvision、`diffusion` | PyTorchを先に入れてから `python -m pip install -e '.[diffusion]'`。GPUではSDXL、CPUではTiny-SD |
+| データ一覧・取得 | 追加依存なし | `python -m pip install cv-data-lesson` |
+| DataFrameでラベルを確認、画像や結果を表示 | `dataframe`, `display` | `python -m pip install 'cv-data-lesson[dataframe,display]'` |
+| ResNetで分類・回帰 | 公式PyTorch/Torchvision、`torch` | 公式サイトでCPU/GPU版を選んでから `python -m pip install 'cv-data-lesson[torch]'` |
+| OCR | 環境に合うPaddlePaddle、`ocr` | PaddlePaddleを先に入れてから `python -m pip install 'cv-data-lesson[ocr]'`。PyTorch系とは別環境を推奨 |
+| 検出・領域分割 | 公式PyTorch/Torchvision、`vision` | PyTorchを先に入れてから `python -m pip install 'cv-data-lesson[vision]'` |
+| SDXL/Tiny-SD画像生成 | 公式PyTorch/Torchvision、`diffusion` | PyTorchを先に入れてから `python -m pip install 'cv-data-lesson[diffusion]'`。GPUではSDXL、CPUではTiny-SD |
 
 機能を一括で入れるextraはありません。ColabではランタイムのCPU/GPUを選んでから導入してください。各APIの既定`device="auto"`はGPUを優先し、なければCPUへ切り替えてメッセージを表示します。GPUを必須にする場合は`device="cuda"`などを明示します。詳細なOS・CUDA・依存条件は以下の機能別案内にまとめています。
 
 ## 機能別インストール
 
-リポジトリを取得した開発者は、以下の`pip install -e`を使います。PyPI公開後は`-e .`を`cv-data-lesson`へ置き換える予定です。
+リポジトリを取得した開発者は、以下の`pip install -e`を使います。通常利用では`cv-data-lesson`へ置き換えます。
 
 | 使う機能 | 追加指定 | 主な追加パッケージ | 注意 |
 | --- | --- | --- | --- |
