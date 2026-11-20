@@ -121,6 +121,7 @@ display.show(image, results)
 | [SDXL・LoRA](../notebooks/colab/generation_smoke_test.ipynb) | text-to-image、image-to-imageと登録LoRA 4件 | T4と数GBの空き容量が必要。入力画像は合成画像か明示アップロードを選択 |
 | [自動切替受け入れ](../notebooks/colab/auto_device_model_acceptance_test.ipynb) | CPU/T4でResNet、DETR、SAM、画像生成の`device="auto"`を実モデル確認 | GPUではSDXL、CPUではTiny-SD。OCRは別Notebook |
 | [PyPI総合受け入れ](../notebooks/colab/pypi_full_acceptance_test.ipynb) | 公開版`cv-data-lesson==0.1.1`のデータ・ラベル・bbox・モデル・CPU/T4境界を一括確認 | 新しいCPU/T4ランタイムで実行。OCRはPaddle専用ランタイム |
+| [授業用通常pip受け入れ](../notebooks/colab/lesson_runtime_acceptance_test.ipynb) | `pip install cv-data-lesson`から指摘事項、データ不整合、bbox、ラベル、ランタイム切替を確認 | CPU/T4は別ランタイムで最初から実行。OCRは専用ランタイム |
 
 同じモデル名でも入力やデータの条件で結果は変わります。これらのNotebookは各APIと一部実データで一連の処理が動くか確認するもので、一般化性能の保証ではありません。Colabから開くNotebookの変更がGitHubに反映されていない場合は、作業ブランチの更新後に再読み込みしてください。
 
