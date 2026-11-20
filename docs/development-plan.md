@@ -10,6 +10,14 @@
 
 進捗：`0.1.1`へ版を更新。ローカル配布物検査とwheel隔離インストールは完了。GitHubブランチはpush済み。GitHub CLIの認証が無効なため、Release作成とPyPI Trusted Publishingは未実行。
 
+## 今回の作業単位：PyPI 0.1.1総合受け入れNotebook
+
+対象仕様：3.2、3.3、4.1〜4.5、5.1、7。授業Notebookとは分離し、PyPIから`cv-data-lesson==0.1.1`を導入した新規Colabランタイムで、データ・モデル・入力検証・CPU/GPU切替をまとめて実測できるNotebookを作成する。OCRはPaddlePaddleとの依存関係を分けるため、同NotebookのOCRセルを専用ランタイムで実行できる構成にする。
+
+受け入れ条件：CPU/T4の実行環境を判定し、公開版のバージョン、カタログ、GeoSetEnnea/RDD2020の元split・日本語ラベル・全bbox、ResNet、DETR、SAM、画像生成の自動切替、Tiny-SDの非対応引数、明示GPUの利用不可エラー、OCRの画像入力と壊れた画像エラーを判定する。モデル重みはNotebook実行時だけ取得し、リポジトリへ保存しない。
+
+進捗：PyPI `0.1.1`を直接導入する総合Notebookを追加し、JSON・コードセル・インストールセルの静的検査を完了。CPU/T4の実モデル実行と、OCR専用ランタイムでの本番版実行はColabで確認する。
+
 ## 今回の作業単位：データ互換性・日本語ラベル・モデル実行環境の修理
 
 対象仕様：3.3、4.1、4.2、4.3、4.4、5.1、5.2、7。固定Releaseを変更せず、`val`/`valid` splitの受け入れ、RDD2020の浮動小数点丸め誤差、全データの日本語ラベルと元ラベルの併記、機能別依存・device表記・学習速度・OCR入力検証・CPU/GPU境界を修理する。
