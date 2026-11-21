@@ -489,6 +489,39 @@ class ReleaseTests(unittest.TestCase):
             for name in ("train", "val", "test")
         })
 
+    @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
+    def test_classification_official_validation_is_preserved_without_train_resplit(self):
+        (self.cache / "labels.csv").write_text(
+            "image,label,split\n"
+            "images/train/cankered_orange/a.jpg,cankered_orange,train\n"
+            "images/train/cankered_orange/b.jpg,cankered_orange,train\n"
+            "images/train/fresh_orange/c.jpg,fresh_orange,train\n"
+            "images/val/cankered_orange/d.jpg,cankered_orange,val\n"
+            "images/val/fresh_orange/e.jpg,fresh_orange,val\n"
+            "images/test/cankered_orange/f.jpg,cankered_orange,test\n",
+            encoding="utf-8",
+        )
+        data = datasets.DatasetBundle(
+            id="orange_fruit", kind="classification", root=self.cache,
+            manifest={"classes": list(datasets._SOURCES["orange_fruit"].classes)},
+            source_url="https://example.invalid/source", version="test", rights_note="test",
+        )
+        frame = data.to_df(val_fraction=0.2, seed=7)
+        self.assertEqual(frame["split"].value_counts().to_dict(), {"train": 3, "val": 2, "test": 1})
+        self.assertEqual(frame["source_split"].tolist(), ["train", "train", "train", "val", "val", "test"])
+        self.assertEqual(data.split_counts(val_fraction=0.2, seed=7), {"train": 3, "val": 2, "test": 1})
+
+    def test_classification_valid_split_is_normalized_and_retained(self):
+        rows = [
+            {"image": "images/train/a.jpg", "label": "cankered_orange", "split": "train"},
+            {"image": "images/valid/b.jpg", "label": "cankered_orange", "split": "valid"},
+            {"image": "images/test/c.jpg", "label": "cankered_orange", "split": "test"},
+        ]
+        self.assertEqual(
+            datasets._effective_splits(rows, val_fraction=0.5, seed=7),
+            ["train", "val", "test"],
+        )
+
     def test_japanese_label_tables_keep_original_names_separate(self):
         def bundle(dataset_id):
             source = datasets._SOURCES[dataset_id]

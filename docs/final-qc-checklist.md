@@ -2,7 +2,7 @@
 
 対象ブランチ：`codex/library-ocr-runtime`
 
-対象コミット：`52aed9eb010463411e552e372c57c5489c705938`（タグ `v0.1.2`）
+対象コミット：`v0.1.3`公開時のタグ先頭（0.1.2の監査指摘修正候補）
 
 この表は、ライブラリの修正・固定artifact・Colab実機確認・配布物検査を分けて記録する。PyPI公開、Release作成、`main`へのマージはこの表の確認だけでは実行しない。
 
@@ -19,11 +19,11 @@
 | DETR / SAM | CPU/T4で固定revisionの読み込みと推論が完了する | 部分完了 | 既存T4実行完了。公開版ColabでのCPU/T4再実行待ち |
 | 画像生成 | GPUではSDXL、CPUではTiny-SDを使い、Tiny-SDのLoRA/image-to-image拒否が明確 | 部分完了 | 既存T4のSDXL完了。公開版ColabでTiny-SD CPU実生成を再確認する |
 | OCR | PNG/JPEG/WebP/Pillow Image、壊れた画像、日本語実画像、`auto`切替を確認する | 部分完了 | CPU Notebookで既存経路は完了。公開版OCR専用ランタイムで再確認する |
-| ネットワーク不要テスト | 指定テストが対応Pythonで成功する | 完了 | Python 3.13で92件OK、任意依存不足による18件skip |
+| ネットワーク不要テスト | 指定テストが対応Pythonで成功する | 実行待ち | 0.1.3候補のテスト実行後に件数を記録 |
 | Notebook静的検査 | JSON、セル依存、固定SHA、pip引用符を検査する | 完了 | `tests.test_notebook_integrity` 3件OK。`auto_device_model_acceptance_test.ipynb`を追加 |
-| wheel / sdist | `0.1.2`をbuildし、metadata検査・バイナリ混入検査・wheelインストールを完了する | 完了 | GitHub CIのbuild検査成功。PyPI公開wheel（78,116 bytes、SHA-256 `a024dbad8f8e408d5addba6c04b0e3eb49ee7e9bc5f25c5c350172b7fc7eafb3`）とsdist（92,837 bytes、SHA-256 `c2644e687ff1d239d4b6f41d5ecf513df53116541798f66fc545a3e9145fff8e`）を確認 |
-| PyPI通常導入 | `pip install cv-data-lesson`で新しい自動切替APIを取得する | 完了 | 公開PyPIから`cv-data-lesson==0.1.2`を一時環境へ導入し、import・版・24件のカタログ・主要データセット情報を確認 |
-| PyPI / Release | 明示的許可後に公開し、公開版から再検証する | 完了 | [GitHub Release v0.1.2](https://github.com/708san/CV_data/releases/tag/v0.1.2)をPublish。Trusted Publishing run成功、PyPI `0.1.2`公開を確認 |
+| wheel / sdist | `0.1.3`をbuildし、metadata検査・バイナリ混入検査・wheelインストールを完了する | 実行待ち | 0.1.3候補のCIで確認する |
+| PyPI通常導入 | `pip install cv-data-lesson`で新しい自動切替APIを取得する | 実行待ち | v0.1.3公開後に一時環境で確認する |
+| PyPI / Release | 明示的許可後に公開し、公開版から再検証する | 実行待ち | v0.1.3のRelease公開後にTrusted PublishingとPyPIを確認する |
 | `main`へのマージ | ユーザーの明示的許可後にのみ実行する | 保留 | 開発ブランチで公開版を作成。`main`へは直接マージしていない |
 
 ## 環境上の注意

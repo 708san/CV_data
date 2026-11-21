@@ -1440,11 +1440,17 @@ def _effective_splits(rows: Sequence[dict[str, str]], *, val_fraction: float, se
         raise ValueError("val_fractionは0以上1未満で指定してください。")
     if not rows:
         return []
-    # Releaseの公式testは保持し、trainの中だけをラベルごとに分割する。
-    result = [row["split"] if row.get("split") in {"val", "test"} else "train" for row in rows]
+    raw_splits = [row.get("split", "") for row in rows]
+    has_official_validation = any(split in {"val", "valid"} for split in raw_splits)
+    # 公式validationがある場合は、公式のtrain/val/testをそのまま使う。
+    result = ["val" if split == "valid" else split for split in raw_splits]
+    if has_official_validation:
+        return result
+
+    # 公式validationがない場合だけ、公式testを保持してtrainの中を分割する。
     by_label: dict[str, list[int]] = {}
     for index, row in enumerate(rows):
-        if row.get("split") not in {"val", "test"}:
+        if row.get("split") != "test":
             by_label.setdefault(row.get("label", ""), []).append(index)
     for label, indices in by_label.items():
         count = int(round(len(indices) * val_fraction))
@@ -2027,7 +2033,7 @@ def _validate_case(root: Path, src: ReleaseSource) -> dict[str, Any]:
         observed.add(image)
         if src.kind == "classification":
             label, split = row["label"], row["split"]
-            if label not in manifest.get("classes", []) or split not in {"train", "val", "test"}:
+            if label not in manifest.get("classes", []) or split not in {"train", "val", "valid", "test"}:
                 raise DatasetError(f"ラベルまたは分割に誤りがあります: {image}")
             if parts[:3] != ("images", split, label):
                 raise DatasetError(f"画像配置とラベルが一致しません: {image}")

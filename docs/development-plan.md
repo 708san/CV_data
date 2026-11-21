@@ -2,6 +2,21 @@
 
 更新日：2026-11-21
 
+## 今回の作業単位：公式validation分割の保持と0.1.3再監査
+
+対象仕様：3.3、5.1、6、7。0.1.2公開版監査で確認された、公式`val`を持つ分類データへtrainの一部を追加して`val`へ移す仕様不一致と、公開タグに古いQC表が残る問題を修正する。0.1.2のタグ・Releaseは変更せず、修正後を0.1.3として公開し、PyPI公開版から再監査する。
+
+順序：
+1. 仕様書へ、公式`val`/`valid`がある分類データは公式splitを保持し、validationがない場合だけtrainから作る要件を記録する。
+2. `_effective_splits()`を修正し、公式validationの有無によって再分割の有無を決める。分類artifactの`valid`も必要な範囲で`val`へ正規化し、元表記を保持する。
+3. 公式validationあり・なし、`val`・`valid`、`val_fraction`・`seed`の単体テストを追加する。
+4. README、データ形式説明、QC表、PyPI公開手順、受け入れNotebookの版を0.1.3へ更新する。授業Notebookの通常`pip install cv-data-lesson`は固定しない。
+5. ネットワーク不要テストと配布物検査を実施し、GitHub Release `v0.1.3`とPyPI公開後に公開版を隔離環境・Colabで再検証する。
+
+受け入れ条件：公式`val`または`valid`を持つ分類データの件数が変わらず、`source_split`に元表記が残る。validationがない分類データでは従来どおり決定的なtrain/val分割が行われる。0.1.3の公開wheel・sdist、通常pip導入、QC記録、公開受け入れNotebookが同じ版を指す。
+
+進捗：仕様変更を先に記録。実装・テスト・0.1.3公開はこれから行う。
+
 ## 今回の作業単位：監査指摘の修正と公開版での再検証
 
 対象仕様：3.3、4.3、4.4、4.5、5.1、5.2、6、7。前回監査で確認したSAMのprompt形状、画像生成のモデル・LoRA・task互換性、PyTorch deviceの意味保持、分類split集計、Notebook・QC記録の不整合を修正し、次版を公開した後にPyPIから導入した公開版で検証する。授業Notebookの通常導入`pip install cv-data-lesson`は固定しない。公開版受け入れNotebookだけを対象バージョンへ固定し、開発版の実装テストと公開版の実運用テストを分ける。
