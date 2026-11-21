@@ -6,7 +6,7 @@ import warnings
 from pathlib import Path
 from typing import Any, Iterable, Sequence
 
-from ._torch_utils import choose_torch_device, cuda_device_aliases, normalize_torch_device
+from ._torch_utils import choose_torch_device, cuda_device_aliases, normalize_torch_device, torch_device_available
 
 
 class ModelError(RuntimeError):
@@ -173,7 +173,7 @@ class _ResNetEstimator:
                 RuntimeWarning,
                 stacklevel=2,
             )
-        if not devices.get(self.device, False):
+        if not torch_device_available(self.device, devices):
             raise ModelError(f"device={self.device!r}はこの環境で利用できません。available_devices()で確認してください。")
         torch.manual_seed(self.random_state)
 

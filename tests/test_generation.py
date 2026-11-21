@@ -40,6 +40,54 @@ class GenerationTests(unittest.TestCase):
         ), self.assertRaisesRegex(generation.GenerationError, "SDXLはCPU実行"):
             generation.load(model="sdxl", device="cpu")
 
+    def test_auto_sdxl_rejects_cpu_before_pipeline_download(self):
+        class ForbiddenPipeline:
+            @classmethod
+            def from_pretrained(cls, *args, **kwargs):
+                raise AssertionError("SDXL pipeline must not be downloaded on CPU")
+
+        fake_diffusers = types.ModuleType("diffusers")
+        fake_diffusers.DiffusionPipeline = ForbiddenPipeline
+        fake_diffusers.AutoPipelineForImage2Image = ForbiddenPipeline
+        fake_diffusers.AutoPipelineForText2Image = ForbiddenPipeline
+        with patch.dict(sys.modules, {"torch": _FakeTorch, "diffusers": fake_diffusers}), patch(
+            "cvlesson.generation.available_devices",
+            return_value={"cpu": True, "cuda": False, "mps": False},
+        ), self.assertRaisesRegex(generation.GenerationError, "SDXLはCPU実行"):
+            generation.load(model="sdxl", device="auto", lora=None, local_files_only=True)
+
+    def test_auto_cpu_rejects_lora_before_tiny_sd_download(self):
+        class ForbiddenPipeline:
+            @classmethod
+            def from_pretrained(cls, *args, **kwargs):
+                raise AssertionError("Tiny-SD must not be downloaded when LoRA is incompatible")
+
+        fake_diffusers = types.ModuleType("diffusers")
+        fake_diffusers.DiffusionPipeline = ForbiddenPipeline
+        fake_diffusers.AutoPipelineForImage2Image = ForbiddenPipeline
+        fake_diffusers.AutoPipelineForText2Image = ForbiddenPipeline
+        with patch.dict(sys.modules, {"torch": _FakeTorch, "diffusers": fake_diffusers}), patch(
+            "cvlesson.generation.available_devices",
+            return_value={"cpu": True, "cuda": False, "mps": False},
+        ), self.assertRaisesRegex(ValueError, "LoRA"):
+            generation.load(model="auto", device="auto", lora="pixel_art_sdxl", local_files_only=True)
+
+    def test_auto_cpu_rejects_image_to_image_before_tiny_sd_download(self):
+        class ForbiddenPipeline:
+            @classmethod
+            def from_pretrained(cls, *args, **kwargs):
+                raise AssertionError("Tiny-SD must not be downloaded for image-to-image")
+
+        fake_diffusers = types.ModuleType("diffusers")
+        fake_diffusers.DiffusionPipeline = ForbiddenPipeline
+        fake_diffusers.AutoPipelineForImage2Image = ForbiddenPipeline
+        fake_diffusers.AutoPipelineForText2Image = ForbiddenPipeline
+        with patch.dict(sys.modules, {"torch": _FakeTorch, "diffusers": fake_diffusers}), patch(
+            "cvlesson.generation.available_devices",
+            return_value={"cpu": True, "cuda": False, "mps": False},
+        ), self.assertRaisesRegex(ValueError, "text-to-image"):
+            generation.load(task="image-to-image", model="auto", device="auto", lora=None, local_files_only=True)
+
     def test_auto_cpu_uses_tiny_sd_without_lora(self):
         calls = []
 

@@ -443,6 +443,10 @@ class ReleaseTests(unittest.TestCase):
             frame = data.to_df()
             self.assertEqual(frame.loc[0, "split"], "val")
             self.assertEqual(frame.loc[0, "source_split"], "val")
+            box = frame.loc[0, "boxes"][0]
+            self.assertEqual(box["x_center"], 0.9)
+            self.assertLessEqual(max(box[key] for key in ("x_center", "y_center", "width", "height")), 1.0)
+            self.assertGreaterEqual(min(box[key] for key in ("x_center", "y_center", "width", "height")), 0.0)
             self.assertEqual(data.splits, {"train": 0, "val": 1, "test": 0})
 
     @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
@@ -458,7 +462,29 @@ class ReleaseTests(unittest.TestCase):
             frame = data.to_df()
             self.assertEqual(frame.loc[0, "split"], "val")
             self.assertEqual(frame.loc[0, "source_split"], "valid")
-            self.assertEqual(data.splits, {"train": 0, "val": 1, "test": 0})
+
+    @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
+    def test_classification_split_counts_accepts_same_parameters_as_to_df(self):
+        (self.cache / "labels.csv").write_text(
+            "image,label,split\n"
+            "images/a.jpg,cankered_orange,train\n"
+            "images/b.jpg,fresh_orange,train\n"
+            "images/c.jpg,rotten_orange,train\n"
+            "images/d.jpg,cankered_orange,train\n"
+            "images/e.jpg,fresh_orange,test\n",
+            encoding="utf-8",
+        )
+        data = datasets.DatasetBundle(
+            id="orange_fruit", kind="classification", root=self.cache,
+            manifest={"classes": list(datasets._SOURCES["orange_fruit"].classes)},
+            source_url="https://example.invalid/source", version="test", rights_note="test",
+        )
+        frame = data.to_df(val_fraction=0.2, seed=7)
+        counts = frame["split"].value_counts().to_dict()
+        self.assertEqual(data.split_counts(val_fraction=0.2, seed=7), {
+            name: int(counts.get(name, 0)) for name in ("train", "val", "test")
+        })
+        self.assertNotEqual(data.splits, data.split_counts(val_fraction=0.2, seed=7))
 
     def test_japanese_label_tables_keep_original_names_separate(self):
         def bundle(dataset_id):

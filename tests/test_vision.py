@@ -146,6 +146,7 @@ class VisionTests(unittest.TestCase):
             )
 
             def __call__(self, **kwargs):
+                self.kwargs = kwargs
                 return {
                     "original_sizes": SimpleNamespace(cpu=lambda: "original"),
                     "reshaped_input_sizes": SimpleNamespace(cpu=lambda: "resized"),
@@ -177,6 +178,51 @@ class VisionTests(unittest.TestCase):
         self.assertEqual(result.prompt_type, "box")
         self.assertEqual(result.score, 1.2)
         self.assertEqual(result.mask, [[True, True], [True, False]])
+        self.assertEqual(processor.kwargs["input_boxes"], [[[1.0, 2.0, 10.0, 15.0]]])
+
+    def test_sam_point_prompt_uses_transformers_nested_shape(self):
+        class CandidateMask:
+            def numpy(self):
+                return self
+
+            def astype(self, dtype, copy=False):
+                return [[True]]
+
+        class Processor:
+            image_processor = SimpleNamespace(
+                post_process_masks=lambda masks, original_sizes, reshaped_input_sizes: [[[CandidateMask()]]]
+            )
+
+            def __call__(self, **kwargs):
+                self.kwargs = kwargs
+                return {
+                    "original_sizes": SimpleNamespace(cpu=lambda: "original"),
+                    "reshaped_input_sizes": SimpleNamespace(cpu=lambda: "resized"),
+                }
+
+        class Scores:
+            def __getitem__(self, index):
+                return self
+
+            def argmax(self):
+                return SimpleNamespace(item=lambda: 0)
+
+            def item(self):
+                return 0.5
+
+        processor = Processor()
+
+        class Model:
+            def __call__(self, **kwargs):
+                return SimpleNamespace(
+                    pred_masks=SimpleNamespace(cpu=lambda: "masks"), iou_scores=Scores()
+                )
+
+        model = Model()
+        segmenter = vision.PromptSegmenter(processor, model, _Torch, SimpleNamespace(bool_=bool), "cpu")
+        with patch("cvlesson.vision._open_image", return_value=SimpleNamespace(size=(20, 20))):
+            segmenter.predict("ignored.jpg", point=(5, 6))
+        self.assertEqual(processor.kwargs["input_points"], [[[[5.0, 6.0]]]])
 
     def test_prompts_are_validated_before_model_call(self):
         segmenter = vision.PromptSegmenter(None, None, None, None, "cpu")

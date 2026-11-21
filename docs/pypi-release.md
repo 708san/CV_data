@@ -1,6 +1,6 @@
-# PyPI 0.1.1公開の準備
+# PyPI 0.1.2公開の準備
 
-PyPIには既存の`cv-data-lesson==0.1.0`が公開されています。これは自動GPU優先・CPUフォールバック修正前の版です。今回の公開候補は`0.1.1`で、`pip install cv-data-lesson`がこの修正版を取得できる状態にします。
+PyPIには`cv-data-lesson==0.1.1`が公開されています。今回の公開候補は`0.1.2`で、split・bbox・device・モデル互換性・SAM入力形状の修正版を含めます。
 
 ## パッケージに含めるもの
 
@@ -9,7 +9,7 @@ PyPIへ置くのはPythonコード、カタログ・説明・ライセンス等�
 公開後のインストール例：
 
 ```bash
-python -m pip install cv-data-lesson==0.1.1
+python -m pip install cv-data-lesson==0.1.2
 python -m pip install 'cv-data-lesson[display]'
 ```
 
@@ -35,4 +35,4 @@ GitHub側の`pypi` environmentを作成し、必要ならdeployment protection r
 
 `.github/workflows/publish.yml`はGitHub Releaseを`published`にした時だけ起動します。ビルドとmetadata検査を行い、Release tagが`pyproject.toml`の版と一致すること、配布物に画像・モデル重みが含まれないことを確認してから、検証済みartifactをPyPIへ送ります。手動実行やtag pushでは起動しません。
 
-この文書とworkflowの準備はPyPI公開を実行しません。初回公開には、PyPIのpublisher設定、GitHub Release/tagの作成、PyPIアップロードについて別途確認が必要です。
+この文書は`v0.1.2`のGitHub Release公開後にTrusted PublishingでPyPIへ配布し、公開後に`pip install cv-data-lesson==0.1.2`で検証する手順を記録します。

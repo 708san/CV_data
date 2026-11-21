@@ -107,11 +107,13 @@ class PromptSegmenter:
         width, height = rgb.size
         if box is not None:
             prompt = _validate_box(box, width, height)
-            inputs = self._processor(images=rgb, input_boxes=[[[list(prompt)]]], return_tensors="pt")
+            # SamProcessor expects [image][box][x1, y1, x2, y2].
+            inputs = self._processor(images=rgb, input_boxes=[[list(prompt)]], return_tensors="pt")
             prompt_type = "box"
         else:
             prompt = _validate_point(point, width, height)  # type: ignore[arg-type]
-            inputs = self._processor(images=rgb, input_points=[[list(prompt)]], return_tensors="pt")
+            # SamProcessor expects [image][object][point][x, y].
+            inputs = self._processor(images=rgb, input_points=[[[list(prompt)]]], return_tensors="pt")
             prompt_type = "point"
         inputs = _to_device(inputs, self.device)
         with self._torch.no_grad():

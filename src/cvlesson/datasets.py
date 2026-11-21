@@ -48,6 +48,21 @@ def _canonical_detection_split(split: str) -> str:
     raise ValueError(f"検出splitはtrain、val、valid、testのいずれかです: {split!r}")
 
 
+def _normalized_bbox_annotation(annotation: dict[str, Any]) -> dict[str, Any]:
+    """Return a public bbox with serialization-rounding drift clipped away.
+
+    The artifact itself remains untouched. Only the derived DataFrame view is
+    normalized, and only after the strict validator has established that any
+    excess is within ``_BBOX_EPSILON``.
+    """
+    result = dict(annotation)
+    width = float(result["width"])
+    height = float(result["height"])
+    result["x_center"] = min(max(float(result["x_center"]), width / 2), 1 - width / 2)
+    result["y_center"] = min(max(float(result["y_center"]), height / 2), 1 - height / 2)
+    return result
+
+
 class DatasetError(RuntimeError):
     """データの取得・検証に失敗した場合。"""
 
@@ -226,7 +241,7 @@ class DatasetBundle:
                 item = json.loads(line)
                 boxes = [
                     {
-                        **annotation,
+                        **_normalized_bbox_annotation(annotation),
                         "class_name": names[annotation["class_id"]],
                         "class_name_ja": self.class_names_ja[annotation["class_id"]],
                     }
@@ -353,11 +368,18 @@ class DatasetBundle:
 
     @property
     def splits(self) -> dict[str, int]:
-        """標準化後の分割件数。
+        """既定条件での標準化後の分割件数。
 
         検出の配布元``valid``は``val``へ正規化し、元表記は
         ``to_df()["source_split"]`` に保持する。
+
+        分類で``to_df(val_fraction=..., seed=...)``を指定した場合に同じ
+        条件の件数を確認するには、``split_counts()``を使う。
         """
+        return self.split_counts()
+
+    def split_counts(self, *, val_fraction: float = 0.1, seed: int = 42) -> dict[str, int]:
+        """指定したDataFrame分割条件に対応する分割件数を返す。"""
         if self.kind == "regression":
             counts = Counter(row["split"] for row in _read_rows(self.metadata_csv))
             return {name: int(counts.get(name, 0)) for name in ("train", "validation", "test")}
@@ -377,7 +399,7 @@ class DatasetBundle:
         if self.kind != "classification":
             return {}
         rows = _read_rows(self.labels_csv)
-        effective = _effective_splits(rows, val_fraction=0.1, seed=42)
+        effective = _effective_splits(rows, val_fraction=val_fraction, seed=seed)
         counts = Counter(effective)
         return {name: int(counts.get(name, 0)) for name in ("train", "val", "test")}
 
@@ -1879,7 +1901,8 @@ def _validate_detection_case(root: Path, src: ReleaseSource, manifest: dict[str,
         split = record.get("split")
         parts = PurePosixPath(image).parts if isinstance(image, str) else ()
         label_parts = PurePosixPath(label_file).parts if isinstance(label_file, str) else ()
-        if (len(parts) != 3 or parts[0] != "images" or any(part in {"", ".", ".."} for part in parts)
+        if (not isinstance(image, str) or not isinstance(label_file, str)
+                or len(parts) != 3 or parts[0] != "images" or any(part in {"", ".", ".."} for part in parts)
                 or "\\" in image or "\x00" in image or split not in {"train", "val", "valid", "test"}
                 or parts[1] != split or PurePosixPath(image).suffix.lower() not in {".jpg", ".jpeg", ".png"}
                 or len(label_parts) != 3 or label_parts[:2] != ("labels", split)

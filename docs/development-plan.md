@@ -1,6 +1,23 @@
 # CV_data 開発計画
 
-更新日：2026-11-19
+更新日：2026-11-21
+
+## 今回の作業単位：監査指摘の修正と公開版での再検証
+
+対象仕様：3.3、4.3、4.4、4.5、5.1、5.2、6、7。前回監査で確認したSAMのprompt形状、画像生成のモデル・LoRA・task互換性、PyTorch deviceの意味保持、分類split集計、Notebook・QC記録の不整合を修正し、次版を公開した後にPyPIから導入した公開版で検証する。授業Notebookの通常導入`pip install cv-data-lesson`は固定しない。公開版受け入れNotebookだけを対象バージョンへ固定し、開発版の実装テストと公開版の実運用テストを分ける。
+
+順序：
+1. 監査指摘を確定し、仕様書へdevice・モデル互換性・SAM入力形状・Notebook運用を記録する。
+2. `cuda`と`cuda:0`を別GPU指定として保持し、`auto`の解決先と利用可能性判定を共通化する。表示上の同一GPU重複は避ける。
+3. SAMの点・矩形入力をTransformersの契約へ合わせ、実プロセッサ契約を検査するテストを追加する。
+4. generationの最終モデル・device・LoRA・taskを確定後、モデル取得前に互換性検証する。CPUのauto選択、明示SDXL、LoRA、image-to-imageをテストする。
+5. 分類の`to_df(val_fraction=..., seed=...)`と集計結果の関係を明確にし、同じ条件で確認できるAPIとテストを追加する。
+6. Notebookの開発版参照を最新40桁SHAへ統一し、授業Notebookの通常pip導入は維持する。QC表・公開物ハッシュ・テスト件数を更新する。
+7. ネットワーク不要テスト、wheel/sdist検査、隔離wheel検査を通した後、版を更新してGitHub Release・PyPIへ公開する。公開後の新規環境で、データ・CPU/T4/OCR受け入れNotebookを実行し、公開版の検証結果として記録する。
+
+受け入れ条件：非対応のモデル組合せがモデル取得前に明確なエラーになる。SAMの点・矩形promptが固定Transformers版のprocessorで受理される。`cuda`、`cuda:0`、`cuda:1`の指定が利用者の意図どおりに保持され、`auto`は利用可能なGPUを優先する。分類の分割件数表示がDataFrameの指定条件と矛盾しない。授業Notebookは通常pip、公開受け入れNotebookは公開版固定となる。公開後、PyPIから取得した新バージョンでネットワーク不要テスト相当の基本API、データ検証、CPU/T4/OCR実測を行い、開発版のテスト結果と混同しない。
+
+進捗：仕様・計画を更新し、実装とネットワーク不要テストを完了（101件成功、任意依存不足による21件skip）。授業Notebookは通常pipへ戻し、公開受け入れNotebookは0.1.2固定へ更新した。配布物検査、GitHub Release/PyPI公開、公開版Colab検証は未完了。
 
 ## 今回の作業単位：PyPI 0.1.1公開候補と通常pip導入の確認
 

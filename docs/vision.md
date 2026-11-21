@@ -27,7 +27,7 @@ python -m pip install 'cv-data-lesson[vision]'
 
 この追加依存はHugging Face Hub 1.xを許容し、Colabにある新しいTransformers等が必要とするHubを古い版へ下げません。
 
-開発版の場合は`cv-data-lesson`を`-e '.[vision]'`へ置き換えます。既定の`device="auto"`は利用可能なGPUを優先し、GPUがなければ同じ固定モデルをCPUで実行する警告を表示します。GPUを必須にする場合はPyTorch標準の`device="cuda"`を明示してください（`cuda:0`も入力できます）。
+開発版の場合は`cv-data-lesson`を`-e '.[vision]'`へ置き換えます。既定の`device="auto"`は利用可能なGPUを優先し、GPUがなければ同じ固定モデルをCPUで実行する警告を表示します。GPUを必須にする場合はPyTorch標準の`device="cuda"`を明示してください（`cuda:0`も指定できます）。`cuda`と`cuda:0`は入力として受け付けますが、利用可能デバイス一覧で同じ第1 GPUを二重には表示しません。
 
 ```python
 from cvlesson import vision

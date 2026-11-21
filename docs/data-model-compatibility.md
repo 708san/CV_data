@@ -24,7 +24,7 @@ frame = data.to_df()
 print(frame.head())
 ```
 
-`get()`はデータ全体を取得してキャッシュします。`to_df()`はデータ本体ではなく、画像・ラベル・注釈ファイルへのパスとメタデータを表にします。各タスクの元splitを保ちます。分類で元データにvalidationがない場合だけ、trainからseed固定でvalidationを作ります。取得量、権利条件、キャッシュの確認には`datasets.info()`、`datasets.cache_info()`を使ってください。
+`get()`はデータ全体を取得してキャッシュします。`to_df()`はデータ本体ではなく、画像・ラベル・注釈ファイルへのパスとメタデータを表にします。検出では`split`を`train`/`val`/`test`へ統一し、元の`val`/`valid`は`source_split`に残します。分類の分割件数を`to_df(val_fraction=..., seed=...)`と同じ条件で確認する場合は`data.split_counts(val_fraction=..., seed=...)`を使います。分類で元データにvalidationがない場合だけ、trainからseed固定でvalidationを作ります。取得量、権利条件、キャッシュの確認には`datasets.info()`、`datasets.cache_info()`を使ってください。
 
 ### 空画像と翌日の天気
 
@@ -77,7 +77,7 @@ model.fit(train[["image_before_path", "image_after_path"]], train["consumed_weig
 
 ### 物体検出：データ注釈とDETR推論は別々に扱う
 
-`boxes`列には各画像のbbox辞書のリストが入り、各辞書に`class_id`、元ラベルの`class_name`、日本語ラベルの`class_name_ja`、正規化YOLO形式の`x_center` / `y_center` / `width` / `height`を保持します。検出DataFrameのトップレベル列は`image_path`、`label_file`、`boxes`、`split`、`source_split`、`sample_id`です。ライブラリが返す`split`と`DatasetBundle.splits`は`train`/`val`/`test`に統一し、配布元の表記は`source_split`へ残します。旧artifactの`valid`も読み込み時に`val`として扱います。DETRは画像パスまたはPillow Imageを受け取り、`Detection(label, score, box)`のリストを返します。`box`は元画像上の`(x_min, y_min, x_max, y_max)`です。
+`boxes`列には各画像のbbox辞書のリストが入り、各辞書に`class_id`、元ラベルの`class_name`、日本語ラベルの`class_name_ja`、正規化YOLO形式の`x_center` / `y_center` / `width` / `height`を保持します。固定artifactの検証で許容したシリアライズ誤差は、この公開ビューでは0〜1内へ補正します。検出DataFrameのトップレベル列は`image_path`、`label_file`、`boxes`、`split`、`source_split`、`sample_id`です。ライブラリが返す`split`と`DatasetBundle.splits`は`train`/`val`/`test`に統一し、配布元の表記は`source_split`へ残します。旧artifactの`valid`も読み込み時に`val`として扱います。DETRは画像パスまたはPillow Imageを受け取り、`Detection(label, score, box)`のリストを返します。`box`は元画像上の`(x_min, y_min, x_max, y_max)`です。
 
 ```python
 from cvlesson import vision

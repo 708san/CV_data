@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from . import loras
-from ._torch_utils import choose_torch_device, cuda_device_aliases, normalize_torch_device
+from ._torch_utils import choose_torch_device, cuda_device_aliases, normalize_torch_device, torch_device_available
 
 
 class GenerationError(RuntimeError):
@@ -149,46 +149,61 @@ def load(
         device = normalize_torch_device(device, allow_auto=True)
     except ValueError as exc:
         raise ValueError("deviceは'auto'、'cpu'、'cuda'（cuda:0も入力可）など、または'mps'から選んでください。") from exc
-    if model == "tiny-sd" and task == "image-to-image":
+
+    # Reject combinations that can never work before importing the optional
+    # stack or touching the Hugging Face cache. This avoids downloading a
+    # multi-gigabyte pipeline for an incompatible request.
+    anticipated_model = "tiny-sd" if model == "auto" and device == "cpu" else model
+    if anticipated_model == "tiny-sd" and task == "image-to-image":
         raise ValueError("Tiny-SDはtext-to-imageのみ対応しています。image-to-imageにはmodel='sdxl'を指定してください。")
-    if model == "sdxl" and device == "cpu":
+    if anticipated_model == "sdxl" and device == "cpu":
         raise GenerationError(
             "SDXLはCPU実行をサポート対象にしていません。model='tiny-sd'またはmodel='auto'を指定してください。"
         )
-    if model == "tiny-sd" and lora is not _DEFAULT_LORA and lora is not None:
+    if anticipated_model == "tiny-sd" and lora is not _DEFAULT_LORA and lora is not None:
         raise ValueError("Tiny-SDはLoRAに対応していません。lora=Noneを指定してください。")
-    if model == "tiny-sd" and (base_model is not None or base_revision is not None):
+    if anticipated_model == "tiny-sd" and (base_model is not None or base_revision is not None):
         raise ValueError("Tiny-SDではbase_modelとbase_revisionを指定できません。")
     try:
         import torch
-    except ImportError as exc:
-        raise GenerationError("画像生成にはdiffusion追加依存が必要です。pip install 'cv-data-lesson[diffusion]'を実行してください。") from exc
-    try:
-        from diffusers import AutoPipelineForImage2Image, AutoPipelineForText2Image, DiffusionPipeline
     except ImportError as exc:
         raise GenerationError("画像生成にはdiffusion追加依存が必要です。pip install 'cv-data-lesson[diffusion]'を実行してください。") from exc
 
     devices = available_devices()
     requested_device = device
     if device == "auto":
-        device, used_cpu_fallback = choose_torch_device(
+        device, _used_cpu_fallback = choose_torch_device(
             device,
             {key: value for key, value in devices.items() if key in {"cpu", "cuda", "mps"}},
         )
-        if used_cpu_fallback:
-            import warnings
-            warnings.warn(
-                "GPUが利用できないため、画像生成をTiny-SDのCPU実行へ切り替えます。"
-                "GPUを必須にする場合はdevice='cuda'を明示してください（cuda:0も入力できます）。",
-                RuntimeWarning,
-                stacklevel=2,
-            )
     if model == "auto":
         model = "tiny-sd" if device == "cpu" else "sdxl"
-    if requested_device != "auto" and not devices.get(device, False):
+    if requested_device != "auto" and not torch_device_available(device, devices):
         raise GenerationError(f"device={device!r}はこの環境で利用できません。available_devices()で確認してください。")
     if lora is _DEFAULT_LORA:
         lora = "fluent_emoji_3d" if model == "sdxl" else None
+    if model == "tiny-sd" and task == "image-to-image":
+        raise ValueError("Tiny-SDはtext-to-imageのみ対応しています。image-to-imageにはmodel='sdxl'を指定してください。")
+    if model == "sdxl" and device == "cpu":
+        raise GenerationError(
+            "SDXLはCPU実行をサポート対象にしていません。model='tiny-sd'またはmodel='auto'を指定してください。"
+        )
+    if model == "tiny-sd" and lora is not None:
+        raise ValueError("Tiny-SDはLoRAに対応していません。lora=Noneを指定してください。")
+    if model == "tiny-sd" and (base_model is not None or base_revision is not None):
+        raise ValueError("Tiny-SDではbase_modelとbase_revisionを指定できません。")
+    if requested_device == "auto" and device == "cpu":
+        import warnings
+        warnings.warn(
+            "GPUが利用できないため、画像生成をTiny-SDのCPU実行へ切り替えます。"
+            "GPUを必須にする場合はdevice='cuda'を明示してください（cuda:0も入力できます）。",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+    try:
+        from diffusers import AutoPipelineForImage2Image, AutoPipelineForText2Image, DiffusionPipeline
+    except ImportError as exc:
+        raise GenerationError("画像生成にはdiffusion追加依存が必要です。pip install 'cv-data-lesson[diffusion]'を実行してください。") from exc
     if model == "tiny-sd":
         adapter = None
     else:
