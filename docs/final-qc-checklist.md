@@ -2,7 +2,7 @@
 
 対象ブランチ：`codex/library-ocr-runtime`
 
-対象コミット：自動切替実装 `f5034d2845401198fc4b5de88b7dbf12afdc7d47`、受け入れNotebook `8a3ad64`
+対象コミット：`52aed9eb010463411e552e372c57c5489c705938`（タグ `v0.1.2`）
 
 この表は、ライブラリの修正・固定artifact・Colab実機確認・配布物検査を分けて記録する。PyPI公開、Release作成、`main`へのマージはこの表の確認だけでは実行しない。
 
@@ -10,20 +10,21 @@
 |---|---|---|---|
 | GeoSetEnnea取得 | 固定SHA-256を検証し、`datasets.get("geoset_ennea")`が完了する | 完了 | 136件を一時領域で全量検証。CPU/T4 Notebookでも取得成功 |
 | RDD2020取得 | 固定SHA-256を検証し、7,900件・16,469 bboxを検証する | 完了 | 7,900件、16,469 bboxを一時領域で全量検証。CPU/T4 Notebookでも確認 |
-| `val` / `valid` | 両方を受け付け、ライブラリの`split`と集計プロパティは`val`へ統一し、配布元表記は`source_split`へ保持する | 実装修理中 | GeoSetEnneaは`val`、RDD2020は`valid`を受け入れ、出力を`val`へ正規化 |
-| bbox | 有限値で、極小のシリアライズ丸め誤差だけを許容し、ゼロ幅・NaN・無限大・意味のある範囲外・annotation/YOLO不一致を拒否 | 実装修理中 | RDD2020全16,469 bboxの通過と異常artifactの単体テストを追加 |
+| `val` / `valid` | 両方を受け付け、ライブラリの`split`と集計プロパティは`val`へ統一し、配布元表記は`source_split`へ保持する | 実装完了 | GeoSetEnneaは`val`、RDD2020は`valid`を受け入れ、出力を`val`へ正規化 |
+| bbox | 有限値で、極小のシリアライズ丸め誤差だけを許容し、ゼロ幅・NaN・無限大・意味のある範囲外・annotation/YOLO不一致を拒否 | 実装完了 | RDD2020全16,469 bboxの通過と異常artifactの単体テストを追加。公開DataFrameでは境界内へ正規化 |
 | 日本語ラベル | 元ラベルを保持し、日本語ラベルを併記する | 完了 | Orange、FruitSeg30、Indoor Waste、Fire、Fresh/Rotten、AgriFreshNETを確認 |
 | `timm` | `vision` extraから導入できる | 完了 | `pyproject.toml`と依存関係テストで確認 |
-| device別名・自動切替 | PyTorch標準の`cuda`を第1GPUの正規名とし、`cuda:0`を入力別名として受け付け、既定`auto`はGPU優先・なければ警告付きCPU | 実装修理中 | 実装とネットワーク不要テスト完了。CPU/T4の新Notebook実行待ち |
-| ResNet | CPU/T4で分類・回帰、進捗表示、特徴再利用、`auto`切替が動作する | 部分完了 | 既存T4実行と単体テスト完了。新`auto`実モデル実行待ち |
-| DETR / SAM | CPU/T4で固定revisionの読み込みと推論が完了する | 部分完了 | 既存T4実行完了。CPUの同一固定モデル実行と`auto`実行待ち |
-| 画像生成 | GPUではSDXL、CPUではTiny-SDを使い、Tiny-SDのLoRA/image-to-image拒否が明確 | 部分完了 | 既存T4のSDXL完了。Tiny-SD CPU実生成と新`auto`Notebook実行待ち |
-| OCR | PNG/JPEG/WebP/Pillow Image、壊れた画像、日本語実画像、`auto`切替を確認する | 部分完了 | CPU Notebookで既存経路は完了。`auto`確認セルの再実行待ち |
+| device別名・自動切替 | PyTorch標準の`cuda`を第1GPUの正規名とし、`cuda:0`を入力別名として受け付け、既定`auto`はGPU優先・なければ警告付きCPU | 実装完了 | 実装、ネットワーク不要テスト、公開版への同梱を確認。CPU/T4実モデルの再実行はColabで別途確認 |
+| ResNet | CPU/T4で分類・回帰、進捗表示、特徴再利用、`auto`切替が動作する | 部分完了 | 既存T4実行と単体テスト完了。公開版Colabでの再実行待ち |
+| DETR / SAM | CPU/T4で固定revisionの読み込みと推論が完了する | 部分完了 | 既存T4実行完了。公開版ColabでのCPU/T4再実行待ち |
+| 画像生成 | GPUではSDXL、CPUではTiny-SDを使い、Tiny-SDのLoRA/image-to-image拒否が明確 | 部分完了 | 既存T4のSDXL完了。公開版ColabでTiny-SD CPU実生成を再確認する |
+| OCR | PNG/JPEG/WebP/Pillow Image、壊れた画像、日本語実画像、`auto`切替を確認する | 部分完了 | CPU Notebookで既存経路は完了。公開版OCR専用ランタイムで再確認する |
 | ネットワーク不要テスト | 指定テストが対応Pythonで成功する | 完了 | Python 3.13で92件OK、任意依存不足による18件skip |
 | Notebook静的検査 | JSON、セル依存、固定SHA、pip引用符を検査する | 完了 | `tests.test_notebook_integrity` 3件OK。`auto_device_model_acceptance_test.ipynb`を追加 |
-| wheel / sdist | `0.1.1`をbuildし、metadata検査・バイナリ混入検査・wheelインストールを完了する | 完了 | `cv_data_lesson-0.1.1-py3-none-any.whl`（77,161 bytes、SHA-256 `98792ea17f42f5c344fe34305ee3194141457ba6c52e453fe5f2499e58b89357`）とsdist（91,112 bytes、SHA-256 `e8b4a95afc1b8cf65779077281976533656d54a710acaa61527df292d085bbd2`）をtwine check・隔離wheel install・importで確認 |
-| PyPI通常導入 | `pip install cv-data-lesson`で新しい自動切替APIを取得する | 保留 | 現在PyPIの`0.1.0`は旧API。`0.1.1`公開後に再実行する |
-| PyPI / Release / main | 明示的許可後にのみ公開・マージする | 保留 | 今回は実行しない |
+| wheel / sdist | `0.1.2`をbuildし、metadata検査・バイナリ混入検査・wheelインストールを完了する | 完了 | GitHub CIのbuild検査成功。PyPI公開wheel（78,116 bytes、SHA-256 `a024dbad8f8e408d5addba6c04b0e3eb49ee7e9bc5f25c5c350172b7fc7eafb3`）とsdist（92,837 bytes、SHA-256 `c2644e687ff1d239d4b6f41d5ecf513df53116541798f66fc545a3e9145fff8e`）を確認 |
+| PyPI通常導入 | `pip install cv-data-lesson`で新しい自動切替APIを取得する | 完了 | 公開PyPIから`cv-data-lesson==0.1.2`を一時環境へ導入し、import・版・24件のカタログ・主要データセット情報を確認 |
+| PyPI / Release | 明示的許可後に公開し、公開版から再検証する | 完了 | [GitHub Release v0.1.2](https://github.com/708san/CV_data/releases/tag/v0.1.2)をPublish。Trusted Publishing run成功、PyPI `0.1.2`公開を確認 |
+| `main`へのマージ | ユーザーの明示的許可後にのみ実行する | 保留 | 開発ブランチで公開版を作成。`main`へは直接マージしていない |
 
 ## 環境上の注意
 

@@ -1,6 +1,6 @@
 # PyPI 0.1.2公開の準備
 
-PyPIには`cv-data-lesson==0.1.1`が公開されています。今回の公開候補は`0.1.2`で、split・bbox・device・モデル互換性・SAM入力形状の修正版を含めます。
+PyPIには`cv-data-lesson==0.1.2`が公開されています。split・bbox・device・モデル互換性・SAM入力形状の修正版を含みます。
 
 ## パッケージに含めるもの
 
@@ -35,4 +35,4 @@ GitHub側の`pypi` environmentを作成し、必要ならdeployment protection r
 
 `.github/workflows/publish.yml`はGitHub Releaseを`published`にした時だけ起動します。ビルドとmetadata検査を行い、Release tagが`pyproject.toml`の版と一致すること、配布物に画像・モデル重みが含まれないことを確認してから、検証済みartifactをPyPIへ送ります。手動実行やtag pushでは起動しません。
 
-この文書は`v0.1.2`のGitHub Release公開後にTrusted PublishingでPyPIへ配布し、公開後に`pip install cv-data-lesson==0.1.2`で検証する手順を記録します。
+`v0.1.2`のGitHub Release公開後、Trusted PublishingでPyPIへ配布済みです。公開版は`pip install cv-data-lesson==0.1.2`で導入し、公開受け入れNotebookから検証します。

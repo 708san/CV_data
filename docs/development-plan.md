@@ -17,7 +17,7 @@
 
 受け入れ条件：非対応のモデル組合せがモデル取得前に明確なエラーになる。SAMの点・矩形promptが固定Transformers版のprocessorで受理される。`cuda`、`cuda:0`、`cuda:1`の指定が利用者の意図どおりに保持され、`auto`は利用可能なGPUを優先する。分類の分割件数表示がDataFrameの指定条件と矛盾しない。授業Notebookは通常pip、公開受け入れNotebookは公開版固定となる。公開後、PyPIから取得した新バージョンでネットワーク不要テスト相当の基本API、データ検証、CPU/T4/OCR実測を行い、開発版のテスト結果と混同しない。
 
-進捗：仕様・計画を更新し、実装とネットワーク不要テストを完了（101件成功、任意依存不足による21件skip）。授業Notebookは通常pipへ戻し、公開受け入れNotebookは0.1.2固定へ更新した。配布物検査、GitHub Release/PyPI公開、公開版Colab検証は未完了。
+進捗：仕様・計画を更新し、実装とネットワーク不要テストを完了（101件成功、任意依存不足による21件skip）。授業Notebookは通常pipへ戻し、公開受け入れNotebookは0.1.2固定へ更新した。GitHub CIのPython 3.11〜3.13テストと配布物検査に成功し、`v0.1.2`をGitHub Releaseへ公開、Trusted PublishingでPyPIへ配布した。公開PyPIから0.1.2を一時環境へ導入し、import・版・カタログ・主要データセット情報を確認済み。CPU/T4の重い実モデル再検証は公開版Colabで別途実行する。
 
 ## 今回の作業単位：PyPI 0.1.1公開候補と通常pip導入の確認
 
