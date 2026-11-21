@@ -484,7 +484,10 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(data.split_counts(val_fraction=0.2, seed=7), {
             name: int(counts.get(name, 0)) for name in ("train", "val", "test")
         })
-        self.assertNotEqual(data.splits, data.split_counts(val_fraction=0.2, seed=7))
+        self.assertEqual(data.splits, {
+            name: int(frame["split"].value_counts().get(name, 0))
+            for name in ("train", "val", "test")
+        })
 
     def test_japanese_label_tables_keep_original_names_separate(self):
         def bundle(dataset_id):

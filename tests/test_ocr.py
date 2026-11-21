@@ -61,7 +61,7 @@ class OCRTests(unittest.TestCase):
             result = ocr.OCR(pipeline, device="cpu", language="japan").predict(image)
         self.assertEqual(result.text, "行1\n行2")
         self.assertNotEqual(pipeline.image_path, image)
-        self.assertEqual(pipeline.image_path.suffix, ".png")
+        self.assertEqual(Path(pipeline.image_path).suffix, ".png")
         self.assertEqual(len(result.lines[0].polygon), 0)
         self.assertEqual(result.to_dict()["lines"][1]["text"], "行2")
 
