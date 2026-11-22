@@ -49,7 +49,7 @@ ViFoodLabelは食品包装の文字をOCRで整理する課題候補です（600
 
 LeFood-Setは`datasets.get("lefood_set")`で食前・食後画像524組を取得できます。`to_df()`に実測重量、見た目評価、残量比とpair単位のsplitが含まれます。出典と変更を表示し、日本の給食や健康判断へ一般化しません。
 
-FruitSeg30は領域分割向けの29クラスartifactを固定Releaseで公開済みです。GitHub mainブランチのコードでは`datasets.get("fruitseg30")`で取得できます。PyPI配布版への反映はパッケージ更新時です。`data.to_df()`で画像とマスクの組を確認し、`data.to_torch_dataset()`から画像テンソルと濃淡マスクを読み込めます。マスクは元の0〜255階調を保ち、PyTorch変換時も閾値で二値化しません。
+FruitSeg30は領域分割向けの29クラスartifactを固定Releaseで公開済みです。公開版を`pip install cv-data-lesson`で導入すると`datasets.get("fruitseg30")`で取得できます。`data.to_df()`で画像とマスクの組を確認し、`data.to_torch_dataset()`から画像テンソルと濃淡マスクを読み込めます。マスクは元の0〜255階調を保ち、PyTorch変換時も閾値で二値化しません。
 
 Road Traversing Knowledgeは多クラス領域分割です。`data.classes`の13クラス（背景を含む）に対応し、`to_torch_dataset()`はクラスIDを保った`torch.long`マスクを返します。各画素のIDをクラス番号として扱い、二値マスク用の損失関数へそのまま渡さないでください。クラス8は一覧にはありますが、元の全マスクで未出現です。データは公式train/validationのみで、test splitはありません。
 

@@ -938,7 +938,7 @@ _SOURCES: dict[str, ReleaseSource] = {
         download_size_mb=112.6, audit_status="full_image_decode_exact_duplicate_and_sample_visual_review",
         audit_report="reports/orange-fruit-v2-audit.json",
         classes=("blackspotted_orange", "cankered_orange", "fresh_orange", "green_orange", "rotten_orange"),
-        class_names_ja=("黒点のあるオレンジ", "傷んだオレンジ", "新鮮なオレンジ", "緑色のオレンジ", "腐ったオレンジ"),
+        class_names_ja=("黒点のあるオレンジ", "傷んだオレンジ", "新鮮なオレンジ", "緑色のオレンジ", "傷んだオレンジ"),
         license_info={
             "name": "CC BY 4.0",
             "url": "https://creativecommons.org/licenses/by/4.0/",
@@ -1441,6 +1441,12 @@ def _effective_splits(rows: Sequence[dict[str, str]], *, val_fraction: float, se
     if not rows:
         return []
     raw_splits = [row.get("split", "") for row in rows]
+    invalid_splits = sorted(set(raw_splits) - {"train", "val", "valid", "test"})
+    if invalid_splits:
+        raise ValueError(
+            "分類splitはtrain、val、valid、testのいずれかです: "
+            + ", ".join(repr(split) for split in invalid_splits)
+        )
     has_official_validation = any(split in {"val", "valid"} for split in raw_splits)
     # 公式validationがある場合は、公式のtrain/val/testをそのまま使う。
     result = ["val" if split == "valid" else split for split in raw_splits]

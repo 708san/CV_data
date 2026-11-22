@@ -2,7 +2,7 @@
 
 画像分類・物体検出・領域分割・画像生成の演習で使うデータを、Google ColabやPythonから取得するためのライブラリです。
 
-**公開版は`cv-data-lesson==0.1.4`です。** データ本体はコードから分離し、元の出典または許諾済みartifactの固定Releaseから取得します。既存の[CV_sample_data](https://github.com/708san/CV_sample_data)は読み取り専用です。
+**公開版は`cv-data-lesson==0.1.5`です。** データ本体はコードから分離し、元の出典または許諾済みartifactの固定Releaseから取得します。既存の[CV_sample_data](https://github.com/708san/CV_sample_data)は読み取り専用です。
 
 ## まず使う
 
@@ -148,7 +148,7 @@ Recyclable Waste v0.1.1の整形済みRelease assetは公開されています�
 
 観葉植物データは元画像1,172枚を全量デコードし、完全一致重複10枚を除外しました。GPSを含むEXIF情報を取り除き、長辺512px以下にそろえた1,162枚を取得できます。7種類の画像分類や、撮影条件による予測の違いを調べられます。使い方の例として植物画像の整理や観察記録を作れますが、有毒性・食用・病気・育て方の判定はできません。
 
-FruitSeg30は全量監査後、寸法が一致しないGuavaクラスを除いた29クラス1,914組を整備し、固定Releaseを公開しました。GitHub mainブランチでは取得APIを利用できます。PyPI配布版への反映はパッケージ更新時に行います。`to_torch_dataset()`は画像と濃淡マスクを返します。
+FruitSeg30は全量監査後、寸法が一致しないGuavaクラスを除いた29クラス1,914組を整備し、固定Releaseを公開しました。公開版を`pip install cv-data-lesson`で導入すると、`datasets.get("fruitseg30")`で取得できます。`to_torch_dataset()`は画像と濃淡マスクを返します。
 
 Road Traversing Knowledgeは701組の画像・画素IDマスクを含む領域分割データです。`data.to_torch_dataset()`は各画素を0〜12の整数クラスIDとして保持し、マスクを`torch.long`の高さ×幅テンソルで返します。背景を含め13クラスの出力を使います。公式test splitはありません。ブラジルの道路画像を日本の通学路や安全性の判定に使わないでください。
 
