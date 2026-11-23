@@ -13,7 +13,7 @@
 
 受け入れ条件：8件の受け入れNotebookの固定参照が、表示保存・PyTorch Dataset変換を含む実装commitの40桁SHAへそろい、OCR専用セクションを新規ランタイムで単独実行できる。実際のimport構文を静的検査し、前回のbbox・split・配布物条件を維持する。0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
 
-進捗：前回までにbbox、split、非有限OCR値、表示保存失敗、PyTorch Datasetの`valid`、Pillow日本語フォント探索を修正し、CI run `45208690402`でPython 3.11〜3.13、wheel/sdist、Notebook検査を含む全4ジョブが成功した。第4再監査で受け入れNotebookの固定参照を最新実装へ更新し、OCR専用セクションの`ImageFont`独立importと実構文検査を追加する。修正後CI、Colab実測、PyPI公開版の再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
+進捗：前回までにbbox、split、非有限OCR値、表示保存失敗、PyTorch Datasetの`valid`、Pillow日本語フォント探索を修正した。第4再監査で受け入れNotebook8件の固定参照を`027838d1d86a5f932e37620390e6ce6f0f655a65`へ更新し、OCR専用セクションの`ImageFont`独立importと実構文検査を追加した。修正後CI run `45244084795`でPython 3.11〜3.13、wheel/sdist、Notebook検査を含む全4ジョブが成功した。Colab実測、PyPI公開版の再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
 
 ## 今回の作業単位：公開監査記録の安定化と0.1.4公開
 
