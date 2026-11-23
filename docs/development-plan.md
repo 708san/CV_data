@@ -1,20 +1,21 @@
 # CV_data 開発計画
 
-更新日：2026-11-22
+更新日：2026-11-23
 
-## 今回の作業単位：0.1.4公開後監査で見つかった不一致の修正
+## 今回の作業単位：0.1.5候補の独立監査指摘修正
 
-対象仕様：3.3、6、7。0.1.4公開後の監査で確認された`rotten_orange`の日本語ラベル、FruitSeg30の公開状態説明、開発計画の公開状態記録を修正する。分類splitの異常入力は、公開データの前段検証だけに依存しないよう内部関数にも防御と回帰テストを追加する。`val`をライブラリ内部の正規splitとする現行仕様は維持し、`valid`は入力として受理して`source_split`に元表記を残す。
+対象仕様：3.3、6、7。0.1.5候補の独立監査で確認されたdisplayの入力検証、保存時の副作用、分類splitの異常型、受け入れNotebookの未実行・古い固定参照、公開前の文書表記を修正する。`val`をライブラリ内部の正規splitとする現行仕様は維持し、`valid`は入力として受理して`source_split`に元表記を残す。
 
 順序：
-1. `orange_fruit`と関連データ説明の日本語ラベルを確定値へそろえる。
-2. README・データ説明・開発計画から、0.1.4公開後に古くなったmain/PyPI反映待ち・候補表記を修正する。
-3. `_effective_splits()`へ未知splitの明示的な拒否を追加し、公式validation保持・`valid`正規化・異常splitの回帰テストを追加する。
-4. 0.1.5へ版を更新し、ネットワーク不要テスト、配布物検査、CIを実施する。PyPI公開後に公開wheelでラベル・split・基本APIを再確認する。
+1. `orange_fruit`の重複クラスを元ラベル併記で区別できる日本語ラベルへそろえる。
+2. `display.render/show/save`の不正マスク・座標・保存順序を修正し、回帰テストを追加する。
+3. `_effective_splits()`へsplitの型検査を追加し、異常型の回帰テストを追加する。
+4. 受け入れNotebookへdisplayの描画・表示・保存セルを追加し、古いGit固定参照を候補コミットへ更新する。
+5. 公開前の版表記を候補として整理し、ネットワーク不要テスト、配布物検査、CIを実施する。PyPI公開後に公開wheelで再確認する。
 
-受け入れ条件：`rotten_orange`が公開APIで「傷んだオレンジ」になる。FruitSeg30の説明がPyPI公開版の状態と一致する。未知splitはデータ取得時または分割処理で明示的に拒否され、`val`/`valid`の公式validationは再分割されない。0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が一致する。
+受け入れ条件：同じデータセット内の`cankered_orange`と`rotten_orange`が日本語表示だけでも区別できる。displayは不正な型・座標を明示的に拒否し、失敗時に保存先を作らない。異常splitは説明付き`ValueError`になる。受け入れNotebookが候補コミットまたは通常pipを正しく参照し、displayの3 APIを実行する。0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
 
-進捗：仕様は変更せず、`rotten_orange`の日本語ラベル、FruitSeg30の公開状態説明、分類splitの異常入力防御と回帰テストを修正した。版を0.1.5へ更新し、Notebook JSON検査とネットワーク不要テスト104件（22件skip）に成功。配布物検査とCI、0.1.5公開後の公開wheel再確認を残す。
+進捗：コード・回帰テスト・Notebook・公開前文書を修正した。`cankered_orange`は「傷んだオレンジ」、同じ`orange_fruit`内の`rotten_orange`は「腐ったオレンジ」として区別した。displayの不正マスク・座標・保存順序、`None`等の分類splitを回帰テストで確認し、6冊の受け入れNotebookで`render`/`show`/`save`を実行するセルと`display` extraを追加した。Python 3.11のネットワーク不要テスト109件は成功（任意依存不足によるskip 26件）、Notebook JSON・セル依存・pip指定の静的検査も成功し、0.1.5のwheel/sdistと一時領域へのwheel導入も確認した。Pillow・NumPy未導入のためローカルの描画テストはskip、Colabの公開版実行とCIは未実施。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
 
 ## 今回の作業単位：公開監査記録の安定化と0.1.4公開
 

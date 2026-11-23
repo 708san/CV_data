@@ -54,6 +54,27 @@ class DisplayTests(unittest.TestCase):
                 mask=np.zeros((5, 5), dtype=np.bool_), prompt_type="point"
             ))
 
+    def test_string_mask_is_rejected(self):
+        mask = np.full((30, 40), "foreground", dtype="U10")
+        with self.assertRaisesRegex(display.DisplayError, "boolまたは有限な数値"):
+            display.render(self.image, SimpleNamespace(mask=mask, prompt_type="point"))
+
+    def test_non_numeric_detection_box_is_display_error(self):
+        with self.assertRaisesRegex(display.DisplayError, "検出boxは数値"):
+            display.render(self.image, [vision.Detection("bottle", 0.9, ("x", 4, 25, 24))])
+
+    def test_non_numeric_ocr_polygon_is_display_error(self):
+        line = ocr.OCRLine("text", 0.92, (("x", 4), (24, 4), (24, 15), (4, 15)))
+        with self.assertRaisesRegex(display.DisplayError, "OCR polygonは数値"):
+            display.render(self.image, ocr.OCRResult((line,), "fixture"))
+
+    def test_save_does_not_create_parent_when_render_fails(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            destination = Path(temp_dir) / "not-created" / "overlay.png"
+            with self.assertRaises(display.DisplayError):
+                display.save(self.image, destination, [vision.Detection("bottle", 0.9, ("x", 4, 25, 24))])
+            self.assertFalse(destination.parent.exists())
+
     def test_save_creates_parent_and_returns_path(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             destination = Path(temp_dir) / "nested" / "overlay.png"

@@ -57,8 +57,8 @@ def show(image: Any, result: Any = None, *, mask_alpha: int = 110):
 def save(image: Any, path: str | Path, result: Any = None, *, mask_alpha: int = 110) -> Path:
     """合成画像を指定先へ保存し、保存先Pathを返す。"""
     destination = Path(path).expanduser()
-    destination.parent.mkdir(parents=True, exist_ok=True)
     rendered = render(image, result, mask_alpha=mask_alpha)
+    destination.parent.mkdir(parents=True, exist_ok=True)
     rendered.save(destination)
     return destination
 
@@ -103,7 +103,10 @@ def _font(font_module: Any):
 
 
 def _draw_detection(draw: Any, detection: Any, font: Any, size: tuple[int, int]) -> None:
-    box = tuple(float(value) for value in detection.box)
+    try:
+        box = tuple(float(value) for value in detection.box)
+    except (TypeError, ValueError) as exc:
+        raise DisplayError("検出boxは数値の(x_min, y_min, x_max, y_max)で指定してください。") from exc
     if len(box) != 4:
         raise DisplayError("検出boxは(x_min, y_min, x_max, y_max)の4値が必要です。")
     _check_box(box, size)
@@ -113,7 +116,10 @@ def _draw_detection(draw: Any, detection: Any, font: Any, size: tuple[int, int])
 
 
 def _draw_ocr_line(draw: Any, line: Any, font: Any, size: tuple[int, int]) -> None:
-    polygon = tuple(tuple(float(value) for value in point) for point in line.polygon)
+    try:
+        polygon = tuple(tuple(float(value) for value in point) for point in line.polygon)
+    except (TypeError, ValueError) as exc:
+        raise DisplayError("OCR polygonは数値の画像座標で指定してください。") from exc
     if len(polygon) < 4 or any(len(point) != 2 for point in polygon):
         raise DisplayError("OCR polygonは画像上の(x, y)座標を4点以上指定してください。")
     for x, y in polygon:
@@ -139,13 +145,18 @@ def _draw_label(draw: Any, x: float, y: float, text: str, font: Any) -> None:
 def _draw_mask(canvas: Any, mask: Any, alpha: int, image_module: Any) -> None:
     try:
         import numpy as np
-        values = np.asarray(mask, dtype=np.bool_)
+        values = np.asarray(mask)
     except (ImportError, TypeError, ValueError) as exc:
-        raise DisplayError("マスクをNumPyのbool配列へ変換できません。") from exc
+        raise DisplayError("マスクをNumPy配列へ変換できません。") from exc
     if values.ndim != 2 or values.shape != (canvas.height, canvas.width):
         raise DisplayError(
             f"マスク形状{values.shape}が画像サイズ{(canvas.height, canvas.width)}と一致しません。"
         )
+    if values.dtype.kind not in {"b", "i", "u", "f"}:
+        raise DisplayError("マスクはboolまたは有限な数値の2次元配列で指定してください。")
+    if values.dtype.kind == "f" and not np.isfinite(values).all():
+        raise DisplayError("マスクの数値にはNaNや無限大を含められません。")
+    values = values.astype(np.bool_, copy=False)
     pixels = np.zeros((canvas.height, canvas.width, 4), dtype=np.uint8)
     pixels[values] = (40, 220, 100, alpha)
     overlay = image_module.fromarray(pixels)

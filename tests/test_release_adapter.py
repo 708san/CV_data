@@ -530,6 +530,14 @@ class ReleaseTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "分類split"):
             datasets._effective_splits(rows, val_fraction=0.2, seed=7)
 
+    def test_classification_non_string_split_is_rejected(self):
+        rows = [
+            {"image": "images/train/a.jpg", "label": "cankered_orange", "split": "train"},
+            {"image": "images/unknown/b.jpg", "label": "cankered_orange", "split": None},
+        ]
+        with self.assertRaisesRegex(ValueError, "分類split"):
+            datasets._effective_splits(rows, val_fraction=0.2, seed=7)
+
     def test_japanese_label_tables_keep_original_names_separate(self):
         def bundle(dataset_id):
             source = datasets._SOURCES[dataset_id]
@@ -541,7 +549,7 @@ class ReleaseTests(unittest.TestCase):
         orange = bundle("orange_fruit")
         self.assertEqual(orange.classes[1], "cankered_orange")
         self.assertEqual(orange.class_names_ja[1], "傷んだオレンジ")
-        self.assertEqual(orange.class_names_ja[4], "傷んだオレンジ")
+        self.assertEqual(orange.class_names_ja[4], "腐ったオレンジ")
         fire = bundle("fire_recognition_image")
         self.assertEqual(fire.class_names_ja[0], "擬似的な炎")
         fruitseg = bundle("fruitseg30")

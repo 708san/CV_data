@@ -22,8 +22,8 @@
 | ネットワーク不要テスト | 指定テストが対応Pythonで成功する | CI検証 | GitHub Actionsの対象コミットrunを証拠とする |
 | Notebook静的検査 | JSON、セル依存、固定SHA、pip引用符を検査する | 完了 | `tests.test_notebook_integrity` 3件OK。`auto_device_model_acceptance_test.ipynb`を追加 |
 | wheel / sdist | 対象版をbuildし、metadata検査・バイナリ混入検査・wheelインストールを完了する | CI検証 | GitHub Actionsの配布物検査を証拠とする |
-| PyPI通常導入 | `pip install cv-data-lesson`で公開版を取得する | 公開版実測 | 実行日時・取得版・`cvlesson.__file__`・基本APIを監査記録へ残す |
-| PyPI / Release | ReleaseとTrusted Publishingの版が一致する | 公開状態確認 | GitHub ReleaseとPyPIプロジェクトページを証拠とする |
+| PyPI通常導入 | `pip install cv-data-lesson`で公開版を取得する | 未検証 | v0.1.5候補は公開前。公開後に取得版・`cvlesson.__file__`・基本APIを監査記録へ残す |
+| PyPI / Release | ReleaseとTrusted Publishingの版が一致する | 保留 | v0.1.5候補は未公開。公開後にGitHub ReleaseとPyPIプロジェクトページを確認する |
 | `main`へのマージ | ユーザーの明示的許可後にのみ実行する | 保留 | 開発ブランチで公開版を作成。`main`へは直接マージしていない |
 
 ## 環境上の注意
