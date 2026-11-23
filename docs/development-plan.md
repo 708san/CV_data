@@ -15,7 +15,7 @@
 
 受け入れ条件：公開bboxの四辺が0〜1に収まり、splitの別名・異常型がタスク操作間で一貫する。独自生成モデルの浮動revisionを拒否し、OCR文字列に四点polygonがなければ`OCRError`になる。授業Notebookはバージョン・コミットを固定せず、受け入れNotebookだけが不変参照を使う。0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
 
-進捗：bboxの幅・高さと四辺を最終補正し、検出splitの型検証、分類・検出・領域分割の`valid`別名、OCRの`eval`集計、独自生成モデルの40桁revision検証、OCR polygon欠損エラーを実装した。授業Notebookの通常pip導入を固定しない静的検査と、画像端bboxの回帰テストを追加した。Python 3.11のネットワーク不要テスト116件は成功（任意依存不足によるskip 26件）、Notebook JSON・構文・授業用pip指定も成功。追加修正後のCI、Colab実測、固定参照Notebookの最終コミット更新、再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
+進捗：bboxの幅・高さと四辺を最終補正し、検出splitの型検証、分類・検出・領域分割の`valid`別名、OCRの`eval`集計、独自生成モデルの40桁revision検証、OCR polygon欠損エラーを実装した。授業Notebookの通常pip導入を固定しない静的検査と、画像端bboxの回帰テストを追加した。Python 3.11のネットワーク不要テスト116件は成功（任意依存不足によるskip 26件）、Notebook JSON・構文・授業用pip指定も成功した。受け入れNotebookは実装コミット`4847ef9ae414393d9b8e6850b20cbdc874e08aa0`を固定し、授業Notebookとは分離した。追加修正後のCI、Colab実測、再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
 
 ## 今回の作業単位：公開監査記録の安定化と0.1.4公開
 
