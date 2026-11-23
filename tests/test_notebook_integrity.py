@@ -12,6 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 NOTEBOOKS = ROOT / "notebooks"
+ACCEPTANCE_IMPLEMENTATION_REF = "7c84df653198b4d1faf3f91989cdc1896e390e5c"
 
 
 def _source_lines(cell: dict) -> list[str]:
@@ -116,6 +117,21 @@ class NotebookIntegrityTests(unittest.TestCase):
                     with self.subTest(notebook=path.relative_to(ROOT), cell=cell_number):
                         self.assertNotIn("CV_data.git@", stripped)
                         self.assertNotRegex(stripped, r"cv-data-lesson[^\"']*==")
+
+    def test_acceptance_notebooks_use_current_implementation_ref(self):
+        refs: dict[Path, set[str]] = {}
+        for path in sorted((NOTEBOOKS / "colab").glob("*.ipynb")):
+            notebook = json.loads(path.read_text(encoding="utf-8"))
+            found = set()
+            for cell in notebook["cells"]:
+                for line in _source_lines(cell):
+                    found.update(re.findall(r"CV_data\.git@([0-9a-f]{40})", line))
+            if found:
+                refs[path] = found
+        self.assertEqual(len(refs), 8)
+        for path, found in refs.items():
+            with self.subTest(notebook=path.relative_to(ROOT)):
+                self.assertEqual(found, {ACCEPTANCE_IMPLEMENTATION_REF})
 
 
 if __name__ == "__main__":
