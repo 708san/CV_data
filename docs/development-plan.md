@@ -17,6 +17,19 @@
 
 進捗：実装中。公開0.1.5での実測結果は、DETR表示失敗、OCR実レシートのラベル過密、OCR導入時の依存衝突として記録した。
 
+## 今回の作業単位：受け入れNotebookの実装参照を監査対象へ一致させる
+
+対象仕様：5.1、7。監査報告AUD-01で、8件のColab Notebookが表示API更新前の固定コミットを導入しながら、新しい`max_detections`・`max_ocr_lines`引数を使っていることを確認した。Notebookが検証する実装とセル内API呼び出しを一致させる。
+
+順序：
+1. `afbecc718f0bcb511d1f68b55fb8ddb774b8757a`に新表示APIが含まれていることを確認し、対象Colab Notebookの固定参照をこのコミットへ統一する。
+2. Notebook参照の回帰テストを更新し、表示APIの`render`・`show`・`save`がNotebookで使う任意キーワード引数を受け付けることも検査する。
+3. Notebook JSON・セル構文・参照SHA・ネットワーク不要テストを実行し、結果を記録する。
+
+受け入れ条件：8件すべての固定参照が表示API更新を含む同一コミットを指し、テストが参照値とAPI引数の対応を検査する。授業Notebookの通常pip導入と公開版受け入れNotebookの目的は変更しない。
+
+進捗：監査報告AUD-01を受け、8件のColab固定参照とNotebook整合性テストを`afbecc718f0bcb511d1f68b55fb8ddb774b8757a`へ統一した。`render`・`show`・`save`の3 APIがNotebookで使う`max_detections`・`max_ocr_lines`をキーワード専用引数として受け付ける検査を追加。Python 3.13で全138テスト成功（任意依存不足による35件skip）、Notebook JSON・コードセル・固定参照検査成功。Colab全セルの実行は未確認。
+
 ## 今回の作業単位：0.1.5公開版の検出結果境界修正と本格受け入れ（第6再監査）
 
 対象仕様：3.3、4.2、4.4、4.5、5.1、5.2、5.3、6、7。公開版Colabで確認された、DETRの推論枠の極小範囲外値による表示失敗を修正し、実画像の表示・保存まで通る本格受け入れを整備する。授業Notebookは通常の`pip install cv-data-lesson`を維持し、固定参照は受け入れNotebookに限定する。

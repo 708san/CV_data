@@ -4,16 +4,19 @@ from __future__ import annotations
 import ast
 import builtins
 import json
+import inspect
 import re
 import shlex
 import symtable
 import unittest
 from pathlib import Path
 
+from cvlesson import display
+
 
 ROOT = Path(__file__).resolve().parents[1]
 NOTEBOOKS = ROOT / "notebooks"
-ACCEPTANCE_IMPLEMENTATION_REF = "9a5eb12f9a428a1382d7a4335c0af5e74df1a777"
+ACCEPTANCE_IMPLEMENTATION_REF = "afbecc718f0bcb511d1f68b55fb8ddb774b8757a"
 
 
 def _source_lines(cell: dict) -> list[str]:
@@ -133,6 +136,15 @@ class NotebookIntegrityTests(unittest.TestCase):
         for path, found in refs.items():
             with self.subTest(notebook=path.relative_to(ROOT)):
                 self.assertEqual(found, {ACCEPTANCE_IMPLEMENTATION_REF})
+
+    def test_display_api_accepts_notebook_limit_keywords(self):
+        for function in (display.render, display.show, display.save):
+            with self.subTest(function=function.__name__):
+                parameters = inspect.signature(function).parameters
+                self.assertIn("max_detections", parameters)
+                self.assertIn("max_ocr_lines", parameters)
+                self.assertEqual(parameters["max_detections"].kind, inspect.Parameter.KEYWORD_ONLY)
+                self.assertEqual(parameters["max_ocr_lines"].kind, inspect.Parameter.KEYWORD_ONLY)
 
     def test_ocr_runtime_cells_import_imagefont_after_runtime_split(self):
         for name in ("lesson_runtime_acceptance_test.ipynb", "pypi_full_acceptance_test.ipynb"):
