@@ -534,6 +534,7 @@ class ReleaseTests(unittest.TestCase):
         rows = [
             {"image": "images/train/a.jpg", "label": "cankered_orange", "split": "train"},
             {"image": "images/unknown/b.jpg", "label": "cankered_orange", "split": None},
+            {"image": "images/other/c.jpg", "label": "cankered_orange", "split": []},
         ]
         with self.assertRaisesRegex(ValueError, "分類split"):
             datasets._effective_splits(rows, val_fraction=0.2, seed=7)

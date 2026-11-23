@@ -1449,7 +1449,7 @@ def _effective_splits(rows: Sequence[dict[str, str]], *, val_fraction: float, se
     if invalid_splits:
         raise ValueError(
             "分類splitはtrain、val、valid、testのいずれかです: "
-            + ", ".join(repr(split) for split in sorted(set(invalid_splits), key=repr))
+            + ", ".join(sorted({repr(split) for split in invalid_splits}))
         )
     has_official_validation = any(split in {"val", "valid"} for split in raw_splits)
     # 公式validationがある場合は、公式のtrain/val/testをそのまま使う。
