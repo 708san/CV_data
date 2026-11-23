@@ -2,6 +2,22 @@
 
 更新日：2026-11-24
 
+## 今回の作業単位：cv-data-lesson 0.1.6の公開
+
+対象仕様：5.1、5.3、6、7。監査済みコミット`afbecc718f0bcb511d1f68b55fb8ddb774b8757a`のbbox補正・OCR表示改善と、AUD-01を修正したNotebook参照を新しい安定版として配布する。利用者がバージョンを指定せず`pip install cv-data-lesson`を実行したとき、この版を取得できるようPyPIへ公開する。
+
+順序：
+1. 仕様へ、表示時の任意件数制限と従来呼び出しの互換条件を記録する。
+2. パッケージ版と公開受け入れNotebookを0.1.6へ合わせ、QC記録を公開前状態に更新する。
+3. ネットワーク不要テスト、Notebook静的検査、wheel/sdist build・metadata・禁止バイナリ検査を実行する。
+4. 変更を作業ブランチへコミット・pushし、Python 3.11〜3.13のCI成功を確認する。
+5. `v0.1.6` GitHub Releaseを公開し、Trusted Publishing workflowでPyPIへ配布する。
+6. PyPIの0.1.6と通常のバージョン指定なしインストールを確認し、公開QC記録を更新する。
+
+受け入れ条件：PyPIとGitHub Releaseが0.1.6を指し、公開workflowのbuild・publishが成功する。PyPIメタデータにwheelとsdistが存在し、`pip install cv-data-lesson`の解決版が0.1.6になる。公開後の確認結果を、Colabで未実施のCPU/T4/OCRモデル実測と混同しない。
+
+進捗：ユーザーが公開を明示承認。版更新・配布物検査・CI・PyPI/GitHub Release公開前。
+
 ## 今回の作業単位：公開受け入れで発見した検出枠・OCR表示・OCR導入不整合の修正
 
 対象仕様：4.2、4.3、5.3、5.4、6、7。公開0.1.5の実行結果で、DETRの極小範囲外bboxが共通表示APIを停止させる問題、OCRの文字ラベルが実画像上の文字や他のラベルと重なって読みにくくなる問題、Colabの既存依存とOCR extraの衝突を確認した。公開0.1.5は変更せず、修正版候補と受け入れNotebookを整合させる。

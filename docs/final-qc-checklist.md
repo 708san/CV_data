@@ -4,7 +4,11 @@
 
 対象ブランチ：`codex/library-ocr-runtime`
 
-公開タグ：`v0.1.5`（GitHub Release・PyPI公開確認済み）
+公開確認済みタグ：`v0.1.5`（履歴）
+
+## 0.1.6公開候補
+
+公開候補コミットのColab表示確認はユーザー報告で成功。`pyproject.toml`とPyPI総合受け入れNotebookを0.1.6へ更新した。以下の0.1.5行は前回公開時点の記録であり、0.1.6の公開確認を示さない。0.1.6のCI、wheel/sdist、GitHub Release、PyPI通常インストールは公開後に別途記録する。
 
 この表は、ライブラリの修正・固定artifact・CI・公開版実行・Colab実機確認を分けて記録する。実行していない項目は「未検証」とし、公開後も状態が古くならないよう、公開状態はGitHub ReleaseとPyPIプロジェクトページで確認する。
 
