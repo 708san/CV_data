@@ -15,7 +15,7 @@
 
 受け入れ条件：受け入れNotebookの固定参照が今回の実装を含む40桁SHAへそろい、OCR専用セクションを新規ランタイムで単独実行できる。`display.save()`のエンコード失敗で不要な親ディレクトリを作らず、PyTorch Dataset変換でも`valid`を受け付ける。Pillow描画で確認済みの日本語フォントを優先する。OCRの欠損・点数不一致・座標要素数不一致・非有限polygon/信頼度が`OCRError`になる。前回のbbox・split・配布物条件を維持し、0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
 
-進捗：前回までにbbox、split、非有限OCR値、配布物検査を修正し、CI run `45195265645`でPython 3.11〜3.13とwheel/sdist検査が成功した。第2再監査でOCR polygonの厳密な点数・座標数検証、受け入れNotebook8件の固定参照、固定先の自動検査、OCR試験画像の明示フォントを追加し、修正後CI run `45202562562`も全4ジョブ成功した。第3再監査で、OCR専用ランタイムの独立import、表示保存失敗、PyTorch Datasetの`valid`、Pillow日本語フォント探索を追加修正する。Colab実測、PyPI公開版の再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
+進捗：前回までにbbox、split、非有限OCR値、配布物検査を修正し、CI run `45195265645`でPython 3.11〜3.13とwheel/sdist検査が成功した。第2再監査でOCR polygonの厳密な点数・座標数検証、受け入れNotebook8件の固定参照、固定先の自動検査、OCR試験画像の明示フォントを追加し、修正後CI run `45202562562`も全4ジョブ成功した。第3再監査でOCR専用ランタイムの独立import、表示保存失敗、PyTorch Datasetの`valid`、Pillow日本語フォント探索を追加修正し、CI run `45208690402`でPython 3.11〜3.13、wheel/sdist、Notebook検査を含む全4ジョブが成功した。Colab実測、PyPI公開版の再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
 
 ## 今回の作業単位：公開監査記録の安定化と0.1.4公開
 
