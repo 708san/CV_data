@@ -23,7 +23,7 @@
 | 画像生成 | GPUではSDXL、CPUではTiny-SDを使い、Tiny-SDのLoRA/image-to-image拒否が明確 | 未検証 | 公開版のTiny-SD/SDXL実行ログがある場合だけ実測済みとする |
 | OCR | PNG/JPEG/WebP/Pillow Image、壊れた画像、日本語実画像、`auto`切替を確認する | 実装・CI検証済み、実モデル未検証 | 欠損・点数不一致・座標要素数不一致・NaN/Inf・0〜1範囲外の信頼度を`OCRError`にする回帰テストと本格Notebookの境界テストを追加。OCR専用Colabの公開版実行ログは未取得 |
 | ネットワーク不要テスト | 指定テストが対応Pythonで成功する | CI検証済み | 修正後CI [#45256638980](https://github.com/708san/CV_data/actions/runs/45256638980)でPython 3.11/3.12/3.13が全129件成功 |
-| Notebook静的検査 | JSON、セル依存、固定SHA、pip引用符を検査する | CI検証済み | 同CIで成功。8件の固定参照を`9a5eb12f9a428a1382d7a4335c0af5e74df1a777`へ統一し、OCR専用セクションの実際の`ImageFont` import構文も検査。授業Notebookは通常pipを維持 |
+| Notebook静的検査 | JSON、セル依存、固定SHA、pip引用符を検査する | CI検証済み | CI [#45261980000](https://github.com/708san/CV_data/actions/runs/45261980000)で成功。8件の固定参照を`9a5eb12f9a428a1382d7a4335c0af5e74df1a777`へ統一し、OCR専用セクションの実際の`ImageFont` import構文を検査。総合Notebookには実データ表示・bbox重ね合わせ・実画像入力・保存確認を追加。授業Notebookは通常pipを維持 |
 | wheel / sdist | 対象版をbuildし、metadata検査・バイナリ混入検査・wheelインストールを完了する | CI検証済み | 同CIの配布物検査・隔離wheel importが成功。`cvlesson.__file__`も確認 |
 | PyPI通常導入 | `pip install cv-data-lesson`で公開版を取得する | 公開確認済み、導入実測未完了 | GitHub Release [v0.1.5](https://github.com/708san/CV_data/releases/tag/v0.1.5)とPyPIの[0.1.5版API](https://pypi.org/pypi/cv-data-lesson/0.1.5/json)でwheel/sdistを確認。新規Colabでの`pip install`実測はこれから |
 | PyPI / Release | ReleaseとTrusted Publishingの版が一致する | 公開確認済み | 公開workflow [#45260067582](https://github.com/708san/CV_data/actions/runs/45260067582)のbuild/publish両ジョブ成功、PyPI 0.1.5のwheel/sdistを確認 |
