@@ -66,8 +66,9 @@ jobs:
           python -m pip install --no-deps --target /tmp/cv-data-lesson-wheel dist/*.whl
           cd /tmp
           PYTHONPATH=/tmp/cv-data-lesson-wheel python - <<'PY'
+          import cvlesson
           from cvlesson import datasets
           available = datasets.list_available()
           assert available, "the installed wheel returned an empty catalog"
-          print(f"Installed wheel import OK; {len(available)} datasets listed.")
+          print(f"Installed wheel import OK: {cvlesson.__file__}; {len(available)} datasets listed.")
           PY

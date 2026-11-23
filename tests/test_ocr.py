@@ -50,6 +50,25 @@ class OCRTests(unittest.TestCase):
         with self.assertRaisesRegex(ocr.OCRError, "polygon"):
             ocr._parse_result(backend_result)
 
+    def test_parse_rejects_nonfinite_polygon(self):
+        for coordinate in (float("nan"), float("inf"), float("-inf")):
+            backend_result = types.SimpleNamespace(json={"res": {
+                "rec_texts": ["文字"],
+                "rec_scores": [0.9],
+                "rec_polys": [[[coordinate, 1], [8, 1], [8, 8], [1, 8]]],
+            }})
+            with self.subTest(coordinate=coordinate), self.assertRaisesRegex(ocr.OCRError, "polygon"):
+                ocr._parse_result(backend_result)
+
+    def test_parse_rejects_nonfinite_confidence(self):
+        backend_result = types.SimpleNamespace(json={"res": {
+            "rec_texts": ["文字"],
+            "rec_scores": [float("nan")],
+            "rec_polys": [[[1, 1], [8, 1], [8, 8], [1, 8]]],
+        }})
+        with self.assertRaisesRegex(ocr.OCRError, "信頼度"):
+            ocr._parse_result(backend_result)
+
     @unittest.skipUnless(importlib.util.find_spec("PIL"), "Pillowが必要です")
     def test_predict_uses_local_image_and_returns_joined_text(self):
         from PIL import Image

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 from pathlib import Path
 import tempfile
 import warnings
@@ -290,6 +291,8 @@ def _parse_result(result: Any) -> list[OCRLine]:
             raise OCRError("OCRバックエンドのpolygonまたは信頼度が不正です。") from exc
         if len(polygon) != 4:
             raise OCRError("OCRバックエンドのpolygonは4点で指定してください。")
+        if not math.isfinite(score):
+            raise OCRError("OCRバックエンドの信頼度が有限値ではありません。")
         score = min(1.0, max(0.0, score))
         lines.append(OCRLine(text=text, confidence=score, polygon=polygon))
     return lines
@@ -306,6 +309,6 @@ def _as_list(value: Any) -> list[Any]:
 def _polygon(value: Any) -> tuple[tuple[float, float], ...]:
     points = _as_list(value)
     polygon = tuple((float(point[0]), float(point[1])) for point in points if len(point) >= 2)
-    if len(polygon) != 4:
+    if len(polygon) != 4 or any(not math.isfinite(coordinate) for point in polygon for coordinate in point):
         return ()
     return polygon

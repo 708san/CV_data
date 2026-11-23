@@ -11,7 +11,7 @@
 | GeoSetEnnea取得 | 固定SHA-256を検証し、`datasets.get("geoset_ennea")`が完了する | 完了 | 136件を一時領域で全量検証。CPU/T4 Notebookでも取得成功 |
 | RDD2020取得 | 固定SHA-256を検証し、7,900件・16,469 bboxを検証する | 完了 | 7,900件、16,469 bboxを一時領域で全量検証。CPU/T4 Notebookでも確認 |
 | `val` / `valid` | 両方を受け付け、ライブラリの`split`と集計プロパティは`val`へ統一し、配布元表記は`source_split`へ保持する | 実装完了 | GeoSetEnneaは`val`、RDD2020は`valid`を受け入れ、出力を`val`へ正規化 |
-| bbox | 有限値で、極小のシリアライズ丸め誤差だけを許容し、ゼロ幅・NaN・無限大・意味のある範囲外・annotation/YOLO不一致を拒否 | 実装修正済み・CI待ち | 公開DataFrameの幅・高さ・四辺を最終補正し、境界回帰テストを追加。RDD2020全量は別途Colabで確認 |
+| bbox | 有限値で、極小のシリアライズ丸め誤差だけを許容し、ゼロ幅・NaN・無限大・意味のある範囲外・annotation/YOLO不一致を拒否 | ローカル検証済み・CI待ち | 公開DataFrameの幅・高さ・四辺を最終補正し、浮動小数点の極小誤差を許容する境界回帰テストを追加。RDD2020全量は別途Colabで確認 |
 | 日本語ラベル | 元ラベルを保持し、日本語ラベルを併記する | 完了 | Orange、FruitSeg30、Indoor Waste、Fire、Fresh/Rotten、AgriFreshNETを確認 |
 | `timm` | `vision` extraから導入できる | 完了 | `pyproject.toml`と依存関係テストで確認 |
 | device別名・自動切替 | PyTorch標準の`cuda`を第1GPUの正規名とし、`cuda:0`を入力別名として受け付け、既定`auto`はGPU優先・なければ警告付きCPU | 実装完了 | 実装、ネットワーク不要テスト、公開版への同梱を確認。CPU/T4実モデルの再実行はColabで別途確認 |
@@ -19,8 +19,8 @@
 | DETR / SAM | CPU/T4で固定revisionの読み込みと推論が完了する | 未検証 | 公開版のモデル取得・推論ログがある場合だけ実測済みとする |
 | 画像生成 | GPUではSDXL、CPUではTiny-SDを使い、Tiny-SDのLoRA/image-to-image拒否が明確 | 未検証 | 公開版のTiny-SD/SDXL実行ログがある場合だけ実測済みとする |
 | OCR | PNG/JPEG/WebP/Pillow Image、壊れた画像、日本語実画像、`auto`切替を確認する | 未検証 | OCR専用環境の公開版実行ログがある場合だけ実測済みとする |
-| ネットワーク不要テスト | 指定テストが対応Pythonで成功する | CI検証済み（前回候補） | GitHub Actions #45092649975は前回候補の記録。追加修正後のCIを別記録にする |
-| Notebook静的検査 | JSON、セル依存、固定SHA、pip引用符を検査する | ローカル検証済み・CI待ち | 授業Notebookは通常pip、受け入れNotebookだけ固定参照とする運用を検査する |
+| ネットワーク不要テスト | 指定テストが対応Pythonで成功する | ローカル検証済み・CI待ち | Python 3.11で119件成功、任意依存不足による27件skip。GitHub Actions #45092649975は前回候補の記録で、追加修正後のCIを別記録にする |
+| Notebook静的検査 | JSON、セル依存、固定SHA、pip引用符を検査する | ローカル検証済み・CI待ち | JSON・セル依存・授業用pip指定を確認。授業Notebookは通常pip、受け入れNotebookだけ固定参照とする運用を検査する |
 | wheel / sdist | 対象版をbuildし、metadata検査・バイナリ混入検査・wheelインストールを完了する | CI検証 | GitHub Actionsの配布物検査を証拠とする |
 | PyPI通常導入 | `pip install cv-data-lesson`で公開版を取得する | 未検証 | v0.1.5候補は公開前。公開後に取得版・`cvlesson.__file__`・基本APIを監査記録へ残す |
 | PyPI / Release | ReleaseとTrusted Publishingの版が一致する | 保留 | v0.1.5候補は未公開。公開後にGitHub ReleaseとPyPIプロジェクトページを確認する |

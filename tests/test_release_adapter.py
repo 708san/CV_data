@@ -143,16 +143,16 @@ def make_indoor_plant_zip(case="indoor_plant_varieties") -> bytes:
     return output.getvalue()
 
 
-def make_segmentation_zip(case="fruitseg30", *, omit_mask=False) -> bytes:
-    image = "images/train/Avocado/1.jpg"
-    mask = "masks/train/Avocado/1_mask.png"
-    row = {"image": image, "mask": mask, "class_name": "Avocado", "class_id": 0, "split": "train"}
+def make_segmentation_zip(case="fruitseg30", *, omit_mask=False, split="train") -> bytes:
+    image = f"images/{split}/Avocado/1.jpg"
+    mask = f"masks/{split}/Avocado/1_mask.png"
+    row = {"image": image, "mask": mask, "class_name": "Avocado", "class_id": 0, "split": split}
     manifest = {"dataset_id": case, "artifact_version": "0.1.0", "image_count": 1,
                 "classes": ["Avocado"]}
     files = {
         f"{case}/manifest.json": json.dumps(manifest),
         f"{case}/labels.csv": "image,mask,class_name,class_id,split\n" +
-        f"{image},{mask},Avocado,0,train\n",
+        f"{image},{mask},Avocado,0,{split}\n",
         f"{case}/metadata.jsonl": json.dumps(row) + "\n",
         f"{case}/README.md": "test",
         f"{case}/LICENSE.md": "CC BY 4.0 attribution",
@@ -239,11 +239,30 @@ class ReleaseTests(unittest.TestCase):
             frame = data.to_df()
             self.assertEqual(data.task, "segmentation")
             self.assertEqual(frame.loc[0, "label_ja"], "アボカド")
+            self.assertEqual(frame.loc[0, "split"], "train")
+            self.assertEqual(frame.loc[0, "source_split"], "train")
             self.assertTrue(Path(frame.loc[0, "mask_path"]).is_file())
             self.assertEqual(data.splits, {"train": 1, "val": 0, "test": 0})
             self.assertEqual(data.quality_summary()["usable_images"], 1)
             cached = datasets.get("fruitseg30", cache_dir=self.cache, allow_download=False)
             self.assertEqual(cached.root, data.root)
+
+    @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
+    def test_segmentation_valid_split_is_normalized_and_raw_is_kept(self):
+        payload = make_segmentation_zip(split="valid")
+        source = replace(
+            datasets._SOURCES["fruitseg30"], sha256=hashlib.sha256(payload).hexdigest(),
+            archive_size=len(payload), image_count=1, published=True,
+            classes=("Avocado",), class_names_ja=("アボカド",),
+        )
+        with patch.dict(datasets._SOURCES, {"fruitseg30": source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            data = datasets.get("fruitseg30", cache_dir=self.cache)
+            frame = data.to_df()
+            self.assertEqual(frame.loc[0, "split"], "val")
+            self.assertEqual(frame.loc[0, "source_split"], "valid")
+            self.assertEqual(data.splits, {"train": 0, "val": 1, "test": 0})
 
     def test_segmentation_missing_mask_is_rejected(self):
         payload = make_segmentation_zip(omit_mask=True)
@@ -445,9 +464,11 @@ class ReleaseTests(unittest.TestCase):
             self.assertEqual(frame.loc[0, "split"], "val")
             self.assertEqual(frame.loc[0, "source_split"], "val")
             box = frame.loc[0, "boxes"][0]
-            self.assertEqual(box["x_center"], 0.9)
-            self.assertLessEqual(max(box[key] for key in ("x_center", "y_center", "width", "height")), 1.0)
-            self.assertGreaterEqual(min(box[key] for key in ("x_center", "y_center", "width", "height")), 0.0)
+            self.assertAlmostEqual(box["x_center"], 0.9, places=9)
+            self.assertGreaterEqual(box["x_center"] - box["width"] / 2, 0.0)
+            self.assertLessEqual(box["x_center"] + box["width"] / 2, 1.0)
+            self.assertGreaterEqual(box["y_center"] - box["height"] / 2, 0.0)
+            self.assertLessEqual(box["y_center"] + box["height"] / 2, 1.0)
             self.assertEqual(data.splits, {"train": 0, "val": 1, "test": 0})
 
     @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
@@ -635,6 +656,19 @@ class ReleaseTests(unittest.TestCase):
     def test_detection_split_rejects_non_string_values(self):
         with self.assertRaisesRegex(ValueError, "検出split"):
             datasets._canonical_detection_split(["train"])
+
+    def test_detection_artifact_split_list_is_rejected_as_dataset_error(self):
+        payload = make_detection_zip(split=["train"])
+        key = "bangladeshi_ewaste_image"
+        source = replace(
+            datasets._SOURCES[key], sha256=hashlib.sha256(payload).hexdigest(),
+            archive_size=len(payload), image_count=1, published=True,
+        )
+        with patch.dict(datasets._SOURCES, {key: source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ):
+            with self.assertRaisesRegex(datasets.DatasetError, "split"):
+                datasets.get(key, cache_dir=self.cache)
 
     def test_rdd2020_rootless_archive_uses_dataset_specific_limits(self):
         payload = make_detection_zip(case="rdd2020_japan", root_folder=False)

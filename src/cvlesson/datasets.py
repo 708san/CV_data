@@ -277,7 +277,7 @@ class DatasetBundle:
         if self.kind == "segmentation":
             records = self._segmentation_records()
             return pd.DataFrame(records, columns=[
-                "image_path", "mask_path", "label", "label_ja", "label_id", "split", "sample_id",
+                "image_path", "mask_path", "label", "label_ja", "label_id", "split", "source_split", "sample_id",
             ])
         if self.kind == "regression":
             records = []
@@ -376,7 +376,8 @@ class DatasetBundle:
                 "label": label,
                 "label_ja": names_ja.get(label, label),
                 "label_id": int(row["class_id"]),
-                "split": row["split"],
+                "split": _canonical_public_split(row["split"], kind="領域分割"),
+                "source_split": row["split"],
                 "sample_id": _sample_id(image),
             })
         return records
@@ -409,7 +410,10 @@ class DatasetBundle:
                 "test": int(counts.get("test", 0)),
             }
         if self.kind == "segmentation":
-            counts = Counter(row["split"] for row in _read_rows(self.labels_csv))
+            counts = Counter(
+                _canonical_public_split(row["split"], kind="領域分割")
+                for row in _read_rows(self.labels_csv)
+            )
             return {name: int(counts.get(name, 0)) for name in ("train", "val", "test")}
         if self.kind == "ocr":
             counts = Counter(row["split"] for row in _read_rows(self.labels_csv))
@@ -1940,11 +1944,13 @@ def _validate_detection_case(root: Path, src: ReleaseSource, manifest: dict[str,
         image = record.get("file_name")
         label_file = record.get("label_file")
         split = record.get("split")
+        if not isinstance(split, str) or split not in {"train", "val", "valid", "test"}:
+            raise DatasetError(f"物体検出artifactのsplitが不正です: {split!r}")
         parts = PurePosixPath(image).parts if isinstance(image, str) else ()
         label_parts = PurePosixPath(label_file).parts if isinstance(label_file, str) else ()
         if (not isinstance(image, str) or not isinstance(label_file, str)
                 or len(parts) != 3 or parts[0] != "images" or any(part in {"", ".", ".."} for part in parts)
-                or "\\" in image or "\x00" in image or split not in {"train", "val", "valid", "test"}
+                or "\\" in image or "\x00" in image
                 or parts[1] != split or PurePosixPath(image).suffix.lower() not in {".jpg", ".jpeg", ".png"}
                 or len(label_parts) != 3 or label_parts[:2] != ("labels", split)
                 or any(part in {"", ".", ".."} for part in label_parts)
@@ -2245,7 +2251,7 @@ def _validate_segmentation_case(root: Path, src: ReleaseSource) -> dict[str, Any
                 and row.get("class_id") == str(class_to_id.get(cls))
             )
         if ("\\" in image or "\\" in mask or image_parts[:2] != ("images", split)
-                or mask_parts[:2] != ("masks", split) or split not in {"train", "val", "test"}
+                or mask_parts[:2] != ("masks", split) or split not in {"train", "val", "valid", "test"}
                 or any(part in {"", ".", ".."} for part in (*image_parts, *mask_parts))
                 or not valid_layout
                 or PurePosixPath(image).suffix.lower() not in ({".jpg", ".jpeg", ".png"} if multiclass else {".jpg", ".jpeg"})
