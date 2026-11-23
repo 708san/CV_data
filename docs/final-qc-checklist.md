@@ -17,7 +17,7 @@
 | 日本語ラベル | 元ラベルを保持し、日本語ラベルを併記する | 完了 | Orange、FruitSeg30、Indoor Waste、Fire、Fresh/Rotten、AgriFreshNETを確認 |
 | `timm` | `vision` extraから導入できる | 完了 | `pyproject.toml`と依存関係テストで確認 |
 | device別名・自動切替 | PyTorch標準の`cuda`を第1GPUの正規名とし、`cuda:0`を入力別名として受け付け、既定`auto`はGPU優先・なければ警告付きCPU | 実装完了 | 実装、ネットワーク不要テスト、公開版への同梱を確認。CPU/T4実モデルの再実行はColabで別途確認 |
-| 表示・保存 | 検出・OCR・領域分割を描画し、保存失敗時に不要な親ディレクトリを残さない | CI検証済み | `display` extraの日本語フォント探索、未知拡張子の保存失敗、入力非破壊の回帰テストを追加。修正後CI run [#45244084795](https://github.com/708san/CV_data/actions/runs/45244084795)で成功 |
+| 表示・保存 | 検出・OCR・領域分割を描画し、保存失敗時に不要な親ディレクトリを残さない | CI検証済み、実画像未検証 | `display` extraの日本語フォント探索、未知拡張子の保存失敗、入力非破壊の回帰テストを追加。総合Notebookに実RDD画像のbbox、DETR枠、SAMマスク、OCRポリゴンの単独・合成表示と保存を追加し、CI [#45262486860](https://github.com/708san/CV_data/actions/runs/45262486860)で静的検査成功。Colab実画像の表示結果は未取得 |
 | ResNet | CPU/T4で分類・回帰、進捗表示、特徴再利用、`auto`切替が動作する | 未検証 | 公開版のCPU/T4実モデル実行ログがある場合だけ実測済みとする |
 | DETR / SAM | CPU/T4で固定revisionの読み込みと推論が完了する | 未検証 | 公開版のモデル取得・推論ログがある場合だけ実測済みとする |
 | 画像生成 | GPUではSDXL、CPUではTiny-SDを使い、Tiny-SDのLoRA/image-to-image拒否が明確 | 未検証 | 公開版のTiny-SD/SDXL実行ログがある場合だけ実測済みとする |
