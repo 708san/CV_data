@@ -4,7 +4,7 @@
 
 対象ブランチ：`codex/library-ocr-runtime`
 
-公開タグ：`v0.1.5`（タグ作成済み、Release/PyPI未公開）
+公開タグ：`v0.1.5`（GitHub Release・PyPI公開確認済み）
 
 この表は、ライブラリの修正・固定artifact・CI・公開版実行・Colab実機確認を分けて記録する。実行していない項目は「未検証」とし、公開後も状態が古くならないよう、公開状態はGitHub ReleaseとPyPIプロジェクトページで確認する。
 
@@ -25,8 +25,8 @@
 | ネットワーク不要テスト | 指定テストが対応Pythonで成功する | CI検証済み | 修正後CI [#45256638980](https://github.com/708san/CV_data/actions/runs/45256638980)でPython 3.11/3.12/3.13が全129件成功 |
 | Notebook静的検査 | JSON、セル依存、固定SHA、pip引用符を検査する | CI検証済み | 同CIで成功。8件の固定参照を`9a5eb12f9a428a1382d7a4335c0af5e74df1a777`へ統一し、OCR専用セクションの実際の`ImageFont` import構文も検査。授業Notebookは通常pipを維持 |
 | wheel / sdist | 対象版をbuildし、metadata検査・バイナリ混入検査・wheelインストールを完了する | CI検証済み | 同CIの配布物検査・隔離wheel importが成功。`cvlesson.__file__`も確認 |
-| PyPI通常導入 | `pip install cv-data-lesson`で公開版を取得する | 未検証 | v0.1.5候補は公開前。公開後に取得版・`cvlesson.__file__`・基本APIを監査記録へ残す |
-| PyPI / Release | ReleaseとTrusted Publishingの版が一致する | 保留 | v0.1.5候補は未公開。公開後にGitHub ReleaseとPyPIプロジェクトページを確認する |
+| PyPI通常導入 | `pip install cv-data-lesson`で公開版を取得する | 公開確認済み、導入実測未完了 | GitHub Release [v0.1.5](https://github.com/708san/CV_data/releases/tag/v0.1.5)とPyPIの[0.1.5版API](https://pypi.org/pypi/cv-data-lesson/0.1.5/json)でwheel/sdistを確認。新規Colabでの`pip install`実測はこれから |
+| PyPI / Release | ReleaseとTrusted Publishingの版が一致する | 公開確認済み | 公開workflow [#45260067582](https://github.com/708san/CV_data/actions/runs/45260067582)のbuild/publish両ジョブ成功、PyPI 0.1.5のwheel/sdistを確認 |
 | `main`へのマージ | ユーザーの明示的許可後にのみ実行する | 保留 | 開発ブランチで公開版を作成。`main`へは直接マージしていない |
 
 ## 環境上の注意
