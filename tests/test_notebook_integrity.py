@@ -1,6 +1,7 @@
 """Catch common notebook editing errors without requiring Jupyter packages."""
 from __future__ import annotations
 
+import ast
 import builtins
 import json
 import re
@@ -12,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 NOTEBOOKS = ROOT / "notebooks"
-ACCEPTANCE_IMPLEMENTATION_REF = "7c84df653198b4d1faf3f91989cdc1896e390e5c"
+ACCEPTANCE_IMPLEMENTATION_REF = "027838d1d86a5f932e37620390e6ce6f0f655a65"
 
 
 def _source_lines(cell: dict) -> list[str]:
@@ -137,20 +138,40 @@ class NotebookIntegrityTests(unittest.TestCase):
         for name in ("lesson_runtime_acceptance_test.ipynb", "pypi_full_acceptance_test.ipynb"):
             path = NOTEBOOKS / "colab" / name
             notebook = json.loads(path.read_text(encoding="utf-8"))
-            cells = [_source_lines(cell) for cell in notebook["cells"]]
+            cells = [
+                (cell.get("cell_type"), _source_lines(cell))
+                for cell in notebook["cells"]
+            ]
             install_index = next(
-                index for index, lines in enumerate(cells)
-                if any("cv-data-lesson[ocr" in line for line in lines)
+                index
+                for index, (cell_type, lines) in enumerate(cells)
+                if cell_type == "code"
+                and any("cv-data-lesson[ocr" in line for line in lines)
             )
             image_index = next(
-                index for index, lines in enumerate(cells[install_index + 1:], install_index + 1)
-                if any("ocr_image = Image.new" in line for line in lines)
+                index
+                for index, (cell_type, lines) in enumerate(
+                    cells[install_index + 1:], install_index + 1
+                )
+                if cell_type == "code"
+                and any("ocr_image = Image.new" in line for line in lines)
             )
-            imagefont_imported = any(
-                "ImageFont" in line
-                for lines in cells[install_index:image_index + 1]
-                for line in lines
-            )
+            imagefont_imported = False
+            for cell_type, lines in cells[install_index:image_index + 1]:
+                if cell_type != "code":
+                    continue
+                source = _python_source(lines)
+                if not source.strip():
+                    continue
+                tree = ast.parse(source)
+                if any(
+                    isinstance(node, ast.ImportFrom)
+                    and node.module == "PIL"
+                    and any(alias.name == "ImageFont" for alias in node.names)
+                    for node in ast.walk(tree)
+                ):
+                    imagefont_imported = True
+                    break
             with self.subTest(notebook=path.relative_to(ROOT)):
                 self.assertTrue(imagefont_imported, "OCR専用セクションにImageFontのimportがありません")
 
