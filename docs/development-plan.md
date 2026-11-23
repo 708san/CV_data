@@ -16,7 +16,7 @@
 
 受け入れ条件：PyPIとGitHub Releaseが0.1.6を指し、公開workflowのbuild・publishが成功する。PyPIメタデータにwheelとsdistが存在し、`pip install cv-data-lesson`の解決版が0.1.6になる。公開後の確認結果を、Colabで未実施のCPU/T4/OCRモデル実測と混同しない。
 
-進捗：ユーザーが公開を明示承認。版更新・配布物検査・CI・PyPI/GitHub Release公開前。
+進捗：完了。`daa77d73e1a72b201595471a1d9b03be784c03e0`で版更新し、CI run [#45290458222](https://github.com/708san/CV_data/actions/runs/45290458222)が成功。GitHub Release [v0.1.6](https://github.com/708san/CV_data/releases/tag/v0.1.6)とPyPI Trusted Publishing run [#45290816291](https://github.com/708san/CV_data/actions/runs/45290816291)が成功し、wheel/sdistを公開。PyPI 0.1.6 JSONで最新版と両配布物を確認。Colabでの新規`pip install`実測は未実施。
 
 ## 今回の作業単位：公開受け入れで発見した検出枠・OCR表示・OCR導入不整合の修正
 

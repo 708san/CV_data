@@ -4,11 +4,11 @@
 
 対象ブランチ：`codex/library-ocr-runtime`
 
-公開確認済みタグ：`v0.1.5`（履歴）
+公開確認済みタグ：`v0.1.6`
 
-## 0.1.6公開候補
+## 0.1.6公開記録
 
-公開候補コミットのColab表示確認はユーザー報告で成功。`pyproject.toml`とPyPI総合受け入れNotebookを0.1.6へ更新した。以下の0.1.5行は前回公開時点の記録であり、0.1.6の公開確認を示さない。0.1.6のCI、wheel/sdist、GitHub Release、PyPI通常インストールは公開後に別途記録する。
+Colabでの表示確認はユーザー報告で成功。リリースコミット`daa77d73e1a72b201595471a1d9b03be784c03e0`のCI [#45290458222](https://github.com/708san/CV_data/actions/runs/45290458222)は成功。GitHub Release [v0.1.6](https://github.com/708san/CV_data/releases/tag/v0.1.6)とPyPI公開workflow [#45290816291](https://github.com/708san/CV_data/actions/runs/45290816291)のbuild/publishは成功し、PyPIは最新版`0.1.6`とwheel/sdistを返すことを確認した。Colabでの新規ランタイムによる`pip install cv-data-lesson`とCPU/T4モデル実測は未実施。以下の0.1.5行は前回版の記録であり、0.1.6固有の動作実測を示さない。
 
 この表は、ライブラリの修正・固定artifact・CI・公開版実行・Colab実機確認を分けて記録する。実行していない項目は「未検証」とし、公開後も状態が古くならないよう、公開状態はGitHub ReleaseとPyPIプロジェクトページで確認する。
 
