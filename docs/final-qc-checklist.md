@@ -17,12 +17,13 @@
 | 日本語ラベル | 元ラベルを保持し、日本語ラベルを併記する | 完了 | Orange、FruitSeg30、Indoor Waste、Fire、Fresh/Rotten、AgriFreshNETを確認 |
 | `timm` | `vision` extraから導入できる | 完了 | `pyproject.toml`と依存関係テストで確認 |
 | device別名・自動切替 | PyTorch標準の`cuda`を第1GPUの正規名とし、`cuda:0`を入力別名として受け付け、既定`auto`はGPU優先・なければ警告付きCPU | 実装完了 | 実装、ネットワーク不要テスト、公開版への同梱を確認。CPU/T4実モデルの再実行はColabで別途確認 |
+| 表示・保存 | 検出・OCR・領域分割を描画し、保存失敗時に不要な親ディレクトリを残さない | 実装修正済み・CI待ち | `display` extraの日本語フォント探索、未知拡張子の保存失敗、入力非破壊の回帰テストを追加 |
 | ResNet | CPU/T4で分類・回帰、進捗表示、特徴再利用、`auto`切替が動作する | 未検証 | 公開版のCPU/T4実モデル実行ログがある場合だけ実測済みとする |
 | DETR / SAM | CPU/T4で固定revisionの読み込みと推論が完了する | 未検証 | 公開版のモデル取得・推論ログがある場合だけ実測済みとする |
 | 画像生成 | GPUではSDXL、CPUではTiny-SDを使い、Tiny-SDのLoRA/image-to-image拒否が明確 | 未検証 | 公開版のTiny-SD/SDXL実行ログがある場合だけ実測済みとする |
 | OCR | PNG/JPEG/WebP/Pillow Image、壊れた画像、日本語実画像、`auto`切替を確認する | 実装・CI検証済み、実モデル未検証 | 欠損・点数不一致・座標要素数不一致・NaN/Infを`OCRError`にする回帰テストを追加。OCR専用Colabの公開版実行ログは未取得 |
-| ネットワーク不要テスト | 指定テストが対応Pythonで成功する | CI検証済み | 修正後CI run [#45202562562](https://github.com/708san/CV_data/actions/runs/45202562562)でPython 3.11/3.12/3.13が全120件成功 |
-| Notebook静的検査 | JSON、セル依存、固定SHA、pip引用符を検査する | CI検証済み | 同CIで成功。授業Notebookは通常pip、受け入れNotebook8件は実装コミット`7c84df653198b4d1faf3f91989cdc1896e390e5c`を固定し、検査で一致を確認 |
+| ネットワーク不要テスト | 指定テストが対応Pythonで成功する | CI検証済み（前回）・再実行待ち | 修正後CI run [#45202562562](https://github.com/708san/CV_data/actions/runs/45202562562)でPython 3.11/3.12/3.13が全122件成功。第3再監査修正後のCIを別記録にする |
+| Notebook静的検査 | JSON、セル依存、固定SHA、pip引用符を検査する | CI検証済み（前回）・再実行待ち | 同CIで8件の固定参照検査まで成功。今回、OCR専用セクションの`ImageFont`独立import検査を追加。授業Notebookは通常pipを維持 |
 | wheel / sdist | 対象版をbuildし、metadata検査・バイナリ混入検査・wheelインストールを完了する | CI検証済み | 同CIの配布物検査・隔離wheel importが成功。`cvlesson.__file__`も確認 |
 | PyPI通常導入 | `pip install cv-data-lesson`で公開版を取得する | 未検証 | v0.1.5候補は公開前。公開後に取得版・`cvlesson.__file__`・基本APIを監査記録へ残す |
 | PyPI / Release | ReleaseとTrusted Publishingの版が一致する | 保留 | v0.1.5候補は未公開。公開後にGitHub ReleaseとPyPIプロジェクトページを確認する |
@@ -30,6 +31,6 @@
 
 ## 環境上の注意
 
-- OCR専用Colabでは、Colab既存のLangGraph・Requestsと依存関係警告が出る場合がある。OCR推論は完了済みであり、他のLangGraph機能との同居を保証するものではない。
+- OCR専用Colabでは、Colab既存のLangGraph・Requestsと依存関係警告が出る場合がある。過去のOCR実行記録があっても、0.1.5候補の公開版実モデル実測とは分けて記録し、今回候補のOCR推論は未検証として扱う。他のLangGraph機能との同居も保証しない。
 - Hugging Face未認証警告は、公開モデルの取得失敗を示すものではない。レート制限を避ける場合だけ`HF_TOKEN`を設定する。
 - `ccache`、Transformers、Diffusersの`FutureWarning`は今回のライブラリAPIの失敗ではない。

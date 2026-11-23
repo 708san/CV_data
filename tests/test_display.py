@@ -3,8 +3,11 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+import sys
+import types
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 try:
     import numpy as np
@@ -75,6 +78,13 @@ class DisplayTests(unittest.TestCase):
                 display.save(self.image, destination, [vision.Detection("bottle", 0.9, ("x", 4, 25, 24))])
             self.assertFalse(destination.parent.exists())
 
+    def test_save_does_not_create_parent_when_encoding_fails(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            destination = Path(temp_dir) / "not-created" / "overlay.invalidsuffix"
+            with self.assertRaises(ValueError):
+                display.save(self.image, destination)
+            self.assertFalse(destination.parent.exists())
+
     def test_save_creates_parent_and_returns_path(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             destination = Path(temp_dir) / "nested" / "overlay.png"
@@ -83,6 +93,18 @@ class DisplayTests(unittest.TestCase):
             self.assertTrue(destination.is_file())
             with Image.open(destination) as saved:
                 self.assertEqual(saved.size, self.image.size)
+
+    def test_font_prefers_japanize_matplotlib_font(self):
+        fake_japanize = types.ModuleType("japanize_matplotlib")
+        fake_japanize.get_font_ttf_path = lambda: "/fonts/japanese.ttf"
+        class FontModule:
+            @staticmethod
+            def truetype(path, size):
+                if path == "/fonts/japanese.ttf":
+                    return (path, size)
+                raise OSError(path)
+        with patch.dict(sys.modules, {"japanize_matplotlib": fake_japanize}):
+            self.assertEqual(display._font(FontModule), ("/fonts/japanese.ttf", 14))
 
 
 if __name__ == "__main__":

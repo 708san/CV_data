@@ -133,6 +133,27 @@ class NotebookIntegrityTests(unittest.TestCase):
             with self.subTest(notebook=path.relative_to(ROOT)):
                 self.assertEqual(found, {ACCEPTANCE_IMPLEMENTATION_REF})
 
+    def test_ocr_runtime_cells_import_imagefont_after_runtime_split(self):
+        for name in ("lesson_runtime_acceptance_test.ipynb", "pypi_full_acceptance_test.ipynb"):
+            path = NOTEBOOKS / "colab" / name
+            notebook = json.loads(path.read_text(encoding="utf-8"))
+            cells = [_source_lines(cell) for cell in notebook["cells"]]
+            install_index = next(
+                index for index, lines in enumerate(cells)
+                if any("cv-data-lesson[ocr" in line for line in lines)
+            )
+            image_index = next(
+                index for index, lines in enumerate(cells[install_index + 1:], install_index + 1)
+                if any("ocr_image = Image.new" in line for line in lines)
+            )
+            imagefont_imported = any(
+                "ImageFont" in line
+                for lines in cells[install_index:image_index + 1]
+                for line in lines
+            )
+            with self.subTest(notebook=path.relative_to(ROOT)):
+                self.assertTrue(imagefont_imported, "OCR専用セクションにImageFontのimportがありません")
+
 
 if __name__ == "__main__":
     unittest.main()

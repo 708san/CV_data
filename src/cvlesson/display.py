@@ -1,6 +1,7 @@
 """画像とCV推論結果を重ねて表示・保存する補助機能。"""
 from __future__ import annotations
 
+from io import BytesIO
 from pathlib import Path
 from typing import Any
 
@@ -58,8 +59,14 @@ def save(image: Any, path: str | Path, result: Any = None, *, mask_alpha: int = 
     """合成画像を指定先へ保存し、保存先Pathを返す。"""
     destination = Path(path).expanduser()
     rendered = render(image, result, mask_alpha=mask_alpha)
+    image_module, _, _ = _pillow()
+    image_format = image_module.registered_extensions().get(destination.suffix.lower())
+    if image_format is None:
+        raise ValueError(f"保存先の拡張子に対応する画像形式がありません: {destination.suffix or '(なし)'}")
+    encoded = BytesIO()
+    rendered.save(encoded, format=image_format)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    rendered.save(destination)
+    destination.write_bytes(encoded.getvalue())
     return destination
 
 
@@ -86,14 +93,22 @@ def _open_rgb(image: Any, image_module: Any):
 
 
 def _font(font_module: Any):
-    candidates = (
+    candidates = []
+    try:
+        import japanize_matplotlib
+        japanese_font = japanize_matplotlib.get_font_ttf_path()
+        if japanese_font:
+            candidates.append(str(japanese_font))
+    except (ImportError, AttributeError, OSError):
+        pass
+    candidates.extend((
         "/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc",
         "/System/Library/Fonts/ヒラギノ丸ゴ ProN W4.ttc",
         "C:/Windows/Fonts/meiryo.ttc",
         "C:/Windows/Fonts/YuGothM.ttc",
         "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
         "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-    )
+    ))
     for candidate in candidates:
         try:
             return font_module.truetype(candidate, 14)

@@ -8,7 +8,9 @@ import importlib.util
 import io
 import json
 import struct
+import sys
 import tempfile
+import types
 import unittest
 import zipfile
 from dataclasses import replace
@@ -263,6 +265,42 @@ class ReleaseTests(unittest.TestCase):
             self.assertEqual(frame.loc[0, "split"], "val")
             self.assertEqual(frame.loc[0, "source_split"], "valid")
             self.assertEqual(data.splits, {"train": 0, "val": 1, "test": 0})
+
+    def test_torch_dataset_accepts_valid_alias_for_segmentation(self):
+        payload = make_segmentation_zip(split="valid")
+        source = replace(
+            datasets._SOURCES["fruitseg30"], sha256=hashlib.sha256(payload).hexdigest(),
+            archive_size=len(payload), image_count=1, published=True,
+            classes=("Avocado",), class_names_ja=("アボカド",),
+        )
+        with patch.dict(datasets._SOURCES, {"fruitseg30": source}), patch.object(
+            datasets, "_download", side_effect=lambda url, dst, *, max_bytes: dst.write_bytes(payload)
+        ), patch.dict(sys.modules, {"torch": types.ModuleType("torch")}), patch.object(
+            datasets, "_TorchSegmentationDataset", side_effect=lambda records, **kwargs: records
+        ):
+            data = datasets.get("fruitseg30", cache_dir=self.cache)
+            records = data.to_torch_dataset(split="valid")
+            self.assertEqual(len(records), 1)
+            self.assertEqual(records[0]["split"], "val")
+
+    def test_torch_dataset_accepts_valid_alias_for_classification(self):
+        image = self.cache / "images" / "valid" / "healthy" / "sample.jpg"
+        image.parent.mkdir(parents=True)
+        image.write_bytes(b"image")
+        (self.cache / "labels.csv").write_text(
+            "image,label,split\nimages/valid/healthy/sample.jpg,healthy,valid\n",
+            encoding="utf-8",
+        )
+        data = datasets.DatasetBundle(
+            id="tomato_leaves", kind="classification", root=self.cache,
+            manifest={"classes": ["healthy"]}, source_url="", version="", rights_note="",
+        )
+        with patch.dict(sys.modules, {"torch": types.ModuleType("torch")}), patch.object(
+            datasets, "_TorchClassificationDataset", side_effect=lambda records, **kwargs: records
+        ):
+            records = data.to_torch_dataset(split="valid")
+            self.assertEqual(len(records), 1)
+            self.assertEqual(records[0]["split"], "val")
 
     def test_segmentation_missing_mask_is_rejected(self):
         payload = make_segmentation_zip(omit_mask=True)

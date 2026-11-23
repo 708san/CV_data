@@ -2,18 +2,20 @@
 
 更新日：2026-11-24
 
-## 今回の作業単位：0.1.5候補の独立監査追加指摘修正（第2再監査）
+## 今回の作業単位：0.1.5候補の独立監査追加指摘修正（第3再監査）
 
-対象仕様：3.3、4.2、4.4、4.5、5.1、5.2、6、7。第2再監査で確認された受け入れNotebookの古い固定コミットと、短い点を除外して受理するOCR polygon検証を修正する。授業Notebookは通常の`pip install cv-data-lesson`を維持し、固定参照は受け入れNotebookに限定する。
+対象仕様：3.3、4.2、4.4、4.5、5.1、5.2、5.3、6、7。第3再監査で確認されたOCR専用ランタイムの独立セル不備、表示保存失敗時のディレクトリ副作用、PyTorch Dataset変換の`valid`入力不一致、日本語フォントの環境依存を修正する。授業Notebookは通常の`pip install cv-data-lesson`を維持し、固定参照は受け入れNotebookに限定する。
 
 順序：
-1. 受け入れNotebookの固定参照を、今回の実装を含む不変コミットへそろえ、固定先を静的検査する。
-2. OCR polygonの点数と各点の座標数を変換前に厳密検証し、短い点・余分な点・3座標の点を`OCRError`にする。
-3. 回帰テスト、配布物検査、CIを実施し、PyPI公開後に公開wheelで再確認する。
+1. OCR専用ランタイムのセルが必要なimportを自分で行うことを静的に検査する。
+2. `display.save()`でエンコード失敗前に保存先を作らず、未知の拡張子の回帰テストを追加する。
+3. PyTorch Dataset変換でも`valid`を`val`へ正規化し、classification・segmentationで回帰テストを追加する。
+4. Pillow描画で`japanize-matplotlib`の日本語フォントを優先探索し、環境依存のフォールバックを確認する。
+5. 回帰テスト、配布物検査、CIを実施し、PyPI公開後に公開wheelで再確認する。
 
-受け入れ条件：受け入れNotebookの固定参照が今回の実装を含む40桁SHAへそろい、授業Notebookはバージョン・コミットを固定しない。OCRの欠損・点数不一致・座標要素数不一致・非有限polygon/信頼度が`OCRError`になる。前回のbbox・split・配布物条件を維持し、0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
+受け入れ条件：受け入れNotebookの固定参照が今回の実装を含む40桁SHAへそろい、OCR専用セクションを新規ランタイムで単独実行できる。`display.save()`のエンコード失敗で不要な親ディレクトリを作らず、PyTorch Dataset変換でも`valid`を受け付ける。Pillow描画で確認済みの日本語フォントを優先する。OCRの欠損・点数不一致・座標要素数不一致・非有限polygon/信頼度が`OCRError`になる。前回のbbox・split・配布物条件を維持し、0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
 
-進捗：前回までにbbox、split、非有限OCR値、配布物検査を修正し、CI run `45195265645`でPython 3.11〜3.13とwheel/sdist検査が成功した。第2再監査で、OCR polygonの厳密な点数・座標数検証、受け入れNotebook8件の固定参照を実装コミット`7c84df653198b4d1faf3f91989cdc1896e390e5c`へ更新、固定先の自動検査、OCR試験画像の明示フォントを追加した。修正後CI run `45202562562`も全4ジョブ成功。Notebookは自己参照を避け、ライブラリ実装を含む固定コミットを参照している。Colab実測、PyPI公開版の再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
+進捗：前回までにbbox、split、非有限OCR値、配布物検査を修正し、CI run `45195265645`でPython 3.11〜3.13とwheel/sdist検査が成功した。第2再監査でOCR polygonの厳密な点数・座標数検証、受け入れNotebook8件の固定参照、固定先の自動検査、OCR試験画像の明示フォントを追加し、修正後CI run `45202562562`も全4ジョブ成功した。第3再監査で、OCR専用ランタイムの独立import、表示保存失敗、PyTorch Datasetの`valid`、Pillow日本語フォント探索を追加修正する。Colab実測、PyPI公開版の再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
 
 ## 今回の作業単位：公開監査記録の安定化と0.1.4公開
 

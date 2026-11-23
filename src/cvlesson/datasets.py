@@ -543,8 +543,7 @@ class DatasetBundle:
         """画像を遅延読み込みするPyTorch Datasetへ変換する。"""
         if self.kind not in {"classification", "segmentation"}:
             raise DatasetError("PyTorch変換は画像分類と領域分割データに対応しています。")
-        if split not in {"train", "val", "test"}:
-            raise ValueError("splitはtrain、val、testのいずれかです。")
+        split = _canonical_public_split(split, kind="PyTorch Dataset")
         if len(image_size) != 2 or any(not isinstance(x, int) or x <= 0 for x in image_size):
             raise ValueError("image_sizeは正の整数2つのtupleで指定してください。")
         try:
