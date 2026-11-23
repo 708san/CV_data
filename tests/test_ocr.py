@@ -69,6 +69,21 @@ class OCRTests(unittest.TestCase):
         with self.assertRaisesRegex(ocr.OCRError, "信頼度"):
             ocr._parse_result(backend_result)
 
+    def test_parse_rejects_polygon_with_wrong_point_or_coordinate_count(self):
+        polygons = [
+            [[[0, 0], [10, 0], [10, 10], [0, 10], [20]]],
+            [[[0, 0], [10, 0], [10, 10], [0, 10, 1]]],
+            [[[0, 0], [10, 0], [10, 10], [0]]],
+        ]
+        for rec_polys in polygons:
+            backend_result = types.SimpleNamespace(json={"res": {
+                "rec_texts": ["文字"],
+                "rec_scores": [0.9],
+                "rec_polys": rec_polys,
+            }})
+            with self.subTest(rec_polys=rec_polys), self.assertRaisesRegex(ocr.OCRError, "polygon"):
+                ocr._parse_result(backend_result)
+
     @unittest.skipUnless(importlib.util.find_spec("PIL"), "Pillowが必要です")
     def test_predict_uses_local_image_and_returns_joined_text(self):
         from PIL import Image

@@ -308,7 +308,19 @@ def _as_list(value: Any) -> list[Any]:
 
 def _polygon(value: Any) -> tuple[tuple[float, float], ...]:
     points = _as_list(value)
-    polygon = tuple((float(point[0]), float(point[1])) for point in points if len(point) >= 2)
+    if len(points) != 4:
+        return ()
+    coordinates = []
+    for point in points:
+        if hasattr(point, "tolist"):
+            point = point.tolist()
+        if not isinstance(point, (list, tuple)) or len(point) != 2:
+            return ()
+        try:
+            coordinates.append((float(point[0]), float(point[1])))
+        except (TypeError, ValueError, IndexError, OverflowError):
+            return ()
+    polygon = tuple(coordinates)
     if len(polygon) != 4 or any(not math.isfinite(coordinate) for point in polygon for coordinate in point):
         return ()
     return polygon

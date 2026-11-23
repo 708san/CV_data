@@ -2,20 +2,18 @@
 
 更新日：2026-11-23
 
-## 今回の作業単位：0.1.5候補の独立監査追加指摘修正（再監査）
+## 今回の作業単位：0.1.5候補の独立監査追加指摘修正（第2再監査）
 
-対象仕様：3.3、4.2、4.4、4.5、5.1、5.2、6、7。再監査で確認されたbbox回帰テストの浮動小数点比較、領域分割の`valid`未対応、検出artifactの非文字列splitによる型エラー、OCRの非有限polygon、PyPI受け入れNotebookの古い説明を修正する。授業Notebookは通常の`pip install cv-data-lesson`を維持し、固定参照は受け入れNotebookに限定する。
+対象仕様：3.3、4.2、4.4、4.5、5.1、5.2、6、7。第2再監査で確認された受け入れNotebookの古い固定コミットと、短い点を除外して受理するOCR polygon検証を修正する。授業Notebookは通常の`pip install cv-data-lesson`を維持し、固定参照は受け入れNotebookに限定する。
 
 順序：
-1. bbox回帰テストを浮動小数点の極小誤差に依存しない比較へ直し、四辺の0〜1保証を検証する。
-2. 領域分割の`valid`を`val`へ正規化して`source_split`を保持し、検出artifactのsplit型を先に検証する。
-3. OCRのpolygonと信頼度で有限値を要求し、非有限値を`OCRError`にする。
-4. PyPI受け入れNotebookの導入説明を実際のセルと一致させる。授業Notebookの通常pip導入を固定しないことも再検査する。
-5. 境界回帰テスト、配布物検査、CIを実施し、PyPI公開後に公開wheelで再確認する。
+1. 受け入れNotebookの固定参照を、今回の実装を含む不変コミットへそろえ、固定先を静的検査する。
+2. OCR polygonの点数と各点の座標数を変換前に厳密検証し、短い点・余分な点・3座標の点を`OCRError`にする。
+3. 回帰テスト、配布物検査、CIを実施し、PyPI公開後に公開wheelで再確認する。
 
-受け入れ条件：公開bboxの四辺が0〜1に収まり、浮動小数点の極小誤差で回帰テストが不安定にならない。分類・検出・領域分割のsplit別名・異常型がタスク操作間で一貫する。OCRの欠損・点数不一致・非有限polygon/信頼度が`OCRError`になる。PyPI受け入れNotebookの説明とセルが一致し、授業Notebookはバージョン・コミットを固定せず、受け入れNotebookだけが不変参照を使う。0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
+受け入れ条件：受け入れNotebookの固定参照が今回の実装を含む40桁SHAへそろい、授業Notebookはバージョン・コミットを固定しない。OCRの欠損・点数不一致・座標要素数不一致・非有限polygon/信頼度が`OCRError`になる。前回のbbox・split・配布物条件を維持し、0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
 
-進捗：前回実装でbbox補正、検出splitの型検証、分類・検出・領域分割の`valid`別名、OCRの`eval`集計、独自生成モデルの40桁revision検証、OCR polygon欠損エラーを実装した。今回の再監査で、bboxテストの比較方法、領域分割の`valid`処理と`source_split`、非文字列splitのエラー境界、OCR非有限値、PyPI受け入れNotebookの説明を追加修正し、wheel smoke testで`cvlesson.__file__`を表示するCI証拠も追加した。Python 3.11のネットワーク不要テスト119件は成功（任意依存不足によるskip 27件）、Notebook JSON・compileall・`git diff --check`も成功した。追加修正後のCI、wheel/sdist、Colab実測、再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
+進捗：前回までにbbox、split、非有限OCR値、配布物検査を修正し、CI run `45195265645`でPython 3.11〜3.13とwheel/sdist検査が成功した。第2再監査で、OCR polygonの厳密な点数・座標数検証と、受け入れNotebookの固定コミット更新・静的検査を追加する。Colab実測、PyPI公開版の再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
 
 ## 今回の作業単位：公開監査記録の安定化と0.1.4公開
 
