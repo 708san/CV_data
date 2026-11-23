@@ -13,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 NOTEBOOKS = ROOT / "notebooks"
-ACCEPTANCE_IMPLEMENTATION_REF = "027838d1d86a5f932e37620390e6ce6f0f655a65"
+ACCEPTANCE_IMPLEMENTATION_REF = "9a5eb12f9a428a1382d7a4335c0af5e74df1a777"
 
 
 def _source_lines(cell: dict) -> list[str]:

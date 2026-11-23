@@ -13,7 +13,7 @@
 
 受け入れ条件：OCRの文字列に対応する信頼度が欠損・非有限・0〜1範囲外の場合に`OCRError`となり、正常な値は保持される。本格受け入れNotebookがCPU・T4・OCR専用ランタイムの手順と判定を持ち、前回のbbox・split・配布物条件を維持する。0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
 
-進捗：前回までにbbox、split、非有限OCR値、表示保存失敗、PyTorch Datasetの`valid`、Pillow日本語フォント探索、受け入れNotebookの独立importを修正し、CI run `45244084795`で全4ジョブが成功した。第5再監査でOCR信頼度の欠損・範囲外値を拒否する実装と回帰テスト、本格受け入れNotebookを追加する。修正後CI、Colab実測、PyPI公開版の再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
+進捗：前回までにbbox、split、非有限OCR値、表示保存失敗、PyTorch Datasetの`valid`、Pillow日本語フォント探索、受け入れNotebookの独立importを修正した。第5再監査でOCR信頼度の欠損・範囲外値を拒否する実装と回帰テスト、本格受け入れNotebookを追加し、受け入れNotebook8件の固定参照を`9a5eb12f9a428a1382d7a4335c0af5e74df1a777`へ更新した。修正後CI run `45256638980`でPython 3.11〜3.13、wheel/sdist、Notebook検査を含む全4ジョブが成功した。Colab実測、PyPI公開版の再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
 
 ## 今回の作業単位：公開監査記録の安定化と0.1.4公開
 

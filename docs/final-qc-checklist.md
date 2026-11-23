@@ -21,9 +21,9 @@
 | ResNet | CPU/T4で分類・回帰、進捗表示、特徴再利用、`auto`切替が動作する | 未検証 | 公開版のCPU/T4実モデル実行ログがある場合だけ実測済みとする |
 | DETR / SAM | CPU/T4で固定revisionの読み込みと推論が完了する | 未検証 | 公開版のモデル取得・推論ログがある場合だけ実測済みとする |
 | 画像生成 | GPUではSDXL、CPUではTiny-SDを使い、Tiny-SDのLoRA/image-to-image拒否が明確 | 未検証 | 公開版のTiny-SD/SDXL実行ログがある場合だけ実測済みとする |
-| OCR | PNG/JPEG/WebP/Pillow Image、壊れた画像、日本語実画像、`auto`切替を確認する | 実装・CI検証済み、実モデル未検証 | 欠損・点数不一致・座標要素数不一致・NaN/Infを`OCRError`にする回帰テストを追加。OCR専用Colabの公開版実行ログは未取得 |
-| ネットワーク不要テスト | 指定テストが対応Pythonで成功する | CI検証済み | 修正後CI [#45244084795](https://github.com/708san/CV_data/actions/runs/45244084795)でPython 3.11/3.12/3.13が全127件成功 |
-| Notebook静的検査 | JSON、セル依存、固定SHA、pip引用符を検査する | CI検証済み | 同CIで成功。8件の固定参照を`027838d1d86a5f932e37620390e6ce6f0f655a65`へ統一し、OCR専用セクションの実際の`ImageFont` import構文も検査。授業Notebookは通常pipを維持 |
+| OCR | PNG/JPEG/WebP/Pillow Image、壊れた画像、日本語実画像、`auto`切替を確認する | 実装・CI検証済み、実モデル未検証 | 欠損・点数不一致・座標要素数不一致・NaN/Inf・0〜1範囲外の信頼度を`OCRError`にする回帰テストと本格Notebookの境界テストを追加。OCR専用Colabの公開版実行ログは未取得 |
+| ネットワーク不要テスト | 指定テストが対応Pythonで成功する | CI検証済み | 修正後CI [#45256638980](https://github.com/708san/CV_data/actions/runs/45256638980)でPython 3.11/3.12/3.13が全129件成功 |
+| Notebook静的検査 | JSON、セル依存、固定SHA、pip引用符を検査する | CI検証済み | 同CIで成功。8件の固定参照を`9a5eb12f9a428a1382d7a4335c0af5e74df1a777`へ統一し、OCR専用セクションの実際の`ImageFont` import構文も検査。授業Notebookは通常pipを維持 |
 | wheel / sdist | 対象版をbuildし、metadata検査・バイナリ混入検査・wheelインストールを完了する | CI検証済み | 同CIの配布物検査・隔離wheel importが成功。`cvlesson.__file__`も確認 |
 | PyPI通常導入 | `pip install cv-data-lesson`で公開版を取得する | 未検証 | v0.1.5候補は公開前。公開後に取得版・`cvlesson.__file__`・基本APIを監査記録へ残す |
 | PyPI / Release | ReleaseとTrusted Publishingの版が一致する | 保留 | v0.1.5候補は未公開。公開後にGitHub ReleaseとPyPIプロジェクトページを確認する |
