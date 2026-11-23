@@ -2,18 +2,18 @@
 
 更新日：2026-11-24
 
-## 今回の作業単位：0.1.5候補の独立監査追加指摘修正（第4再監査）
+## 今回の作業単位：0.1.5候補のOCR信頼度修正と本格受け入れ（第5再監査）
 
-対象仕様：3.3、4.2、4.4、4.5、5.1、5.2、5.3、6、7。第4再監査で確認された、受け入れNotebookの古い固定参照とOCR専用ランタイムの独立import検査の弱さを修正する。授業Notebookは通常の`pip install cv-data-lesson`を維持し、固定参照は受け入れNotebookに限定する。
+対象仕様：3.3、4.2、4.4、4.5、5.1、5.2、5.3、6、7。独立監査で確認されたOCR信頼度の欠損・範囲外値の黙った補完・丸めを修正し、CPU・T4・OCR専用ランタイムで公開版を実測する本格受け入れNotebookを整備する。授業Notebookは通常の`pip install cv-data-lesson`を維持し、固定参照は受け入れNotebookに限定する。
 
 順序：
-1. 8件の受け入れNotebookの固定参照を、表示保存・PyTorch Dataset変換を含む実装commitへそろえる。
-2. ランタイムを分けるOCR専用セクションへ`ImageFont`を明示importし、実際のimport構文を検査する回帰テストへ強化する。
-3. 回帰テスト、配布物検査、CIを実施し、PyPI公開後に公開wheelで再確認する。
+1. OCRの信頼度欠損・非有限・0〜1範囲外を`OCRError`にし、回帰テストを追加する。
+2. CPU・T4・OCR専用ランタイムを分け、データ・bbox・split・表示・ResNet・DETR・SAM・Tiny-SD・SDXL・OCRを実測できる本格受け入れNotebookを整備する。
+3. 回帰テスト、配布物検査、Notebook静的検査、CIを実施し、公開後はPyPI版を新規環境で再確認する。
 
-受け入れ条件：8件の受け入れNotebookの固定参照が、表示保存・PyTorch Dataset変換を含む実装commitの40桁SHAへそろい、OCR専用セクションを新規ランタイムで単独実行できる。実際のimport構文を静的検査し、前回のbbox・split・配布物条件を維持する。0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
+受け入れ条件：OCRの文字列に対応する信頼度が欠損・非有限・0〜1範囲外の場合に`OCRError`となり、正常な値は保持される。本格受け入れNotebookがCPU・T4・OCR専用ランタイムの手順と判定を持ち、前回のbbox・split・配布物条件を維持する。0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
 
-進捗：前回までにbbox、split、非有限OCR値、表示保存失敗、PyTorch Datasetの`valid`、Pillow日本語フォント探索を修正した。第4再監査で受け入れNotebook8件の固定参照を`027838d1d86a5f932e37620390e6ce6f0f655a65`へ更新し、OCR専用セクションの`ImageFont`独立importと実構文検査を追加した。修正後CI run `45244084795`でPython 3.11〜3.13、wheel/sdist、Notebook検査を含む全4ジョブが成功した。Colab実測、PyPI公開版の再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
+進捗：前回までにbbox、split、非有限OCR値、表示保存失敗、PyTorch Datasetの`valid`、Pillow日本語フォント探索、受け入れNotebookの独立importを修正し、CI run `45244084795`で全4ジョブが成功した。第5再監査でOCR信頼度の欠損・範囲外値を拒否する実装と回帰テスト、本格受け入れNotebookを追加する。修正後CI、Colab実測、PyPI公開版の再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
 
 ## 今回の作業単位：公開監査記録の安定化と0.1.4公開
 

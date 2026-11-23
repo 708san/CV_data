@@ -28,7 +28,7 @@ class OCRTests(unittest.TestCase):
     def test_parse_backend_result_to_common_lines(self):
         backend_result = types.SimpleNamespace(json={"res": {
             "rec_texts": ["  合計 1,200円 ", "", "部活動費"],
-            "rec_scores": [0.97, 0.8, 1.2],
+            "rec_scores": [0.97, 0.8, 0.73],
             "rec_polys": [
                 [[1, 2], [11, 2], [11, 8], [1, 8]],
                 [[0, 0], [1, 0], [1, 1], [0, 1]],
@@ -38,7 +38,7 @@ class OCRTests(unittest.TestCase):
         lines = ocr._parse_result(backend_result)
         self.assertEqual([line.text for line in lines], ["合計 1,200円", "部活動費"])
         self.assertEqual(lines[0].confidence, 0.97)
-        self.assertEqual(lines[1].confidence, 1.0)
+        self.assertEqual(lines[1].confidence, 0.73)
         self.assertEqual(lines[0].polygon[0], (1.0, 2.0))
 
     def test_parse_rejects_text_without_polygon(self):
@@ -68,6 +68,25 @@ class OCRTests(unittest.TestCase):
         }})
         with self.assertRaisesRegex(ocr.OCRError, "信頼度"):
             ocr._parse_result(backend_result)
+
+    def test_parse_rejects_missing_confidence(self):
+        backend_result = types.SimpleNamespace(json={"res": {
+            "rec_texts": ["文字"],
+            "rec_scores": [],
+            "rec_polys": [[[1, 1], [8, 1], [8, 8], [1, 8]]],
+        }})
+        with self.assertRaisesRegex(ocr.OCRError, "信頼度"):
+            ocr._parse_result(backend_result)
+
+    def test_parse_rejects_confidence_outside_zero_to_one(self):
+        for score in (-0.5, 1.2):
+            backend_result = types.SimpleNamespace(json={"res": {
+                "rec_texts": ["文字"],
+                "rec_scores": [score],
+                "rec_polys": [[[1, 1], [8, 1], [8, 8], [1, 8]]],
+            }})
+            with self.subTest(score=score), self.assertRaisesRegex(ocr.OCRError, "0〜1"):
+                ocr._parse_result(backend_result)
 
     def test_parse_rejects_polygon_with_wrong_point_or_coordinate_count(self):
         polygons = [

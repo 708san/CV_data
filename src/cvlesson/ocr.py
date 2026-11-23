@@ -284,8 +284,10 @@ def _parse_result(result: Any) -> list[OCRLine]:
             continue
         if index >= len(polygons):
             raise OCRError("OCRバックエンドの文字結果にpolygonがありません。")
+        if index >= len(scores):
+            raise OCRError("OCRバックエンドの文字結果に信頼度がありません。")
         try:
-            score = float(scores[index]) if index < len(scores) else 0.0
+            score = float(scores[index])
             polygon = _polygon(polygons[index])
         except (TypeError, ValueError, IndexError) as exc:
             raise OCRError("OCRバックエンドのpolygonまたは信頼度が不正です。") from exc
@@ -293,7 +295,8 @@ def _parse_result(result: Any) -> list[OCRLine]:
             raise OCRError("OCRバックエンドのpolygonは4点で指定してください。")
         if not math.isfinite(score):
             raise OCRError("OCRバックエンドの信頼度が有限値ではありません。")
-        score = min(1.0, max(0.0, score))
+        if not 0.0 <= score <= 1.0:
+            raise OCRError("OCRバックエンドの信頼度は0〜1の範囲で指定してください。")
         lines.append(OCRLine(text=text, confidence=score, polygon=polygon))
     return lines
 
