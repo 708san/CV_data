@@ -127,6 +127,26 @@ class VisionTests(unittest.TestCase):
         self.assertEqual(predictions, [vision.Detection("bicycle", 0.91, (1.25, 2.0, 21.0, 30.0))])
         self.assertEqual(processor.kwargs, {"threshold": 0.4, "target_sizes": [(50, 40)]})
 
+    def test_detection_clips_model_box_to_image_and_drops_degenerate_box(self):
+        class Processor:
+            def __call__(self, **kwargs):
+                return {"pixel_values": "input"}
+
+            def post_process_object_detection(self, outputs, **kwargs):
+                return [{
+                    "boxes": [
+                        _Tensor([-0.002, 10.0, 40.0, 51.0]),
+                        _Tensor([50.0, 20.0, 50.0, 30.0]),
+                    ],
+                    "scores": [_Tensor(0.8), _Tensor(0.7)],
+                    "labels": [_Tensor(1), _Tensor(1)],
+                }]
+
+        detector = vision.ObjectDetector(Processor(), _CallableModel(), _Torch, "cpu")
+        with patch("cvlesson.vision._open_image", return_value=SimpleNamespace(size=(40, 50))):
+            predictions = detector.predict("ignored.jpg", threshold=0.4)
+        self.assertEqual(predictions, [vision.Detection("bicycle", 0.8, (0.0, 10.0, 40.0, 50.0))])
+
     def test_sam_selects_highest_scoring_mask_and_keeps_shape(self):
         class CandidateMask:
             def __init__(self, rows):

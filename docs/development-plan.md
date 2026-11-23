@@ -2,18 +2,18 @@
 
 更新日：2026-11-24
 
-## 今回の作業単位：0.1.5候補のOCR信頼度修正と本格受け入れ（第5再監査）
+## 今回の作業単位：0.1.5公開版の検出結果境界修正と本格受け入れ（第6再監査）
 
-対象仕様：3.3、4.2、4.4、4.5、5.1、5.2、5.3、6、7。独立監査で確認されたOCR信頼度の欠損・範囲外値の黙った補完・丸めを修正し、CPU・T4・OCR専用ランタイムで公開版を実測する本格受け入れNotebookを整備する。授業Notebookは通常の`pip install cv-data-lesson`を維持し、固定参照は受け入れNotebookに限定する。
+対象仕様：3.3、4.2、4.4、4.5、5.1、5.2、5.3、6、7。公開版Colabで確認された、DETRの推論枠の極小範囲外値による表示失敗を修正し、実画像の表示・保存まで通る本格受け入れを整備する。授業Notebookは通常の`pip install cv-data-lesson`を維持し、固定参照は受け入れNotebookに限定する。
 
 順序：
-1. OCRの信頼度欠損・非有限・0〜1範囲外を`OCRError`にし、回帰テストを追加する。
+1. DETRの推論枠を画像範囲内へ補正し、完全に画像外またはゼロ面積の枠を除外する回帰テストを追加する。
 2. CPU・T4・OCR専用ランタイムを分け、データ・bbox・split・表示・ResNet・DETR・SAM・Tiny-SD・SDXL・OCRを実測できる本格受け入れNotebookを整備する。
-3. 回帰テスト、配布物検査、Notebook静的検査、CIを実施し、公開後はPyPI版を新規環境で再確認する。
+3. 回帰テスト、配布物検査、Notebook静的検査、CIを実施し、公開版の修正版を新規Colabで再確認する。
 
-受け入れ条件：OCRの文字列に対応する信頼度が欠損・非有限・0〜1範囲外の場合に`OCRError`となり、正常な値は保持される。本格受け入れNotebookがCPU・T4・OCR専用ランタイムの手順と判定を持ち、前回のbbox・split・配布物条件を維持する。0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
+受け入れ条件：DETRの公開`Detection.box`が画像範囲内で、表示・保存APIへ直接渡せる。完全に画像外またはゼロ面積のモデル枠は公開結果へ残らない。本格受け入れNotebookが実データのDETR/SAM表示・保存まで確認し、前回のbbox・split・配布物条件を維持する。修正版のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
 
-進捗：前回までにbbox、split、非有限OCR値、表示保存失敗、PyTorch Datasetの`valid`、Pillow日本語フォント探索、受け入れNotebookの独立importを修正した。第5再監査でOCR信頼度の欠損・範囲外値を拒否する実装と回帰テスト、本格受け入れNotebookを追加し、受け入れNotebook8件の固定参照を`9a5eb12f9a428a1382d7a4335c0af5e74df1a777`へ更新した。`v0.1.5`をGitHub ReleaseとPyPIへ公開し、公開workflow `45260067582`のbuild/publish両ジョブ成功とPyPI版別APIを確認した。本格受け入れNotebookへ実データ表示、実bbox重ね合わせ・保存、分類用実データのResNet入力、実画像のDETR/SAM入力、DETR/SAMの単独・合成可視化、実レシートのOCR表示・保存を追加した。GeoSetEnnea（検出用）を分類用として参照していたNotebook不具合を`fresh_rotten_fruits`へ修正し、CI run `45268288516`で全4ジョブが成功した。新規Colabでの公開版実測は未完了。
+進捗：前回までにbbox、split、非有限OCR値、表示保存失敗、PyTorch Datasetの`valid`、Pillow日本語フォント探索、受け入れNotebookの独立importを修正した。第5再監査でOCR信頼度の欠損・範囲外値を拒否する実装と回帰テスト、本格受け入れNotebookを追加し、`v0.1.5`をGitHub ReleaseとPyPIへ公開した。本格受け入れNotebookでは実データ表示、実bbox重ね合わせ・保存、分類用実データのResNet入力、実画像のDETR/SAM入力、単独・合成可視化、実レシートのOCR表示・保存を追加した。GeoSetEnnea（検出用）を分類用として参照していたNotebook不具合を`fresh_rotten_fruits`へ修正し、CI run `45268288516`で成功した。第6再監査でDETRの極小範囲外枠を表示前に補正する。Colab実測は継続中。
 
 ## 今回の作業単位：公開監査記録の安定化と0.1.4公開
 

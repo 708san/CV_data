@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 from pathlib import Path
 import re
 import warnings
@@ -73,11 +74,14 @@ class ObjectDetector:
         detections = []
         for box, score, label_id in zip(result["boxes"], result["scores"], result["labels"]):
             coords = tuple(float(value) for value in _as_list(box))
+            clipped = _clip_detection_box(coords, width, height)
+            if clipped is None:
+                continue
             detections.append(
                 Detection(
                     label=str(labels[int(label_id)]),
                     score=float(score),
-                    box=coords,  # type: ignore[arg-type]
+                    box=clipped,
                 )
             )
         return detections
@@ -273,6 +277,25 @@ def _validate_box(box: Iterable[float], width: int, height: int) -> tuple[float,
     if not (0 <= x1 < x2 <= width and 0 <= y1 < y2 <= height):
         raise ValueError(f"boxは画像範囲内({width}×{height})の正しい矩形にしてください。")
     return values  # type: ignore[return-value]
+
+
+def _clip_detection_box(
+    box: Iterable[float], width: int, height: int
+) -> tuple[float, float, float, float] | None:
+    """DETRの枠を画像内へ補正し、表示不能な枠を除外する。"""
+    values = tuple(float(value) for value in box)
+    if len(values) != 4 or not all(math.isfinite(value) for value in values):
+        return None
+    x1, y1, x2, y2 = values
+    clipped = (
+        max(0.0, min(float(width), x1)),
+        max(0.0, min(float(height), y1)),
+        max(0.0, min(float(width), x2)),
+        max(0.0, min(float(height), y2)),
+    )
+    if clipped[0] >= clipped[2] or clipped[1] >= clipped[3]:
+        return None
+    return clipped
 
 
 def _validate_point(point: Iterable[float], width: int, height: int) -> tuple[float, float]:
