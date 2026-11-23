@@ -31,10 +31,71 @@ class DisplayTests(unittest.TestCase):
         self.assertEqual(self.image.tobytes(), before.tobytes())
         self.assertNotEqual(result.tobytes(), before.tobytes())
 
+    def test_detection_display_can_limit_to_top_five_and_defaults_to_all(self):
+        detections = [
+            vision.Detection(str(index), 1.0 - index / 10, (index, 2, index + 1, 10))
+            for index in range(6)
+        ]
+        with patch.object(display, "_draw_detection", wraps=display._draw_detection) as draw_detection:
+            display.render(self.image, detections, max_detections=5)
+            self.assertEqual(draw_detection.call_count, 5)
+            draw_detection.reset_mock()
+            display.render(self.image, detections)
+            self.assertEqual(draw_detection.call_count, 6)
+
+    def test_max_detections_rejects_invalid_value(self):
+        with self.assertRaises(ValueError):
+            display.render(self.image, [], max_detections=-1)
+
+    def test_ocr_display_can_limit_lines_without_changing_result(self):
+        lines = tuple(
+            ocr.OCRLine(str(index), 0.5 + index / 10, ((4, 4 + index * 4), (20, 4 + index * 4), (20, 10 + index * 4), (4, 10 + index * 4)))
+            for index in range(3)
+        )
+        result = ocr.OCRResult(lines, "fixture")
+        with patch.object(display, "_draw_ocr_line", wraps=display._draw_ocr_line) as draw_line:
+            display.render(self.image, result, max_ocr_lines=2)
+            self.assertEqual(draw_line.call_count, 2)
+        self.assertEqual(len(result.lines), 3)
+
+    def test_max_ocr_lines_rejects_invalid_value(self):
+        with self.assertRaises(ValueError):
+            display.render(self.image, [], max_ocr_lines=-1)
+
     def test_ocr_polygon_is_drawn(self):
         line = ocr.OCRLine("text", 0.92, ((4, 4), (24, 4), (24, 15), (4, 15)))
         result = display.render(self.image, ocr.OCRResult((line,), "fixture"))
         self.assertNotEqual(result.tobytes(), self.image.tobytes())
+
+    def test_ocr_label_moves_below_polygon_at_top_edge(self):
+        polygon_box = (4.0, 4.0, 24.0, 15.0)
+        label_box = display._place_label(
+            polygon_box,
+            (48.0, 18.0),
+            (100, 80),
+            [polygon_box],
+            [],
+        )
+        self.assertGreaterEqual(label_box[1], polygon_box[3])
+
+    def test_ocr_label_avoids_other_polygons_and_existing_labels(self):
+        first = (4.0, 4.0, 24.0, 15.0)
+        second = (4.0, 22.0, 24.0, 33.0)
+        occupied = [(30.0, 4.0, 39.0, 22.0)]
+        label_box = display._place_label(
+            first,
+            (20.0, 12.0),
+            (80, 60),
+            [first, second],
+            occupied,
+        )
+        def overlap_area(first, second):
+            return max(0.0, min(first[2], second[2]) - max(first[0], second[0])) * max(
+                0.0, min(first[3], second[3]) - max(first[1], second[1])
+            )
+
+        for obstacle in [first, second, *occupied]:
+            self.assertEqual(overlap_area(label_box, obstacle), 0)
 
     def test_segmentation_mask_is_blended(self):
         mask = np.zeros((30, 40), dtype=np.bool_)

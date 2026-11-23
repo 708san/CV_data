@@ -55,7 +55,7 @@ python -m pip install -e '.[diffusion]'
 
 ### OCR用の環境
 
-OCRを使うときだけ、PaddlePaddleと`ocr` extraを導入します。ResNet・SDXLのPyTorchとは別の仮想環境に分けると、深層学習基盤の依存競合を避けやすくなります。まず[PaddlePaddle公式インストール案内](https://www.paddlepaddle.org.cn/install/quick)でOS・Python・CPU/GPU・CUDAに合うPaddlePaddleを導入し、次にこのライブラリの`ocr` extraを入れます。`ocr` extraはPaddleOCR 3.1系に合うPaddleX 3.1系と、旧APIを必要とするPaddleX向けのLangChain 1.0未満を選びます。Hugging Face Hubは1.xも許容し、`requests`はColabとの衝突を避ける範囲に制約します。
+OCRを使うときだけ、PaddlePaddleと`ocr` extraを導入します。ResNet・SDXLのPyTorchとは別の仮想環境に分けると、深層学習基盤の依存競合を避けやすくなります。まず[PaddlePaddle公式インストール案内](https://www.paddlepaddle.org.cn/install/quick)でOS・Python・CPU/GPU・CUDAに合うPaddlePaddleを導入し、次にこのライブラリの`ocr` extraを入れます。`ocr` extraはPaddleOCR 3.1系に合うPaddleX 3.1系と、旧APIを必要とするPaddleX向けのLangChain 1.0未満を選びます。Hugging Face Hubは1.xも許容し、Colab標準ランタイムと一致する`requests==2.32.4`を使います。Colab標準の`langgraph`系はLangChain 1.xを要求するため、OCR専用環境で他のAI機能と同居させないでください。
 
 ```bash
 python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
@@ -66,7 +66,7 @@ python -m pip install -e '.[ocr]'
 
 OCRモデルは`ocr.load()`を呼んだ時に、Apache-2.0表示のPP-OCRv5 mobile検出・認識モデルを固定Hugging Face revisionから取得します。2モデルで約22 MBです。モデルカードの条件は各配布元で確認できます：[検出モデル](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_det)、[認識モデル](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_rec)。推論はローカルで実行し、読み取り結果は`text`と行ごとの`confidence`、画像上の四点`polygon`で返します。
 
-Colabで以前のOCR依存を導入済みの場合は、修正版をインストールした後にランタイムを再起動してください。`No module named 'langchain.docstore'`はPaddleOCR未導入ではなく、PaddleX 3.1系とLangChain 1.xの互換性問題です。新しい`ocr` extraはLangChainを1.0未満に制約します。
+Colabで以前のOCR依存を導入済みの場合は、修正版をインストールした後にランタイムを再起動してください。`No module named 'langchain.docstore'`はPaddleOCR未導入ではなく、PaddleX 3.1系とLangChain 1.xの互換性問題です。新しい`ocr` extraはLangChainを1.0未満に制約します。Colabの`langgraph`系を同じランタイムで使う必要がある場合は、OCR用に別の仮想環境を作ってください。
 
 ## PyTorchとCPU/GPU
 

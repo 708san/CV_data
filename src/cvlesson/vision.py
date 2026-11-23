@@ -152,9 +152,6 @@ def available_devices() -> dict[str, bool]:
         devices["mps"] = bool(torch.backends.mps.is_available())
     except (AttributeError, RuntimeError):
         pass
-    if devices["cuda"]:
-        for index in range(1, int(torch.cuda.device_count())):
-            devices[f"cuda:{index}"] = True
     return devices
 
 
@@ -282,11 +279,19 @@ def _validate_box(box: Iterable[float], width: int, height: int) -> tuple[float,
 def _clip_detection_box(
     box: Iterable[float], width: int, height: int
 ) -> tuple[float, float, float, float] | None:
-    """DETRの枠を画像内へ補正し、表示不能な枠を除外する。"""
+    """小さな境界誤差だけを補正し、意味のある逸脱は除外する。
+
+    Transformersの後処理が返す丸め誤差を吸収するため、画像端から1pxまでの
+    はみ出しは画像端へ丸める。大きく画像外へ出た枠や、補正後に面積がない枠は
+    不正な推論結果として返さない。
+    """
     values = tuple(float(value) for value in box)
     if len(values) != 4 or not all(math.isfinite(value) for value in values):
         return None
     x1, y1, x2, y2 = values
+    tolerance = 1.0
+    if x1 < -tolerance or y1 < -tolerance or x2 > width + tolerance or y2 > height + tolerance:
+        return None
     clipped = (
         max(0.0, min(float(width), x1)),
         max(0.0, min(float(height), y1)),

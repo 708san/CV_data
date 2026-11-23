@@ -29,12 +29,14 @@ class ResNetEstimatorTests(unittest.TestCase):
 
     def test_available_device_map_uses_canonical_cuda_names(self):
         self.assertEqual(cuda_device_aliases(1, True), {"cuda": True})
+        self.assertEqual(cuda_device_aliases(2, True), {"cuda": True, "cuda:1": True})
         self.assertEqual(cuda_device_aliases(0, False), {"cuda": False})
 
     def test_device_aliases_preserve_pytorch_meaning(self):
         self.assertEqual(normalize_torch_device("cuda"), "cuda")
         self.assertEqual(normalize_torch_device("cuda:0"), "cuda:0")
         self.assertTrue(torch_device_available("cuda:0", {"cuda": True}))
+        self.assertTrue(torch_device_available("cuda:1", {"cuda": True, "cuda:1": True}))
         self.assertFalse(torch_device_available("cuda:1", {"cuda": True}))
         self.assertEqual(
             choose_torch_device("auto", {"cpu": True, "cuda": True, "mps": False}),

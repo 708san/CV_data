@@ -147,6 +147,9 @@ class VisionTests(unittest.TestCase):
             predictions = detector.predict("ignored.jpg", threshold=0.4)
         self.assertEqual(predictions, [vision.Detection("bicycle", 0.8, (0.0, 10.0, 40.0, 50.0))])
 
+    def test_detection_drops_box_with_meaningful_image_escape(self):
+        self.assertIsNone(vision._clip_detection_box((-2.0, 10.0, 20.0, 30.0), 40, 50))
+
     def test_sam_selects_highest_scoring_mask_and_keeps_shape(self):
         class CandidateMask:
             def __init__(self, rows):
