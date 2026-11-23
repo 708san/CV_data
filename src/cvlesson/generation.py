@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import hashlib
 from pathlib import Path
+import re
 from typing import Any
 
 from . import loras
@@ -145,6 +146,10 @@ def load(
         raise ValueError("taskは'text-to-image'または'image-to-image'です。")
     if model not in {"auto", "sdxl", "tiny-sd"}:
         raise ValueError("modelは'auto'、'sdxl'または'tiny-sd'です。")
+    if base_revision is not None and not isinstance(base_revision, str):
+        raise ValueError("base_revisionには完全な40桁のGit commit SHAを指定してください。")
+    if base_revision is not None and not re.fullmatch(r"[0-9a-fA-F]{40}", base_revision):
+        raise ValueError("base_revisionには完全な40桁のGit commit SHAを指定してください。")
     try:
         device = normalize_torch_device(device, allow_auto=True)
     except ValueError as exc:

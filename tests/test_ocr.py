@@ -41,6 +41,15 @@ class OCRTests(unittest.TestCase):
         self.assertEqual(lines[1].confidence, 1.0)
         self.assertEqual(lines[0].polygon[0], (1.0, 2.0))
 
+    def test_parse_rejects_text_without_polygon(self):
+        backend_result = types.SimpleNamespace(json={"res": {
+            "rec_texts": ["文字"],
+            "rec_scores": [0.9],
+            "rec_polys": [],
+        }})
+        with self.assertRaisesRegex(ocr.OCRError, "polygon"):
+            ocr._parse_result(backend_result)
+
     @unittest.skipUnless(importlib.util.find_spec("PIL"), "Pillowが必要です")
     def test_predict_uses_local_image_and_returns_joined_text(self):
         from PIL import Image
@@ -51,7 +60,10 @@ class OCRTests(unittest.TestCase):
                 return [{"res": {
                     "rec_texts": ["行1", "行2"],
                     "rec_scores": [0.9, 0.8],
-                    "rec_polys": [],
+                    "rec_polys": [
+                        [[1, 1], [8, 1], [8, 5], [1, 5]],
+                        [[1, 6], [8, 6], [8, 8], [1, 8]],
+                    ],
                 }}]
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -62,7 +74,7 @@ class OCRTests(unittest.TestCase):
         self.assertEqual(result.text, "行1\n行2")
         self.assertNotEqual(pipeline.image_path, image)
         self.assertEqual(Path(pipeline.image_path).suffix, ".png")
-        self.assertEqual(len(result.lines[0].polygon), 0)
+        self.assertEqual(len(result.lines[0].polygon), 4)
         self.assertEqual(result.to_dict()["lines"][1]["text"], "行2")
 
     def test_predict_accepts_pillow_and_removes_temporary_image(self):
@@ -77,7 +89,11 @@ class OCRTests(unittest.TestCase):
             def predict(self, *, input):
                 self.image_path = Path(input)
                 self.assert_image_exists = self.image_path.is_file()
-                return [{"res": {"rec_texts": ["sample"], "rec_scores": [0.9], "rec_polys": []}}]
+                return [{"res": {
+                    "rec_texts": ["sample"],
+                    "rec_scores": [0.9],
+                    "rec_polys": [[[1, 1], [8, 1], [8, 8], [1, 8]]],
+                }}]
 
         image = Image.new("RGBA", (12, 9), (10, 20, 30, 128))
         pipeline = Pipeline()

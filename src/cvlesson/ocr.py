@@ -281,9 +281,16 @@ def _parse_result(result: Any) -> list[OCRLine]:
         text = str(text).strip()
         if not text:
             continue
-        score = float(scores[index]) if index < len(scores) else 0.0
+        if index >= len(polygons):
+            raise OCRError("OCRバックエンドの文字結果にpolygonがありません。")
+        try:
+            score = float(scores[index]) if index < len(scores) else 0.0
+            polygon = _polygon(polygons[index])
+        except (TypeError, ValueError, IndexError) as exc:
+            raise OCRError("OCRバックエンドのpolygonまたは信頼度が不正です。") from exc
+        if len(polygon) != 4:
+            raise OCRError("OCRバックエンドのpolygonは4点で指定してください。")
         score = min(1.0, max(0.0, score))
-        polygon = _polygon(polygons[index]) if index < len(polygons) else ()
         lines.append(OCRLine(text=text, confidence=score, polygon=polygon))
     return lines
 

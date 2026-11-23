@@ -239,6 +239,12 @@ class VisionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "0から1"):
             detector.predict("missing.jpg", threshold=1.1)
 
+    def test_box_touching_image_edge_is_valid(self):
+        self.assertEqual(
+            vision._validate_box((1, 1, 40, 30), 40, 30),
+            (1.0, 1.0, 40.0, 30.0),
+        )
+
     def test_unavailable_gpu_is_rejected_before_model_import(self):
         fake_torch = SimpleNamespace(
             cuda=SimpleNamespace(is_available=lambda: False, device_count=lambda: 0),

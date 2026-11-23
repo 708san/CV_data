@@ -102,6 +102,21 @@ class NotebookIntegrityTests(unittest.TestCase):
                             f"cvlesson importより前にpip installがありません（cell {cell_number}）",
                         )
 
+    def test_teaching_notebooks_use_unpinned_pypi_install(self):
+        teaching_root = NOTEBOOKS / "cv"
+        for path in sorted(teaching_root.glob("*.ipynb")):
+            notebook = json.loads(path.read_text(encoding="utf-8"))
+            for cell_number, cell in enumerate(notebook["cells"]):
+                if cell.get("cell_type") != "code":
+                    continue
+                for line in _source_lines(cell):
+                    stripped = line.strip()
+                    if not stripped.startswith("%pip install ") or "cv-data-lesson" not in stripped:
+                        continue
+                    with self.subTest(notebook=path.relative_to(ROOT), cell=cell_number):
+                        self.assertNotIn("CV_data.git@", stripped)
+                        self.assertNotRegex(stripped, r"cv-data-lesson[^\"']*==")
+
 
 if __name__ == "__main__":
     unittest.main()

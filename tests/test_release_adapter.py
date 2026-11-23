@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import gzip
+import csv
 import importlib.util
 import io
 import json
@@ -489,6 +490,20 @@ class ReleaseTests(unittest.TestCase):
             for name in ("train", "val", "test")
         })
 
+    def test_ocr_split_counts_report_actual_eval_split(self):
+        with (self.cache / "labels.csv").open("w", encoding="utf-8", newline="") as stream:
+            writer = csv.DictWriter(stream, fieldnames=("image", "record_json", "split", "sample_id"))
+            writer.writeheader()
+            writer.writerows([
+                {"image": "images/a.png", "record_json": "{}", "split": "train", "sample_id": "a"},
+                {"image": "images/b.png", "record_json": "{}", "split": "eval", "sample_id": "b"},
+            ])
+        data = datasets.DatasetBundle(
+            id="japanese_receipts_detailed", kind="ocr", root=self.cache,
+            manifest={}, source_url="https://example.invalid/source", version="test", rights_note="test",
+        )
+        self.assertEqual(data.splits, {"eval": 1, "train": 1})
+
     @unittest.skipUnless(importlib.util.find_spec("pandas"), "pandasが必要です")
     def test_classification_official_validation_is_preserved_without_train_resplit(self):
         (self.cache / "labels.csv").write_text(
@@ -600,6 +615,26 @@ class ReleaseTests(unittest.TestCase):
                 ):
                     with self.assertRaisesRegex(datasets.DatasetError, "範囲外"):
                         datasets.get(key, cache_dir=self.cache)
+
+    def test_normalized_bbox_keeps_all_edges_inside_unit_range(self):
+        normalized = datasets._normalized_bbox_annotation({
+            "x_center": 0.5,
+            "y_center": 0.5,
+            "width": 1.0000000005,
+            "height": 1.0000000005,
+        })
+        x_min = normalized["x_center"] - normalized["width"] / 2
+        x_max = normalized["x_center"] + normalized["width"] / 2
+        y_min = normalized["y_center"] - normalized["height"] / 2
+        y_max = normalized["y_center"] + normalized["height"] / 2
+        self.assertGreaterEqual(x_min, 0.0)
+        self.assertLessEqual(x_max, 1.0)
+        self.assertGreaterEqual(y_min, 0.0)
+        self.assertLessEqual(y_max, 1.0)
+
+    def test_detection_split_rejects_non_string_values(self):
+        with self.assertRaisesRegex(ValueError, "検出split"):
+            datasets._canonical_detection_split(["train"])
 
     def test_rdd2020_rootless_archive_uses_dataset_specific_limits(self):
         payload = make_detection_zip(case="rdd2020_japan", root_folder=False)

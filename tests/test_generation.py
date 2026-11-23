@@ -40,6 +40,16 @@ class GenerationTests(unittest.TestCase):
         ), self.assertRaisesRegex(generation.GenerationError, "SDXLはCPU実行"):
             generation.load(model="sdxl", device="cpu")
 
+    def test_custom_base_model_requires_fixed_revision(self):
+        with self.assertRaisesRegex(ValueError, "40桁"):
+            generation.load(
+                model="sdxl",
+                device="cuda",
+                lora=None,
+                base_model="example/model",
+                base_revision="main",
+            )
+
     def test_auto_sdxl_rejects_cpu_before_pipeline_download(self):
         class ForbiddenPipeline:
             @classmethod

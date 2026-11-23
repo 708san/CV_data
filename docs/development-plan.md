@@ -2,20 +2,20 @@
 
 更新日：2026-11-23
 
-## 今回の作業単位：0.1.5候補の独立監査指摘修正
+## 今回の作業単位：0.1.5候補の独立監査追加指摘修正
 
-対象仕様：3.3、6、7。0.1.5候補の独立監査で確認されたdisplayの入力検証、保存時の副作用、分類splitの異常型、受け入れNotebookの未実行・古い固定参照、公開前の文書表記を修正する。`val`をライブラリ内部の正規splitとする現行仕様は維持し、`valid`は入力として受理して`source_split`に元表記を残す。
+対象仕様：3.3、4.4、4.5、5.1、5.2、6、7。0.1.5候補の独立監査で確認されたbbox補正後の境界、タスク間のsplit入力、独自生成モデルの浮動revision、OCR polygon欠損、QC記録を修正する。授業Notebookは通常の`pip install cv-data-lesson`を維持し、固定参照は受け入れNotebookに限定する。
 
 順序：
-1. `orange_fruit`の重複クラスを元ラベル併記で区別できる日本語ラベルへそろえる。
-2. `display.render/show/save`の不正マスク・座標・保存順序を修正し、回帰テストを追加する。
-3. `_effective_splits()`へsplitの型検査を追加し、異常型の回帰テストを追加する。
-4. 受け入れNotebookへdisplayの描画・表示・保存セルを追加し、古いGit固定参照を候補コミットへ更新する。
-5. 公開前の版表記を候補として整理し、ネットワーク不要テスト、配布物検査、CIを実施する。PyPI公開後に公開wheelで再確認する。
+1. bboxの幅・高さと四辺を最終補正し、出力範囲を保証する。
+2. 分類・検出・領域分割のsplit別名と不正型を共通検証し、OCR・回帰の実在split集計を返す。
+3. 独自画像生成モデルの`base_revision`を40桁SHAに限定し、OCRのpolygon欠損を`OCRError`にする。
+4. 授業Notebookの通常pip導入を固定しないことを検査し、受け入れNotebookの固定参照の意味を明記する。
+5. 境界回帰テスト、配布物検査、CIを実施し、PyPI公開後に公開wheelで再確認する。
 
-受け入れ条件：同じデータセット内の`cankered_orange`と`rotten_orange`が日本語表示だけでも区別できる。displayは不正な型・座標を明示的に拒否し、失敗時に保存先を作らない。異常splitは説明付き`ValueError`になる。受け入れNotebookが候補コミットまたは通常pipを正しく参照し、displayの3 APIを実行する。0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
+受け入れ条件：公開bboxの四辺が0〜1に収まり、splitの別名・異常型がタスク操作間で一貫する。独自生成モデルの浮動revisionを拒否し、OCR文字列に四点polygonがなければ`OCRError`になる。授業Notebookはバージョン・コミットを固定せず、受け入れNotebookだけが不変参照を使う。0.1.5のwheel・sdist・PyPI・GitHub Releaseの版が公開後に一致する。
 
-進捗：コード・回帰テスト・Notebook・公開前文書を修正した。`cankered_orange`は「傷んだオレンジ」、同じ`orange_fruit`内の`rotten_orange`は「腐ったオレンジ」として区別した。displayの不正マスク・座標・保存順序、`None`等の分類splitを回帰テストで確認し、6冊の受け入れNotebookで`render`/`show`/`save`を実行するセルと`display` extraを追加した。Python 3.11のネットワーク不要テスト109件は成功（任意依存不足によるskip 26件）、Notebook JSON・セル依存・pip指定の静的検査も成功し、0.1.5のwheel/sdistと一時領域へのwheel導入も確認した。Pillow・NumPy未導入のためローカルの描画テストはskip、Colabの公開版実行とCIは未実施。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
+進捗：bboxの幅・高さと四辺を最終補正し、検出splitの型検証、分類・検出・領域分割の`valid`別名、OCRの`eval`集計、独自生成モデルの40桁revision検証、OCR polygon欠損エラーを実装した。授業Notebookの通常pip導入を固定しない静的検査と、画像端bboxの回帰テストを追加した。Python 3.11のネットワーク不要テスト116件は成功（任意依存不足によるskip 26件）、Notebook JSON・構文・授業用pip指定も成功。追加修正後のCI、Colab実測、固定参照Notebookの最終コミット更新、再監査は未完了。0.1.5は未公開のため、ReleaseとPyPI公開は行わない。
 
 ## 今回の作業単位：公開監査記録の安定化と0.1.4公開
 

@@ -35,17 +35,24 @@ MAX_FILES = 12_000
 _BBOX_EPSILON = 1e-9
 
 
-def _canonical_detection_split(split: str) -> str:
-    """Return the library's canonical detection split name.
+def _canonical_public_split(split: Any, *, kind: str) -> str:
+    """Return a public split name for classification-like datasets.
 
     Release artifacts may use either ``val`` or ``valid``. The raw value is
     kept separately by ``DatasetBundle.to_df()`` as ``source_split``.
     """
+    if not isinstance(split, str):
+        raise ValueError(f"{kind}splitはtrain、val、valid、testの文字列で指定してください: {split!r}")
     if split == "valid":
         return "val"
     if split in {"train", "val", "test"}:
         return split
-    raise ValueError(f"検出splitはtrain、val、valid、testのいずれかです: {split!r}")
+    raise ValueError(f"{kind}splitはtrain、val、valid、testのいずれかです: {split!r}")
+
+
+def _canonical_detection_split(split: Any) -> str:
+    """Return the library's canonical detection split name."""
+    return _canonical_public_split(split, kind="検出")
 
 
 def _normalized_bbox_annotation(annotation: dict[str, Any]) -> dict[str, Any]:
@@ -56,10 +63,18 @@ def _normalized_bbox_annotation(annotation: dict[str, Any]) -> dict[str, Any]:
     excess is within ``_BBOX_EPSILON``.
     """
     result = dict(annotation)
-    width = float(result["width"])
-    height = float(result["height"])
-    result["x_center"] = min(max(float(result["x_center"]), width / 2), 1 - width / 2)
-    result["y_center"] = min(max(float(result["y_center"]), height / 2), 1 - height / 2)
+    width = min(float(result["width"]), 1.0)
+    height = min(float(result["height"]), 1.0)
+    x_center = float(result["x_center"])
+    y_center = float(result["y_center"])
+    x_min = max(0.0, min(1.0, x_center - width / 2))
+    x_max = max(0.0, min(1.0, x_center + width / 2))
+    y_min = max(0.0, min(1.0, y_center - height / 2))
+    y_max = max(0.0, min(1.0, y_center + height / 2))
+    result["x_center"] = (x_min + x_max) / 2
+    result["y_center"] = (y_min + y_max) / 2
+    result["width"] = x_max - x_min
+    result["height"] = y_max - y_min
     return result
 
 
@@ -396,6 +411,9 @@ class DatasetBundle:
         if self.kind == "segmentation":
             counts = Counter(row["split"] for row in _read_rows(self.labels_csv))
             return {name: int(counts.get(name, 0)) for name in ("train", "val", "test")}
+        if self.kind == "ocr":
+            counts = Counter(row["split"] for row in _read_rows(self.labels_csv))
+            return {name: int(counts[name]) for name in sorted(counts)}
         if self.kind != "classification":
             return {}
         rows = _read_rows(self.labels_csv)
@@ -445,13 +463,20 @@ class DatasetBundle:
             figure.tight_layout()
             plt.show()
             return figure
-        if split == "valid" and self.kind == "detection":
+        if self.kind in {"classification", "detection", "segmentation"}:
             # Backward-compatible input alias. DataFrame output is canonical.
-            split = "val"
+            split = _canonical_public_split(split, kind="表示") if split is not None else None
+        elif self.kind == "ocr":
+            if split is not None and (not isinstance(split, str) or split not in {"train", "eval"}):
+                raise ValueError("OCRのsplitはtrainまたはevalで指定してください。")
         if split is not None:
             valid_splits = {"train", "val", "test"}
+            if self.kind == "ocr":
+                valid_splits = {"train", "eval"}
+            if self.kind == "regression":
+                valid_splits = {"train", "validation", "test"}
             if split not in valid_splits:
-                raise ValueError("splitはtrain、val、testのいずれかです。")
+                raise ValueError(f"splitは{'、'.join(sorted(valid_splits))}のいずれかです。")
             frame = frame[frame["split"] == split]
         if frame.empty:
             raise DatasetError("表示できる画像がありません。")
